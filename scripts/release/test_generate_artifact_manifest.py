@@ -5,11 +5,11 @@ import subprocess
 import unittest
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
-SCRIPT = ROOT / "scripts/release/generate_capability_manifest.py"
+SCRIPT = ROOT / "scripts/release/generate_artifact_manifest.py"
 
 
-class CapabilityManifestTests(unittest.TestCase):
-    def test_generates_neutral_engine_capability(self):
+class ArtifactManifestTests(unittest.TestCase):
+    def test_generates_neutral_engine_binding(self):
         result = subprocess.run(
             [
                 "python3", str(SCRIPT), "--repo", str(ROOT),
@@ -20,11 +20,11 @@ class CapabilityManifestTests(unittest.TestCase):
             text=True,
         )
         document = json.loads(result.stdout)
-        self.assertEqual(document["kind"], "mingligo-capability")
-        self.assertEqual(document["project"], "mingligo")
-        self.assertNotIn("counsel", document["images"])
+        self.assertEqual(set(document), {
+            "kind", "source_commit", "image", "default_server_identity"
+        })
+        self.assertEqual(document["kind"], "mingligo-artifact")
         self.assertNotIn("hk.liki", result.stdout)
-        self.assertEqual(len(document["tools"]["engine"]), 17)
 
     def test_rejects_mutable_image(self):
         result = subprocess.run(
