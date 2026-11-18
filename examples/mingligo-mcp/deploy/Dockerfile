@@ -1,7 +1,8 @@
 # 多阶段构建：镜像仅含 mingligo-mcp 运行时。
 FROM golang:1.26.11-alpine@sha256:ae52b5bc6ed045a9ed26ab03dc19327a802a9cc9aa8b27ed57f5c6b60579b0bb AS build
 WORKDIR /src
-ENV GOPROXY=https://goproxy.cn,direct
+ARG GOPROXY=https://goproxy.cn,direct
+ENV GOPROXY=${GOPROXY}
 ARG GIT_SHA=unknown
 ARG COMMIT=unknown
 ARG BUILD_TIME=unknown
@@ -14,7 +15,9 @@ RUN CGO_ENABLED=0 GOOS="${TARGETOS}" GOARCH="${TARGETARCH}" \
     go build -ldflags "-X main.BuildID=${GIT_SHA}" -o /out/mingligo-mcp ./examples/mingligo-mcp/
 
 FROM alpine:3.21@sha256:48b0309ca019d89d40f670aa1bc06e426dc0931948452e8491e3d65087abc07d AS certs
-RUN apk add --no-cache ca-certificates
+ARG APK_MIRROR=https://mirrors.tuna.tsinghua.edu.cn
+RUN sed -i "s#https://dl-cdn.alpinelinux.org#${APK_MIRROR}#g" /etc/apk/repositories \
+ && apk add --no-cache ca-certificates
 RUN adduser -D -u 1000 mingligo
 
 FROM scratch
