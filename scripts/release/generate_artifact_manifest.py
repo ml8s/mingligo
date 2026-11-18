@@ -26,21 +26,14 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--repo", type=pathlib.Path, default=pathlib.Path.cwd())
     parser.add_argument("--image", required=True, help="pinned mingligo-mcp OCI image")
-    parser.add_argument(
-        "--identity",
-        default=os.environ.get("MINGLIGO_SERVER_NAME", "local/mingligo-mcp"),
-    )
     args = parser.parse_args()
     repo = args.repo.resolve()
     if not DIGEST_RE.fullmatch(args.image):
         raise SystemExit("image must be digest pinned")
-    if "hk.liki" in args.identity or args.identity == "hk.liki/engine":
-        raise SystemExit("default identity must be neutral")
     document = {
         "kind": "mingligo-artifact",
         "source_commit": source_commit(repo),
         "image": args.image,
-        "default_server_identity": args.identity,
     }
     print(json.dumps(document, ensure_ascii=False, indent=2, sort_keys=True))
     return 0

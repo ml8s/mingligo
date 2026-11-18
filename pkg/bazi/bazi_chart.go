@@ -83,7 +83,7 @@ type Chart struct {
 	BirthYear int `json:"birth_year"`
 
 	// 用神候选与结构证据独立输出：FuYi 是扶抑候选，
-	// TiaoHou 是调候候选，GeJu 是月令结构证据；最终用神由 counsel 裁决。
+	// TiaoHou 是调候候选，GeJu 是月令结构证据；最终用神由判断层裁决。
 	FuYi    FuYiResult    `json:"fu_yi"`
 	TiaoHou TiaoHouResult `json:"tiao_hou"`
 	GeJu    GeJuResult    `json:"ge_ju"`

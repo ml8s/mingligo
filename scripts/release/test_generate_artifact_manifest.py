@@ -20,9 +20,7 @@ class ArtifactManifestTests(unittest.TestCase):
             text=True,
         )
         document = json.loads(result.stdout)
-        self.assertEqual(set(document), {
-            "kind", "source_commit", "image", "default_server_identity"
-        })
+        self.assertEqual(set(document), {"kind", "source_commit", "image"})
         self.assertEqual(document["kind"], "mingligo-artifact")
         self.assertNotIn("hk.liki", result.stdout)
 

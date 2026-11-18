@@ -22,7 +22,7 @@ type DaYunStep struct {
 	Zhi       ganzhi.Zhi     `json:"zhi"`
 	StartDate string         `json:"start_date"` // 本步起始公历日 YYYY-MM-DD
 	EndDate   string         `json:"end_date"`   // 本步末日 YYYY-MM-DD（= 下步起始日前一天）
-	StartYear int            `json:"start_year"` // 本步起始公历年（skill 大运窗口算子用，免虚岁换算）
+	StartYear int            `json:"start_year"` // 本步起始公历年（供流年窗口计算使用，免虚岁换算）
 	EndYear   int            `json:"end_year"`   // 本步结束公历年
 	Name      string         `json:"name"`
 	Element   string         `json:"wuxing"`
