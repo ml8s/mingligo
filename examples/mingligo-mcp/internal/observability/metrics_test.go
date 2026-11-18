@@ -11,10 +11,10 @@ func TestMetricsRenderFixedLowCardinalityLabels(t *testing.T) {
 
 	text := string(RenderMetrics())
 	for _, fragment := range []string{
-		`liki_engine_http_requests_total{route="/mcp",method="POST",status_class="2xx"} 1`,
-		`liki_engine_tool_requests_total{domain="bazi",tool="bazi_chart",status="success"} 1`,
-		"liki_engine_http_request_duration_seconds",
-		"liki_engine_tool_request_duration_seconds",
+		`mingligo_http_requests_total{route="/mcp",method="POST",status_class="2xx"} 1`,
+		`mingligo_tool_requests_total{domain="bazi",tool="bazi_chart",status="success"} 1`,
+		"mingligo_http_request_duration_seconds",
+		"mingligo_tool_request_duration_seconds",
 	} {
 		if !strings.Contains(text, fragment) {
 			t.Fatalf("metrics missing %q:\n%s", fragment, text)

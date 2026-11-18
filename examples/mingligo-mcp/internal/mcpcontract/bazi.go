@@ -17,12 +17,12 @@ type BaziChartInput struct {
 }
 
 // BaziChartCompute returns the canonical complete natal chart.
-func BaziChartCompute(_ context.Context, input BaziChartInput) (json.RawMessage, error) {
+func BaziChart(_ context.Context, input BaziChartInput) (BaziChartOutput, error) {
 	chart, err := input.Subject.baziChart()
 	if err != nil {
-		return nil, fmt.Errorf("bazi.chart: %w", err)
+		return BaziChartOutput{}, fmt.Errorf("bazi.chart: %w", err)
 	}
-	return marshalRawBaziChart(chart)
+	return wireFromDomain[BaziChartOutput](chart)
 }
 
 // ── typed handlers for the remaining bazi tools ──
@@ -57,19 +57,25 @@ func (availability requiredTiaoHouAvailability) MarshalJSON() ([]byte, error) {
 	return json.Marshal(availability.value)
 }
 
+func newBaziTiaoHouJSON(value bazi.TiaoHouResult) baziTiaoHouJSON {
+	return baziTiaoHouJSON{
+		PrimaryWuxing:      value.PrimaryWuxing,
+		SecondaryWuxing:    value.SecondaryWuxing,
+		Season:             value.Season,
+		TiaoHouExplanation: value.TiaoHouExplanation,
+		TiaoHouModelID:     value.ModelID,
+		Primary:            value.Primary,
+		Secondary:          requiredTiaoHouAvailability{value: value.Secondary},
+		SecondaryCondition: value.SecondaryCondition,
+	}
+}
+
+// marshalRawBaziChart projects the domain chart into the established raw
+// wire shape for contract fixtures and benchmarks.
 func marshalRawBaziChart(chart bazi.Chart) (json.RawMessage, error) {
 	value := baziChartJSON{
-		Chart: &chart,
-		TiaoHou: baziTiaoHouJSON{
-			PrimaryWuxing:      chart.TiaoHou.PrimaryWuxing,
-			SecondaryWuxing:    chart.TiaoHou.SecondaryWuxing,
-			Season:             chart.TiaoHou.Season,
-			TiaoHouExplanation: chart.TiaoHou.TiaoHouExplanation,
-			TiaoHouModelID:     chart.TiaoHou.ModelID,
-			Primary:            chart.TiaoHou.Primary,
-			Secondary:          requiredTiaoHouAvailability{value: chart.TiaoHou.Secondary},
-			SecondaryCondition: chart.TiaoHou.SecondaryCondition,
-		},
+		Chart:     &chart,
+		TiaoHou:   newBaziTiaoHouJSON(chart.TiaoHou),
 		ZiShiRule: chart.ZiShiRule,
 	}
 	raw, err := json.Marshal(value)
@@ -79,34 +85,30 @@ func marshalRawBaziChart(chart bazi.Chart) (json.RawMessage, error) {
 	return raw, nil
 }
 
-// BaziBond returns raw cross-chart facts for two bazi charts.
-func BaziBond(_ context.Context, input BaziBondInput) (json.RawMessage, error) {
+// BaziBond returns cross-chart facts for two bazi charts.
+func BaziBond(_ context.Context, input BaziBondInput) (BaziBondOutput, error) {
 	coreA, err := input.A.Subject.baziCore()
 	if err != nil {
-		return nil, fmt.Errorf("bazi.bond: chart a: %w", err)
+		return BaziBondOutput{}, fmt.Errorf("bazi.bond: chart a: %w", err)
 	}
 	coreB, err := input.B.Subject.baziCore()
 	if err != nil {
-		return nil, fmt.Errorf("bazi.bond: chart b: %w", err)
+		return BaziBondOutput{}, fmt.Errorf("bazi.bond: chart b: %w", err)
 	}
-	raw, err := marshalRawOutput("bazi.bond", newBaziBondOutput(bazi.ComputeBond(coreA, coreB)))
-	if err != nil {
-		return nil, fmt.Errorf("bazi.bond: %w", err)
-	}
-	return raw, nil
+	return newBaziBondOutput(bazi.ComputeBond(coreA, coreB)), nil
 }
 
 // BaziLiupan computes one selected dynamic time layer from the calibrated natal
 // subject. The five layers share one core preparation; their calendar advance
 // rules remain domain-specific.
-func BaziLiupan(_ context.Context, input BaziLiupanInput) (json.RawMessage, error) {
+func BaziLiupan(_ context.Context, input BaziLiupanInput) (out BaziLiupanOutput, err error) {
 	if err := validateBaziLiupan(input); err != nil {
-		return nil, fmt.Errorf("bazi.liupan: %w", err)
+		return out, fmt.Errorf("bazi.liupan: %w", err)
 	}
 	count := seriesCountValue(input.Count)
 	core, err := input.Subject.baziCore()
 	if err != nil {
-		return nil, fmt.Errorf("bazi.liupan: %w", err)
+		return out, fmt.Errorf("bazi.liupan: %w", err)
 	}
 	current := input
 
@@ -116,65 +118,70 @@ func BaziLiupan(_ context.Context, input BaziLiupanInput) (json.RawMessage, erro
 		for range count {
 			item, err := computeBaziLiuNian(current, core)
 			if err != nil {
-				return nil, err
+				return out, err
 			}
 			items = append(items, item)
 			current, err = advanceBaziLiuNian(current)
 			if err != nil {
-				return nil, err
+				return out, err
 			}
 		}
-		return marshalRawOutput("bazi.liupan", BaziLiuNianSeries{LiuNian: items})
+		out = BaziLiupanOutput{LiuNian: items}
+		return out, nil
 	case "liu_yue":
 		items := make([]BaziLiuYueOutput, 0, count)
 		for range count {
 			item, err := computeBaziLiuYue(current, core)
 			if err != nil {
-				return nil, err
+				return out, err
 			}
 			items = append(items, item)
 			current, err = advanceBaziLiuYue(current)
 			if err != nil {
-				return nil, err
+				return out, err
 			}
 		}
-		return marshalRawOutput("bazi.liupan", BaziLiuYueSeries{LiuYue: items})
+		out = BaziLiupanOutput{LiuYue: items}
+		return out, nil
 	case "liu_ri":
 		items := make([]BaziLiuRiOutput, 0, count)
 		for range count {
 			item, err := computeBaziLiuRi(current, core)
 			if err != nil {
-				return nil, err
+				return out, err
 			}
 			items = append(items, item)
 			current, err = advanceBaziLiuRi(current)
 			if err != nil {
-				return nil, err
+				return out, err
 			}
 		}
-		return marshalRawOutput("bazi.liupan", BaziLiuRiSeries{LiuRi: items})
+		out = BaziLiupanOutput{LiuRi: items}
+		return out, nil
 	case "liu_shi":
 		items := make([]BaziLiuShiOutput, 0, count)
 		for range count {
 			item, err := computeBaziLiuShi(current, core)
 			if err != nil {
-				return nil, err
+				return out, err
 			}
 			items = append(items, item)
 			current, err = advanceBaziLiuShi(current)
 			if err != nil {
-				return nil, err
+				return out, err
 			}
 		}
-		return marshalRawOutput("bazi.liupan", BaziLiuShiSeries{LiuShi: items})
+		out = BaziLiupanOutput{LiuShi: items}
+		return out, nil
 	case "xiao_yun":
 		items, err := wireFromDomain[[]BaziXiaoYunItem](bazi.ComputeXiaoYun(core, count))
 		if err != nil {
-			return nil, fmt.Errorf("bazi.liupan: %w", err)
+			return BaziLiupanOutput{}, fmt.Errorf("bazi.liupan: %w", err)
 		}
-		return marshalRawOutput("bazi.liupan", BaziXiaoYunOutput{XiaoYun: items})
+		out = BaziLiupanOutput{XiaoYun: items}
+		return out, nil
 	default:
-		return nil, fmt.Errorf("bazi.liupan: invalid scope %q", input.Scope)
+		return BaziLiupanOutput{}, fmt.Errorf("bazi.liupan: invalid scope %q", input.Scope)
 	}
 }
 

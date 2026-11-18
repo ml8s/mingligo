@@ -2,17 +2,12 @@ package main
 
 import (
 	"context"
-	"encoding/json"
-	"fmt"
 	"log/slog"
 	"os"
-	"strings"
-	"time"
 
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 
 	"github.com/ml8s/mingligo/examples/mingligo-mcp/internal/mcpcontract"
-	"github.com/ml8s/mingligo/examples/mingligo-mcp/internal/observability"
 )
 
 // serverIdentity is runtime configuration, not a build-time brand. Neutral
@@ -32,10 +27,6 @@ func loadServerIdentity() serverIdentity {
 		WebsiteURL:  envOr("MINGLIGO_SERVER_URL", "https://github.com/ml8s"),
 	}
 }
-
-// engineContracts owns every engine tool contract; the legacy raw-JSON
-// registry has been fully retired.
-var engineContracts = mcpcontract.NewEngine()
 
 // newMCPServer builds a standard MCP server exposing every engine tool.
 func newMCPServer(version string, logger *slog.Logger) (*mcp.Server, error) {
@@ -65,70 +56,10 @@ func newMCPServer(version string, logger *slog.Logger) (*mcp.Server, error) {
 	}
 	s := mcp.NewServer(impl, opts)
 
-	for _, name := range engineContracts.Names() {
-		definition, err := engineContracts.Definition(name)
-		if err != nil {
-			return nil, fmt.Errorf("engine MCP tool %s: %w", name, err)
-		}
-		tool := &mcp.Tool{
-			Name:         definition.Name,
-			Description:  definition.Description,
-			InputSchema:  definition.InputSchema,
-			OutputSchema: definition.OutputSchema,
-			Annotations:  toolAnnotations(name),
-		}
-		s.AddTool(tool, contractToolHandler(engineContracts, name))
+	if err := mcpcontract.RegisterTools(s); err != nil {
+		return nil, err
 	}
 	return s, nil
-}
-
-func toolAnnotations(name string) *mcp.ToolAnnotations {
-	// liuyao_qigua's auto mode creates a new random divination event on each
-	// call. Method-level hints cannot vary by arguments, so the whole tool is
-	// conservatively non-idempotent even though coins/yaos receipts reproduce.
-	return &mcp.ToolAnnotations{
-		ReadOnlyHint:   true,
-		IdempotentHint: name != "liuyao_qigua",
-	}
-}
-
-// contractToolHandler invokes a typed MCP contract and answers structured-only:
-// every tool publishes a typed outputSchema, the text-content duplication was
-// removed as a payload optimization, and every consumer (browser, experts SDK,
-// external agents) reads structuredContent. Validation and business failures
-// stay visible to the model as text tool errors.
-func contractToolHandler(contracts *mcpcontract.Registry, name string) mcp.ToolHandler {
-	return func(ctx context.Context, req *mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-		started := time.Now()
-		status := "success"
-		args := req.Params.Arguments
-		if len(args) == 0 || string(args) == "null" {
-			args = json.RawMessage(`{}`)
-		}
-		result, err := contracts.Call(ctx, name, args)
-		if err != nil {
-			status = "invalid_arguments"
-			if !strings.Contains(err.Error(), "invalid arguments") {
-				status = "handler_error"
-			}
-			duration := time.Since(started).Seconds()
-			defer observability.ObserveTool(toolDomain(name), name, status, duration)
-			return &mcp.CallToolResult{
-				IsError: true,
-				Content: []mcp.Content{&mcp.TextContent{Text: err.Error()}},
-			}, nil
-		}
-		duration := time.Since(started).Seconds()
-		defer observability.ObserveTool(toolDomain(name), name, status, duration)
-		return &mcp.CallToolResult{StructuredContent: result}, nil
-	}
-}
-
-func toolDomain(name string) string {
-	if domain, _, found := strings.Cut(name, "_"); found {
-		return domain
-	}
-	return "other"
 }
 
 func runStdio(version string, logger *slog.Logger) error {

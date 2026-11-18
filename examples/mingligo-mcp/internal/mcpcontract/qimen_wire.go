@@ -6,8 +6,10 @@ package mcpcontract
 
 import (
 	"encoding/json"
+	"fmt"
 
 	"github.com/google/jsonschema-go/jsonschema"
+	"github.com/ml8s/mingligo/pkg/qimen"
 )
 
 // ── qimen.chart input ──
@@ -53,12 +55,12 @@ type qimenQuarterTenMethodForm struct {
 }
 
 type qimenQuarterTwelveMethodForm struct {
-	Scope            MethodScopeName        `json:"scope" jsonschema:"时间层级。"`
-	School           MethodSchoolName       `json:"school" jsonschema:"盘式流派。"`
-	QuarterRule      MethodQuarterRuleName  `json:"quarter_rule" jsonschema:"刻家规则。"`
-	BaseDingjuMethod MethodDingjuMethodName `json:"base_dingju_method" jsonschema:"基准时家定局法。"`
-	DunSource        DunSourceName          `json:"dun_source" jsonschema:"分遁口径。"`
-	HourBoundary     HourBoundaryName       `json:"hour_boundary" jsonschema:"时辰界。"`
+	Scope            MethodScopeName         `json:"scope" jsonschema:"时间层级。"`
+	School           MethodSchoolName        `json:"school" jsonschema:"盘式流派。"`
+	QuarterRule      MethodQuarterRuleName   `json:"quarter_rule" jsonschema:"刻家规则。"`
+	BaseDingjuMethod *MethodDingjuMethodName `json:"base_dingju_method,omitempty" jsonschema:"基准时家定局法；缺省为拆补。"`
+	DunSource        *DunSourceName          `json:"dun_source,omitempty" jsonschema:"分遁口径；缺省为领域默认值。"`
+	HourBoundary     *HourBoundaryName       `json:"hour_boundary,omitempty" jsonschema:"时辰界；缺省为领域默认值。"`
 }
 
 type qimenChartStandardForm struct {
@@ -78,7 +80,7 @@ type qimenChartJinhanForm struct {
 func qimenMethodFormSchema[T any](options *jsonschema.ForOptions,
 	constraints map[string]string, enums map[string][]string,
 ) (json.RawMessage, error) {
-	_, raw, err := inputSchemaFor[T](options)
+	raw, err := inputSchemaFor[T](options)
 	if err != nil {
 		return nil, err
 	}
@@ -193,12 +195,27 @@ func qimenJinhanMethodSchema(options *jsonschema.ForOptions) (json.RawMessage, e
 	)
 }
 
+func qimenChartOutputSchema(options *jsonschema.ForOptions) (json.RawMessage, error) {
+	standard, err := outputSchemaFor[QimenStandardChartOutput](options)
+	if err != nil {
+		return nil, fmt.Errorf("standard qimen output schema: %w", err)
+	}
+	jinhan, err := outputSchemaFor[QimenJinhanChartOutput](options)
+	if err != nil {
+		return nil, fmt.Errorf("jinhan qimen output schema: %w", err)
+	}
+	return json.Marshal(map[string]any{
+		"type":  "object",
+		"oneOf": []json.RawMessage{standard, jinhan},
+	})
+}
+
 func qimenChartFormsSchema(options *jsonschema.ForOptions) (json.RawMessage, error) {
 	methodForms, err := qimenMethodFormsSchema(options)
 	if err != nil {
 		return nil, err
 	}
-	_, standard, err := inputSchemaFor[qimenChartStandardForm](options)
+	standard, err := inputSchemaFor[qimenChartStandardForm](options)
 	if err != nil {
 		return nil, err
 	}
@@ -215,7 +232,7 @@ func qimenChartFormsSchema(options *jsonschema.ForOptions) (json.RawMessage, err
 	if err != nil {
 		return nil, err
 	}
-	_, jinhan, err := inputSchemaFor[qimenChartJinhanForm](options)
+	jinhan, err := inputSchemaFor[qimenChartJinhanForm](options)
 	if err != nil {
 		return nil, err
 	}
@@ -236,7 +253,44 @@ func qimenChartFormsSchema(options *jsonschema.ForOptions) (json.RawMessage, err
 
 // ── qimen.chart output ──
 
+// QimenJinhanChartOutput is the public wire projection of the Golden Mirror
+// chart. It intentionally keeps the current direct qimen domain JSON shape.
+type QimenJinhanChartOutput = qimen.JinhanChart
+
+// QimenChartOutput is the typed union for the two qimen schools. MarshalJSON
+// preserves the current direct standard/Jinhan wire faces.
 type QimenChartOutput struct {
+	Standard *QimenStandardChartOutput `json:"-"`
+	Jinhan   *QimenJinhanChartOutput   `json:"-"`
+}
+
+func (output QimenChartOutput) MarshalJSON() ([]byte, error) {
+	switch {
+	case output.Standard != nil:
+		return json.Marshal(output.Standard)
+	case output.Jinhan != nil:
+		return json.Marshal(output.Jinhan)
+	default:
+		return nil, fmt.Errorf("qimen chart output is empty")
+	}
+}
+
+func (output *QimenChartOutput) UnmarshalJSON(data []byte) error {
+	var method struct {
+		School MethodSchoolName `json:"school"`
+	}
+	if err := json.Unmarshal(data, &method); err != nil {
+		return err
+	}
+	if method.School == "jinhan_yujing" {
+		return json.Unmarshal(data, &output.Jinhan)
+	}
+	return json.Unmarshal(data, &output.Standard)
+}
+
+// ── qimen.chart output ──
+
+type QimenStandardChartOutput struct {
 	Method           QimenChartMethod                  `json:"method" jsonschema:"排盘方法元数据"`
 	Board            QimenChartPan                     `json:"pan" jsonschema:"盘面。"`
 	Patterns         *[]QimenChartGeJuItem             `json:"ge_ju,omitempty" jsonschema:"格局。"`

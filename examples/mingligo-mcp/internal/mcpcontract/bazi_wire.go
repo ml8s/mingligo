@@ -153,7 +153,7 @@ type BaziChartTaiXi = BaziGanZhiPair
 type BaziChartGongJiaItem struct {
 	PillarA      *int             `json:"pillar_a,omitempty" jsonschema:"拱局第一柱。"`
 	PillarB      *int             `json:"pillar_b,omitempty" jsonschema:"拱局第二柱。"`
-	RelationKind GongJiaTypeName `json:"relation_kind" jsonschema:"关系类型。"`
+	RelationKind GongJiaTypeName  `json:"relation_kind" jsonschema:"关系类型。"`
 	Type         *GongJiaTypeName `json:"type,omitempty" jsonschema:"类型。"`
 	Wuxing       *ElementName     `json:"wuxing,omitempty" jsonschema:"五行。"`
 	Zhi          *ZhiName         `json:"zhi,omitempty" jsonschema:"地支。"`
@@ -630,10 +630,6 @@ type BaziLiupanInput struct {
 	Longitude    *Longitude          `json:"longitude,omitempty" jsonschema:"地点经度；liu_ri/liu_shi 必填（-180..180），真太阳时校正用于日柱/时柱。"`
 }
 
-// BaziLiupanOutput is the raw-handler schema marker; the published contract is
-// the five named domain roots as optional top-level properties.
-type BaziLiupanOutput struct{}
-
 // ── bazi.liupan liu_nian output ──
 
 type BaziLiuNianResolved struct {
@@ -800,6 +796,19 @@ type BaziXiaoYunItemZhusItem struct {
 	Zhi     ZhiName     `json:"zhi" jsonschema:"地支。"`
 	Name    string      `json:"name" jsonschema:"名称。"`
 	ShiShen *TenGodName `json:"shi_shen,omitempty" jsonschema:"十神。"`
+}
+
+// ── bazi.liupan union output ──
+
+// BaziLiupanOutput carries exactly one selected flow layer. The explicit
+// output schema keeps the current single-root wire face while allowing one
+// typed handler to serve the five scope forms.
+type BaziLiupanOutput struct {
+	LiuNian []BaziLiuNianOutput `json:"liu_nian,omitempty" jsonschema:"流年数组，长度 = count。"`
+	LiuYue  []BaziLiuYueOutput  `json:"liu_yue,omitempty" jsonschema:"流月数组，长度 = count。"`
+	LiuRi   []BaziLiuRiOutput   `json:"liu_ri,omitempty" jsonschema:"流日数组，长度 = count。"`
+	LiuShi  []BaziLiuShiOutput  `json:"liu_shi,omitempty" jsonschema:"流时数组，长度 = count。"`
+	XiaoYun []BaziXiaoYunItem   `json:"xiao_yun,omitempty" jsonschema:"各学派小运列表；长度 = count。"`
 }
 
 // ── named natal series roots ──

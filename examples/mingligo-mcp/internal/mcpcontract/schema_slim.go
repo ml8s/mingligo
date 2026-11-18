@@ -9,8 +9,8 @@ import (
 )
 
 // slimSchemaRaw applies semantics-preserving, publication-only compaction.
-// Runtime validation uses the derived schema tree and typed DTOs; the raw wire
-// schema is free to use nullable type arrays and shared enum/object definitions.
+// The official SDK validates the published schema and typed result; publication
+// may use nullable type arrays and shared enum/object definitions.
 func slimSchemaRaw(raw json.RawMessage) (json.RawMessage, error) {
 	if len(raw) == 0 {
 		return raw, nil

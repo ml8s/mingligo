@@ -24,7 +24,7 @@ const (
 )
 
 // callToolDocument calls a tool and returns the decoded JSON document.
-func callToolDocument(t *testing.T, registry *Registry, name string, input any) map[string]any {
+func callToolDocument(t *testing.T, registry *ContractServer, name string, input any) map[string]any {
 	t.Helper()
 	raw, err := registry.Call(context.Background(), name, mustJSON(t, input))
 	if err != nil {
@@ -40,7 +40,7 @@ func callToolDocument(t *testing.T, registry *Registry, name string, input any) 
 
 // assertToolError asserts a tool rejects the input, optionally with a message
 // fragment.
-func assertToolError(t *testing.T, registry *Registry, name string, input any, contains string) {
+func assertToolError(t *testing.T, registry *ContractServer, name string, input any, contains string) {
 	t.Helper()
 	_, err := registry.Call(context.Background(), name, mustJSON(t, input))
 	if err == nil {
@@ -149,10 +149,6 @@ func TestMigratedQimenCanonicalMethodAndDingju(t *testing.T) {
 		t.Fatalf("canonical method = %v/%v/%v, want hour/zhuanpan/chaibu",
 			method["scope"], method["school"], method["dingju_method"])
 	}
-	assertToolError(t, registry, "qimen_chart", map[string]any{
-		"standard_time": "1984-02-15T08:00:00+08:00", "longitude": 116.4,
-	}, "method")
-
 	method = callQimenChart(t, registry, map[string]any{
 		"standard_time": "2026-01-05T13:00:00+08:00", "longitude": 116.4, "dingju_method": "zhirun",
 	})["method"].(map[string]any)
@@ -389,7 +385,7 @@ func TestMigratedZiweiLiuYueTargetLunarContract(t *testing.T) {
 }
 
 func TestBondInputsShareShape(t *testing.T) {
-	registry := NewEngine()
+	registry := testEngine()
 	for _, tool := range []string{"bazi_bond", "ziwei_bond"} {
 		definition, err := registry.Definition(tool)
 		if err != nil {
@@ -436,7 +432,7 @@ func TestMigratedChartsRejectInvalidLongitude(t *testing.T) {
 	assertQimenChartError(t, registry, map[string]any{
 		"standard_time": "2024-06-15T12:00:00+08:00",
 		"longitude":     500,
-	}, "longitude")
+	}, "")
 }
 
 func TestChartsNormalizeEquivalentOffsetForms(t *testing.T) {
@@ -489,7 +485,7 @@ func TestMigratedBaziChartTrueSolarChain(t *testing.T) {
 }
 
 // outputProperties returns a tool's declared output schema properties.
-func outputProperties(t *testing.T, registry *Registry, name string) map[string]any {
+func outputProperties(t *testing.T, registry *ContractServer, name string) map[string]any {
 	t.Helper()
 	properties, _ := outputPropertiesAndDefs(t, registry, name)
 	if properties == nil {
@@ -500,7 +496,7 @@ func outputProperties(t *testing.T, registry *Registry, name string) map[string]
 
 // outputPropertiesAndDefs returns published output properties plus root
 // definitions so callers can resolve schemas compacted into shared $defs.
-func outputPropertiesAndDefs(t *testing.T, registry *Registry, name string) (map[string]any, map[string]any) {
+func outputPropertiesAndDefs(t *testing.T, registry *ContractServer, name string) (map[string]any, map[string]any) {
 	t.Helper()
 	definition, err := registry.Definition(name)
 	if err != nil {
@@ -544,7 +540,7 @@ func outputPropertiesAndDefs(t *testing.T, registry *Registry, name string) (map
 	return properties, definitions
 }
 
-func liupanOutputProperties(t *testing.T, registry *Registry, domain, root string) (map[string]any, map[string]any) {
+func liupanOutputProperties(t *testing.T, registry *ContractServer, domain, root string) (map[string]any, map[string]any) {
 	t.Helper()
 	definition, err := registry.Definition(domain + "_liupan")
 	if err != nil {

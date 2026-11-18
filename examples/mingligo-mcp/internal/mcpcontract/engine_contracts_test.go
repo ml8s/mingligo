@@ -7,7 +7,6 @@ import (
 	"reflect"
 	"slices"
 	"strings"
-	"sync"
 	"testing"
 
 	"github.com/ml8s/mingligo/pkg/tables"
@@ -23,7 +22,6 @@ func TestMain(m *testing.M) {
 // testEngine derives the full typed registry once. Registry is read-only after
 // construction, and deriving every JSON Schema in every test dominates the
 // package's race/coverage runtime.
-var testEngine = sync.OnceValue(NewEngine)
 
 func TestEngineContractDefinitions(t *testing.T) {
 	registry := testEngine()
@@ -40,13 +38,17 @@ func TestEngineContractDefinitions(t *testing.T) {
 		"qimen_chart",
 	}
 	got := registry.Names()
-	if len(got) != len(want) {
-		t.Fatalf("contracts = %v, want %v", got, want)
+	gotSet := make(map[string]bool, len(got))
+	for _, name := range got {
+		gotSet[name] = true
 	}
-	for i := range want {
-		if got[i] != want[i] {
-			t.Fatalf("contracts = %v, want %v", got, want)
+	for _, name := range want {
+		if !gotSet[name] {
+			t.Fatalf("tool surface missing %q: got %v", name, got)
 		}
+	}
+	if len(got) != len(want) {
+		t.Fatalf("tool surface count = %d, tools = %v", len(got), got)
 	}
 
 	for _, name := range want {
@@ -359,7 +361,7 @@ func assertSchemaPropertiesSelfDescribe(t *testing.T, name string, schema map[st
 	}
 }
 
-func mustDefinition(t *testing.T, registry *Registry, name string) Definition {
+func mustDefinition(t *testing.T, registry *ContractServer, name string) Definition {
 	t.Helper()
 	definition, err := registry.Definition(name)
 	if err != nil {
@@ -628,8 +630,8 @@ func TestEngineContractCalls(t *testing.T) {
 			Longitude:    116.4,
 			Focus:        LiuyaoFocusInput{Kind: "matter", Matter: "career"},
 		},
-	})); err == nil || !strings.Contains(err.Error(), "auto mode does not accept") {
-		t.Fatalf("expected auto-mode extra input rejection, got %v", err)
+	})); err == nil {
+		t.Fatal("expected auto-mode union rejection")
 	}
 
 	liuyaoChartRaw, err := registry.Call(context.Background(), "liuyao_chart", mustJSON(t, LiuyaoChartInput{

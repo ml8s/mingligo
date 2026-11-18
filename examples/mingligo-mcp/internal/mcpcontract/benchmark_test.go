@@ -8,17 +8,17 @@ import (
 
 var benchmarkOutputBytes int
 
-func BenchmarkMCPNewEngine(b *testing.B) {
+func BenchmarkMCPServerRegistration(b *testing.B) {
 	b.ReportAllocs()
 	for i := 0; i < b.N; i++ {
-		_ = NewEngine()
+		_ = testEngine()
 	}
 }
 
 func BenchmarkMCPMaterializeAllDefinitions(b *testing.B) {
 	b.ReportAllocs()
 	for i := 0; i < b.N; i++ {
-		registry := NewEngine()
+		registry := testEngine()
 		for _, name := range registry.Names() {
 			if _, err := registry.Definition(name); err != nil {
 				b.Fatal(err)
@@ -30,13 +30,13 @@ func BenchmarkMCPMaterializeAllDefinitions(b *testing.B) {
 func BenchmarkMCPMaterializeAllDefinitionsConcurrently(b *testing.B) {
 	b.ReportAllocs()
 	for i := 0; i < b.N; i++ {
-		if err := NewEngine().MaterializeSchemas(); err != nil {
+		if err := testEngine().MaterializeSchemas(); err != nil {
 			b.Fatal(err)
 		}
 	}
 }
 
-func benchmarkCall(b *testing.B, registry *Registry, name string, arguments string) {
+func benchmarkCall(b *testing.B, registry *ContractServer, name string, arguments string) {
 	b.Helper()
 	raw := json.RawMessage(arguments)
 	if _, err := registry.Call(context.Background(), name, raw); err != nil {

@@ -1,6 +1,6 @@
-# Conformance baseline for engine-mcp.
+# Conformance baseline for mingligo-mcp.
 #
-# engine-mcp is a real business server (exposes only its own computation tools),
+# mingligo-mcp is a real business server (exposes only its own computation tools),
 # not an "everything server". These scenarios fail because they require
 # conformance-provided test tools/resources/prompts (e.g. test_simple_text) or
 # capabilities we intentionally do not implement (resources/prompts/sampling/

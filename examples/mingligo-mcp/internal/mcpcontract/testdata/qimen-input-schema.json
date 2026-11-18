@@ -1,30 +1,4 @@
 {
-  "$defs": {
-    "Enum_a0491a06e9be9260": {
-      "default": "chaibu",
-      "enum": [
-        "chaibu",
-        "zhirun"
-      ],
-      "type": "string"
-    },
-    "Enum_be22851094308b6c": {
-      "enum": [
-        "zhuanpan",
-        "luoshu_feipan"
-      ],
-      "type": "string"
-    },
-    "Enum_c312bc8e642add38": {
-      "default": "chaibu",
-      "enum": [
-        "chaibu",
-        "zhirun",
-        "maoshan"
-      ],
-      "type": "string"
-    }
-  },
   "oneOf": [
     {
       "additionalProperties": false,
@@ -41,9 +15,14 @@
               "additionalProperties": false,
               "properties": {
                 "dingju_method": {
-                  "$ref": "#/$defs/Enum_c312bc8e642add38",
                   "default": "chaibu",
-                  "description": "定局法。"
+                  "description": "定局法。",
+                  "enum": [
+                    "chaibu",
+                    "zhirun",
+                    "maoshan"
+                  ],
+                  "type": "string"
                 },
                 "school": {
                   "const": "zhuanpan",
@@ -66,9 +45,13 @@
               "additionalProperties": false,
               "properties": {
                 "dingju_method": {
-                  "$ref": "#/$defs/Enum_a0491a06e9be9260",
                   "default": "chaibu",
-                  "description": "定局法。"
+                  "description": "定局法。",
+                  "enum": [
+                    "chaibu",
+                    "zhirun"
+                  ],
+                  "type": "string"
                 },
                 "school": {
                   "const": "luoshu_feipan",
@@ -111,9 +94,13 @@
               "additionalProperties": false,
               "properties": {
                 "dingju_method": {
-                  "$ref": "#/$defs/Enum_a0491a06e9be9260",
                   "default": "chaibu",
-                  "description": "定局法。"
+                  "description": "定局法。",
+                  "enum": [
+                    "chaibu",
+                    "zhirun"
+                  ],
+                  "type": "string"
                 },
                 "school": {
                   "const": "zhuanpan",
@@ -136,9 +123,13 @@
               "additionalProperties": false,
               "properties": {
                 "dingju_method": {
-                  "$ref": "#/$defs/Enum_a0491a06e9be9260",
                   "default": "chaibu",
-                  "description": "定局法。"
+                  "description": "定局法。",
+                  "enum": [
+                    "chaibu",
+                    "zhirun"
+                  ],
+                  "type": "string"
                 },
                 "school": {
                   "const": "luoshu_feipan",
@@ -161,8 +152,12 @@
               "additionalProperties": false,
               "properties": {
                 "school": {
-                  "$ref": "#/$defs/Enum_be22851094308b6c",
-                  "description": "盘式流派。"
+                  "description": "盘式流派。",
+                  "enum": [
+                    "zhuanpan",
+                    "luoshu_feipan"
+                  ],
+                  "type": "string"
                 },
                 "scope": {
                   "const": "month",
@@ -180,8 +175,12 @@
               "additionalProperties": false,
               "properties": {
                 "school": {
-                  "$ref": "#/$defs/Enum_be22851094308b6c",
-                  "description": "盘式流派。"
+                  "description": "盘式流派。",
+                  "enum": [
+                    "zhuanpan",
+                    "luoshu_feipan"
+                  ],
+                  "type": "string"
                 },
                 "scope": {
                   "const": "year",
@@ -225,24 +224,38 @@
               "additionalProperties": false,
               "properties": {
                 "base_dingju_method": {
-                  "$ref": "#/$defs/Enum_c312bc8e642add38",
-                  "description": "基准时家定局法。"
+                  "description": "基准时家定局法；缺省为拆补。",
+                  "enum": [
+                    "chaibu",
+                    "zhirun",
+                    "maoshan"
+                  ],
+                  "type": [
+                    "null",
+                    "string"
+                  ]
                 },
                 "dun_source": {
-                  "description": "分遁口径。",
+                  "description": "分遁口径；缺省为领域默认值。",
                   "enum": [
                     "hour_branch",
                     "solar_term"
                   ],
-                  "type": "string"
+                  "type": [
+                    "null",
+                    "string"
+                  ]
                 },
                 "hour_boundary": {
-                  "description": "时辰界。",
+                  "description": "时辰界；缺省为领域默认值。",
                   "enum": [
                     "late_zi",
                     "zi_zheng"
                   ],
-                  "type": "string"
+                  "type": [
+                    "null",
+                    "string"
+                  ]
                 },
                 "quarter_rule": {
                   "const": "twelve_minute_ten_division",
@@ -263,10 +276,7 @@
               "required": [
                 "scope",
                 "school",
-                "quarter_rule",
-                "base_dingju_method",
-                "dun_source",
-                "hour_boundary"
+                "quarter_rule"
               ],
               "type": "object"
             }

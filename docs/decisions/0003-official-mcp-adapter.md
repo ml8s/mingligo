@@ -6,7 +6,7 @@ Accepted.
 
 ## Context
 
-MingliGo currently has a custom registry around the official Go MCP SDK. The
+MingliGo previously had a custom registry around the official Go MCP SDK. The
 original migration kept `RawTool` handlers returning `json.RawMessage`, custom
 schema slimming, and manually maintained overrides. This weakened the core
 guarantee that a tool's Go handler, published schema, and serialized result
@@ -28,7 +28,7 @@ where:
 - `In` is the tool's wire input DTO;
 - `Out` is the tool's wire output DTO;
 - schemas are inferred by the SDK, with explicit schemas only for true unions,
-  discriminated forms, or frozen array-root compatibility;
+  discriminated forms, or named domain-array roots;
 - handlers map pure domain results to wire DTOs;
 - `json.RawMessage` tool handlers are prohibited.
 
@@ -36,7 +36,8 @@ where:
 
 ```text
 pkg/<domain>           pure domain facts; no MCP, product, or transport imports
-internal/mcpcontract   wire DTOs and explicit tool-to-domain adapters
+examples/mingligo-mcp/internal/mcpcontract
+                       wire DTOs and explicit tool-to-domain adapters
 examples/mingligo-mcp  composition root and standard MCP adapter
 ```
 
@@ -46,8 +47,8 @@ production-quality code, not a toy.
 ## Constraints
 
 - Public routes and tool names remain frozen.
-- Existing schemas remain the compatibility baseline until a reviewed major
-  contract change.
+- The existing schema shape is the review baseline. Deliberate corrections are
+  documented rather than silently introduced.
 - Official SDK validates input and output on every call.
 - `json.RawMessage` may cross internal boundaries only after an explicit wire
   DTO mapping, and never as a registered MCP handler output.
@@ -65,3 +66,18 @@ production-quality code, not a toy.
 6. Add CI gates: gofumpt, go vet, golangci-lint, go test, race, and MCP smoke.
 7. Compare old and new tools/list schemas before merging; record intentional
    fixes such as missing fields rather than silently changing contracts.
+
+## Migration review
+
+The migration is complete at the MingliGo boundary:
+
+- Production registers through `RegisterTools` and `mcp.AddTool[In, Out]`;
+  the custom Registry and raw handlers are deleted.
+- All 17 tools use typed wire DTOs. The aggregate `/mcp` surface remains 17
+  tools, and the local HTTP smoke passes.
+- A pre/post `tools/list` review found the same names and semantically equal
+  schemas for 16 tools.
+- `qimen_chart` is the sole deliberate schema correction: its output is now an
+  explicit standard/Jinhan `oneOf` instead of a flattened union, and the
+  twelve-minute quarter's domain-defaulted options are optional. Runtime tests
+  cover both standard and Jinhan charts and all quarter-rule paths.

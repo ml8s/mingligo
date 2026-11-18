@@ -14,6 +14,7 @@ import (
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 
 	apphttp "github.com/ml8s/mingligo/examples/mingligo-mcp/internal/http"
+	"github.com/ml8s/mingligo/examples/mingligo-mcp/internal/mcpcontract"
 )
 
 const testBuildID = "test-build-id"
@@ -38,7 +39,7 @@ func startMCPServer(t *testing.T) (*mcp.ClientSession, *mcp.Server) {
 	}, &mcp.StreamableHTTPOptions{Stateless: true, JSONResponse: true}), "subscriptions/listen"))
 	t.Cleanup(ts.Close)
 
-	client := mcp.NewClient(&mcp.Implementation{Name: "engine-mcp-test", Version: "0.0.1"}, &mcp.ClientOptions{Logger: newTestLogger()})
+	client := mcp.NewClient(&mcp.Implementation{Name: "mingligo-mcp-test", Version: "0.0.1"}, &mcp.ClientOptions{Logger: newTestLogger()})
 	ctx := context.Background()
 	sess, err := client.Connect(ctx, &mcp.StreamableClientTransport{Endpoint: ts.URL + "/"}, nil)
 	if err != nil {
@@ -88,7 +89,7 @@ func TestMCPServer_Initialize(t *testing.T) {
 }
 
 func TestTools_ListAllRegisteredMethods(t *testing.T) {
-	want := len(engineContracts.Names())
+	want := len(mcpcontract.ToolNames())
 
 	sess, _ := startMCPServer(t)
 	tools := make(map[string]*mcp.Tool)
@@ -103,8 +104,8 @@ func TestTools_ListAllRegisteredMethods(t *testing.T) {
 	if got := len(tools); got != want {
 		t.Fatalf("tool count = %d, want %d", got, want)
 	}
-	for _, name := range engineContracts.Names() {
-		if _, ok := tools[strings.ReplaceAll(name, ".", "_")]; !ok {
+	for _, name := range mcpcontract.ToolNames() {
+		if _, ok := tools[name]; !ok {
 			t.Errorf("missing typed contract tool %q", name)
 		}
 	}

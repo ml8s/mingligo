@@ -78,7 +78,7 @@ type ziweiLiupanLiuShiForm struct {
 }
 
 func constFormSchema[T any](options *jsonschema.ForOptions, scope string) (json.RawMessage, error) {
-	_, raw, err := inputSchemaFor[T](options)
+	raw, err := inputSchemaFor[T](options)
 	if err != nil {
 		return nil, err
 	}

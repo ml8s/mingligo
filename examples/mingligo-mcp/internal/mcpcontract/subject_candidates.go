@@ -95,7 +95,7 @@ type TianwenRangeForm struct {
 func tianwenResolveFormsSchema(options *jsonschema.ForOptions) (json.RawMessage, error) {
 	builders := []func() (json.RawMessage, error){
 		func() (json.RawMessage, error) {
-			_, raw, err := inputSchemaFor[TianwenDateTimeForm](options)
+			raw, err := inputSchemaFor[TianwenDateTimeForm](options)
 			if err == nil {
 				raw, err = withSchemaConst(raw, "calendar_kind", "solar")
 			}
@@ -105,7 +105,7 @@ func tianwenResolveFormsSchema(options *jsonschema.ForOptions) (json.RawMessage,
 			return raw, err
 		},
 		func() (json.RawMessage, error) {
-			_, raw, err := inputSchemaFor[TianwenLunarForm](options)
+			raw, err := inputSchemaFor[TianwenLunarForm](options)
 			if err == nil {
 				raw, err = withSchemaConst(raw, "calendar_kind", "lunar")
 			}
@@ -115,7 +115,7 @@ func tianwenResolveFormsSchema(options *jsonschema.ForOptions) (json.RawMessage,
 			return raw, err
 		},
 		func() (json.RawMessage, error) {
-			_, raw, err := inputSchemaFor[TianwenShichenForm](options)
+			raw, err := inputSchemaFor[TianwenShichenForm](options)
 			if err == nil {
 				raw, err = withSchemaConst(raw, "calendar_kind", "solar")
 			}
@@ -125,7 +125,7 @@ func tianwenResolveFormsSchema(options *jsonschema.ForOptions) (json.RawMessage,
 			return raw, err
 		},
 		func() (json.RawMessage, error) {
-			_, raw, err := inputSchemaFor[TianwenRangeForm](options)
+			raw, err := inputSchemaFor[TianwenRangeForm](options)
 			if err == nil {
 				raw, err = withSchemaConst(raw, "calendar_kind", "solar")
 			}

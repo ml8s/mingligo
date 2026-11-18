@@ -33,16 +33,12 @@ func main() {
 	sdkLogger := slog.New(slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{Level: slog.LevelWarn}))
 	slog.SetDefault(logger)
 	if err := tables.Load(); err != nil {
-		slog.Error("engine: load data tables", "err", err)
-		os.Exit(1)
-	}
-	if err := engineContracts.MaterializeSchemas(); err != nil {
-		slog.Error("engine: materialize MCP contracts", "err", err)
+		slog.Error("mingligo: load data tables", "err", err)
 		os.Exit(1)
 	}
 
 	if *stdio {
-		slog.Info("engine-mcp stdio mode")
+		slog.Info("mingligo-mcp stdio mode")
 		if err := runStdio(BuildID, sdkLogger); err != nil {
 			slog.Error("stdio", "err", err)
 			os.Exit(1)
@@ -54,7 +50,7 @@ func main() {
 	// all capabilities once; methodology remains in the product layer.
 	mcpServer, err := newMCPServer(BuildID, sdkLogger)
 	if err != nil {
-		slog.Error("engine: build aggregate MCP server", "err", err)
+		slog.Error("mingligo: build MCP server", "err", err)
 		os.Exit(1)
 	}
 	mcpHandler := mcp.NewStreamableHTTPHandler(func(*http.Request) *mcp.Server { return mcpServer }, &mcp.StreamableHTTPOptions{Stateless: true, JSONResponse: true})
@@ -119,7 +115,7 @@ func main() {
 		}
 	}()
 
-	slog.Info("engine-mcp listening", "addr", srv.Addr, "endpoint", "/mcp")
+	slog.Info("mingligo-mcp listening", "addr", srv.Addr, "endpoint", "/mcp")
 	if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 		slog.Error("server", "err", err)
 		os.Exit(1)

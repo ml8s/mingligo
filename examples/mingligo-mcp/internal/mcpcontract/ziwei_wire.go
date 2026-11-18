@@ -34,10 +34,6 @@ type ZiweiLiupanInput struct {
 	Longitude    *Longitude           `json:"longitude,omitempty" jsonschema:"地点经度；liu_shi 必填（-180..180），真太阳时校正用于时辰。"`
 }
 
-// ZiweiLiupanOutput is the raw-handler schema marker; the published contract is
-// the four named domain roots as optional top-level properties.
-type ZiweiLiupanOutput struct{}
-
 // ── ziwei.liupan liu_nian output ──
 
 type ZiweiLiuNianOutput struct {
@@ -151,6 +147,18 @@ type ZiweiLiuShiOutput struct {
 	SiHua    []ZiweiFlowTransformation `json:"si_hua" jsonschema:"四化事实：星、化、落宫。"`
 	GongWei  []ZiweiFlowPalace         `json:"gong_wei" jsonschema:"流时十二宫盘。"`
 	ShiChen  ZiweiLiuShiChen           `json:"shi_chen" jsonschema:"流时时辰定位。"`
+}
+
+// ── ziwei.liupan union output ──
+
+// ZiweiLiupanOutput carries exactly one selected flow layer. The explicit
+// output schema keeps the current single-root wire face while allowing one
+// typed handler to serve the four scope forms.
+type ZiweiLiupanOutput struct {
+	LiuNian []ZiweiLiuNianOutput `json:"liu_nian,omitempty" jsonschema:"流年数组，长度 = count。"`
+	LiuYue  []ZiweiLiuYueOutput  `json:"liu_yue,omitempty" jsonschema:"流月数组，长度 = count。"`
+	LiuRi   []ZiweiLiuRiOutput   `json:"liu_ri,omitempty" jsonschema:"流日数组，长度 = count。"`
+	LiuShi  []ZiweiLiuShiOutput  `json:"liu_shi,omitempty" jsonschema:"流时数组，长度 = count。"`
 }
 
 // ── ziwei.bond input ──

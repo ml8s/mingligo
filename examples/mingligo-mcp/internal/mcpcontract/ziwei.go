@@ -2,7 +2,6 @@ package mcpcontract
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"time"
 
@@ -29,25 +28,25 @@ func ziweiLunarProjector(loc *time.Location) (tianwen.LunarProjector, error) {
 
 // ZiweiChart computes the twelve-palace chart from lunar birth data.
 // ZiweiChart computes the canonical complete twelve-palace chart.
-func ZiweiChartCompute(_ context.Context, input ZiweiChartInput) (json.RawMessage, error) {
+func ZiweiChart(_ context.Context, input ZiweiChartInput) (ZiweiChartOutput, error) {
 	chart, err := input.Subject.ziweiChart()
 	if err != nil {
-		return nil, fmt.Errorf("ziwei.chart: %w", err)
+		return ZiweiChartOutput{}, fmt.Errorf("ziwei.chart: %w", err)
 	}
-	return marshalRawOutput("ziwei.chart", chart)
+	return wireFromDomain[ZiweiChartOutput](chart)
 }
 
 // ZiweiLiupan computes one selected flow layer from the calibrated natal
 // subject. The natal chart is prepared once and reused across the requested
 // batch.
-func ZiweiLiupan(_ context.Context, input ZiweiLiupanInput) (json.RawMessage, error) {
+func ZiweiLiupan(_ context.Context, input ZiweiLiupanInput) (out ZiweiLiupanOutput, err error) {
 	if err := validateZiweiLiupan(input); err != nil {
-		return nil, fmt.Errorf("ziwei.liupan: %w", err)
+		return ZiweiLiupanOutput{}, fmt.Errorf("ziwei.liupan: %w", err)
 	}
 	count := seriesCountValue(input.Count)
 	chart, err := input.Subject.ziweiChart()
 	if err != nil {
-		return nil, fmt.Errorf("ziwei.liupan: %w", err)
+		return ZiweiLiupanOutput{}, fmt.Errorf("ziwei.liupan: %w", err)
 	}
 	current := input
 
@@ -57,59 +56,63 @@ func ZiweiLiupan(_ context.Context, input ZiweiLiupanInput) (json.RawMessage, er
 		for range count {
 			item, err := computeZiweiLiuNian(current, chart)
 			if err != nil {
-				return nil, err
+				return out, err
 			}
 			items = append(items, item)
 			current, err = advanceZiweiLiuNian(current)
 			if err != nil {
-				return nil, err
+				return out, err
 			}
 		}
-		return marshalRawOutput("ziwei.liupan", ZiweiLiuNianSeries{LiuNian: items})
+		out = ZiweiLiupanOutput{LiuNian: items}
+		return out, nil
 	case "liu_yue":
 		items := make([]ZiweiLiuYueOutput, 0, count)
 		for range count {
 			item, err := computeZiweiLiuYue(current, chart)
 			if err != nil {
-				return nil, err
+				return out, err
 			}
 			items = append(items, item)
 			current, err = advanceZiweiLiuYue(current)
 			if err != nil {
-				return nil, err
+				return out, err
 			}
 		}
-		return marshalRawOutput("ziwei.liupan", ZiweiLiuYueSeries{LiuYue: items})
+		out = ZiweiLiupanOutput{LiuYue: items}
+		return out, nil
 	case "liu_ri":
 		items := make([]ZiweiLiuRiOutput, 0, count)
 		for range count {
 			item, err := computeZiweiLiuRi(current, chart)
 			if err != nil {
-				return nil, err
+				return out, err
 			}
 			items = append(items, item)
 			current, err = advanceZiweiLiuRi(current)
 			if err != nil {
-				return nil, err
+				return out, err
 			}
 		}
-		return marshalRawOutput("ziwei.liupan", ZiweiLiuRiSeries{LiuRi: items})
+		out = ZiweiLiupanOutput{LiuRi: items}
+		return out, nil
 	case "liu_shi":
 		items := make([]ZiweiLiuShiOutput, 0, count)
 		for range count {
 			item, err := computeZiweiLiuShi(current, chart)
 			if err != nil {
-				return nil, err
+				return out, err
 			}
 			items = append(items, item)
 			current, err = advanceZiweiLiuShi(current)
 			if err != nil {
-				return nil, err
+				return out, err
 			}
 		}
-		return marshalRawOutput("ziwei.liupan", ZiweiLiuShiSeries{LiuShi: items})
+		out = ZiweiLiupanOutput{LiuShi: items}
+		return out, nil
 	default:
-		return nil, fmt.Errorf("ziwei.liupan: invalid scope %q", input.Scope)
+		return ZiweiLiupanOutput{}, fmt.Errorf("ziwei.liupan: invalid scope %q", input.Scope)
 	}
 }
 
@@ -343,18 +346,19 @@ func advanceZiweiLiuShi(input ZiweiLiupanInput) (ZiweiLiupanInput, error) {
 }
 
 // ZiweiBond returns raw cross-chart facts for two charts.
-func ZiweiBond(_ context.Context, input ZiweiBondInput) (json.RawMessage, error) {
+func ZiweiBond(_ context.Context, input ZiweiBondInput) (ZiweiBondOutput, error) {
 	chartA, err := input.A.Subject.ziweiChart()
 	if err != nil {
-		return nil, fmt.Errorf("ziwei.bond: chart a: %w", err)
+		return ZiweiBondOutput{}, fmt.Errorf("ziwei.bond: chart a: %w", err)
 	}
 	chartB, err := input.B.Subject.ziweiChart()
 	if err != nil {
-		return nil, fmt.Errorf("ziwei.bond: chart b: %w", err)
+		return ZiweiBondOutput{}, fmt.Errorf("ziwei.bond: chart b: %w", err)
 	}
-	raw, err := marshalRawOutput("ziwei.bond", ziwei.ComputeBond(chartA.BondSideFacts(), chartB.BondSideFacts()))
-	if err != nil {
-		return nil, fmt.Errorf("ziwei.bond: %w", err)
-	}
-	return raw, nil
+	bond := ziwei.ComputeBond(chartA.BondSideFacts(), chartB.BondSideFacts())
+	return ZiweiBondOutput{
+		MingGong: bond.MingGong,
+		FuQiGong: bond.FuQiGong,
+		ZiNvGong: bond.ZiNvGong,
+	}, nil
 }

@@ -4,7 +4,7 @@
 # file is only for building and running the engine image from this source tree.
 
 services:
-  engine-mcp:
+  mingligo-mcp:
     image: mingligo-mcp:local
     build:
       context: ..

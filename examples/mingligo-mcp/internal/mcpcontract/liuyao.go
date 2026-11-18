@@ -73,11 +73,11 @@ func liuyaoQiguaFormsSchema(options *jsonschema.ForOptions) (json.RawMessage, er
 		}
 		switch mode {
 		case "auto":
-			_, raw, err = inputSchemaFor[LiuyaoQiguaAutoForm](options)
+			raw, err = inputSchemaFor[LiuyaoQiguaAutoForm](options)
 		case "coins":
-			_, raw, err = inputSchemaFor[LiuyaoQiguaCoinsForm](options)
+			raw, err = inputSchemaFor[LiuyaoQiguaCoinsForm](options)
 		case "yaos":
-			_, raw, err = inputSchemaFor[LiuyaoQiguaYaosForm](options)
+			raw, err = inputSchemaFor[LiuyaoQiguaYaosForm](options)
 		}
 		if err != nil {
 			return nil, err
@@ -202,7 +202,7 @@ type LiuyaoCastingContextEventInput struct {
 }
 
 func liuyaoMatterFocusSchema(options *jsonschema.ForOptions) (json.RawMessage, error) {
-	_, raw, err := inputSchemaFor[LiuyaoMatterFocusInput](options)
+	raw, err := inputSchemaFor[LiuyaoMatterFocusInput](options)
 	if err != nil {
 		return nil, err
 	}
@@ -223,7 +223,7 @@ func liuyaoMatterFocusSchema(options *jsonschema.ForOptions) (json.RawMessage, e
 }
 
 func liuyaoRelationshipFocusSchema(options *jsonschema.ForOptions) (json.RawMessage, error) {
-	_, raw, err := inputSchemaFor[LiuyaoMatterFocusInput](options)
+	raw, err := inputSchemaFor[LiuyaoMatterFocusInput](options)
 	if err != nil {
 		return nil, err
 	}
@@ -243,7 +243,7 @@ func liuyaoRelationshipFocusSchema(options *jsonschema.ForOptions) (json.RawMess
 }
 
 func liuyaoYongShenFocusSchema(options *jsonschema.ForOptions) (json.RawMessage, error) {
-	_, raw, err := inputSchemaFor[LiuyaoYongShenFocusInput](options)
+	raw, err := inputSchemaFor[LiuyaoYongShenFocusInput](options)
 	if err != nil {
 		return nil, err
 	}
@@ -255,11 +255,11 @@ func liuyaoOriginBranchSchema(options *jsonschema.ForOptions, mode string) (json
 	var err error
 	switch mode {
 	case "auto":
-		_, raw, err = inputSchemaFor[LiuyaoAutoCastingRequest](options)
+		raw, err = inputSchemaFor[LiuyaoAutoCastingRequest](options)
 	case "coins":
-		_, raw, err = inputSchemaFor[LiuyaoCoinsCastingRequest](options)
+		raw, err = inputSchemaFor[LiuyaoCoinsCastingRequest](options)
 	case "yaos":
-		_, raw, err = inputSchemaFor[LiuyaoYaosCastingRequest](options)
+		raw, err = inputSchemaFor[LiuyaoYaosCastingRequest](options)
 	default:
 		return nil, fmt.Errorf("unsupported liuyao origin mode %q", mode)
 	}
@@ -310,7 +310,7 @@ func patchLiuyaoEventInput(event map[string]any, options *jsonschema.ForOptions)
 	if err != nil {
 		return nil, err
 	}
-	_, context, err := inputSchemaFor[LiuyaoCastingContextEventInput](options)
+	context, err := inputSchemaFor[LiuyaoCastingContextEventInput](options)
 	if err != nil {
 		return nil, err
 	}
@@ -378,7 +378,7 @@ func liuyaoFocusSchema(options *jsonschema.ForOptions) (json.RawMessage, error) 
 }
 
 func liuyaoCastingContextSchema(options *jsonschema.ForOptions) (json.RawMessage, error) {
-	_, raw, err := inputSchemaFor[LiuyaoCastingContextInput](options)
+	raw, err := inputSchemaFor[LiuyaoCastingContextInput](options)
 	if err != nil {
 		return nil, err
 	}
@@ -390,7 +390,7 @@ func liuyaoCastingContextSchema(options *jsonschema.ForOptions) (json.RawMessage
 }
 
 func liuyaoEventCastingContextSchema(options *jsonschema.ForOptions) (json.RawMessage, error) {
-	_, raw, err := inputSchemaFor[LiuyaoCastingContext](options)
+	raw, err := inputSchemaFor[LiuyaoCastingContext](options)
 	if err != nil {
 		return nil, err
 	}
@@ -398,7 +398,7 @@ func liuyaoEventCastingContextSchema(options *jsonschema.ForOptions) (json.RawMe
 }
 
 func liuyaoCastingReceiptSchema(options *jsonschema.ForOptions) (json.RawMessage, error) {
-	_, coins, err := inputSchemaFor[LiuyaoCoinsCastingReceipt](options)
+	coins, err := inputSchemaFor[LiuyaoCoinsCastingReceipt](options)
 	if err != nil {
 		return nil, err
 	}
@@ -410,7 +410,7 @@ func liuyaoCastingReceiptSchema(options *jsonschema.ForOptions) (json.RawMessage
 	if err != nil {
 		return nil, err
 	}
-	_, yaos, err := inputSchemaFor[LiuyaoYaosCastingReceipt](options)
+	yaos, err := inputSchemaFor[LiuyaoYaosCastingReceipt](options)
 	if err != nil {
 		return nil, err
 	}
@@ -426,7 +426,7 @@ func liuyaoCastingReceiptSchema(options *jsonschema.ForOptions) (json.RawMessage
 }
 
 func liuyaoChartSchema(options *jsonschema.ForOptions) (json.RawMessage, error) {
-	_, raw, err := inputSchemaFor[LiuyaoChartInput](options)
+	raw, err := inputSchemaFor[LiuyaoChartInput](options)
 	if err != nil {
 		return nil, err
 	}
@@ -442,7 +442,7 @@ func liuyaoChartSchema(options *jsonschema.ForOptions) (json.RawMessage, error) 
 }
 
 func liuyaoStrictArraySchema[T any](options *jsonschema.ForOptions) (json.RawMessage, error) {
-	raw, _, err := outputSchemaFor[T](options)
+	raw, err := outputSchemaFor[T](options)
 	if err != nil {
 		return nil, err
 	}
@@ -465,7 +465,7 @@ func liuyaoStrictArraySchema[T any](options *jsonschema.ForOptions) (json.RawMes
 }
 
 func liuyaoQiguaOutputSchema(options *jsonschema.ForOptions) (json.RawMessage, error) {
-	raw, _, err := outputSchemaFor[LiuyaoQiguaOutput](options)
+	raw, err := outputSchemaFor[LiuyaoQiguaOutput](options)
 	if err != nil {
 		return nil, err
 	}

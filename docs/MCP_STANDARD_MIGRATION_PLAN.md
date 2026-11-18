@@ -24,14 +24,11 @@ standards-compliant official Go SDK application.
 pkg/ganzhi, pkg/bazi, pkg/ziwei, ...
   Pure domain facts and invariants.
 
-internal/mcpcontract
-  Wire DTOs and domain -> wire mapping.
-  No transport or server lifecycle.
+examples/mingligo-mcp/internal/mcpcontract
+  Wire DTOs, domain -> wire mapping, and official SDK typed registration.
+  No server lifecycle enters this package.
 
-examples/mingligo-mcp/internal/mcpserver
-  Official SDK registration and request adapter.
-
-examples/mingligo-mcp/cmd/mingligo-mcp
+examples/mingligo-mcp/main.go
   Composition root: config, logging, observability, server lifecycle.
 ```
 
@@ -94,3 +91,10 @@ contract test.
 - Official SDK validates input and output on every request.
 - All CI gates pass.
 - Old and new tool schemas are compared and documented.
+
+## Completion status
+
+Complete for the MingliGo repository. Official SDK registration, typed wire
+DTOs, in-process transport tests, lint, race, full tests, the aggregate HTTP
+smoke, and the pre/post schema review have passed. Cross-repository release and
+deployment work is intentionally out of scope for this boundary.

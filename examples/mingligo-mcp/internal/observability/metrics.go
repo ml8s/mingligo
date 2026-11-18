@@ -193,26 +193,26 @@ func RenderMetrics() []byte {
 	mu.Unlock()
 
 	lines := renderCounter(
-		"liki_engine_http_requests_total",
-		"Completed engine HTTP requests.",
+		"mingligo_http_requests_total",
+		"Completed MingliGo HTTP requests.",
 		httpCountersCopy,
 		[]string{"route", "method", "status_class"},
 	)
 	lines = append(lines, renderHistogram(
-		"liki_engine_http_request_duration_seconds",
-		"Engine HTTP request duration in seconds.",
+		"mingligo_http_request_duration_seconds",
+		"MingliGo HTTP request duration in seconds.",
 		httpHistogramsCopy,
 		[]string{"route", "method", "status_class"},
 	)...)
 	lines = append(lines, renderCounter(
-		"liki_engine_tool_requests_total",
-		"Completed engine tool invocations.",
+		"mingligo_tool_requests_total",
+		"Completed MingliGo tool invocations.",
 		toolCountersCopy,
 		[]string{"domain", "tool", "status"},
 	)...)
 	lines = append(lines, renderHistogram(
-		"liki_engine_tool_request_duration_seconds",
-		"Engine tool invocation duration in seconds.",
+		"mingligo_tool_request_duration_seconds",
+		"MingliGo tool invocation duration in seconds.",
 		toolHistogramsCopy,
 		[]string{"domain", "tool", "status"},
 	)...)

@@ -6,8 +6,6 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/google/jsonschema-go/jsonschema"
-
 	"github.com/ml8s/mingligo/pkg/liuyao"
 )
 
@@ -392,13 +390,6 @@ func TestLiuyaoQiguaRejectsEmptyModeWithoutLegacyDefault(t *testing.T) {
 	})
 	if err == nil || !strings.Contains(err.Error(), "unsupported") {
 		t.Fatalf("empty origin mode error = %v, want unsupported", err)
-	}
-}
-
-func TestSupportsFastInputSchemaRejectsNumericEnums(t *testing.T) {
-	schema := &jsonschema.Schema{Type: "integer", Enum: []any{3}}
-	if supportsFastInputSchema(schema) {
-		t.Fatal("numeric enum must use the canonical JSON Schema validator")
 	}
 }
 

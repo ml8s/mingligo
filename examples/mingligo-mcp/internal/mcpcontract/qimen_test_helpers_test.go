@@ -32,12 +32,12 @@ func qimenChartParams(params map[string]any) map[string]any {
 	return params
 }
 
-func callQimenChart(t *testing.T, registry *Registry, params map[string]any) map[string]any {
+func callQimenChart(t *testing.T, registry *ContractServer, params map[string]any) map[string]any {
 	t.Helper()
 	return callToolDocument(t, registry, "qimen_chart", qimenChartParams(params))
 }
 
-func assertQimenChartError(t *testing.T, registry *Registry, params map[string]any, expected string) {
+func assertQimenChartError(t *testing.T, registry *ContractServer, params map[string]any, expected string) {
 	t.Helper()
 	assertToolError(t, registry, "qimen_chart", qimenChartParams(params), expected)
 }

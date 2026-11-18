@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Smoke-test engine-mcp's aggregate MCP endpoint."""
+"""Smoke-test mingligo-mcp's aggregate MCP endpoint."""
 
 import argparse
 import json
