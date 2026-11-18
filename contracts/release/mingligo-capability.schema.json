@@ -1,24 +1,22 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://ml8s.dev/schemas/mingligo-capability.v1.json",
+  "$id": "https://ml8s.dev/schemas/mingligo-capability.json",
   "title": "MingliGo capability manifest",
   "type": "object",
   "additionalProperties": false,
   "required": [
-    "schema",
+    "kind",
     "project",
     "source_commit",
-    "contract_revision",
     "images",
     "tools",
     "digests",
     "default_server_identity"
   ],
   "properties": {
-    "schema": {"const": "mingligo-capability.v1"},
+    "kind": {"const": "mingligo-capability"},
     "project": {"const": "mingligo"},
     "source_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
-    "contract_revision": {"type": "string", "pattern": "^r[0-9]+$"},
     "images": {
       "type": "object",
       "additionalProperties": false,

@@ -20,7 +20,7 @@ class CapabilityManifestTests(unittest.TestCase):
             text=True,
         )
         document = json.loads(result.stdout)
-        self.assertEqual(document["schema"], "mingligo-capability.v1")
+        self.assertEqual(document["kind"], "mingligo-capability")
         self.assertEqual(document["project"], "mingligo")
         self.assertNotIn("counsel", document["images"])
         self.assertNotIn("hk.liki", result.stdout)

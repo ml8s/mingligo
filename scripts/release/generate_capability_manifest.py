@@ -46,10 +46,6 @@ def main() -> int:
     parser.add_argument("--repo", type=pathlib.Path, default=pathlib.Path.cwd())
     parser.add_argument("--image", required=True, help="pinned mingligo-mcp OCI image")
     parser.add_argument(
-        "--contract-revision",
-        default=os.environ.get("MINGLIGO_CONTRACT_REVISION", "r1"),
-    )
-    parser.add_argument(
         "--identity",
         default=os.environ.get("MINGLIGO_SERVER_NAME", "local/mingligo-mcp"),
     )
@@ -57,10 +53,9 @@ def main() -> int:
     repo = args.repo.resolve()
     catalog = repo / "tools/mcp-tool-catalog.json"
     document = {
-        "schema": "mingligo-capability.v1",
+        "kind": "mingligo-capability",
         "project": "mingligo",
         "source_commit": source_commit(repo),
-        "contract_revision": args.contract_revision,
         "images": {"engine": args.image},
         "tools": {"engine": json.loads(catalog.read_text(encoding="utf-8"))["servers"]["engine"]},
         "digests": {

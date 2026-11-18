@@ -40,3 +40,6 @@ reasonix.toml
 *.out
 /liki
 /bin/mingligo-mcp
+
+__pycache__/
+*.py[cod]
