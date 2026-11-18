@@ -37,6 +37,33 @@ func TestRegistryValidateOutputRejectsUnknownTool(t *testing.T) {
 	}
 }
 
+func TestCallRejectsRawOutputContractViolation(t *testing.T) {
+	options, err := cachedSchemaOptions()
+	if err != nil {
+		t.Fatalf("schema options: %v", err)
+	}
+	registry := New(options)
+	type input struct {
+		Value string `json:"value"`
+	}
+	type output struct {
+		RequiredValue int    `json:"alignment_marker"`
+		Additional    string `json:"additional_marker"`
+	}
+	err = registerRaw(registry, RawTool[input, output]{
+		Name:    "alignment_raw",
+		Handler: func(context.Context, input) (json.RawMessage, error) { return json.RawMessage(`{}`), nil },
+	})
+	if err != nil {
+		t.Fatalf("register raw tool: %v", err)
+	}
+
+	_, err = registry.Call(context.Background(), "alignment_raw", json.RawMessage(`{"value":"x"}`))
+	if err == nil || !strings.Contains(err.Error(), "output contract violation") {
+		t.Fatalf("raw output mismatch error = %v", err)
+	}
+}
+
 func TestRegistryMaterializeSchemasIsConcurrencySafe(t *testing.T) {
 	registry := NewEngine()
 	if err := registry.MaterializeSchemas(); err != nil {

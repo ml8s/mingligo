@@ -1,9 +1,9 @@
 // Package mcpcontract owns the MCP-native typed tool registry.
 //
 // The registry is intentionally small: explicit wire DTOs define the public
-// schemas and own runtime input validation. Output schemas remain published
-// contracts and can be checked explicitly in tests, debug tooling, and staging;
-// a reflective output check is not repeated on every production call.
+// schemas and own runtime input/output validation. Every successful call is
+// validated against its published output schema before the result leaves the
+// service.
 package mcpcontract
 
 import (
@@ -173,7 +173,14 @@ func registerRaw[In, Out any](r *Registry, tool RawTool[In, Out]) error {
 			if err != nil {
 				return nil, fmt.Errorf("invalid arguments for %s: %w", tool.Name, err)
 			}
-			return tool.Handler(ctx, input)
+			handlerRaw, handlerErr := tool.Handler(ctx, input)
+			if handlerErr != nil {
+				return nil, handlerErr
+			}
+			if err := validateRegisteredOutput(tool.Name, derived, handlerRaw); err != nil {
+				return nil, err
+			}
+			return handlerRaw, nil
 		},
 	}
 	r.names = append(r.names, tool.Name)
@@ -192,8 +199,8 @@ func New(options *jsonschema.ForOptions) *Registry {
 	return &Registry{tools: make(map[string]*registration), schemaOptions: options}
 }
 
-// register creates a lazy schema derivation for In and Out. Input is validated
-// on every call; output validation is exposed as an explicit contract check.
+// register creates a lazy schema derivation for In and Out. Input and output
+// are validated on every call.
 func register[In, Out any](r *Registry, tool Tool[In, Out]) error {
 	if tool.Name == "" {
 		return fmt.Errorf("mcp tool name is empty")
@@ -233,7 +240,14 @@ func register[In, Out any](r *Registry, tool Tool[In, Out]) error {
 			if err != nil {
 				return nil, err
 			}
-			return encodeOutput(output)
+			outputRaw, outputErr := encodeOutput(output)
+			if outputErr != nil {
+				return nil, outputErr
+			}
+			if err := validateRegisteredOutput(tool.Name, derived, outputRaw); err != nil {
+				return nil, err
+			}
+			return outputRaw, nil
 		},
 	}
 	r.names = append(r.names, tool.Name)
@@ -335,15 +349,47 @@ func (r *Registry) Definition(name string) (Definition, error) {
 	}, nil
 }
 
-// Call validates untrusted input, invokes the typed handler, and marshals the
-// output DTO. Use ValidateOutput in contract tests or diagnostic tooling to
-// check the actual JSON document against the published output schema.
+// Call validates untrusted input, invokes the handler, marshals the output,
+// and validates the resulting document against the published output schema.
 func (r *Registry) Call(ctx context.Context, name string, arguments json.RawMessage) (json.RawMessage, error) {
 	tool, ok := r.tools[name]
 	if !ok {
 		return nil, fmt.Errorf("unknown tool: %s", name)
 	}
 	return tool.call(ctx, arguments)
+}
+
+// ValidateOutput checks an arbitrary JSON result against a tool's published
+// output schema. Call already performs this check for every successful result;
+// the exported form supports focused contract tests and diagnostics.
+func (r *Registry) ValidateOutput(name string, output json.RawMessage) error {
+	tool, ok := r.tools[name]
+	if !ok {
+		return fmt.Errorf("unknown tool: %s", name)
+	}
+	schemas, err := tool.schemas.get()
+	if err != nil {
+		return fmt.Errorf("mcp tool %s: derive schemas: %w", tool.name, err)
+	}
+	return schemas.outputValidator.validate(output)
+}
+
+func (v *lazyOutputValidator) validate(raw json.RawMessage) error {
+	if err := v.resolve(); err != nil {
+		return err
+	}
+	return validateJSONDocument(v.resolved, raw)
+}
+
+func validateJSONDocument(resolved *jsonschema.Resolved, raw json.RawMessage) error {
+	var document any
+	if err := json.Unmarshal(raw, &document); err != nil {
+		return err
+	}
+	if err := resolved.Validate(document); err != nil {
+		return fmt.Errorf("output contract violation: %w", err)
+	}
+	return nil
 }
 
 // inputSchemaFor derives a tool's input schema: the typed, closed shape of the
@@ -415,4 +461,11 @@ func encodeOutput[Out any](output Out) (json.RawMessage, error) {
 		return nil, err
 	}
 	return raw, nil
+}
+
+func validateRegisteredOutput(name string, schemas derivedSchemas, raw json.RawMessage) error {
+	if err := schemas.outputValidator.validate(raw); err != nil {
+		return fmt.Errorf("mcp tool %s: %w", name, err)
+	}
+	return nil
 }

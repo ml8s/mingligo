@@ -151,11 +151,12 @@ type BaziGanZhiPair struct {
 type BaziChartTaiXi = BaziGanZhiPair
 
 type BaziChartGongJiaItem struct {
-	PillarA *int             `json:"pillar_a,omitempty" jsonschema:"拱局第一柱。"`
-	PillarB *int             `json:"pillar_b,omitempty" jsonschema:"拱局第二柱。"`
-	Type    *GongJiaTypeName `json:"type,omitempty" jsonschema:"类型。"`
-	Wuxing  *ElementName     `json:"wuxing,omitempty" jsonschema:"五行。"`
-	Zhi     *ZhiName         `json:"zhi,omitempty" jsonschema:"地支。"`
+	PillarA      *int             `json:"pillar_a,omitempty" jsonschema:"拱局第一柱。"`
+	PillarB      *int             `json:"pillar_b,omitempty" jsonschema:"拱局第二柱。"`
+	RelationKind GongJiaTypeName `json:"relation_kind" jsonschema:"关系类型。"`
+	Type         *GongJiaTypeName `json:"type,omitempty" jsonschema:"类型。"`
+	Wuxing       *ElementName     `json:"wuxing,omitempty" jsonschema:"五行。"`
+	Zhi          *ZhiName         `json:"zhi,omitempty" jsonschema:"地支。"`
 }
 
 type BaziChartNayinRelItem struct {
