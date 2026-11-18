@@ -21,6 +21,9 @@ import (
 // ComputeChart produces the complete domain chart from civil birth time
 // (年/月柱) and true-solar time (日/时柱).
 func ComputeChart(gt time.Time, st time.Time, gender ganzhi.Gender) Chart {
+	if err := Load(); err != nil {
+		panic(fmt.Errorf("bazi: data tables are not available: %w", err))
+	}
 	return ComputeChartFromCore(computeCore(gt, st, tianwen.ComputeBazi(gt, st), gender))
 }
 

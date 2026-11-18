@@ -9,7 +9,24 @@ server for quick validation.
 ## Library use
 
 ```go
-import "github.com/ml8s/mingligo/pkg/bazi"
+import (
+    "time"
+
+    "github.com/ml8s/mingligo/pkg/bazi"
+    "github.com/ml8s/mingligo/pkg/ganzhi"
+    "github.com/ml8s/mingligo/pkg/tables"
+)
+
+func main() {
+    // Embedded tables must be loaded once before domain calls.
+    if err := tables.Load(); err != nil {
+        panic(err)
+    }
+
+    when := time.Date(1984, 2, 4, 6, 0, 0, 0, time.FixedZone("CST", 8*3600))
+    chart := bazi.ComputeChartAt(when, 120, ganzhi.Male)
+    _ = chart
+}
 ```
 
 ## Reference MCP

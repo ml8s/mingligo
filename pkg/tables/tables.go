@@ -1,6 +1,6 @@
-// Package tables owns engine data-table loading. Every embedded table must be
-// loaded before a tool computes; the engine MCP server calls Load from main
-// before serving, and the contract tests call it from TestMain.
+// Package tables owns engine data-table loading for MCP callers that want an
+// explicit startup barrier. Domain entry points load their own embedded tables
+// on first use; this aggregate loader keeps tool startup fail-closed.
 package tables
 
 import (
