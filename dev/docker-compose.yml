@@ -1,0 +1,20 @@
+# Liki engine local/development stack.
+#
+# Production image composition is owned by the liki-deploy repository. This
+# file is only for building and running the engine image from this source tree.
+
+services:
+  engine-mcp:
+    image: mingligo-mcp:local
+    build:
+      context: ..
+      dockerfile: dev/Dockerfile
+    entrypoint: ["/usr/local/bin/mingligo-mcp", "--addr", ":8081"]
+    ports:
+      - "${LIKI_ENGINE_MCP_HOST_PORT:-8083}:8081"
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+          cpus: "1"
