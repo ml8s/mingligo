@@ -10,7 +10,7 @@ import (
 )
 
 func TestBaziChartSubjectProducesStableChart(t *testing.T) {
-	registry := testEngine()
+	registry := testContractServer()
 	for _, subject := range []NatalSubject{
 		{StandardTime: "1990-05-20T11:49:00+08:00", Longitude: 116.4, Gender: "male"},
 		{StandardTime: "1984-02-16T08:00:00+08:00", Longitude: 116.4, Gender: "female"},
@@ -35,7 +35,7 @@ func TestBaziChartSubjectProducesStableChart(t *testing.T) {
 }
 
 func TestBaziChartSubjectRejectsInvalidLongitude(t *testing.T) {
-	registry := testEngine()
+	registry := testContractServer()
 	subject := NatalSubject{StandardTime: "1990-05-20T12:49:00+08:00", Longitude: 500, Gender: "male"}
 	if _, err := registry.Call(context.Background(), "bazi_chart", mustJSON(t, BaziChartInput{Subject: subject})); err == nil {
 		t.Fatal("invalid subject longitude was accepted")
@@ -43,7 +43,7 @@ func TestBaziChartSubjectRejectsInvalidLongitude(t *testing.T) {
 }
 
 func TestBaziChartRawProjectionMatchesWireDTO(t *testing.T) {
-	registry := testEngine()
+	registry := testContractServer()
 	subject := NatalSubject{StandardTime: "1990-05-20T12:49:00+08:00", Longitude: 116.4, Gender: "male"}
 	chart, err := subject.baziChart()
 	if err != nil {

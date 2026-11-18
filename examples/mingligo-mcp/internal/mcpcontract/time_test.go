@@ -8,17 +8,17 @@ import (
 )
 
 func TestTimeNowRequiresTimezone(t *testing.T) {
-	if _, err := testEngine().Call(context.Background(), "time_now", nil); err == nil {
+	if _, err := testContractServer().Call(context.Background(), "time_now", nil); err == nil {
 		t.Fatal("time.now without timezone must fail")
 	}
 }
 
 func TestTimeNowCST(t *testing.T) {
-	raw, err := testEngine().Call(context.Background(), "time_now", json.RawMessage(`{"timezone":"Asia/Shanghai"}`))
+	raw, err := testContractServer().Call(context.Background(), "time_now", json.RawMessage(`{"timezone":"Asia/Shanghai"}`))
 	if err != nil {
 		t.Fatalf("call: %v", err)
 	}
-	if err := testEngine().ValidateOutput("time_now", raw); err != nil {
+	if err := testContractServer().ValidateOutput("time_now", raw); err != nil {
 		t.Fatalf("output contract: %v", err)
 	}
 	var out TimeNowOutput
@@ -35,11 +35,11 @@ func TestTimeNowCST(t *testing.T) {
 }
 
 func TestTimeNowNewYork(t *testing.T) {
-	raw, err := testEngine().Call(context.Background(), "time_now", json.RawMessage(`{"timezone":"America/New_York"}`))
+	raw, err := testContractServer().Call(context.Background(), "time_now", json.RawMessage(`{"timezone":"America/New_York"}`))
 	if err != nil {
 		t.Fatalf("call: %v", err)
 	}
-	if err := testEngine().ValidateOutput("time_now", raw); err != nil {
+	if err := testContractServer().ValidateOutput("time_now", raw); err != nil {
 		t.Fatalf("output contract: %v", err)
 	}
 	var out TimeNowOutput
@@ -49,7 +49,7 @@ func TestTimeNowNewYork(t *testing.T) {
 }
 
 func TestTianwenSubjectCandidatesOutputContract(t *testing.T) {
-	registry := testEngine()
+	registry := testContractServer()
 	raw, err := registry.Call(context.Background(), "subject_candidates", mustJSON(t, civilResolveInput(t, "1990-05-20T03:49:00Z", "Asia/Shanghai", 116.4)))
 	if err != nil {
 		t.Fatalf("subject_candidates: %v", err)

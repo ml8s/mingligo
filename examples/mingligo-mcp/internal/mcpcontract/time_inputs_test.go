@@ -9,7 +9,7 @@ import (
 // TestTimeInputsCanonical freezes the contract: natal methods take a resolved
 // subject; event and property tools use domain-owned time/location fields.
 func TestTimeInputsCanonical(t *testing.T) {
-	registry := testEngine()
+	registry := testContractServer()
 	natal := []string{
 		"bazi_chart", "ziwei_chart", "bazi_liupan", "ziwei_liupan",
 	}

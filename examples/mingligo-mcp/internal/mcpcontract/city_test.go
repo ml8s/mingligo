@@ -11,7 +11,7 @@ import (
 )
 
 func TestCityInfoInputRequiresCity(t *testing.T) {
-	registry := testEngine()
+	registry := testContractServer()
 	definition := mustDefinition(t, registry, "city_info")
 	var schema struct {
 		Properties map[string]json.RawMessage `json:"properties"`
@@ -29,7 +29,7 @@ func TestCityInfoInputRequiresCity(t *testing.T) {
 }
 
 func TestCityInfoOutputSchema(t *testing.T) {
-	registry := testEngine()
+	registry := testContractServer()
 	definition := mustDefinition(t, registry, "city_info")
 	var doc map[string]any
 	if err := json.Unmarshal(definition.OutputSchema, &doc); err != nil {
@@ -87,7 +87,7 @@ func TestCityCandidateOutputLongitudeRange(t *testing.T) {
 }
 
 func TestCityInfoLocalizesOutput(t *testing.T) {
-	registry := testEngine()
+	registry := testContractServer()
 	raw, err := registry.Call(context.Background(), "city_info",
 		mustJSON(t, CityInfoInput{City: "Beijing", Locale: "en"}))
 	if err != nil {
@@ -125,7 +125,7 @@ func TestCityInfoLocalizesOutput(t *testing.T) {
 }
 
 func TestCityInfoRejectsUnknownPlace(t *testing.T) {
-	registry := testEngine()
+	registry := testContractServer()
 	_, err := registry.Call(context.Background(), "city_info",
 		mustJSON(t, map[string]any{"city": "不存在的城市xyz"}))
 	if err == nil || !strings.Contains(err.Error(), "未找到") {

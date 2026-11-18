@@ -63,7 +63,7 @@ func testBaziChart(t *testing.T, utc, timezone string, longitude float64, gender
 }
 
 func TestMigratedToolsRejectUnknownArguments(t *testing.T) {
-	registry := testEngine()
+	registry := testContractServer()
 	solarTime := canonicalInstantA
 
 	// Every migrated tool validates against its closed DTO schema: unknown
@@ -92,7 +92,7 @@ func TestMigratedToolsRejectUnknownArguments(t *testing.T) {
 }
 
 func TestMigratedBaziXiaoYunDefaultCount(t *testing.T) {
-	registry := testEngine()
+	registry := testContractServer()
 	chart := testBaziChart(t, "1984-02-15T00:00:00Z", "Asia/Shanghai", 116.4, "male")
 
 	// bazi.liupan xiao_yun returns one entry per 小运 school; every entry carries the
@@ -140,7 +140,7 @@ func TestMigratedBaziXiaoYunDefaultCount(t *testing.T) {
 }
 
 func TestMigratedQimenCanonicalMethodAndDingju(t *testing.T) {
-	registry := testEngine()
+	registry := testContractServer()
 
 	method := callQimenChart(t, registry, map[string]any{
 		"standard_time": "1984-02-15T08:00:00+08:00", "longitude": 116.4,
@@ -165,7 +165,7 @@ func TestMigratedQimenCanonicalMethodAndDingju(t *testing.T) {
 }
 
 func TestMigratedQimenMethodMatrix(t *testing.T) {
-	registry := testEngine()
+	registry := testContractServer()
 	const solarTime = "2026-01-13T17:03:00Z"
 
 	document := callQimenChart(t, registry, map[string]any{
@@ -201,7 +201,7 @@ func TestMigratedQimenMethodMatrix(t *testing.T) {
 }
 
 func TestMigratedQimenBirthDateAndYongShenPaths(t *testing.T) {
-	registry := testEngine()
+	registry := testContractServer()
 	document := callQimenChart(t, registry, map[string]any{
 		"standard_time": "1984-02-15T08:00:00+08:00", "longitude": 116.4,
 		"yong_shen": []string{"生门", "戊"},
@@ -265,7 +265,7 @@ func assertJiaStaysHidden(t *testing.T, data map[string]any) {
 // date is not enough: the sweep below walks a full 十干 cycle of days and every
 // month, which is the smallest input set that reaches every producer.
 func TestMigratedShenShaEnumCoversRealOutput(t *testing.T) {
-	registry := testEngine()
+	registry := testContractServer()
 	chart := testBaziChart(t, "1984-02-15T00:00:00Z", "Asia/Shanghai", 116.4, "male")
 
 	type call struct {
@@ -305,7 +305,7 @@ func TestMigratedShenShaEnumCoversRealOutput(t *testing.T) {
 }
 
 func TestMigratedShiShenEnumMatchesTenGodClosure(t *testing.T) {
-	registry := testEngine()
+	registry := testContractServer()
 	want := []string{
 		"比肩", "劫财", "食神", "伤官", "正财",
 		"偏财", "七杀", "正官", "偏印", "正印",
@@ -343,7 +343,7 @@ func TestMigratedQimenPatternEnumMatchesTable(t *testing.T) {
 	}
 	sort.Strings(want)
 
-	registry := testEngine()
+	registry := testContractServer()
 	got := enumAt(t, outputProperties(t, registry, "qimen_chart"), "ge_ju", "[]", "name")
 	sort.Strings(got)
 	if !reflect.DeepEqual(got, want) {
@@ -352,7 +352,7 @@ func TestMigratedQimenPatternEnumMatchesTable(t *testing.T) {
 }
 
 func TestMigratedZiweiLiuYueTargetLunarContract(t *testing.T) {
-	registry := testEngine()
+	registry := testContractServer()
 	chart := map[string]any{
 		"standard_time": "2000-09-20T08:00:00+08:00",
 		"longitude":     116.4,
@@ -385,7 +385,7 @@ func TestMigratedZiweiLiuYueTargetLunarContract(t *testing.T) {
 }
 
 func TestBondInputsShareShape(t *testing.T) {
-	registry := testEngine()
+	registry := testContractServer()
 	for _, tool := range []string{"bazi_bond", "ziwei_bond"} {
 		definition, err := registry.Definition(tool)
 		if err != nil {
@@ -419,7 +419,7 @@ func TestBondInputsShareShape(t *testing.T) {
 }
 
 func TestMigratedChartsRejectInvalidLongitude(t *testing.T) {
-	registry := testEngine()
+	registry := testContractServer()
 	for _, tool := range []string{"bazi_chart", "ziwei_chart"} {
 		assertToolError(t, registry, tool, map[string]any{
 			"subject": map[string]any{
@@ -436,7 +436,7 @@ func TestMigratedChartsRejectInvalidLongitude(t *testing.T) {
 }
 
 func TestChartsNormalizeEquivalentOffsetForms(t *testing.T) {
-	registry := testEngine()
+	registry := testContractServer()
 	utc := callToolDocument(t, registry, "bazi_chart", map[string]any{
 		"subject": map[string]any{"standard_time": "1981-08-25T16:20:00Z", "longitude": 132.044137, "gender": "male"},
 	})
@@ -459,7 +459,7 @@ func TestChartsNormalizeEquivalentOffsetForms(t *testing.T) {
 }
 
 func TestMigratedBaziChartTrueSolarChain(t *testing.T) {
-	registry := testEngine()
+	registry := testContractServer()
 	resolved, err := TianwenSubjectCandidates(context.Background(), civilResolveInput(t, "1981-08-25T16:20:00Z", "Asia/Shanghai", 132.044137))
 	if err != nil {
 		t.Fatalf("subject_candidates: %v", err)

@@ -76,8 +76,14 @@ The migration is complete at the MingliGo boundary:
 - All 17 tools use typed wire DTOs. The aggregate `/mcp` surface remains 17
   tools, and the local HTTP smoke passes.
 - A pre/post `tools/list` review found the same names and semantically equal
-  schemas for 16 tools.
+  schemas for 15 tools.
 - `qimen_chart` is the sole deliberate schema correction: its output is now an
   explicit standard/Jinhan `oneOf` instead of a flattened union, and the
   twelve-minute quarter's domain-defaulted options are optional. Runtime tests
   cover both standard and Jinhan charts and all quarter-rule paths.
+- The remaining public-text correction removes a counsel-product reference
+  from `bazi_chart.fu_yi`; the factual fields are unchanged.
+- MingliGo no longer embeds hosted web origins. Browser deployments must set
+  `MINGLIGO_ALLOWED_ORIGINS`; server-to-server and local use need none.
+- The legacy consumer-owned projection contract was removed; MingliGo tests
+  now assert its own MCP schemas and domain fixtures directly.

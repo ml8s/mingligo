@@ -9,8 +9,8 @@ import (
 	"testing"
 )
 
-func TestEveryEngineToolActualOutputMatchesSchema(t *testing.T) {
-	registry := testEngine()
+func TestEveryMingliGoToolActualOutputMatchesSchema(t *testing.T) {
+	registry := testContractServer()
 	validated := make(map[string]bool, len(registry.names))
 	call := func(name string, input any) json.RawMessage {
 		t.Helper()

@@ -1,7 +1,5 @@
 # Go binaries
-/server
 /bin/
-/liki
 *.exe
 *.test
 
@@ -33,13 +31,8 @@ coverage.out
 test_write.txt
 testdata/fuzz/
 
-# Reasonix
-.reasonix/
-reasonix.toml
 .DS_Store
 *.out
-/liki
-/bin/mingligo-mcp
 
 __pycache__/
 *.py[cod]

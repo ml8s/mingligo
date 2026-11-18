@@ -120,7 +120,6 @@ func TestCORSMiddleware_AllowedOrigin(t *testing.T) {
 		devMode bool
 		allowed bool
 	}{
-		{"prod origin", "https://liki.hk", false, true},
 		{"unknown origin", "https://evil.com", false, false},
 		{"localhost in dev", "http://localhost:8080", true, true},
 		{"unknown in dev", "https://evil.com", true, false},
@@ -151,13 +150,14 @@ func TestCORSMiddleware_AllowedOrigin(t *testing.T) {
 }
 
 func TestCORSMiddleware_OptionsPreflight(t *testing.T) {
+	t.Setenv("MINGLIGO_ALLOWED_ORIGINS", "https://mingli.example")
 	handler := CORSMiddleware(false, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		t.Error("handler should not be called for OPTIONS preflight")
 	}))
 
 	w := httptest.NewRecorder()
 	req := httptest.NewRequest("OPTIONS", "/", nil)
-	req.Header.Set("Origin", "https://liki.hk")
+	req.Header.Set("Origin", "https://mingli.example")
 	handler.ServeHTTP(w, req)
 
 	if w.Code != http.StatusNoContent {
@@ -189,7 +189,7 @@ func TestCORSMiddleware_ConfiguredOrigins(t *testing.T) {
 	}
 
 	req = httptest.NewRequest(http.MethodGet, "/", nil)
-	req.Header.Set("Origin", "https://liki.hk")
+	req.Header.Set("Origin", "https://unconfigured.example")
 	w = httptest.NewRecorder()
 	handler.ServeHTTP(w, req)
 	if w.Header().Get("Access-Control-Allow-Origin") != "" {

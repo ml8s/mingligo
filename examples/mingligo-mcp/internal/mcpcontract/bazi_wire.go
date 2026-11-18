@@ -1,7 +1,7 @@
-// Engine wire DTOs for the MCP contract layer.
+// MingliGo wire DTOs for the MCP contract layer.
 //
 // These types are ordinary source now, not generated artifacts. Edit them
-// directly when the published engine payload changes.
+// directly when the published MingliGo payload changes.
 package mcpcontract
 
 import "github.com/ml8s/mingligo/pkg/bazi"
@@ -38,7 +38,7 @@ type BaziChartOutput struct {
 	Shi           BaziChartPillar              `json:"shi" jsonschema:"时柱: gan/zhi/na_yin"`
 	DaYun         BaziChartDaYun               `json:"da_yun" jsonschema:"大运。root_refs 说明坐支本气与原局藏干通根。"`
 	BirthYear     int                          `json:"birth_year" jsonschema:"出生公历年份"`
-	FuYi          BaziChartFuYi                `json:"fu_yi" jsonschema:"扶抑候选：用/喜/忌与身强弱；最终用神由 counsel 裁决"`
+	FuYi          BaziChartFuYi                `json:"fu_yi" jsonschema:"扶抑候选：用/喜/忌与身强弱；最终判断由调用方裁决"`
 	SanYuan       *BaziChartSanYuan            `json:"san_yuan,omitempty" jsonschema:"三元: 胎元/命宫/身宫"`
 	TaiXi         *BaziChartTaiXi              `json:"tai_xi,omitempty" jsonschema:"胎息（日干五合配、日支六合配）"`
 	GongJia       *[]BaziChartGongJiaItem      `json:"gong_jia,omitempty" jsonschema:"经典拱局：三合拱 / 三会拱"`
@@ -49,8 +49,8 @@ type BaziChartOutput struct {
 	ShenShaSchool BaziChartShenShaSchool       `json:"shen_sha_school" jsonschema:"神煞取参照系。"`
 	LuRoots       []BaziChartLuRootsItem       `json:"lu_roots" jsonschema:"透干十神得十干禄"`
 	GuanXi        []BaziChartGuanXiItem        `json:"guan_xi" jsonschema:"canonical 命局关系事实；每条 occurrence 使用稳定 id。"`
-	TenGodStates  []BaziChartTenGodStatesItem  `json:"ten_god_states" jsonschema:"engine 十神显隐 / 通根 / 得令 / 旺弱状态"`
-	ElementStates []BaziChartElementStatesItem `json:"element_states" jsonschema:"engine 五行季节旺弱、组合旺弱与生克方向"`
+	TenGodStates  []BaziChartTenGodStatesItem  `json:"ten_god_states" jsonschema:"十神显隐 / 通根 / 得令 / 旺弱状态"`
+	ElementStates []BaziChartElementStatesItem `json:"element_states" jsonschema:"五行季节旺弱、组合旺弱与生克方向"`
 	GuanSha       BaziChartGuanSha             `json:"guan_sha" jsonschema:"官杀取清结论。"`
 	CaiKu         BaziChartCaiKu               `json:"cai_ku" jsonschema:"财库结论。"`
 	TiaoHou       BaziChartTiaoHou             `json:"tiao_hou" jsonschema:"调候候选：主辅调候五行候选 + 季节 + 条件"`

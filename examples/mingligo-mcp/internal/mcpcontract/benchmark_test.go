@@ -11,14 +11,14 @@ var benchmarkOutputBytes int
 func BenchmarkMCPServerRegistration(b *testing.B) {
 	b.ReportAllocs()
 	for i := 0; i < b.N; i++ {
-		_ = testEngine()
+		_ = testContractServer()
 	}
 }
 
 func BenchmarkMCPMaterializeAllDefinitions(b *testing.B) {
 	b.ReportAllocs()
 	for i := 0; i < b.N; i++ {
-		registry := testEngine()
+		registry := testContractServer()
 		for _, name := range registry.Names() {
 			if _, err := registry.Definition(name); err != nil {
 				b.Fatal(err)
@@ -30,7 +30,7 @@ func BenchmarkMCPMaterializeAllDefinitions(b *testing.B) {
 func BenchmarkMCPMaterializeAllDefinitionsConcurrently(b *testing.B) {
 	b.ReportAllocs()
 	for i := 0; i < b.N; i++ {
-		if err := testEngine().MaterializeSchemas(); err != nil {
+		if err := testContractServer().MaterializeSchemas(); err != nil {
 			b.Fatal(err)
 		}
 	}
@@ -54,22 +54,22 @@ func benchmarkCall(b *testing.B, registry *ContractServer, name string, argument
 }
 
 func BenchmarkMCPBaziChart(b *testing.B) {
-	benchmarkCall(b, testEngine(), "bazi_chart",
+	benchmarkCall(b, testContractServer(), "bazi_chart",
 		`{"subject":{"standard_time":"1990-05-20T12:49:00+08:00","longitude":116.4,"gender":"male"}}`)
 }
 
 func BenchmarkMCPZiweiChart(b *testing.B) {
-	benchmarkCall(b, testEngine(), "ziwei_chart",
+	benchmarkCall(b, testContractServer(), "ziwei_chart",
 		`{"subject":{"standard_time":"1984-02-16T12:00:00+08:00","longitude":116.4,"gender":"male"}}`)
 }
 
 func BenchmarkMCPQimenChart(b *testing.B) {
-	benchmarkCall(b, testEngine(), "qimen_chart",
+	benchmarkCall(b, testContractServer(), "qimen_chart",
 		`{"standard_time":"2000-06-15T12:00:00+08:00","longitude":116.4,"method":{"scope":"hour","school":"zhuanpan","dingju_method":"chaibu"}}`)
 }
 
 func BenchmarkMCPBaziBond(b *testing.B) {
-	registry := testEngine()
+	registry := testContractServer()
 	subjectA := benchmarkBaziSubject(b, "1990-05-20T12:49:00+08:00", "male")
 	subjectB := benchmarkBaziSubject(b, "1992-08-10T10:20:00+08:00", "female")
 	arguments := mustBenchmarkJSON(b, map[string]any{
@@ -80,7 +80,7 @@ func BenchmarkMCPBaziBond(b *testing.B) {
 }
 
 func BenchmarkMCPOutputValidationZiweiChart(b *testing.B) {
-	registry := testEngine()
+	registry := testContractServer()
 	arguments := json.RawMessage(`{"subject":{"standard_time":"1984-02-16T12:00:00+08:00","longitude":116.4,"gender":"male"}}`)
 	output, err := registry.Call(context.Background(), "ziwei_chart", arguments)
 	if err != nil {

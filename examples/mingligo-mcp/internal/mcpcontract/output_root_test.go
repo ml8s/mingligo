@@ -9,9 +9,9 @@ import (
 // TestAllOutputSchemasRootObject locks the MCP outputSchema contract: wire
 // models through protocol 2025-11-25 reject any outputSchema whose root is not
 // type "object", so a top-level union or array schema would break tools/list
-// for standard SDK clients (the experts runtime negotiates those versions).
+// for standard SDK clients (deployed runtimes negotiate those versions).
 func TestAllOutputSchemasRootObject(t *testing.T) {
-	registry := testEngine()
+	registry := testContractServer()
 	for _, name := range registry.Names() {
 		definition := mustDefinition(t, registry, name)
 		var schema struct {

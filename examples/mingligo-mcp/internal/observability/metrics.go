@@ -1,4 +1,4 @@
-// Package observability provides the engine's dependency-free Prometheus
+// Package observability provides MingliGo dependency-free Prometheus
 // metrics. Labels are restricted to fixed, low-cardinality vocabulary.
 package observability
 

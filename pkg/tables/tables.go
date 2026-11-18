@@ -1,4 +1,4 @@
-// Package tables owns engine data-table loading for MCP callers that want an
+// Package tables owns MingliGo data-table loading for MCP callers that want an
 // explicit startup barrier. Domain entry points load their own embedded tables
 // on first use; this aggregate loader keeps tool startup fail-closed.
 package tables
@@ -14,7 +14,7 @@ import (
 	"github.com/ml8s/mingligo/pkg/ziwei"
 )
 
-// Load initializes every embedded engine data table. It is idempotent and must
+// Load initializes every embedded MingliGo data table. It is idempotent and must
 // be called before any tool runs. Each domain Load pulls in its own
 // dependencies, so listing the leaves and domains is enough.
 func Load() error {

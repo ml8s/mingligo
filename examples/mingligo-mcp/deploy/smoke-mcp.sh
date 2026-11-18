@@ -2,7 +2,7 @@
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 IMAGE_TAG="${IMAGE_TAG:-local}"
-IMAGE_REGISTRY="${IMAGE_REGISTRY:-liki-local}"
+IMAGE_REGISTRY="${IMAGE_REGISTRY:-mingligo-local}"
 IMAGE="${MINGLIGO_MCP_IMAGE:-$IMAGE_REGISTRY/mingligo-mcp:$IMAGE_TAG}"
 PORT="${MINGLIGO_MCP_SMOKE_PORT:-18091}"
 NAME="mingligo-smoke-mcp-$$"

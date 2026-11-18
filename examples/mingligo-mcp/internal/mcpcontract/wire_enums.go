@@ -1,5 +1,5 @@
-// Wire enum types used by engine tool contracts. Edit value sets directly when
-// an engine domain grows.
+// Wire enum types used by MingliGo tool contracts. Edit value sets directly
+// when a domain grows.
 
 package mcpcontract
 
@@ -19,7 +19,7 @@ func registerWireEnum[T ~string](options *jsonschema.ForOptions, values ...strin
 }
 
 // registerWireNullableEnum allows an explicit JSON null in addition to the
-// enum values, because the legacy engine emitted null for real fields such
+// enum values, because legacy output emitted null for real fields such
 // as a pillar 藏干 slot that has no middle or minor stem.
 func registerWireNullableEnum[T ~string](options *jsonschema.ForOptions, values ...string) {
 	enum := make([]any, 0, len(values))

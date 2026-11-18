@@ -28,7 +28,7 @@ func loadServerIdentity() serverIdentity {
 	}
 }
 
-// newMCPServer builds a standard MCP server exposing every engine tool.
+// newMCPServer builds a standard MCP server exposing every MingliGo tool.
 func newMCPServer(version string, logger *slog.Logger) (*mcp.Server, error) {
 	identity := loadServerIdentity()
 	impl := &mcp.Implementation{

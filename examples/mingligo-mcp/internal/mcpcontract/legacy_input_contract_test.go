@@ -29,7 +29,7 @@ func TestPublishedInputSchemasRejectLegacyFields(t *testing.T) {
 		"recorded_fold":    "use subject_candidates candidates",
 	}
 
-	registry := testEngine()
+	registry := testContractServer()
 	names := registry.Names()
 	slices.Sort(names)
 	if len(names) == 0 {
@@ -74,7 +74,7 @@ func TestPublishedInputSchemasRejectLegacyFields(t *testing.T) {
 func TestDomainIrrelevantToolsRejectLongitude(t *testing.T) {
 	for _, name := range []string{"huangli_days", "bazhai_chart", "xuankong_chart", "xuankong_liunian"} {
 		t.Run(name, func(t *testing.T) {
-			definition, err := testEngine().Definition(name)
+			definition, err := testContractServer().Definition(name)
 			if err != nil {
 				t.Fatalf("definition: %v", err)
 			}

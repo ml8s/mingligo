@@ -15,7 +15,7 @@ RUN CGO_ENABLED=0 GOOS="${TARGETOS}" GOARCH="${TARGETARCH}" \
 
 FROM alpine:3.21@sha256:48b0309ca019d89d40f670aa1bc06e426dc0931948452e8491e3d65087abc07d AS certs
 RUN apk add --no-cache ca-certificates
-RUN adduser -D -u 1000 liki
+RUN adduser -D -u 1000 mingligo
 
 FROM scratch
 ARG GIT_SHA=unknown
@@ -24,11 +24,11 @@ ARG BUILD_TIME=unknown
 LABEL org.opencontainers.image.revision="${COMMIT}" \
       org.opencontainers.image.created="${BUILD_TIME}" \
       org.opencontainers.image.title="mingligo-mcp" \
-      org.opencontainers.image.description="MingliGo deterministic metaphysics fact engine"
+      org.opencontainers.image.description="MingliGo deterministic metaphysics fact library"
 COPY --from=certs /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY --from=certs /etc/passwd /etc/passwd
 COPY --from=build /out/mingligo-mcp /usr/local/bin/mingligo-mcp
 COPY --from=build /src/pkg/city/ATTRIBUTION.txt /usr/share/licenses/mingligo-mcp/ATTRIBUTION.txt
-USER liki
+USER mingligo
 EXPOSE 8081
 ENTRYPOINT ["/usr/local/bin/mingligo-mcp", "--addr", ":8081"]

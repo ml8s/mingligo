@@ -1,5 +1,5 @@
 GO ?= go
-IMAGE_REGISTRY ?= liki-local
+IMAGE_REGISTRY ?= mingligo-local
 IMAGE_TAG ?= local
 GIT_COMMIT ?= $(shell git rev-parse HEAD 2>/dev/null || echo unknown)
 GIT_SHA ?= $(shell git rev-parse --short=12 HEAD 2>/dev/null || echo unknown)

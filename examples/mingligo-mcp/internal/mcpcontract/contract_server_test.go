@@ -29,7 +29,7 @@ type ContractServer struct {
 	names       []string
 }
 
-var testEngine = sync.OnceValue(newContractServer)
+var testContractServer = sync.OnceValue(newContractServer)
 
 func newContractServer() *ContractServer {
 	logger := slog.New(slog.NewTextHandler(&discardWriter{}, nil))

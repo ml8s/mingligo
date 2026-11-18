@@ -16,7 +16,7 @@ import (
 // JSON, missing or malformed enum fields, and out-of-range values must fail
 // before any engine work runs.
 func TestMigratedInputValidation(t *testing.T) {
-	registry := testEngine()
+	registry := testContractServer()
 	subject := testBaziChart(t, "1984-02-15T00:00:00Z", "Asia/Shanghai", 116.4, "male")
 	ziweiSubject := map[string]any{
 		"standard_time": "2000-09-20T08:00:00+08:00",
@@ -81,7 +81,7 @@ func TestMigratedInputValidation(t *testing.T) {
 
 // TestMigratedBaziChartCompleteFacts asserts the canonical chart is complete.
 func TestMigratedBaziChartCompleteFacts(t *testing.T) {
-	registry := testEngine()
+	registry := testContractServer()
 	subject := testBaziChart(t, "1984-02-15T00:00:00Z", "Asia/Shanghai", 116.4, "male")
 	chart := callToolDocument(t, registry, "bazi_chart", map[string]any{"subject": subject})
 
@@ -121,7 +121,7 @@ func TestMigratedBaziChartCompleteFacts(t *testing.T) {
 // TestMigratedBaziLiuNianShiShen asserts the 十神 closure is populated for
 // flowing years.
 func TestMigratedBaziLiuNianShiShen(t *testing.T) {
-	registry := testEngine()
+	registry := testContractServer()
 	chart := testBaziChart(t, "1984-02-15T00:00:00Z", "Asia/Shanghai", 116.4, "male")
 	for _, year := range []int{2024, 2025, 2026} {
 		document := callToolDocument(t, registry, "bazi_liupan", map[string]any{
@@ -136,7 +136,7 @@ func TestMigratedBaziLiuNianShiShen(t *testing.T) {
 
 // TestMigratedZiweiDependentTools covers subject-dependent ziwei tools.
 func TestMigratedZiweiDependentTools(t *testing.T) {
-	registry := testEngine()
+	registry := testContractServer()
 	chart := map[string]any{
 		"standard_time": "2000-09-20T08:00:00+08:00", "longitude": 116.4, "gender": "male",
 	}
@@ -180,7 +180,7 @@ func TestMigratedZiweiDependentTools(t *testing.T) {
 // TestMigratedBaziBondAndXiaoYunValid keeps the legacy valid paths for the
 // remaining bazi tools.
 func TestMigratedBaziBondAndXiaoYunValid(t *testing.T) {
-	registry := testEngine()
+	registry := testContractServer()
 	chartA := testBaziChart(t, "1984-02-15T00:00:00Z", "Asia/Shanghai", 116.4, "male")
 	chartB := testBaziChart(t, canonicalInstantB, "Asia/Shanghai", 116.4, "female")
 
@@ -209,7 +209,7 @@ func TestMigratedBaziBondAndXiaoYunValid(t *testing.T) {
 
 // TestMigratedQimenMaoShanContract ports the legacy 茅山定局 contract.
 func TestMigratedQimenMaoShanContract(t *testing.T) {
-	registry := testEngine()
+	registry := testContractServer()
 	document := callQimenChart(t, registry, map[string]any{
 		"standard_time": "2024-06-21T06:00:00+08:00", "longitude": 116.4, "scope": "hour",
 		"school": "zhuanpan", "dingju_method": "maoshan",
@@ -233,7 +233,7 @@ func TestMigratedQimenMaoShanContract(t *testing.T) {
 // TestMigratedQimenQuarterRuleContract ports the legacy 刻家奇门 contract for
 // both the ten-minute and twelve-minute rules.
 func TestMigratedQimenQuarterRuleContract(t *testing.T) {
-	registry := testEngine()
+	registry := testContractServer()
 	document := callQimenChart(t, registry, map[string]any{
 		"standard_time": "2026-09-07T00:00:00+08:00", "longitude": 116.4, "scope": "quarter", "school": "zhuanpan",
 	})
@@ -265,7 +265,7 @@ func TestMigratedQimenQuarterRuleContract(t *testing.T) {
 // TestMigratedQimenJinhanContract ports the legacy 金函玉镜 contract: a
 // day-only dedicated chart that omits the standard board/analysis surface.
 func TestMigratedQimenJinhanContract(t *testing.T) {
-	registry := testEngine()
+	registry := testContractServer()
 	document := callQimenChart(t, registry, map[string]any{
 		"standard_time": "2024-06-29T12:00:00+08:00", "longitude": 116.4, "scope": "day", "school": "jinhan_yujing",
 	})
@@ -314,7 +314,7 @@ func TestMigratedQimenJinhanContract(t *testing.T) {
 // without error is the 17-combination result-contract assertion the legacy
 // schema test made.
 func TestMigratedQimenBoundaryDates(t *testing.T) {
-	registry := testEngine()
+	registry := testContractServer()
 	methods := []map[string]any{
 		{"scope": "hour", "school": "zhuanpan", "dingju_method": "chaibu"},
 		{"scope": "hour", "school": "zhuanpan", "dingju_method": "zhirun"},
@@ -362,7 +362,7 @@ func TestMigratedQimenConsumesTianwenGregorian(t *testing.T) {
 	if len(resolved.Candidates) == 0 || resolved.Candidates[0].Subject.StandardTime == "" {
 		t.Fatalf("subject_candidates candidates = %+v", resolved.Candidates)
 	}
-	registry := testEngine()
+	registry := testContractServer()
 	document := callQimenChart(t, registry, map[string]any{
 		"standard_time": standardInputFromInstant(t, "2026-03-02T10:30:00Z", "Asia/Shanghai"), "longitude": 116.4,
 	})
@@ -373,7 +373,7 @@ func TestMigratedQimenConsumesTianwenGregorian(t *testing.T) {
 
 // TestMigratedQimenInvalidMethodCombinations keeps the legacy rejection matrix.
 func TestMigratedQimenInvalidMethodCombinations(t *testing.T) {
-	registry := testEngine()
+	registry := testContractServer()
 	const stamp = "2026-03-02T10:30:00Z"
 	for _, input := range []map[string]any{
 		{"scope": "year", "dingju_method": "chaibu"},

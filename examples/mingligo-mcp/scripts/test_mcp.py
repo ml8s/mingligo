@@ -92,7 +92,7 @@ def main() -> int:
         "base_url",
         nargs="?",
         default=os.environ.get("MINGLIGO_MCP_URL", ""),
-        help="engine MCP endpoint, for example http://127.0.0.1:8081/mcp",
+        help="MingliGo MCP endpoint, for example http://127.0.0.1:8081/mcp",
     )
     args = parser.parse_args()
     if not args.base_url:

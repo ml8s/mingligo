@@ -33,7 +33,7 @@ func TestTimeModelGolden(t *testing.T) {
 		t.Fatalf("invalid time-model golden: version=%d cases=%d", doc.Version, len(doc.Cases))
 	}
 
-	registry := testEngine()
+	registry := testContractServer()
 	for _, tc := range doc.Cases {
 		t.Run(tc.Name, func(t *testing.T) {
 			input := make(map[string]any, len(tc.Input)+1)

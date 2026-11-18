@@ -1,7 +1,7 @@
-// Engine wire DTOs for the MCP contract layer.
+// MingliGo wire DTOs for the MCP contract layer.
 //
 // These types are ordinary source now, not generated artifacts. Edit them
-// directly when the published engine payload changes.
+// directly when the published MingliGo payload changes.
 package mcpcontract
 
 import "github.com/ml8s/mingligo/pkg/ziwei"

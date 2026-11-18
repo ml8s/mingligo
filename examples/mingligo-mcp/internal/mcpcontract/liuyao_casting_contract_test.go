@@ -10,7 +10,7 @@ import (
 )
 
 func TestLiuyaoCoinScoresUseConstSchema(t *testing.T) {
-	definition, err := testEngine().Definition("liuyao_qigua")
+	definition, err := testContractServer().Definition("liuyao_qigua")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -73,7 +73,7 @@ func TestLiuyaoCoinScoresUseConstSchema(t *testing.T) {
 }
 
 func TestLiuyaoQiguaCoinsInputUsesRawThreeCoinArrays(t *testing.T) {
-	definition, err := testEngine().Definition("liuyao_qigua")
+	definition, err := testContractServer().Definition("liuyao_qigua")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -127,7 +127,7 @@ func TestLiuyaoQiguaCoinsInputUsesRawThreeCoinArrays(t *testing.T) {
 }
 
 func TestLiuyaoFocusSchemaUsesClosedDiscriminatedBranches(t *testing.T) {
-	definition, err := testEngine().Definition("liuyao_qigua")
+	definition, err := testContractServer().Definition("liuyao_qigua")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -250,7 +250,7 @@ func containsAnyString(values []any, want string) bool {
 }
 
 func TestLiuyaoEventSchemasAreCanonical(t *testing.T) {
-	registry := testEngine()
+	registry := testContractServer()
 	qigua, err := registry.Definition("liuyao_qigua")
 	if err != nil {
 		t.Fatal(err)
@@ -266,7 +266,7 @@ func TestLiuyaoEventSchemasAreCanonical(t *testing.T) {
 }
 
 func TestLiuyaoQiguaRejectsAutoOriginWithRounds(t *testing.T) {
-	registry := testEngine()
+	registry := testContractServer()
 	if _, err := registry.Call(context.Background(), "liuyao_qigua", mustJSON(t, LiuyaoQiguaInput{
 		Origin: LiuyaoCastingRequestInput{
 			Mode:   "auto",
@@ -279,7 +279,7 @@ func TestLiuyaoQiguaRejectsAutoOriginWithRounds(t *testing.T) {
 }
 
 func TestLiuyaoQiguaReceiptFeedsChartForAutoAndCoins(t *testing.T) {
-	registry := testEngine()
+	registry := testContractServer()
 	callChart := func(t *testing.T, event LiuyaoCastingEvent) {
 		t.Helper()
 		input := liuyaoCastingEventInput(event)
@@ -348,7 +348,7 @@ func TestLiuyaoQiguaReceiptFeedsChartForAutoAndCoins(t *testing.T) {
 }
 
 func TestLiuyaoChartUsesEventYongShen(t *testing.T) {
-	registry := testEngine()
+	registry := testContractServer()
 	casting := LiuyaoCastingOutput{
 		Mode:    "yaos",
 		Order:   "bottom_up",

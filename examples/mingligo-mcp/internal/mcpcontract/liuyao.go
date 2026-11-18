@@ -11,7 +11,7 @@ import (
 	"github.com/ml8s/mingligo/pkg/liuyao"
 )
 
-// LiuyaoCoinRoundInput is one raw three-coin outcome. The engine owns totaling,
+// LiuyaoCoinRoundInput is one raw three-coin outcome. The domain owns totaling,
 // labels, changing flags, and the normalized receipt.
 type LiuyaoCoinRoundInput [3]LiuyaoCoinSymbol
 

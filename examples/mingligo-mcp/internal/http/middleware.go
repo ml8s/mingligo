@@ -15,10 +15,6 @@ import (
 	"github.com/ml8s/mingligo/examples/mingligo-mcp/internal/observability"
 )
 
-var prodOrigins = map[string]bool{
-	"https://liki.hk": true,
-}
-
 var devOrigins = map[string]bool{
 	"http://localhost:8080": true,
 	"http://localhost:8081": true,
@@ -52,10 +48,7 @@ func CORSMiddleware(devMode bool, next http.Handler) http.Handler {
 }
 
 func configuredOrigins(devMode bool) map[string]bool {
-	allowed := make(map[string]bool, len(prodOrigins)+len(devOrigins))
-	for origin := range prodOrigins {
-		allowed[origin] = true
-	}
+	allowed := make(map[string]bool, len(devOrigins))
 	if devMode {
 		for origin := range devOrigins {
 			allowed[origin] = true

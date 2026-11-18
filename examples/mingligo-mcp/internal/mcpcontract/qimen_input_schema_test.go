@@ -9,18 +9,18 @@ import (
 )
 
 // The Python qimen orchestrator (tests/test_qimen_tools.py) validates the
-// parameters it builds against the engine boundary. It cannot derive the
+// parameters it builds against the MingliGo boundary. It cannot derive the
 // typed schema itself, so the qimen.chart input schema is committed as a
 // golden file and guarded here: if the DTO changes, this test fails and the
 // Python check would otherwise silently validate against a stale contract.
 //
 // Regenerate with UPDATE_GOLDEN=1 go test ./internal/mcpcontract/.
-var updateEngineInputGolden = os.Getenv("UPDATE_GOLDEN") == "1"
+var updateQimenInputGolden = os.Getenv("UPDATE_GOLDEN") == "1"
 
 const qimenInputSchemaGolden = "testdata/qimen-input-schema.json"
 
-func TestEngineQimenInputSchemaGolden(t *testing.T) {
-	definition, err := testEngine().Definition("qimen_chart")
+func TestQimenInputSchemaGolden(t *testing.T) {
+	definition, err := testContractServer().Definition("qimen_chart")
 	if err != nil {
 		t.Fatalf("qimen.chart definition: %v", err)
 	}
@@ -29,7 +29,7 @@ func TestEngineQimenInputSchemaGolden(t *testing.T) {
 		t.Fatalf("render input schema: %v", err)
 	}
 
-	if updateEngineInputGolden {
+	if updateQimenInputGolden {
 		if err := os.MkdirAll(filepath.Dir(qimenInputSchemaGolden), 0o755); err != nil {
 			t.Fatal(err)
 		}

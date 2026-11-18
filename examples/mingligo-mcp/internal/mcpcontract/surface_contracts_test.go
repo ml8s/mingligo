@@ -19,12 +19,12 @@ func TestMain(m *testing.M) {
 	os.Exit(m.Run())
 }
 
-// testEngine derives the full typed registry once. Registry is read-only after
+// testContractServer derives the full typed registry once. Registry is read-only after
 // construction, and deriving every JSON Schema in every test dominates the
 // package's race/coverage runtime.
 
-func TestEngineContractDefinitions(t *testing.T) {
-	registry := testEngine()
+func TestMingliContractDefinitions(t *testing.T) {
+	registry := testContractServer()
 	want := []string{
 		"time_now", "huangli_days", "subject_candidates", "city_info",
 		"bazi_chart",
@@ -76,8 +76,8 @@ func TestEngineContractDefinitions(t *testing.T) {
 	}
 }
 
-func TestEngineContractInputConstraints(t *testing.T) {
-	registry := testEngine()
+func TestMingliContractInputConstraints(t *testing.T) {
+	registry := testContractServer()
 
 	var cityInput struct {
 		Type                 string   `json:"type"`
@@ -151,7 +151,7 @@ func TestEngineContractInputConstraints(t *testing.T) {
 }
 
 func TestLiuyaoQiguaSchemaUsesMutuallyExclusiveForms(t *testing.T) {
-	registry := testEngine()
+	registry := testContractServer()
 
 	var input struct {
 		AdditionalProperties *bool `json:"additionalProperties"`
@@ -215,7 +215,7 @@ func TestLiuyaoQiguaSchemaUsesMutuallyExclusiveForms(t *testing.T) {
 }
 
 func TestQimenChartSchemaUsesMethodForms(t *testing.T) {
-	registry := testEngine()
+	registry := testContractServer()
 
 	type leaf struct {
 		Const   string   `json:"const"`
@@ -308,8 +308,8 @@ func TestQimenChartSchemaUsesMethodForms(t *testing.T) {
 	}
 }
 
-func TestEngineContractSchemasSelfDescribe(t *testing.T) {
-	registry := testEngine()
+func TestMingliContractSchemasSelfDescribe(t *testing.T) {
+	registry := testContractServer()
 	for _, name := range registry.Names() {
 		definition := mustDefinition(t, registry, name)
 		for _, raw := range []json.RawMessage{definition.InputSchema, definition.OutputSchema} {
@@ -370,10 +370,10 @@ func mustDefinition(t *testing.T, registry *ContractServer, name string) Definit
 	return definition
 }
 
-func TestEngineContractBaziTiaoHouUsesExplicitNoSecondary(t *testing.T) {
-	registry := testEngine()
+func TestMingliContractBaziTiaoHouUsesExplicitNoSecondary(t *testing.T) {
+	registry := testContractServer()
 
-	// 1990-05-20 11:49 CST at 116.4E (the counsel baseline birth) has a 调候
+	// 1990-05-20 11:49 CST at 116.4E (a fixed review baseline) has a 调候
 	// primary element but no 辅 element. Missing candidates use an explicit
 	// closure value; neither JSON null nor an empty-string sentinel is allowed.
 	subject := map[string]any{
@@ -452,8 +452,8 @@ func resolveTestSchemaRef(t *testing.T, node any, definitions map[string]any) ma
 	return definitionSchema
 }
 
-func TestEngineContractCalls(t *testing.T) {
-	registry := testEngine()
+func TestMingliContractCalls(t *testing.T) {
+	registry := testContractServer()
 
 	cityRaw, err := registry.Call(context.Background(), "city_info", mustJSON(t, CityInfoInput{City: "北京"}))
 	if err != nil {

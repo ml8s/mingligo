@@ -6,8 +6,8 @@ import (
 	"testing"
 )
 
-func TestEngineChartOutputsDoNotCarryDigests(t *testing.T) {
-	registry := testEngine()
+func TestMingliChartOutputsDoNotCarryDigests(t *testing.T) {
+	registry := testContractServer()
 	for _, method := range []string{"bazi_chart", "ziwei_chart"} {
 		t.Run(method, func(t *testing.T) {
 			subject := map[string]any{
@@ -29,7 +29,7 @@ func TestEngineChartOutputsDoNotCarryDigests(t *testing.T) {
 }
 
 func TestSeriesSubjectOmitsSourceDigest(t *testing.T) {
-	registry := testEngine()
+	registry := testContractServer()
 	input := map[string]any{"subject": map[string]any{"standard_time": "1990-05-20T12:49:00+08:00", "longitude": 116.4, "gender": "male"}, "scope": "liu_nian", "standard_time": "2026-06-15T12:00:00+08:00"}
 	raw, err := registry.Call(context.Background(), "bazi_liupan", mustJSON(t, input))
 	if err != nil {

@@ -3,7 +3,7 @@ package mcpcontract
 import "testing"
 
 func TestLiupanOutputSchemasFlattenNamedRoots(t *testing.T) {
-	registry := testEngine()
+	registry := testContractServer()
 	wantRoots := map[string][]string{
 		"bazi_liupan":  {"liu_nian", "liu_yue", "liu_ri", "liu_shi", "xiao_yun"},
 		"ziwei_liupan": {"liu_nian", "liu_yue", "liu_ri", "liu_shi"},

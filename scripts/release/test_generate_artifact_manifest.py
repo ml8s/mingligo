@@ -9,7 +9,7 @@ SCRIPT = ROOT / "scripts/release/generate_artifact_manifest.py"
 
 
 class ArtifactManifestTests(unittest.TestCase):
-    def test_generates_neutral_engine_binding(self):
+    def test_generates_neutral_mingligo_binding(self):
         result = subprocess.run(
             [
                 "python3", str(SCRIPT), "--repo", str(ROOT),

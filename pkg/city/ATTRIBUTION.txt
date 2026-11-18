@@ -1,4 +1,4 @@
-Mingli engine bundled geographic data notices
+MingliGo bundled geographic data notices
 ================================================
 
 The repository MIT license applies to Mingli code. It does not relicense

@@ -67,8 +67,8 @@ func main() {
 	selfTestOK := selfTestChart.Ri.Gan == ganzhi.GanWu
 
 	mux := http.NewServeMux()
-	// The aggregate endpoint is the canonical engine surface for the expert,
-	// counsel, local tests, and deployment.
+	// The aggregate endpoint is the canonical MingliGo surface for local tests,
+	// self-hosters, and deployment.
 	mux.Handle("/mcp", apphttp.MetricsMiddleware("/mcp", apphttp.UnsupportedMethods(mcpHandler, "subscriptions/listen")))
 
 	mux.Handle("GET /health", apphttp.MetricsMiddleware("/health", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {

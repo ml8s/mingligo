@@ -76,7 +76,7 @@ func callSeries(t *testing.T, reg *ContractServer, tool string, args map[string]
 }
 
 func TestSeriesSingleIsDefault(t *testing.T) {
-	reg := testEngine()
+	reg := testContractServer()
 	raw := callSeries(t, reg, "bazi_liupan", map[string]any{
 		"subject": seriesChart(t), "scope": "liu_nian",
 		"standard_time": "2026-06-15T12:00:00+08:00",
@@ -91,7 +91,7 @@ func TestSeriesSingleIsDefault(t *testing.T) {
 }
 
 func TestSeriesBatchN(t *testing.T) {
-	reg := testEngine()
+	reg := testContractServer()
 	raw := callSeries(t, reg, "bazi_liupan", map[string]any{
 		"subject": seriesChart(t), "scope": "liu_nian",
 		"standard_time": "2026-06-15T12:00:00+08:00", "count": 3,
@@ -109,7 +109,7 @@ func TestSeriesBatchN(t *testing.T) {
 }
 
 func TestSeriesBatchFirstEqualsSingle(t *testing.T) {
-	reg := testEngine()
+	reg := testContractServer()
 	args := func(count int) map[string]any {
 		return map[string]any{
 			"subject": seriesChart(t), "scope": "liu_nian",
@@ -130,7 +130,7 @@ func TestSeriesBatchFirstEqualsSingle(t *testing.T) {
 }
 
 func TestSeriesCountBounds(t *testing.T) {
-	reg := testEngine()
+	reg := testContractServer()
 	for _, count := range []int{-1, MaxSeriesCount + 1} {
 		if _, err := reg.Call(context.Background(), "bazi_liupan", mustJSON(t, map[string]any{
 			"subject": seriesChart(t), "scope": "liu_nian",
@@ -142,7 +142,7 @@ func TestSeriesCountBounds(t *testing.T) {
 }
 
 func TestSeriesCountSchemaMatchesRuntimeBound(t *testing.T) {
-	registry := testEngine()
+	registry := testContractServer()
 	tools := []string{"bazi_liupan", "ziwei_liupan", "xuankong_liunian"}
 	for _, tool := range tools {
 		t.Run(tool, func(t *testing.T) {
@@ -193,7 +193,7 @@ func TestSeriesCountSchemaMatchesRuntimeBound(t *testing.T) {
 }
 
 func TestSeriesRollovers(t *testing.T) {
-	reg := testEngine()
+	reg := testContractServer()
 	baziChart := seriesChart(t)
 
 	months := decodeSeriesItems(t, callSeries(t, reg, "bazi_liupan", map[string]any{
@@ -243,7 +243,7 @@ func TestSeriesRollovers(t *testing.T) {
 }
 
 func TestSeriesApparentSolarCellsDoNotRepeat(t *testing.T) {
-	reg := testEngine()
+	reg := testContractServer()
 	baziChart := seriesChart(t)
 
 	days := decodeSeriesItems(t, callSeries(t, reg, "bazi_liupan", map[string]any{
@@ -299,7 +299,7 @@ func TestSeriesApparentSolarCellsDoNotRepeat(t *testing.T) {
 }
 
 func TestSeriesXiaoYunDefaultOne(t *testing.T) {
-	reg := testEngine()
+	reg := testContractServer()
 	raw := callSeries(t, reg, "bazi_liupan", map[string]any{
 		"subject": seriesChart(t), "scope": "xiao_yun",
 	})
@@ -313,7 +313,7 @@ func TestSeriesXiaoYunDefaultOne(t *testing.T) {
 }
 
 func TestSeriesBatchOutputContract(t *testing.T) {
-	reg := testEngine()
+	reg := testContractServer()
 	baziChart := seriesChart(t)
 	ziweiChart := map[string]any{
 		"standard_time": "1984-02-16T12:00:00+08:00", "longitude": 116.4, "gender": "male",

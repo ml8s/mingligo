@@ -281,7 +281,7 @@ func TestTools_DeclaredOutputSchemaReturnsStructuredContent(t *testing.T) {
 	}
 
 	// time_now is deterministic enough for transport-shape validation and
-	// does not require engine-specific fixture data.
+	// does not require domain-specific fixture data.
 	res, err := sess.CallTool(ctx, &mcp.CallToolParams{
 		Name:      "time_now",
 		Arguments: map[string]any{"timezone": "Asia/Shanghai"},
@@ -407,7 +407,7 @@ func TestAggregateServerExposesAllToolsAndEventHints(t *testing.T) {
 }
 
 // Modern clients open subscriptions/listen only when the server advertises a
-// change stream. The engine tool set is immutable per image, so it must not
+// change stream. The tool set is immutable per image, so it must not
 // advertise one; if a client asks anyway, the transport rejects it with the
 // protocol-mandated 404 JSON-RPC method error.
 func TestStreamableHTTP_DoesNotAdvertiseChangeStreams(t *testing.T) {
