@@ -1,0 +1,20 @@
+package liuyao
+
+import (
+	"testing"
+	"time"
+
+	"github.com/ml8s/mingligo/pkg/tianwen"
+)
+
+func BenchmarkComputeChart(b *testing.B) {
+	stgt := time.Time(time.Date(2026, 6, 28, 12, 0, 0, 0, time.FixedZone("CST", 8*3600)))
+	st := tianwen.ApparentSolarFromCivil(
+		time.Date(2026, 6, 28, 12, 0, 0, 0, time.FixedZone("CST", 8*3600)),
+		116.4, 8,
+	)
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		ComputeChart(stgt, st, YongGuanGui, [6]int{7, 7, 7, 7, 7, 7})
+	}
+}

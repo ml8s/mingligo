@@ -39,4 +39,4 @@ reasonix.toml
 .DS_Store
 *.out
 /liki
-mingligo-mcp
+/bin/mingligo-mcp

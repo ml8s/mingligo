@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ml8s.dev/schemas/mingligo-capability.v1.json",
+  "title": "MingliGo capability manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "project",
+    "source_commit",
+    "contract_revision",
+    "images",
+    "tools",
+    "digests",
+    "default_server_identity"
+  ],
+  "properties": {
+    "schema": {"const": "mingligo-capability.v1"},
+    "project": {"const": "mingligo"},
+    "source_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "contract_revision": {"type": "string", "pattern": "^r[0-9]+$"},
+    "images": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["engine"],
+      "properties": {
+        "engine": {"type": "string", "pattern": "^[^@]+@sha256:[0-9a-f]{64}$"}
+      }
+    },
+    "tools": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["engine"],
+      "properties": {
+        "engine": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1},
+          "uniqueItems": true
+        }
+      }
+    },
+    "digests": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["contracts", "tool_catalog"],
+      "properties": {
+        "contracts": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+        "tool_catalog": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}
+      }
+    },
+    "default_server_identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["engine"],
+      "properties": {
+        "engine": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9-_/]*$",
+          "not": {"pattern": "hk\\.liki"}
+        }
+      }
+    }
+  }
+}

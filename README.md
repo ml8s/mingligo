@@ -9,7 +9,7 @@ server for quick validation.
 ## Library use
 
 ```go
-import "github.com/ml8s/mingligo/bazi"
+import "github.com/ml8s/mingligo/pkg/bazi"
 ```
 
 ## Reference MCP
@@ -18,5 +18,6 @@ import "github.com/ml8s/mingligo/bazi"
 make run
 ```
 
-The local reference server defaults to `local/mingligo-mcp`. Hosted deployments
-inject their own service identity.
+The local reference server defaults to `local/mingligo-mcp`. The `mingligo-mcp`
+server is an example adapter, not the fact core. Use `make runimage` for the
+same image-based validation path.
