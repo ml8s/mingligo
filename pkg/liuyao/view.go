@@ -204,14 +204,14 @@ type AnalysisView struct {
 type ChartView struct {
 	GuaName      string         `json:"gua_name"`
 	BianGua      *string        `json:"bian_gua"`
-	Palace       string         `json:"palace"`
-	PalaceWuxing string         `json:"palace_wuxing"`
+	Gong         string         `json:"gong"`
+	GongWuxing   string         `json:"gong_wuxing"`
 	Lines        []LineView     `json:"lines"`
 	BianLines    []LineView     `json:"bian_lines"`
-	RiGan        string         `json:"ri_gan"`
-	RiZhi        string         `json:"ri_zhi"`
-	YueGan       string         `json:"yue_gan"`
-	YueZhi       string         `json:"yue_zhi"`
+	RiChenGan    string         `json:"ri_chen_gan"`
+	RiChenZhi    string         `json:"ri_chen_zhi"`
+	YueJianGan   string         `json:"yue_jian_gan"`
+	YueJianZhi   string         `json:"yue_jian_zhi"`
 	XunKong      []string       `json:"xun_kong"`
 	Patterns     []PatternView  `json:"patterns"`
 	YongShen     YongShenView   `json:"yong_shen"`
@@ -278,10 +278,10 @@ func yongShenView(v YongShenResult) YongShenView {
 func (c Chart) View() ChartView {
 	view := ChartView{
 		GuaName: encodedName(c.BenGua),
-		Palace: c.Palace, PalaceWuxing: c.PalaceWuxing.String(),
+		Gong: c.Palace, GongWuxing: c.PalaceWuxing.String(),
 		Lines: make([]LineView, 0, 6), BianLines: make([]LineView, 0, 6),
-		RiGan: ganzhi.GanName(c.RiGan), RiZhi: ganzhi.ZhiName(c.RiZhi),
-		YueGan: ganzhi.GanName(c.YueGan), YueZhi: ganzhi.ZhiName(c.YueZhi),
+		RiChenGan: ganzhi.GanName(c.RiGan), RiChenZhi: ganzhi.ZhiName(c.RiZhi),
+		YueJianGan: ganzhi.GanName(c.YueGan), YueJianZhi: ganzhi.ZhiName(c.YueZhi),
 		XunKong: []string{ganzhi.ZhiName(c.XunKong[0]), ganzhi.ZhiName(c.XunKong[1])},
 		Patterns: make([]PatternView, 0, len(c.Patterns)),
 		YongShen: yongShenView(c.YongShen),
