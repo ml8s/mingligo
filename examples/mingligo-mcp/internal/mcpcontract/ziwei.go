@@ -13,11 +13,6 @@ func ziweiLunarProjector(loc *time.Location) (tianwen.LunarProjector, error) {
 	return tianwen.NewLunarProjector(tianwen.LunarBasisLocalAstronomical, loc)
 }
 
-// domain decodes a ziwei.chart wire chart back into the domain chart. The wire
-// DTO is a faithful projection of the domain JSON shape, so the round trip is
-// lossless; the school/birth year checks keep the "empty chart" failure mode.
-
-// ZiweiChart computes the twelve-palace chart from lunar birth data.
 // ZiweiChart computes the canonical complete twelve-palace chart.
 func ZiweiChart(_ context.Context, input ZiweiChartInput) (ziwei.Chart, error) {
 	chart, err := input.Subject.ziweiChart()

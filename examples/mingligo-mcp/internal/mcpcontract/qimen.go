@@ -24,11 +24,10 @@ func QimenChart(_ context.Context, input QimenChartInput) (QimenChartOutput, err
 	if float64(input.Longitude) < -180 || float64(input.Longitude) > 180 {
 		return QimenChartOutput{}, fmt.Errorf("qimen.chart: longitude must be within [-180,180], got %v", float64(input.Longitude))
 	}
-	methodInput := input.Method
 	method, err := qimen.ResolveMethodWithOptions(
-		string(methodInput.Scope), string(methodInput.School), string(methodInput.DingjuMethod),
-		string(methodInput.QuarterRule), string(methodInput.BaseDingjuMethod),
-		string(methodInput.DunSource), string(methodInput.HourBoundary),
+		string(input.Method.Scope), string(input.Method.School), string(input.Method.DingjuMethod),
+		string(input.Method.QuarterRule), string(input.Method.BaseDingjuMethod),
+		string(input.Method.DunSource), string(input.Method.HourBoundary),
 	)
 	if err != nil {
 		return QimenChartOutput{}, fmt.Errorf("qimen.chart: %w", err)

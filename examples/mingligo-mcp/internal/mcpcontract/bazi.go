@@ -303,7 +303,4 @@ func advanceBaziLiuShi(input BaziLiupanInput) (BaziLiupanInput, error) {
 	return input, nil
 }
 
-// ── domain→wire flow projections (no JSON round trip) ──
-
-func ref[T any](v T) *T { return &v }
 

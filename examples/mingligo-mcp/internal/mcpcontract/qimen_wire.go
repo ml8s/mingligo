@@ -288,8 +288,6 @@ func (output *QimenChartOutput) UnmarshalJSON(data []byte) error {
 	return json.Unmarshal(data, &output.Standard)
 }
 
-// ── qimen.chart output ──
-
 type QimenStandardChartOutput struct {
 	Method           QimenChartMethod                  `json:"method" jsonschema:"排盘方法元数据"`
 	Board            QimenChartPan                     `json:"pan" jsonschema:"盘面。"`
