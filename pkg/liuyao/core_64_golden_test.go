@@ -28,7 +28,7 @@ func TestCore64Golden_JingFangEightPalaces(t *testing.T) {
 		Cases []struct {
 			Index  int    `json:"index"`
 			Name   string `json:"name"`
-			Palace string `json:"palace"`
+			Palace string `json:"gong"`
 			ShiPos int    `json:"shi_pos"`
 		} `json:"cases"`
 	}

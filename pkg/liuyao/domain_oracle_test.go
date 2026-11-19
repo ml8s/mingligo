@@ -15,7 +15,7 @@ func TestDomainOracle_LiuyaoNaJiaAndWorld(t *testing.T) {
 	}
 	var doc struct {
 		NaJia []struct {
-			Palace    string   `json:"palace"`
+			Palace    string   `json:"gong"`
 			UpperStem string   `json:"upper_stem"`
 			LowerStem string   `json:"lower_stem"`
 			Branches  []string `json:"branches"`

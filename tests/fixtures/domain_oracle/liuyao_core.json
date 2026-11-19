@@ -2,7 +2,7 @@
   "basis": "《卜筮正宗》京房纳甲与八宫世应口径；伏神只取本宫，不取变卦。；冲突层采用旺相真假空破与生克并存须辨的通行口径。",
   "na_jia_all_8": [
     {
-      "palace": "乾",
+      "gong": "乾",
       "upper_stem": "壬",
       "lower_stem": "甲",
       "branches": [
@@ -15,7 +15,7 @@
       ]
     },
     {
-      "palace": "兑",
+      "gong": "兑",
       "upper_stem": "丁",
       "lower_stem": "丁",
       "branches": [
@@ -28,7 +28,7 @@
       ]
     },
     {
-      "palace": "离",
+      "gong": "离",
       "upper_stem": "己",
       "lower_stem": "己",
       "branches": [
@@ -41,7 +41,7 @@
       ]
     },
     {
-      "palace": "震",
+      "gong": "震",
       "upper_stem": "庚",
       "lower_stem": "庚",
       "branches": [
@@ -54,7 +54,7 @@
       ]
     },
     {
-      "palace": "巽",
+      "gong": "巽",
       "upper_stem": "辛",
       "lower_stem": "辛",
       "branches": [
@@ -67,7 +67,7 @@
       ]
     },
     {
-      "palace": "坎",
+      "gong": "坎",
       "upper_stem": "戊",
       "lower_stem": "戊",
       "branches": [
@@ -80,7 +80,7 @@
       ]
     },
     {
-      "palace": "艮",
+      "gong": "艮",
       "upper_stem": "丙",
       "lower_stem": "丙",
       "branches": [
@@ -93,7 +93,7 @@
       ]
     },
     {
-      "palace": "坤",
+      "gong": "坤",
       "upper_stem": "癸",
       "lower_stem": "乙",
       "branches": [
@@ -152,7 +152,7 @@
     {
       "case_id": "gou-qianfu-wealth",
       "hexagram": "天风姤",
-      "palace": "乾",
+      "gong": "乾",
       "target": "妻财",
       "visible_target": false,
       "fu_position": 2,
@@ -161,7 +161,7 @@
     {
       "case_id": "qian-visible-officer",
       "hexagram": "乾为天",
-      "palace": "乾",
+      "gong": "乾",
       "target": "官鬼",
       "visible_target": true,
       "fu_position": null,

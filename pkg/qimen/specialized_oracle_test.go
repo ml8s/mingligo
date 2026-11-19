@@ -50,7 +50,7 @@ func TestDomainOracle_QimenSpecializedContext(t *testing.T) {
 		} `json:"geng_ge_cases"`
 		Lost []struct {
 			ID             string `json:"id"`
-			HourStemPalace string `json:"hour_stem_palace"`
+			HourStemPalace string `json:"shi_gan_gong"`
 			Door           string `json:"door"`
 			WangShuai      string `json:"wang_shuai"`
 			Expected       []struct {

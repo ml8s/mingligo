@@ -146,12 +146,12 @@ type ShenshaCross struct {
 // compatibility rhythm or rating.
 type Bond struct {
 	DayMaster    dayMasterCross    `json:"day_master"`
-	SpousePalace spousePalaceCross `json:"spouse_palace"`
+	SpousePalace spousePalaceCross `json:"pei_ou_gong"`
 	ZhuCross     zhuCross          `json:"zhu_cross"`
 	ShiShenCross shiShenCross      `json:"shi_shen_cross"`
 	ElementCross elementCross      `json:"wuxing_cross"`
 	NaYinCross   nayinCross        `json:"na_yin_cross"`
-	SpouseStar   spouseStarCross   `json:"spouse_star"`
+	SpouseStar   spouseStarCross   `json:"pei_ou_xing"`
 	ShenshaCross ShenshaCross      `json:"shen_sha_cross"`
 }
 

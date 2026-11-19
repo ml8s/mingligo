@@ -21,8 +21,8 @@ type externalDiffCases struct {
 			Name         string   `json:"name"`
 			BenGua       string   `json:"ben_gua"`
 			BianGua      *string  `json:"bian_gua"`
-			Palace       string   `json:"palace"`
-			PalaceWuxing string   `json:"palace_wuxing"`
+			Palace       string   `json:"gong"`
+			PalaceWuxing string   `json:"gong_wuxing"`
 			DongYao      []int    `json:"dong_yao"`
 			DayGan       string   `json:"day_gan"`
 			DayZhi       string   `json:"day_zhi"`

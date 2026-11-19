@@ -325,12 +325,12 @@ type BaziBondSideInput struct {
 
 type BaziBondOutput struct {
 	DayMaster    BaziBondDayMaster    `json:"day_master" jsonschema:"双方日主及日主生克关系。"`
-	SpousePalace BaziBondSpousePalace `json:"spouse_palace" jsonschema:"双方配偶宫（日支）及其关系。"`
+	SpousePalace BaziBondSpousePalace `json:"pei_ou_gong" jsonschema:"双方配偶宫（日支）及其关系。"`
 	ZhuCross     BaziBondZhuCross     `json:"zhu_cross" jsonschema:"双方四柱逐柱干支交叉。"`
 	ShiShenCross BaziBondShiShenCross `json:"shi_shen_cross" jsonschema:"双方日主互视的十神柱位。"`
 	WuxingCross  BaziBondWuxingCross  `json:"wuxing_cross" jsonschema:"双方实盘五行数量与扶抑对照。"`
 	NaYinCross   BaziBondNaYinCross   `json:"na_yin_cross" jsonschema:"双方四柱纳音交叉。"`
-	SpouseStar   BaziBondSpouseStar   `json:"spouse_star" jsonschema:"双方配偶星候选与落柱。"`
+	SpouseStar   BaziBondSpouseStar   `json:"pei_ou_xing" jsonschema:"双方配偶星候选与落柱。"`
 	ShenshaCross BaziBondShenshaCross `json:"shen_sha_cross" jsonschema:"双方互见神煞事实。"`
 }
 

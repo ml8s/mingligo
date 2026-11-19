@@ -758,8 +758,8 @@
       }
     ]
   },
-  "day_stem_palace": {
-    "palace": "震",
+  "ri_gan_gong": {
+    "gong": "震",
     "facts": [
       {
         "gong": "震",
@@ -776,8 +776,8 @@
       "wang_shuai": "休"
     }
   },
-  "hour_stem_palace": {
-    "palace": "兑",
+  "shi_gan_gong": {
+    "gong": "兑",
     "facts": [
       {
         "gong": "兑",

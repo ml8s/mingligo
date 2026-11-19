@@ -78,7 +78,7 @@ func buildFlowPalaces(liuPanIdx int, starByAnXingIdx map[int][]string) [12]FlowP
 type FlowTransformation struct {
 	Star   starIndex `json:"star"`
 	Hua    siHuaType `json:"hua"`
-	Palace gongIndex `json:"palace"`
+	Palace gongIndex `json:"gong"`
 }
 
 // newFlowTransformations projects the transformation map into a stable,

@@ -55,7 +55,7 @@ type LiuNianResult struct {
 type HouseOverlay struct {
 	GongNum     int    `json:"gong_num"`
 	Star        string `json:"star"`         // 流年星名（如 五黄廉贞）
-	PalaceStars string `json:"palace_stars"` // 宅盘该宫 运星/山星/向星
+	PalaceStars string `json:"gong_stars"` // 宅盘该宫 运星/山星/向星
 }
 
 // ComputeLiuNian computes the annual flying-star board for a year.

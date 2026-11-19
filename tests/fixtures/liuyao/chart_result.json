@@ -2,8 +2,8 @@
   "chart": {
     "gua_name": "既济",
     "bian_gua": null,
-    "palace": "坎",
-    "palace_wuxing": "水",
+    "gong": "坎",
+    "gong_wuxing": "水",
     "lines": [
       {
         "position": 1,

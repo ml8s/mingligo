@@ -19,8 +19,8 @@ type Chart struct {
 	MenZhi           []GongIndex        `json:"men_zhi"`
 	Patterns         []Pattern          `json:"ge_ju"`
 	YingQi           YingQi             `json:"ying_qi"`
-	DayStemPalace    StemPalace         `json:"day_stem_palace"`
-	HourStemPalace   StemPalace         `json:"hour_stem_palace"`
+	DayStemPalace    StemPalace         `json:"ri_gan_gong"`
+	HourStemPalace   StemPalace         `json:"shi_gan_gong"`
 	RiShiRelation    RiShiRelation      `json:"ri_shi_relation"`
 	KongWangAffected []AffectedSymbol   `json:"kong_wang_affected"`
 	MaXingAffected   []AffectedSymbol   `json:"ma_xing_affected"`
@@ -34,7 +34,7 @@ type Chart struct {
 // StemPalace is the canonical view of one stem's placement: the primary
 // heaven-first palace, all heaven/earth occurrences, and seasonal state.
 type StemPalace struct {
-	Palace    GongIndex     `json:"palace"`
+	Palace    GongIndex     `json:"gong"`
 	Facts     []GanGongFact `json:"facts"`
 	WangShuai GongWangShuai `json:"wang_shuai"`
 }

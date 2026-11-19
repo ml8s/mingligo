@@ -301,8 +301,8 @@ type QimenStandardChartOutput struct {
 	MenPo            *[]QimenGongName                  `json:"men_po,omitempty" jsonschema:"门破宫位列表。"`
 	MenZhi           *[]QimenGongName                  `json:"men_zhi,omitempty" jsonschema:"门落地支宫位列表。"`
 	YingQi           *QimenChartYingQi                 `json:"ying_qi,omitempty" jsonschema:"应期候选。"`
-	DayStemPalace    *QimenStemPalace                  `json:"day_stem_palace,omitempty" jsonschema:"日干落宫领域对象；金函玉镜不输出。"`
-	HourStemPalace   *QimenStemPalace                  `json:"hour_stem_palace,omitempty" jsonschema:"时干落宫领域对象；金函玉镜不输出。"`
+	DayStemPalace    *QimenStemPalace                  `json:"ri_gan_gong,omitempty" jsonschema:"日干落宫领域对象；金函玉镜不输出。"`
+	HourStemPalace   *QimenStemPalace                  `json:"shi_gan_gong,omitempty" jsonschema:"时干落宫领域对象；金函玉镜不输出。"`
 	RiShiRelation    *QimenChartRiShiRelation          `json:"ri_shi_relation,omitempty" jsonschema:"日干宫与时干宫关系。"`
 	KongWangAffected *[]QimenChartKongWangAffectedItem `json:"kong_wang_affected,omitempty" jsonschema:"kong_wang_affected列表。"`
 	MaXingAffected   *[]QimenChartMaXingAffectedItem   `json:"ma_xing_affected,omitempty" jsonschema:"ma_xing_affected列表。"`
@@ -578,7 +578,7 @@ type QimenStemPalaceFact struct {
 }
 
 type QimenStemPalace struct {
-	Palace    QimenGongName          `json:"palace" jsonschema:"天盘优先落宫。"`
+	Palace    QimenGongName          `json:"gong" jsonschema:"天盘优先落宫。"`
 	Facts     []QimenStemPalaceFact  `json:"facts" jsonschema:"天盘/地盘落宫明细。"`
 	WangShuai QimenGongWangShuaiFact `json:"wang_shuai" jsonschema:"落宫旺相休囚死。"`
 }
