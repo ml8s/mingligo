@@ -102,6 +102,7 @@ func buildChart(bz ganzhi.Bazi, termTime, chartTime time.Time, method Method) Ch
 	riGanFacts := findGanGongFacts(p, resolveJiaDunGan(bz.Ri.Gan, bz.Ri.Zhi))
 	shiGanFacts := findGanGongFacts(p, resolveJiaDunGan(bz.Shi.Gan, bz.Shi.Zhi))
 	leadP := leadPillarPalace(p)
+	wangShuaiList := palaceWangShuai(p, bz.Yue.Zhi)
 
 	chart := Chart{
 		Method:           buildChartMethod(ju, bz),
@@ -113,12 +114,12 @@ func buildChart(bz ganzhi.Bazi, termTime, chartTime time.Time, method Method) Ch
 		MenPo:            findMenPo(p),
 		MenZhi:           findMenZhi(p),
 		Patterns:         findPatterns(p),
-		DayStemPalace:    newStemPalace(riGanP, riGanFacts, palaceWangShuaiForPalace(p, bz.Yue.Zhi, riGanP)),
-		HourStemPalace:   newStemPalace(shiGanP, shiGanFacts, palaceWangShuaiForPalace(p, bz.Yue.Zhi, shiGanP)),
+		DayStemPalace:    newStemPalace(riGanP, riGanFacts, wangShuaiAt(wangShuaiList, riGanP)),
+		HourStemPalace:   newStemPalace(shiGanP, shiGanFacts, wangShuaiAt(wangShuaiList, shiGanP)),
 		RiShiRelation:    analyzeRiShiRelation(riGanP, shiGanP),
 		KongWangAffected: affectedVoidSymbols(p, riGanP, shiGanP, leadP),
 		MaXingAffected:   affectedHorseSymbols(p, riGanP, shiGanP, leadP),
-		GongWangShuai:    palaceWangShuai(p, bz.Yue.Zhi),
+		GongWangShuai:    wangShuaiList,
 		DutyStarPalace:   findStarPalace(p, p.DutyStar),
 		DutyDoorPalace:   findDoorPalaceIdx(p, p.DutyDoor),
 	}
@@ -232,16 +233,11 @@ func palaceWangShuai(p Board, yueZhi ganzhi.Zhi) []GongWangShuai {
 	return result
 }
 
-func palaceWangShuaiForPalace(p Board, yueZhi ganzhi.Zhi, palace GongIndex) GongWangShuai {
-	if palace < GongKan || palace > GongLi {
+func wangShuaiAt(list []GongWangShuai, palace GongIndex) GongWangShuai {
+	if palace < GongKan || palace > GongLi || int(palace) > len(list) {
 		return GongWangShuai{}
 	}
-	for _, item := range palaceWangShuai(p, yueZhi) {
-		if item.Gong == palace {
-			return item
-		}
-	}
-	return GongWangShuai{}
+	return list[palace-1]
 }
 
 func newStemPalace(palace GongIndex, facts []GanGongFact, wangShuai GongWangShuai) StemPalace {

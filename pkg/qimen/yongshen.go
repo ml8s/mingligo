@@ -113,8 +113,7 @@ func resolveJiaDunGan(gan ganzhi.Gan, zhi ganzhi.Zhi) ganzhi.Gan {
 }
 
 // resolveNianGan 出生年份 → 年命干落宫（甲年命遁六仪）。
-func resolveNianGan(chart Chart, birthDate BirthDate) *GongIndex {
-	nian := tianwen.NianZhu(time.Time(birthDate.Time))
+func resolveNianGan(chart Chart, nian ganzhi.Zhu) *GongIndex {
 	if nian.Gan == 0 {
 		return nil
 	}
@@ -126,8 +125,7 @@ func resolveNianGan(chart Chart, birthDate BirthDate) *GongIndex {
 	return nil
 }
 
-func resolveNianGanFacts(chart Chart, birthDate BirthDate) []GanGongFact {
-	nian := tianwen.NianZhu(time.Time(birthDate.Time))
+func resolveNianGanFacts(chart Chart, nian ganzhi.Zhu) []GanGongFact {
 	if nian.Gan == 0 {
 		return nil
 	}
@@ -201,8 +199,9 @@ func computeYongShen(chart Chart, syms []YongShenSymbol, birthDate BirthDate, ha
 
 	// 年命干落宫（需出生年份；甲年命遁六仪）
 	if hasBirth && birthDate.Has {
-		ys.NianGanPalace = resolveNianGan(chart, birthDate)
-		ys.NianGanGongFacts = resolveNianGanFacts(chart, birthDate)
+		nian := tianwen.NianZhu(time.Time(birthDate.Time))
+		ys.NianGanPalace = resolveNianGan(chart, nian)
+		ys.NianGanGongFacts = resolveNianGanFacts(chart, nian)
 	}
 
 	return ys

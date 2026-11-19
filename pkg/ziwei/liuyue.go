@@ -67,7 +67,10 @@ func ComputeLiuYueWith(ctx FlowContext, target tianwen.LunarDate, p tianwen.Luna
 	if err != nil {
 		return LiuYue{}, err
 	}
+	return computeLiuYueWithPeriod(ctx, target, period)
+}
 
+func computeLiuYueWithPeriod(ctx FlowContext, target tianwen.LunarDate, period FlowMonthPeriod) (LiuYue, error) {
 	flowYear, flowMonth := period.FlowMonth.Year, period.FlowMonth.Month
 	flowYearGan, _ := yearGanZhi(flowYear)
 	// 流月干支 = 目标月干支（五虎遁：年干 + 农历月）——真相源，与命主无关
@@ -109,11 +112,11 @@ func ComputeLiuYueAt(ctx FlowContext, standard time.Time, loc *time.Location) (L
 	if err != nil {
 		return LiuYue{}, err
 	}
-	result, err := ComputeLiuYueWith(ctx, resolved.Lunar, p)
+	period, err := resolveLiuYuePeriodWith(p, resolved.Lunar)
 	if err != nil {
 		return LiuYue{}, err
 	}
-	period, err := resolveLiuYuePeriodWith(p, resolved.Lunar)
+	result, err := computeLiuYueWithPeriod(ctx, resolved.Lunar, period)
 	if err != nil {
 		return LiuYue{}, err
 	}
