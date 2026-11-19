@@ -119,11 +119,15 @@ type Line struct {
 // guaIndex identifies one of the 64 hexagrams.
 type guaIndex int // 0-63, upper trigram 0-7, lower trigram 0-7
 
-func (g guaIndex) MarshalJSON() ([]byte, error) {
-	if int(g) < 0 || int(g) >= 64 {
-		return json.Marshal("")
+func (g guaIndex) Name() string {
+	if int(g) < 0 || int(g) >= len(zhouyiTable) {
+		return ""
 	}
-	return json.Marshal(zhouyiTable[g].Name)
+	return zhouyiTable[g].Name
+}
+
+func (g guaIndex) MarshalJSON() ([]byte, error) {
+	return json.Marshal(g.Name())
 }
 
 func (g *guaIndex) UnmarshalJSON(data []byte) error {

@@ -129,18 +129,18 @@ func validateZiweiLiupan(input ZiweiLiupanInput) error {
 	return nil
 }
 
-func parseZiweiLiuNianTime(input ZiweiLiupanInput) (ziwei.LiuNianTime, tianwen.Date, time.Time, *time.Location, tianwen.LunarProjector, error) {
+func parseZiweiLiuNianTime(input ZiweiLiupanInput) (ziwei.LiuNianTime, tianwen.LunarProjector, error) {
 	standard, loc, err := parseStandardTime(input.StandardTime)
 	if err != nil {
-		return ziwei.LiuNianTime{}, tianwen.Date{}, time.Time{}, nil, tianwen.LunarProjector{}, err
+		return ziwei.LiuNianTime{}, tianwen.LunarProjector{}, err
 	}
 	projector, err := ziweiLunarProjector(loc)
 	if err != nil {
-		return ziwei.LiuNianTime{}, tianwen.Date{}, time.Time{}, nil, tianwen.LunarProjector{}, err
+		return ziwei.LiuNianTime{}, tianwen.LunarProjector{}, err
 	}
 	date := projector.SelectorDate(standard)
 	resolved, err := ziwei.ResolveLiuNianTimeWith(projector, date)
-	return resolved, date, standard, loc, projector, err
+	return resolved, projector, err
 }
 
 func computeZiweiLiuNian(input ZiweiLiupanInput, chart ziwei.Chart) (ziwei.LiuNian, error) {
@@ -156,7 +156,7 @@ func computeZiweiLiuNian(input ZiweiLiupanInput, chart ziwei.Chart) (ziwei.LiuNi
 }
 
 func advanceZiweiLiuNian(input ZiweiLiupanInput) (ZiweiLiupanInput, error) {
-	resolved, _, _, _, projector, err := parseZiweiLiuNianTime(input)
+	resolved, projector, err := parseZiweiLiuNianTime(input)
 	if err != nil {
 		return input, fmt.Errorf("ziwei.liupan liu_nian: %w", err)
 	}
@@ -168,18 +168,18 @@ func advanceZiweiLiuNian(input ZiweiLiupanInput) (ZiweiLiupanInput, error) {
 	return input, nil
 }
 
-func parseZiweiLiuYueTime(input ZiweiLiupanInput) (ziwei.LiuYueTime, tianwen.Date, time.Time, *time.Location, tianwen.LunarProjector, error) {
+func parseZiweiLiuYueTime(input ZiweiLiupanInput) (ziwei.LiuYueTime, tianwen.LunarProjector, error) {
 	standard, loc, err := parseStandardTime(input.StandardTime)
 	if err != nil {
-		return ziwei.LiuYueTime{}, tianwen.Date{}, time.Time{}, nil, tianwen.LunarProjector{}, err
+		return ziwei.LiuYueTime{}, tianwen.LunarProjector{}, err
 	}
 	projector, err := ziweiLunarProjector(loc)
 	if err != nil {
-		return ziwei.LiuYueTime{}, tianwen.Date{}, time.Time{}, nil, tianwen.LunarProjector{}, err
+		return ziwei.LiuYueTime{}, tianwen.LunarProjector{}, err
 	}
 	date := projector.SelectorDate(standard)
 	resolved, err := ziwei.ResolveLiuYueTimeWith(projector, date)
-	return resolved, date, standard, loc, projector, err
+	return resolved, projector, err
 }
 
 func computeZiweiLiuYue(input ZiweiLiupanInput, chart ziwei.Chart) (ziwei.LiuYue, error) {
@@ -195,7 +195,7 @@ func computeZiweiLiuYue(input ZiweiLiupanInput, chart ziwei.Chart) (ziwei.LiuYue
 }
 
 func advanceZiweiLiuYue(input ZiweiLiupanInput) (ZiweiLiupanInput, error) {
-	resolved, _, _, _, projector, err := parseZiweiLiuYueTime(input)
+	resolved, projector, err := parseZiweiLiuYueTime(input)
 	if err != nil {
 		return input, fmt.Errorf("ziwei.liupan liu_yue: %w", err)
 	}

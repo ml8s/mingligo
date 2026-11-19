@@ -1,7 +1,6 @@
 package liuyao
 
 import (
-	"encoding/json"
 	"fmt"
 
 	"github.com/ml8s/mingligo/pkg/ganzhi"
@@ -219,19 +218,6 @@ type ChartView struct {
 	Analysis     AnalysisView   `json:"analysis"`
 }
 
-// encodedName returns the readable name of an enum via its JSON encoding.
-func encodedName(value any) string {
-	raw, err := json.Marshal(value)
-	if err != nil {
-		return ""
-	}
-	var name string
-	if err := json.Unmarshal(raw, &name); err != nil {
-		return ""
-	}
-	return name
-}
-
 func (c Chart) lineView(line Line, rel DayRelation, wangShuai ganzhi.WangShuai) LineView {
 	flags := LineFlags{
 		Moving: line.DongSelf, YuePo: line.YuePo, XunKong: line.XunKong,
@@ -277,7 +263,7 @@ func yongShenView(v YongShenResult) YongShenView {
 // domain knowledge, not presentation.
 func (c Chart) View() ChartView {
 	view := ChartView{
-		GuaName: encodedName(c.BenGua),
+		GuaName: c.BenGua.Name(),
 		Gong: c.Palace, GongWuxing: c.PalaceWuxing.String(),
 		Lines: make([]LineView, 0, 6), BianLines: make([]LineView, 0, 6),
 		RiChenGan: ganzhi.GanName(c.RiGan), RiChenZhi: ganzhi.ZhiName(c.RiZhi),
@@ -287,7 +273,7 @@ func (c Chart) View() ChartView {
 		YongShen: yongShenView(c.YongShen),
 	}
 	if int(c.BianGua) != 0 {
-		name := encodedName(c.BianGua)
+		name := c.BianGua.Name()
 		view.BianGua = &name
 	}
 	for i, line := range c.Lines {
@@ -306,7 +292,7 @@ func (c Chart) View() ChartView {
 	}
 	if c.GuaCi.Name != "" {
 		view.GuaCi = &GuaCiView{
-			Name: encodedName(c.GuaCi.Name), Text: c.GuaCi.GuaCi,
+			Name: c.GuaCi.Name, Text: c.GuaCi.GuaCi,
 			YaoCi: append([]string(nil), c.GuaCi.YaoCi[:]...),
 		}
 	}
@@ -366,12 +352,8 @@ func (c Chart) Analysis() AnalysisView {
 		})
 	}
 	for _, v := range c.SanHeCandidates {
-		positions := make([]int, 0, len(v.Positions))
-		for _, p := range v.Positions {
-			positions = append(positions, p)
-		}
 		out.SanHeCandidates = append(out.SanHeCandidates, SanHeView{
-			Positions: positions, Branches: append([]string(nil), v.Branches...),
+			Positions: append([]int(nil), v.Positions...), Branches: append([]string(nil), v.Branches...),
 			Element: v.Element, Complete: v.Complete, MovingCount: v.MovingCount,
 			Qualification: v.Qualification, LineComplete: v.LineComplete,
 			DayPresent: v.DayPresent, MonthPresent: v.MonthPresent,
@@ -386,12 +368,8 @@ func (c Chart) Analysis() AnalysisView {
 			Position: c.ForceChain.Position, IsHidden: c.ForceChain.IsHidden,
 		}
 		for _, e := range c.ForceChain.Entries {
-			positions := make([]int, 0, len(e.Positions))
-			for _, p := range e.Positions {
-				positions = append(positions, p)
-			}
 			force.Entries = append(force.Entries, ForceEntryView{
-				Role: string(e.Role), Element: e.Element, Positions: positions,
+				Role: string(e.Role), Element: e.Element, Positions: append([]int(nil), e.Positions...),
 				Branches: append([]string(nil), e.Branches...),
 				Relations: append([]string(nil), e.Relations...),
 				States: append([]string(nil), e.States...), Note: e.Note,

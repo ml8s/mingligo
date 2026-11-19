@@ -135,11 +135,6 @@ func buildStaticSchemaOptions() map[reflect.Type]*jsonschema.Schema {
 		reflect.TypeFor[LiuyaoOptionalPosition](): {
 			Type: "integer", Minimum: jsonschema.Ptr(float64(0)), Maximum: jsonschema.Ptr(float64(6)),
 		},
-		reflect.TypeFor[LiuyaoDongRelationType](): {
-			Type: "string", Enum: []any{
-				"生用", "克用", "比和", "冲用", "生原神", "克原神", "生忌神", "克忌神",
-			},
-		},
 		reflect.TypeFor[LiuyaoYaoLabel](): {
 			Type: "string", Enum: []any{"老阴", "少阳", "少阴", "老阳"},
 		},
@@ -152,23 +147,6 @@ func buildStaticSchemaOptions() map[reflect.Type]*jsonschema.Schema {
 		reflect.TypeFor[WangShuaiName](): {
 			Type: "string", Enum: []any{"旺", "相", "休", "囚", "死"},
 		},
-		reflect.TypeFor[LiuyaoShiYing](): {Type: "string", Enum: []any{"世", "应", ""}},
-		reflect.TypeFor[LiuyaoLiuQinName](): {
-			Type: "string", Enum: []any{"父母", "兄弟", "官鬼", "妻财", "子孙"},
-		},
-		reflect.TypeFor[LiuyaoLiuShouName](): {
-			Type: "string", Enum: []any{"青龙", "朱雀", "勾陈", "螣蛇", "白虎", "玄武"},
-		},
-		reflect.TypeFor[LiuyaoForceRole](): {
-			Type: "string", Enum: []any{"用神", "原神", "忌神", "仇神"},
-		},
-		reflect.TypeFor[LiuyaoConflictID](): {
-			Type: "string", Enum: []any{
-				"moving-support-opposition", "yuanshen-support-opposition", "strong-but-void", "strong-but-break",
-			},
-		},
-		reflect.TypeFor[LiuyaoTombBranch](): {Type: "string", Enum: []any{"辰"}},
-		reflect.TypeFor[LiuyaoTombSchool](): {Type: "string", Enum: []any{"engine_default_chen"}},
 		reflect.TypeFor[LiuyaoYongShenName](): {
 			Type: "string", Enum: []any{"父母", "兄弟", "官鬼", "妻财", "子孙", "世爻", "应爻"},
 		},

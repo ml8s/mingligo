@@ -7,7 +7,6 @@ import (
 	"time"
 
 	"github.com/ml8s/mingligo/pkg/bazi"
-	"github.com/ml8s/mingligo/pkg/tianwen"
 )
 
 // BaziChartInput consumes a resolved natal subject. The chart domain derives
@@ -162,14 +161,13 @@ func validateBaziLiupan(input BaziLiupanInput) error {
 	return nil
 }
 
-func parseBaziLiuNianTime(input BaziLiupanInput) (bazi.LiuNianTime, tianwen.Date, time.Time, *time.Location, error) {
+func parseBaziLiuNianTime(input BaziLiupanInput) (bazi.LiuNianTime, *time.Location, error) {
 	standard, loc, err := parseStandardTime(input.StandardTime)
 	if err != nil {
-		return bazi.LiuNianTime{}, tianwen.Date{}, time.Time{}, nil, err
+		return bazi.LiuNianTime{}, nil, err
 	}
-	date := tianwen.StandardDateAt(standard, loc)
 	resolved, err := bazi.ResolveLiuNianTimeAt(standard, loc)
-	return resolved, date, standard, loc, err
+	return resolved, loc, err
 }
 
 func computeBaziLiuNian(input BaziLiupanInput, core bazi.Core) (bazi.LiuNian, error) {
@@ -185,7 +183,7 @@ func computeBaziLiuNian(input BaziLiupanInput, core bazi.Core) (bazi.LiuNian, er
 }
 
 func advanceBaziLiuNian(input BaziLiupanInput) (BaziLiupanInput, error) {
-	resolved, _, _, loc, err := parseBaziLiuNianTime(input)
+	resolved, loc, err := parseBaziLiuNianTime(input)
 	if err != nil {
 		return input, fmt.Errorf("bazi.liupan liu_nian: %w", err)
 	}
@@ -197,14 +195,13 @@ func advanceBaziLiuNian(input BaziLiupanInput) (BaziLiupanInput, error) {
 	return input, nil
 }
 
-func parseBaziLiuYueTime(input BaziLiupanInput) (bazi.LiuYueTime, tianwen.Date, time.Time, *time.Location, error) {
+func parseBaziLiuYueTime(input BaziLiupanInput) (bazi.LiuYueTime, *time.Location, error) {
 	standard, loc, err := parseStandardTime(input.StandardTime)
 	if err != nil {
-		return bazi.LiuYueTime{}, tianwen.Date{}, time.Time{}, nil, err
+		return bazi.LiuYueTime{}, nil, err
 	}
-	date := tianwen.StandardDateAt(standard, loc)
 	resolved, err := bazi.ResolveLiuYueTimeAt(standard, loc)
-	return resolved, date, standard, loc, err
+	return resolved, loc, err
 }
 
 func computeBaziLiuYue(input BaziLiupanInput, core bazi.Core) (bazi.LiuYue, error) {
@@ -220,7 +217,7 @@ func computeBaziLiuYue(input BaziLiupanInput, core bazi.Core) (bazi.LiuYue, erro
 }
 
 func advanceBaziLiuYue(input BaziLiupanInput) (BaziLiupanInput, error) {
-	resolved, _, _, loc, err := parseBaziLiuYueTime(input)
+	resolved, loc, err := parseBaziLiuYueTime(input)
 	if err != nil {
 		return input, fmt.Errorf("bazi.liupan liu_yue: %w", err)
 	}

@@ -47,18 +47,9 @@ type (
 	LiuyaoPosition         int
 	LiuyaoYaoLabel         string
 	LiuyaoOptionalPosition int
-	LiuyaoDongRelationType string
 	LiuyaoHexagramName     string
 	GanName                string
 	ZhiName                string
 	WangShuaiName          string
-	LiuyaoShiYing          string
-	LiuyaoLiuQinName       string
-	LiuyaoLiuShouName      string
-	LiuyaoForceRole        string
-	LiuyaoConflictID       string
-	LiuyaoTombBranch       string
-	LiuyaoTombSchool       string
 	LiuyaoYongShenName     string
-	LiuyaoTimingID         string
 )
