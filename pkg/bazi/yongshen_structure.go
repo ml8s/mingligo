@@ -10,7 +10,7 @@ import (
 // StemOccurrence records one exact stem occurrence in a palace. For a visible
 // stem source is "gan"; for a hidden stem it is main_qi / mid_qi / minor_qi.
 type StemOccurrence struct {
-	Pillar string `json:"pillar"`
+	Pillar string `json:"zhu"`
 	Branch string `json:"zhi"`
 	Stem   string `json:"gan"`
 	Source string `json:"source"`

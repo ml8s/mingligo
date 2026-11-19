@@ -12,8 +12,8 @@ type LayoutResult struct {
 	Group   string        `json:"group"` // 东四命/西四命
 	MingGua string        `json:"ming_gua"`
 	Door    DoorStoveInfo `json:"men"`
-	Master  DoorStoveInfo `json:"master"`
-	Stove   DoorStoveInfo `json:"stove"`
+	Master  DoorStoveInfo `json:"zhu"`
+	Stove   DoorStoveInfo `json:"zao"`
 }
 
 // DoorStoveInfo is one door/master/stove position assessment.

@@ -21,13 +21,13 @@
       ],
       "expected_pattern_roots": [
         {
-          "pillar": "nian",
+          "zhu": "nian",
           "zhi": "巳",
           "gan": "庚",
           "source": "mid_qi"
         },
         {
-          "pillar": "yue",
+          "zhu": "yue",
           "zhi": "酉",
           "gan": "辛",
           "source": "main_qi"
@@ -65,13 +65,13 @@
       "expected_transparent_pillars": [],
       "expected_pattern_roots": [
         {
-          "pillar": "nian",
+          "zhu": "nian",
           "zhi": "巳",
           "gan": "庚",
           "source": "mid_qi"
         },
         {
-          "pillar": "yue",
+          "zhu": "yue",
           "zhi": "酉",
           "gan": "辛",
           "source": "main_qi"
@@ -97,19 +97,19 @@
       ],
       "expected_pattern_roots": [
         {
-          "pillar": "yue",
+          "zhu": "yue",
           "zhi": "寅",
           "gan": "甲",
           "source": "main_qi"
         },
         {
-          "pillar": "ri",
+          "zhu": "ri",
           "zhi": "寅",
           "gan": "甲",
           "source": "main_qi"
         },
         {
-          "pillar": "shi",
+          "zhu": "shi",
           "zhi": "寅",
           "gan": "甲",
           "source": "main_qi"
@@ -132,13 +132,13 @@
       ],
       "expected_pattern_roots": [
         {
-          "pillar": "yue",
+          "zhu": "yue",
           "zhi": "辰",
           "gan": "乙",
           "source": "mid_qi"
         },
         {
-          "pillar": "ri",
+          "zhu": "ri",
           "zhi": "卯",
           "gan": "乙",
           "source": "main_qi"
@@ -199,13 +199,13 @@
       "expected_yin_bi_count": 1,
       "expected_ri_zhu_roots": [
         {
-          "pillar": "ri",
+          "zhu": "ri",
           "zhi": "卯",
           "gan": "乙",
           "source": "main_qi"
         },
         {
-          "pillar": "shi",
+          "zhu": "shi",
           "zhi": "辰",
           "gan": "乙",
           "source": "mid_qi"
@@ -238,13 +238,13 @@
         "hidden": true,
         "occurrences": [
           {
-            "pillar": "ri",
+            "zhu": "ri",
             "zhi": "午",
             "gan": "丁",
             "source": "main_qi"
           },
           {
-            "pillar": "shi",
+            "zhu": "shi",
             "zhi": "午",
             "gan": "丁",
             "source": "main_qi"
@@ -257,7 +257,7 @@
         "hidden": false,
         "occurrences": [
           {
-            "pillar": "shi",
+            "zhu": "shi",
             "zhi": "午",
             "gan": "庚",
             "source": "gan"

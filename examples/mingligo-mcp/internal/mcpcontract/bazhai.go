@@ -86,8 +86,8 @@ type BazhaiLayoutOutput struct {
 	Group   LifeGroupName         `json:"group" jsonschema:"东四命或西四命。"`
 	MingGua EightGuaName          `json:"ming_gua" jsonschema:"命卦。"`
 	Door    BazhaiDoorStoveOutput `json:"men" jsonschema:"门位判断。"`
-	Master  BazhaiDoorStoveOutput `json:"master" jsonschema:"主卧判断。"`
-	Stove   BazhaiDoorStoveOutput `json:"stove" jsonschema:"灶位判断。"`
+	Master  BazhaiDoorStoveOutput `json:"zhu" jsonschema:"主卧判断。"`
+	Stove   BazhaiDoorStoveOutput `json:"zao" jsonschema:"灶位判断。"`
 }
 
 func BazhaiChart(_ context.Context, input BazhaiChartInput) (bazhai.Chart, error) {

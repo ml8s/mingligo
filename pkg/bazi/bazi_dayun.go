@@ -35,7 +35,7 @@ type DaYunStep struct {
 // only by its main qi; natal roots come from hidden stems.
 type DaYunRootRef struct {
 	Source string `json:"source"`
-	Pillar string `json:"pillar,omitempty"`
+	Pillar string `json:"zhu,omitempty"`
 	Stem   string `json:"gan"`
 	Branch string `json:"zhi"`
 }

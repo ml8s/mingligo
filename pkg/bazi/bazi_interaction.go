@@ -44,7 +44,7 @@ const (
 
 // zhuInteraction holds gan and zhi relations for one pillar against the bazi chart.
 type zhuInteraction struct {
-	ZhuLabel string        `json:"pillar_label"`
+	ZhuLabel string        `json:"zhu_label"`
 	GanRels  []GanRelation `json:"gan_rels"`
 	ZhiRels  []ZhiRelation `json:"zhi_rels"`
 }

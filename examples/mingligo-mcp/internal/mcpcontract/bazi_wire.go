@@ -101,7 +101,7 @@ type BaziChartDaYunStepsItem struct {
 
 type BaziChartDaYunStepsItemRootRefsItem struct {
 	Source RootRefsSourceName `json:"source" jsonschema:"来源。"`
-	Pillar *PillarName        `json:"pillar,omitempty" jsonschema:"柱位。"`
+	Pillar *PillarName        `json:"zhu,omitempty" jsonschema:"柱位。"`
 	Stem   GanName            `json:"gan" jsonschema:"天干。"`
 	Branch ZhiName            `json:"zhi" jsonschema:"地支。"`
 }
@@ -132,7 +132,7 @@ type BaziChartRelationLink struct {
 
 type BaziStemOccurrenceRef struct {
 	Branch *ZhiNameNullable `json:"zhi" jsonschema:"地支。"`
-	Pillar *string          `json:"pillar" jsonschema:"柱位。"`
+	Pillar *string          `json:"zhu" jsonschema:"柱位。"`
 	Source *string          `json:"source" jsonschema:"来源。"`
 	Stem   *GanNameNullable `json:"gan" jsonschema:"天干。"`
 }
@@ -151,8 +151,8 @@ type BaziGanZhiPair struct {
 type BaziChartTaiXi = BaziGanZhiPair
 
 type BaziChartGongJiaItem struct {
-	PillarA      *int             `json:"pillar_a,omitempty" jsonschema:"拱局第一柱。"`
-	PillarB      *int             `json:"pillar_b,omitempty" jsonschema:"拱局第二柱。"`
+	PillarA      *int             `json:"zhu_a,omitempty" jsonschema:"拱局第一柱。"`
+	PillarB      *int             `json:"zhu_b,omitempty" jsonschema:"拱局第二柱。"`
 	RelationKind GongJiaTypeName  `json:"relation_kind" jsonschema:"关系类型。"`
 	Type         *GongJiaTypeName `json:"type,omitempty" jsonschema:"类型。"`
 	Wuxing       *ElementName     `json:"wuxing,omitempty" jsonschema:"五行。"`
@@ -183,7 +183,7 @@ type BaziChartLuRootsItem struct {
 
 type BaziChartGuanXiMember struct {
 	Gan    GanName    `json:"gan,omitempty" jsonschema:"参与天干。"`
-	Pillar PillarName `json:"pillar" jsonschema:"所在柱。"`
+	Pillar PillarName `json:"zhu" jsonschema:"所在柱。"`
 	Zhi    ZhiName    `json:"zhi,omitempty" jsonschema:"参与地支。"`
 }
 
@@ -251,7 +251,7 @@ type BaziChartTiaoHouPrimary struct {
 
 type BaziChartTiaoHouPrimaryOccurrencesItem struct {
 	Branch *string          `json:"zhi" jsonschema:"地支。"`
-	Pillar *string          `json:"pillar" jsonschema:"柱位。"`
+	Pillar *string          `json:"zhu" jsonschema:"柱位。"`
 	Source *string          `json:"source" jsonschema:"来源。"`
 	Stem   *GanNameNullable `json:"gan" jsonschema:"天干。"`
 }
@@ -266,7 +266,7 @@ type BaziChartTiaoHouSecondary struct {
 
 type BaziChartTiaoHouSecondaryOccurrencesItem struct {
 	Branch *ZhiNameNullable `json:"zhi" jsonschema:"地支。"`
-	Pillar *string          `json:"pillar" jsonschema:"柱位。"`
+	Pillar *string          `json:"zhu" jsonschema:"柱位。"`
 	Source *string          `json:"source" jsonschema:"来源。"`
 	Stem   *string          `json:"gan" jsonschema:"天干。"`
 }
@@ -463,7 +463,7 @@ type BaziBondSpouseStarSide struct {
 }
 
 type BaziBondSpouseStarOccurrence struct {
-	Pillar PillarName `json:"pillar" jsonschema:"柱位。"`
+	Pillar PillarName `json:"zhu" jsonschema:"柱位。"`
 	Branch ZhiName    `json:"zhi" jsonschema:"地支。"`
 	Stem   GanName    `json:"gan" jsonschema:"天干。"`
 	Source string     `json:"source" jsonschema:"来源。"`
@@ -542,7 +542,7 @@ type BaziLiuNianFuyinFanyinItem struct {
 
 type BaziLiuNianDayunInteractionsItem struct {
 	GanRels     []BaziLiuNianDayunInteractionsItemGanRelsItem `json:"gan_rels" jsonschema:"天干关系列表。"`
-	PillarLabel *string                                       `json:"pillar_label" jsonschema:"命局柱位及干支标签。"`
+	PillarLabel *string                                       `json:"zhu_label" jsonschema:"命局柱位及干支标签。"`
 	ZhiRels     []BaziLiuNianDayunInteractionsItemZhiRelsItem `json:"zhi_rels" jsonschema:"地支关系列表。"`
 }
 
@@ -562,7 +562,7 @@ type BaziLiuNianDayunInteractionsItemZhiRelsItem struct {
 
 type BaziLiuNianNatalInteractionsItem struct {
 	GanRels     []BaziSeriesGanRelationItem `json:"gan_rels" jsonschema:"天干关系列表。"`
-	PillarLabel *string                     `json:"pillar_label" jsonschema:"命局柱位及干支标签。"`
+	PillarLabel *string                     `json:"zhu_label" jsonschema:"命局柱位及干支标签。"`
 	ZhiRels     []BaziSeriesZhiRelationItem `json:"zhi_rels" jsonschema:"地支关系列表。"`
 }
 

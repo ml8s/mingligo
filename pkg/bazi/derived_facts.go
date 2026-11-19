@@ -17,7 +17,7 @@ type LuRoot struct {
 
 // NatalRelationMember locates one stem or branch participant in its palace.
 type NatalRelationMember struct {
-	Pillar string `json:"pillar"`
+	Pillar string `json:"zhu"`
 	Gan    string `json:"gan,omitempty"`
 	Zhi    string `json:"zhi,omitempty"`
 }
