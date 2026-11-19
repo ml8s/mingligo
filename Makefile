@@ -14,12 +14,15 @@ BUILD_TIME ?= $(shell date -u +%Y-%m-%dT%H:%M:%SZ)
 # A stale host GOROOT must never override the toolchain selected from go.mod.
 unexport GOROOT
 
-.PHONY: help build run test vet fmt fmt-check lint security-go check gate docs-lint image-mcp runimage smoke-mcp boundary
+.PHONY: help build example-build run test vet fmt fmt-check lint security-go check gate docs-lint image-mcp runimage smoke-mcp boundary
 
 help:
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(firstword $(MAKEFILE_LIST)) | awk 'BEGIN {FS = ":.*?## "}; {printf "  %-20s %s\n", $$1, $$2}'
 
-build: ## Build the mingligo-mcp example binary
+build: ## Compile the library and example packages
+	$(GO) build ./...
+
+example-build: ## Build the example MCP binary
 	$(GO) build -trimpath -o bin/mingligo-mcp ./examples/mingligo-mcp
 
 run: ## Run the reference MCP server for quick validation
@@ -30,6 +33,12 @@ test: ## Run all tests
 
 boundary: ## Reject fact-core imports of MCP adapters or other internals
 	@! grep -RIn --include='*.go' 'github.com/ml8s/mingligo/examples\|github.com/ml8s/mingligo/internal' pkg
+	@files="$$(grep -RIl --include='*.go' 'github.com/modelcontextprotocol/go-sdk' . | grep -v '^./examples/' || true)"; \
+	if [ -n "$$files" ]; then \
+		echo "MCP SDK imports outside examples:"; \
+		echo "$$files"; \
+		exit 1; \
+	fi
 
 vet: ## Run go vet
 	$(GO) vet ./...

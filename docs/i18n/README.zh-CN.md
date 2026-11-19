@@ -1,16 +1,15 @@
-<p align="center">
+<h1 align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="../../assets/logo-dark.svg">
-    <img alt="MingliGo logo" src="../../assets/logo.svg" width="72">
+    <img alt="MingliGo logo" src="../../assets/logo.svg" width="72" align="absmiddle">
   </picture>
-</p>
-
-# MingliGo
+  MingliGo
+</h1>
 
 > **英文 README 是权威文档。**
 > 本页是中文概览，不是完整翻译。
 
-MingliGo 是中文命理计算的纯 Go 确定性事实核心。它提供可直接使用的稳定领域包；`examples/mingligo-mcp` 只是用于验证该能力的示例 MCP adapter，不属于事实核心。
+MingliGo 是中文命理计算的纯 Go 确定性事实核心。它提供可直接使用的稳定领域包；`examples/mingligo-mcp` 只是示例 MCP adapter。Liki 项目使用了这个示例，但它不是库产品。
 
 ## 设计边界
 
@@ -18,7 +17,7 @@ MingliGo 是中文命理计算的纯 Go 确定性事实核心。它提供可直�
 | --- | --- |
 | `pkg/*` | 确定性领域事实、数据表和校验 |
 | `examples/mingligo-mcp` | 基于 official SDK 的 typed tool adapter 和 composition root |
-| `contracts/mcp-tools.json` | 公开的 MCP 工具目录 |
+| `examples/mingligo-mcp/contracts/mcp-tools.json` | 示例 adapter 的 MCP 工具目录 |
 
 事实核心不会导入 MCP、transport、产品或部署代码；MCP DTO 和 wire mapping 只保留在参考 adapter 中。
 
@@ -47,6 +46,6 @@ chart := bazi.ComputeChartAt(birth, 116.407526, ganzhi.Male)
 ## 核心文档
 
 - [英文 README](../../README.md)
-- [MCP 工具目录](../../contracts/mcp-tools.json)
+- [MCP 工具目录](../../examples/mingligo-mcp/contracts/mcp-tools.json)
 - [MCP adapter 决策记录](../decisions/0003-official-mcp-adapter.md)
 - [MIT License](../../LICENSE)

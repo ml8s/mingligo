@@ -1,16 +1,15 @@
-<p align="center">
+<h1 align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="../../assets/logo-dark.svg">
-    <img alt="MingliGo logo" src="../../assets/logo.svg" width="72">
+    <img alt="MingliGo logo" src="../../assets/logo.svg" width="72" align="absmiddle">
   </picture>
-</p>
-
-# MingliGo
+  MingliGo
+</h1>
 
 > **O README em inglês é a documentação canônica.**
 > Esta página é um resumo em português do Brasil, não uma tradução completa.
 
-MingliGo é um núcleo determinista de fatos em Go puro para cálculos de metafísica chinesa. Ele expõe pacotes de domínio estáveis para uso direto. O servidor `examples/mingligo-mcp` é um adapter MCP de exemplo para validar essa superfície; não faz parte do núcleo de fatos.
+MingliGo é um núcleo determinista de fatos em Go puro para cálculos de metafísica chinesa. Ele expõe pacotes de domínio estáveis para uso direto. O servidor `examples/mingligo-mcp` é um adapter MCP de exemplo. O projeto Liki usa esse exemplo, mas ele não faz parte do produto da biblioteca.
 
 ## Limites de design
 
@@ -18,7 +17,7 @@ MingliGo é um núcleo determinista de fatos em Go puro para cálculos de metaf�
 | --- | --- |
 | `pkg/*` | Fatos deterministas do domínio, tabelas e validação |
 | `examples/mingligo-mcp` | Typed tool adapter do SDK oficial e composition root |
-| `contracts/mcp-tools.json` | Catálogo público de ferramentas MCP |
+| `examples/mingligo-mcp/contracts/mcp-tools.json` | Catálogo de ferramentas MCP do adapter de exemplo |
 
 O núcleo de fatos nunca importa código de MCP, transporte, produto ou implantação. Os DTOs de MCP e o mapeamento de transporte permanecem no adapter de referência.
 
@@ -47,6 +46,6 @@ Chame `tables.Load()` primeiro para criar uma barreira fail-closed; depois use a
 ## Documentação principal
 
 - [README em inglês](../../README.md)
-- [Catálogo de ferramentas MCP](../../contracts/mcp-tools.json)
+- [Catálogo de ferramentas MCP](../../examples/mingligo-mcp/contracts/mcp-tools.json)
 - [Decisão do adapter MCP](../decisions/0003-official-mcp-adapter.md)
 - [Licença MIT](../../LICENSE)

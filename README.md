@@ -1,11 +1,10 @@
-<p align="center">
+<h1 align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="./assets/logo-dark.svg">
-    <img alt="MingliGo logo" src="./assets/logo.svg" width="96">
+    <img alt="MingliGo logo" src="./assets/logo.svg" width="72" align="absmiddle">
   </picture>
-</p>
-
-<h1 align="center">MingliGo</h1>
+  MingliGo
+</h1>
 
 <p align="center">
   <strong>A deterministic fact core for Chinese metaphysics in pure Go.</strong>
@@ -31,12 +30,15 @@
   <a href="./docs/i18n/README.de.md"><img alt="Deutsch" src="https://img.shields.io/badge/docs-Deutsch-334155?style=flat-square"></a>
 </p>
 
+## Overview
+
 MingliGo is a pure Go library for deterministic Chinese metaphysics facts. It
 computes calendars, natal charts, divination boards, and feng-shui boards as
-typed Go values. The primary product is `pkg/*`; the MCP server is only an
-example adapter.
+typed Go values. The public product is `pkg/*`; the MCP adapter is only an
+example. It is maintained carefully because the Liki project uses that example,
+but downstream adoption does not make MCP part of the core-library product.
 
-## Accuracy starts with time
+## Why MingliGo
 
 Traditional Chinese metaphysics observes the sky, not merely an administrative
 clock. 日晷 tells local solar time; it does not follow a national timezone
@@ -75,7 +77,7 @@ Key properties:
 See [Time model](docs/TIME_MODEL.md) for formulas, lunar bases, boundary
 resolution, precision, and limitations.
 
-## Library use
+## Quick start
 
 ```bash
 go get github.com/ml8s/mingligo@main
@@ -115,7 +117,7 @@ The output is a typed domain chart, not an opaque string. Four pillars, hidden
 stems, ten gods, relations, 神煞, 大运, 用神 evidence, and policy metadata remain
 available to callers.
 
-## Domain packages
+## Usage
 
 ### Shared foundations
 
@@ -152,7 +154,9 @@ available to callers.
 
 Detailed per-domain contracts live under [`docs/domain`](docs/domain/README.md).
 
-## Explicit rules, not hidden choices
+## How it works
+
+### Explicit rules, not hidden choices
 
 Chinese metaphysics has real school differences. MingliGo does not collapse them
 into an undocumented default. Where a convention matters, it is represented as a
@@ -168,7 +172,7 @@ field or typed method:
 This keeps interpretation layers and products free to choose a school while
 still knowing exactly which rule produced a fact.
 
-## Validation and golden sources
+### Validation and golden sources
 
 MingliGo is tested against both independent rule anchors and external reference
 fixtures. Representative coverage includes:
@@ -184,19 +188,26 @@ fixtures. Representative coverage includes:
 The full provenance, license, fixture paths, tolerances, and known limits are in
 [`docs/VALIDATION.md`](docs/VALIDATION.md).
 
-## Architecture
+### Architecture
 
 | Boundary | Responsibility |
 | --- | --- |
 | `pkg/*` | Deterministic domain facts, embedded tables, and validation |
-| `examples/mingligo-mcp` | Production-quality example MCP adapter |
-| `contracts/mcp-tools.json` | Frozen MCP tool-name catalog |
+| `examples/mingligo-mcp` | Example MCP adapter; used by Liki, but not a library product |
+| `examples/mingligo-mcp/contracts/mcp-tools.json` | Frozen tool catalog for the example adapter |
 
 The fact core never imports MCP, transport, product, deployment, or judgment
 product code. Domain packages can be consumed directly by Go services, CLIs, or
 an adapter.
 
-## Example MCP adapter
+MCP SDK imports and transport adapters must remain under `examples/`. They are
+not accepted in `pkg/*`.
+
+## Example: MCP adapter
+
+The MCP adapter is an example, not a MingliGo product. It is deliberately kept
+production-quality because Liki consumes it, but its implementation, wire DTOs,
+tool catalog, and deployment assets remain isolated under `examples/`.
 
 The optional adapter publishes 17 tools with the official Go MCP SDK. Typed wire
 DTOs are registered through `mcp.AddTool`; handlers map domain results to wire
@@ -219,7 +230,7 @@ Use `--stdio` for the same tool surface over standard input/output.
 - Domain overview in Chinese: [`docs/domain/README.zh-CN.md`](docs/domain/README.zh-CN.md)
 - Validation sources: [`docs/VALIDATION.md`](docs/VALIDATION.md)
 - MCP transport: [Streamable HTTP](https://modelcontextprotocol.io/specification/2025-06-18/basic/transports)
-- MCP decision: [Official Go MCP SDK typed adapter](docs/decisions/0003-official-mcp-adapter.md)
+- MCP decision: [Official Go MCP SDK example adapter](docs/decisions/0003-official-mcp-adapter.md)
 - Geographic attribution: [`pkg/city/ATTRIBUTION.txt`](pkg/city/ATTRIBUTION.txt)
 
 ## Development
@@ -232,6 +243,11 @@ make gate       # check + test + build
 
 The primary tested calendar range is 1900–2100. Outside that range, callers
 should not assume historical calendar, timezone, or domain-table compatibility.
+
+## Contributing
+
+Keep `pkg/*` deterministic, typed, and independent of transport or product
+concerns. Run `make gate` before submitting a change.
 
 ## License and attribution
 

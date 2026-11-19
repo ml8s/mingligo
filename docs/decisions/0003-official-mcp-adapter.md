@@ -41,8 +41,9 @@ examples/mingligo-mcp/internal/mcpcontract
 examples/mingligo-mcp  composition root and standard MCP adapter
 ```
 
-The example is the canonical, standards-compliant MCP adapter. It is
-production-quality code, not a toy.
+The example is the canonical, standards-compliant MCP example adapter. It is
+production-quality code, not a toy. The Liki project consumes this example;
+that downstream use does not promote it into the public Go library product.
 
 ## Constraints
 
@@ -71,7 +72,7 @@ production-quality code, not a toy.
 
 The migration is complete at the MingliGo boundary:
 
-- Production registers through `RegisterTools` and `mcp.AddTool[In, Out]`;
+- The example registers through `RegisterTools` and `mcp.AddTool[In, Out]`;
   the custom Registry and raw handlers are deleted.
 - All 17 tools use typed wire DTOs. The aggregate `/mcp` surface remains 17
   tools, and the local HTTP smoke passes.

@@ -15,7 +15,7 @@ MingliGo documentation has three layers:
 | [`domain/README.md`](domain/README.md) | Domain-package architecture and contracts |
 | [`domain/README.zh-CN.md`](domain/README.zh-CN.md) | Chinese domain-package overview for wiki writing |
 | [`VALIDATION.md`](VALIDATION.md) | Golden fixtures, reference projects, licenses, known limits |
-| [`decisions/0003-official-mcp-adapter.md`](decisions/0003-official-mcp-adapter.md) | Why MCP is a typed adapter, not the core |
+| [`decisions/0003-official-mcp-adapter.md`](decisions/0003-official-mcp-adapter.md) | Why MCP is a typed example adapter, not the core |
 
 ## Domain documents
 

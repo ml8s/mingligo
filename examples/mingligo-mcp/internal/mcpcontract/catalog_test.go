@@ -8,7 +8,7 @@ import (
 )
 
 func TestMCPCatalogMatchesRegisteredTools(t *testing.T) {
-	raw, err := os.ReadFile("../../../../contracts/mcp-tools.json")
+	raw, err := os.ReadFile("../../contracts/mcp-tools.json")
 	if err != nil {
 		t.Fatal(err)
 	}
