@@ -200,7 +200,7 @@
           "exit_condition": "待飞神受冲或合化，伏神旺相方可出伏"
         }
       ],
-      "branch_relation_facts": [
+      "zhi_relation_facts": [
         {
           "left_position": 1,
           "right_position": 5,
@@ -257,7 +257,7 @@
         }
       ],
       "tomb_school": {
-        "earth_branch": "辰",
+        "di_zhi": "辰",
         "school": "engine_default_chen"
       },
       "san_he_candidates": [
@@ -266,7 +266,7 @@
             4,
             6
           ],
-          "branches": [
+          "zhi": [
             "申",
             "子"
           ],
@@ -294,7 +294,7 @@
             1,
             3
           ],
-          "branches": [
+          "zhi": [
             "卯",
             "亥"
           ],
@@ -321,7 +321,7 @@
           "positions": [
             5
           ],
-          "branches": [
+          "zhi": [
             "戌"
           ],
           "wuxing": "火",
@@ -345,7 +345,7 @@
           "positions": [
             2
           ],
-          "branches": [
+          "zhi": [
             "丑"
           ],
           "wuxing": "金",
@@ -381,7 +381,7 @@
               2,
               5
             ],
-            "branches": [
+            "zhi": [
               "丑",
               "戌"
             ],
@@ -406,7 +406,7 @@
             "positions": [
               1
             ],
-            "branches": [
+            "zhi": [
               "卯"
             ],
             "relations": [
@@ -424,7 +424,7 @@
               3,
               6
             ],
-            "branches": [
+            "zhi": [
               "亥",
               "子"
             ],
@@ -443,7 +443,7 @@
       "yong_shen_candidates": [
         {
           "position": 2,
-          "branch": "丑",
+          "zhi": "丑",
           "is_hidden": false,
           "selected": true,
           "wang_shuai": "休",
@@ -451,7 +451,7 @@
         },
         {
           "position": 5,
-          "branch": "戌",
+          "zhi": "戌",
           "is_hidden": false,
           "selected": false,
           "wang_shuai": "休",

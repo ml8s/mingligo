@@ -57,7 +57,7 @@ type RiShiRelation struct {
 type AffectedSymbol struct {
 	Symbol string     `json:"symbol"`
 	Role   string     `json:"role"`
-	Branch ganzhi.Zhi `json:"branch"`
+	Branch ganzhi.Zhi `json:"zhi"`
 	Gong   GongIndex  `json:"gong"`
 }
 

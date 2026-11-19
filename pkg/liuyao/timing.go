@@ -12,7 +12,7 @@ type TimingCandidate struct {
 	ID            string   `json:"id"`
 	Mechanism     string   `json:"mechanism"`
 	Position      int      `json:"position,omitempty"`
-	TriggerBranch string   `json:"trigger_branch,omitempty"`
+	TriggerBranch string   `json:"trigger_zhi,omitempty"`
 	Window        string   `json:"window,omitempty"`
 	Basis         []string `json:"basis,omitempty"`
 }

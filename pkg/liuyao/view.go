@@ -16,7 +16,7 @@ type LineFlags struct {
 	YuePo       bool   `json:"yue_po"`
 	XunKong     bool   `json:"xun_kong"`
 	MuKu        bool   `json:"mu_ku"`
-	MuKuBranch  string `json:"mu_ku_branch,omitempty"`
+	MuKuBranch  string `json:"mu_ku_zhi,omitempty"`
 	MuKuElement string `json:"mu_ku_wuxing,omitempty"`
 	DongSheng   bool   `json:"dong_sheng"`
 	DongKe      bool   `json:"dong_ke"`
@@ -74,7 +74,7 @@ type TimingView struct {
 	ID            string   `json:"id"`
 	Mechanism     string   `json:"mechanism"`
 	Position      int      `json:"position,omitempty"`
-	TriggerBranch string   `json:"trigger_branch,omitempty"`
+	TriggerBranch string   `json:"trigger_zhi,omitempty"`
 	Window        string   `json:"window,omitempty"`
 	Basis         []string `json:"basis,omitempty"`
 }
@@ -111,7 +111,7 @@ type BranchRelationView struct {
 }
 
 type TombView struct {
-	EarthBranch string `json:"earth_branch"`
+	EarthBranch string `json:"di_zhi"`
 	School      string `json:"school"`
 }
 
@@ -124,8 +124,8 @@ type DayClashView struct {
 
 type MovingTransformationView struct {
 	Position       int      `json:"position"`
-	FromBranch     string   `json:"from_branch"`
-	ToBranch       string   `json:"to_branch"`
+	FromBranch     string   `json:"from_zhi"`
+	ToBranch       string   `json:"to_zhi"`
 	ReturnRelation string   `json:"return_relation,omitempty"`
 	AdvanceRetreat string   `json:"advance_retreat,omitempty"`
 	ChangedVoid    bool     `json:"changed_void,omitempty"`
@@ -135,7 +135,7 @@ type MovingTransformationView struct {
 
 type SanHeView struct {
 	Positions       []int    `json:"positions"`
-	Branches        []string `json:"branches"`
+	Branches        []string `json:"zhi"`
 	Element         string   `json:"wuxing"`
 	Complete        bool     `json:"complete"`
 	MovingCount     int      `json:"moving_count"`
@@ -156,7 +156,7 @@ type ForceEntryView struct {
 	Role      string   `json:"role"`
 	Element   string   `json:"wuxing"`
 	Positions []int    `json:"positions,omitempty"`
-	Branches  []string `json:"branches,omitempty"`
+	Branches  []string `json:"zhi,omitempty"`
 	Relations []string `json:"relations,omitempty"`
 	States    []string `json:"states,omitempty"`
 	Note      string   `json:"note,omitempty"`
@@ -172,7 +172,7 @@ type ForceChainView struct {
 
 type CandidateView struct {
 	Position  int      `json:"position"`
-	Branch    string   `json:"branch"`
+	Branch    string   `json:"zhi"`
 	IsHidden  bool     `json:"is_hidden"`
 	Selected  bool     `json:"selected"`
 	WangShuai string   `json:"wang_shuai,omitempty"`
@@ -190,7 +190,7 @@ type AnalysisView struct {
 	TimingCandidates      []TimingView              `json:"timing_candidates,omitempty"`
 	DongYaoRelations      []DongRelationView        `json:"dong_yao_relations,omitempty"`
 	HiddenLines           []HiddenLineView          `json:"hidden_lines,omitempty"`
-	BranchRelationFacts   []BranchRelationView      `json:"branch_relation_facts,omitempty"`
+	BranchRelationFacts   []BranchRelationView      `json:"zhi_relation_facts,omitempty"`
 	TombSchool            TombView                  `json:"tomb_school"`
 	DayClashFacts         []DayClashView            `json:"day_clash_facts,omitempty"`
 	MovingTransformations []MovingTransformationView `json:"moving_transformations,omitempty"`

@@ -13,7 +13,7 @@ type baziOracle struct {
 		Expected string `json:"expected"`
 	} `json:"shi_shens_all_100"`
 	Hidden []struct {
-		Branch string  `json:"branch"`
+		Branch string  `json:"zhi"`
 		Main   string  `json:"main"`
 		Mid    *string `json:"mid"`
 		Minor  *string `json:"minor"`
@@ -28,8 +28,8 @@ type baziOracle struct {
 		Void   []string `json:"void"`
 	} `json:"xun_kong_all_6"`
 	ChangSheng []struct {
-		Stem   string `json:"stem"`
-		Branch string `json:"branch"`
+		Stem   string `json:"gan"`
+		Branch string `json:"zhi"`
 		Stage  string `json:"stage"`
 	} `json:"chang_sheng_all_120"`
 	Lu map[string]string `json:"ten_stem_lu"`

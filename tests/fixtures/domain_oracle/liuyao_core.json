@@ -5,7 +5,7 @@
       "gong": "乾",
       "upper_stem": "壬",
       "lower_stem": "甲",
-      "branches": [
+      "zhi": [
         "子",
         "寅",
         "辰",
@@ -18,7 +18,7 @@
       "gong": "兑",
       "upper_stem": "丁",
       "lower_stem": "丁",
-      "branches": [
+      "zhi": [
         "巳",
         "卯",
         "丑",
@@ -31,7 +31,7 @@
       "gong": "离",
       "upper_stem": "己",
       "lower_stem": "己",
-      "branches": [
+      "zhi": [
         "卯",
         "丑",
         "亥",
@@ -44,7 +44,7 @@
       "gong": "震",
       "upper_stem": "庚",
       "lower_stem": "庚",
-      "branches": [
+      "zhi": [
         "子",
         "寅",
         "辰",
@@ -57,7 +57,7 @@
       "gong": "巽",
       "upper_stem": "辛",
       "lower_stem": "辛",
-      "branches": [
+      "zhi": [
         "丑",
         "亥",
         "酉",
@@ -70,7 +70,7 @@
       "gong": "坎",
       "upper_stem": "戊",
       "lower_stem": "戊",
-      "branches": [
+      "zhi": [
         "寅",
         "辰",
         "午",
@@ -83,7 +83,7 @@
       "gong": "艮",
       "upper_stem": "丙",
       "lower_stem": "丙",
-      "branches": [
+      "zhi": [
         "辰",
         "午",
         "申",
@@ -96,7 +96,7 @@
       "gong": "坤",
       "upper_stem": "癸",
       "lower_stem": "乙",
-      "branches": [
+      "zhi": [
         "未",
         "巳",
         "卯",

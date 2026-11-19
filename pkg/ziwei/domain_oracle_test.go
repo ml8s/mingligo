@@ -10,7 +10,7 @@ import (
 
 func loadZiweiOracle(t *testing.T) struct {
 	SiHua []struct {
-		Stem            string            `json:"stem"`
+		Stem            string            `json:"gan"`
 		Transformations map[string]string `json:"transformations"`
 	} `json:"si_hua_all_10"`
 	Soul []struct {
@@ -22,12 +22,12 @@ func loadZiweiOracle(t *testing.T) struct {
 		Expected string `json:"expected"`
 	} `json:"body_star_all_12"`
 	TianKui []struct {
-		Stem   string `json:"stem"`
-		Branch string `json:"branch"`
+		Stem   string `json:"gan"`
+		Branch string `json:"zhi"`
 	} `json:"tian_kui_all_10"`
 	TianYue []struct {
-		Stem   string `json:"stem"`
-		Branch string `json:"branch"`
+		Stem   string `json:"gan"`
+		Branch string `json:"zhi"`
 	} `json:"tian_yue_all_10"`
 } {
 	t.Helper()
@@ -37,7 +37,7 @@ func loadZiweiOracle(t *testing.T) struct {
 	}
 	var doc struct {
 		SiHua []struct {
-			Stem            string            `json:"stem"`
+			Stem            string            `json:"gan"`
 			Transformations map[string]string `json:"transformations"`
 		} `json:"si_hua_all_10"`
 		Soul []struct {
@@ -49,12 +49,12 @@ func loadZiweiOracle(t *testing.T) struct {
 			Expected string `json:"expected"`
 		} `json:"body_star_all_12"`
 		TianKui []struct {
-			Stem   string `json:"stem"`
-			Branch string `json:"branch"`
+			Stem   string `json:"gan"`
+			Branch string `json:"zhi"`
 		} `json:"tian_kui_all_10"`
 		TianYue []struct {
-			Stem   string `json:"stem"`
-			Branch string `json:"branch"`
+			Stem   string `json:"gan"`
+			Branch string `json:"zhi"`
 		} `json:"tian_yue_all_10"`
 	}
 	if err := json.Unmarshal(raw, &doc); err != nil {

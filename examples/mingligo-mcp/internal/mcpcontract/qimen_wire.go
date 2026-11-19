@@ -422,7 +422,7 @@ type QimenChartPanGongWeiItemTianPanItem struct {
 }
 
 type QimenBranchPalaceFact struct {
-	Branch ZhiName            `json:"branch" jsonschema:"地支。"`
+	Branch ZhiName            `json:"zhi" jsonschema:"地支。"`
 	Gong   QimenEightGongName `json:"gong" jsonschema:"宫位。"`
 }
 
@@ -478,7 +478,7 @@ type QimenChartYingQi struct {
 type QimenChartYingQiCandidatesItem struct {
 	Type      CandidatesTypeName                            `json:"ying_qi_kind" jsonschema:"应期候选类型。"`
 	Mechanism string                                        `json:"mechanism" jsonschema:"应期触发机制。"`
-	Branch    ZhiName                                       `json:"branch" jsonschema:"地支。"`
+	Branch    ZhiName                                       `json:"zhi" jsonschema:"地支。"`
 	Gong      QimenEightGongName                            `json:"gong" jsonschema:"宫位。"`
 	RelatedTo []QimenChartYingQiCandidatesItemRelatedToItem `json:"related_to" jsonschema:"用神解释可关联的落宫事实；空列表表示不进入用神解释。"`
 	Dates     []QimenChartYingQiCandidatesItemDatesItem     `json:"dates" jsonschema:"候选触发日期。"`
@@ -491,7 +491,7 @@ type QimenChartYingQiCandidatesItemRelatedToItem struct {
 
 type QimenChartYingQiCandidatesItemDatesItem struct {
 	Date   DateString     `json:"trigger_date" jsonschema:"应期日期。"`
-	Branch ZhiName        `json:"branch" jsonschema:"地支。"`
+	Branch ZhiName        `json:"zhi" jsonschema:"地支。"`
 	Match  DatesMatchName `json:"match" jsonschema:"应期触发方向。"`
 }
 
@@ -504,14 +504,14 @@ type QimenChartRiShiRelation struct {
 
 type QimenChartKongWangAffectedItem struct {
 	Symbol string             `json:"symbol" jsonschema:"符号。"`
-	Branch ZhiName            `json:"branch" jsonschema:"地支。"`
+	Branch ZhiName            `json:"zhi" jsonschema:"地支。"`
 	Gong   QimenEightGongName `json:"gong" jsonschema:"宫位。"`
 	Role   RelatedToRoleName  `json:"role" jsonschema:"角色。"`
 }
 
 type QimenChartMaXingAffectedItem struct {
 	Symbol *string             `json:"symbol,omitempty" jsonschema:"符号。"`
-	Branch *ZhiName            `json:"branch,omitempty" jsonschema:"地支。"`
+	Branch *ZhiName            `json:"zhi,omitempty" jsonschema:"地支。"`
 	Gong   *QimenEightGongName `json:"gong,omitempty" jsonschema:"宫位。"`
 	Role   *RelatedToRoleName  `json:"role,omitempty" jsonschema:"角色。"`
 }
@@ -532,8 +532,8 @@ type QimenChartYongShenSymbolsItem struct {
 	Symbol           string         `json:"symbol" jsonschema:"符号。"`
 	Palace           QimenGongName  `json:"gong" jsonschema:"宫位。"`
 	TianGan          []DiPanGanName `json:"tian_gan" jsonschema:"相关天盘干列表。"`
-	KongWangBranches []ZhiName      `json:"kong_wang_branches" jsonschema:"相关旬空地支列表。"`
-	MaXingBranch     *ZhiName       `json:"ma_xing_branch,omitempty" jsonschema:"驿马落支。"`
+	KongWangBranches []ZhiName      `json:"kong_wang_zhi" jsonschema:"相关旬空地支列表。"`
+	MaXingBranch     *ZhiName       `json:"ma_xing_zhi,omitempty" jsonschema:"驿马落支。"`
 }
 
 type QimenChartSpecialFacts struct {

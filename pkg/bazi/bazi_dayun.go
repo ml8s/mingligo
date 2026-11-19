@@ -36,8 +36,8 @@ type DaYunStep struct {
 type DaYunRootRef struct {
 	Source string `json:"source"`
 	Pillar string `json:"pillar,omitempty"`
-	Stem   string `json:"stem"`
-	Branch string `json:"branch"`
+	Stem   string `json:"gan"`
+	Branch string `json:"zhi"`
 }
 
 // DaYun holds the big fortune (大运) cycle for a bazi chart.

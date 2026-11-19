@@ -13,7 +13,7 @@ type YongShenSymbol struct {
 	Door   *DoorIndex   `json:"door,omitempty"`   // 事象门
 	Star   *StarIndex   `json:"star,omitempty"`   // 事象星
 	Spirit *SpiritIndex `json:"spirit,omitempty"` // 事象神
-	Gan    *ganzhi.Gan  `json:"stem,omitempty"`   // 事象干
+	Gan    *ganzhi.Gan  `json:"gan,omitempty"`   // 事象干
 }
 
 // ParseYongShen 解析单个用神符号（门/星/神/干名）。
@@ -78,8 +78,8 @@ type SymbolResult struct {
 	Symbol         string       `json:"symbol"`
 	Palace         GongIndex    `json:"gong"`
 	TianGan        []string     `json:"tian_gan"`
-	KongWangBranch []ganzhi.Zhi `json:"kong_wang_branches"`
-	MaXingBranch   *ganzhi.Zhi  `json:"ma_xing_branch,omitempty"`
+	KongWangBranch []ganzhi.Zhi `json:"kong_wang_zhi"`
+	MaXingBranch   *ganzhi.Zhi  `json:"ma_xing_zhi,omitempty"`
 }
 
 // YongShenResult 奇门用神领域对象（用神符号组合落宫状态 + 年命干）。

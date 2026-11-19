@@ -203,7 +203,7 @@ type PalaceIdentity struct {
 }
 
 type BranchPalace struct {
-	Branch ganzhi.Zhi `json:"branch"`
+	Branch ganzhi.Zhi `json:"zhi"`
 	Gong   GongIndex  `json:"gong"`
 }
 

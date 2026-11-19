@@ -110,7 +110,7 @@ type Line struct {
 	DongKe        bool     `json:"dong_ke,omitempty"`         // 有动爻克此爻
 	XunKong       bool     `json:"xun_kong,omitempty"`        // 该爻地支值日柱旬空
 	MuKu          bool     `json:"mu_ku,omitempty"`           // 入墓（地支为墓库）
-	MuKuBranch    string   `json:"mu_ku_branch,omitempty"`    // 本五行墓库地支
+	MuKuBranch    string   `json:"mu_ku_zhi,omitempty"`    // 本五行墓库地支
 	MuKuElement   string   `json:"mu_ku_wuxing,omitempty"`   // 被入库的五行
 	MuKuTypes     []string `json:"mu_ku_types,omitempty"`     // day/moving/transformed
 	ChangShengYue string   `json:"chang_sheng_yue,omitempty"` // 本爻五行在月支的十二长生
@@ -175,7 +175,7 @@ type Chart struct {
 	Patterns              []Pattern              `json:"ge_ju,omitempty"`              // 特殊格局
 	DongYaoRelations      []DongYaoRelation      `json:"dong_yao_relations,omitempty"` // 动爻与用神的关系
 	HiddenLines           []HiddenLine           `json:"hidden_lines,omitempty"`       // 本宫全部伏神
-	BranchRelationFacts   []BranchRelationFact   `json:"branch_relation_facts,omitempty"`
+	BranchRelationFacts   []BranchRelationFact   `json:"zhi_relation_facts,omitempty"`
 	Casting               *Casting               `json:"casting,omitempty"` // 完整起卦收据（audit only）
 	TombSchool            TombSchool             `json:"tomb_school"`
 	DayClashFacts         []DayClashFact         `json:"day_clash_facts,omitempty"`
@@ -189,7 +189,7 @@ type Chart struct {
 // TombSchool makes the earth-stem tomb convention explicit. Other schools
 // choose Xu for earth; they must not be mixed into this chart silently.
 type TombSchool struct {
-	EarthBranch string `json:"earth_branch"`
+	EarthBranch string `json:"di_zhi"`
 	School      string `json:"school"`
 }
 

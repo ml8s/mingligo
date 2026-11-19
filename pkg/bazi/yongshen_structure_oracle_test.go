@@ -151,7 +151,7 @@ func assertRelationLinks(t *testing.T, links []RelationLink, expected []expected
 }
 
 type expectedTiaoHouGod struct {
-	Stem        string           `json:"stem"`
+	Stem        string           `json:"gan"`
 	Transparent bool             `json:"transparent"`
 	Hidden      bool             `json:"hidden"`
 	Occurrences []StemOccurrence `json:"occurrences"`

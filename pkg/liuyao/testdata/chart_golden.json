@@ -209,7 +209,7 @@
       "is_true": true
     }
   ],
-  "branch_relation_facts": [
+  "zhi_relation_facts": [
     {
       "left_position": 1,
       "right_position": 4,
@@ -268,7 +268,7 @@
     }
   ],
   "tomb_school": {
-    "earth_branch": "辰",
+    "di_zhi": "辰",
     "school": "engine_default_chen"
   },
   "san_he_candidates": [
@@ -278,7 +278,7 @@
         3,
         5
       ],
-      "branches": [
+      "zhi": [
         "子",
         "辰",
         "申"
@@ -305,7 +305,7 @@
         4,
         6
       ],
-      "branches": [
+      "zhi": [
         "寅",
         "午",
         "戌"
@@ -340,7 +340,7 @@
         "positions": [
           4
         ],
-        "branches": [
+        "zhi": [
           "午"
         ],
         "relations": [
@@ -357,7 +357,7 @@
         "positions": [
           2
         ],
-        "branches": [
+        "zhi": [
           "寅"
         ],
         "relations": [
@@ -374,7 +374,7 @@
         "positions": [
           1
         ],
-        "branches": [
+        "zhi": [
           "子"
         ],
         "relations": [
@@ -391,7 +391,7 @@
         "positions": [
           5
         ],
-        "branches": [
+        "zhi": [
           "申"
         ],
         "relations": [
@@ -407,7 +407,7 @@
   "yong_shen_candidates": [
     {
       "position": 4,
-      "branch": "午",
+      "zhi": "午",
       "is_hidden": false,
       "selected": true,
       "wang_shuai": "相",

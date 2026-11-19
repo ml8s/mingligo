@@ -102,8 +102,8 @@ type BaziChartDaYunStepsItem struct {
 type BaziChartDaYunStepsItemRootRefsItem struct {
 	Source RootRefsSourceName `json:"source" jsonschema:"来源。"`
 	Pillar *PillarName        `json:"pillar,omitempty" jsonschema:"柱位。"`
-	Stem   GanName            `json:"stem" jsonschema:"天干。"`
-	Branch ZhiName            `json:"branch" jsonschema:"地支。"`
+	Stem   GanName            `json:"gan" jsonschema:"天干。"`
+	Branch ZhiName            `json:"zhi" jsonschema:"地支。"`
 }
 
 type BaziChartFuYi struct {
@@ -131,10 +131,10 @@ type BaziChartRelationLink struct {
 }
 
 type BaziStemOccurrenceRef struct {
-	Branch *ZhiNameNullable `json:"branch" jsonschema:"地支。"`
+	Branch *ZhiNameNullable `json:"zhi" jsonschema:"地支。"`
 	Pillar *string          `json:"pillar" jsonschema:"柱位。"`
 	Source *string          `json:"source" jsonschema:"来源。"`
-	Stem   *GanNameNullable `json:"stem" jsonschema:"天干。"`
+	Stem   *GanNameNullable `json:"gan" jsonschema:"天干。"`
 }
 
 type BaziChartSanYuan struct {
@@ -242,7 +242,7 @@ type BaziChartTiaoHou struct {
 }
 
 type BaziChartTiaoHouPrimary struct {
-	Stem        GanName                                  `json:"stem" jsonschema:"天干。"`
+	Stem        GanName                                  `json:"gan" jsonschema:"天干。"`
 	Transparent bool                                     `json:"transparent" jsonschema:"是否透干。"`
 	Hidden      bool                                     `json:"hidden" jsonschema:"是否藏干。"`
 	Occurrences []BaziChartTiaoHouPrimaryOccurrencesItem `json:"occurrences" jsonschema:"出现位置。"`
@@ -250,25 +250,25 @@ type BaziChartTiaoHouPrimary struct {
 }
 
 type BaziChartTiaoHouPrimaryOccurrencesItem struct {
-	Branch *string          `json:"branch" jsonschema:"地支。"`
+	Branch *string          `json:"zhi" jsonschema:"地支。"`
 	Pillar *string          `json:"pillar" jsonschema:"柱位。"`
 	Source *string          `json:"source" jsonschema:"来源。"`
-	Stem   *GanNameNullable `json:"stem" jsonschema:"天干。"`
+	Stem   *GanNameNullable `json:"gan" jsonschema:"天干。"`
 }
 
 type BaziChartTiaoHouSecondary struct {
 	Hidden      *bool                                      `json:"hidden" jsonschema:"是否藏干。"`
 	Occurrences []BaziChartTiaoHouSecondaryOccurrencesItem `json:"occurrences" jsonschema:"出现位置。"`
 	GuanXiLinks []BaziChartRelationLink                    `json:"guan_xi_links" jsonschema:"canonical guan_xi 引用与本证据目标。"`
-	Stem        *GanNameNullable                           `json:"stem" jsonschema:"天干。"`
+	Stem        *GanNameNullable                           `json:"gan" jsonschema:"天干。"`
 	Transparent *bool                                      `json:"transparent" jsonschema:"是否透干。"`
 }
 
 type BaziChartTiaoHouSecondaryOccurrencesItem struct {
-	Branch *ZhiNameNullable `json:"branch" jsonschema:"地支。"`
+	Branch *ZhiNameNullable `json:"zhi" jsonschema:"地支。"`
 	Pillar *string          `json:"pillar" jsonschema:"柱位。"`
 	Source *string          `json:"source" jsonschema:"来源。"`
-	Stem   *string          `json:"stem" jsonschema:"天干。"`
+	Stem   *string          `json:"gan" jsonschema:"天干。"`
 }
 
 type BaziChartGeJu struct {
@@ -464,8 +464,8 @@ type BaziBondSpouseStarSide struct {
 
 type BaziBondSpouseStarOccurrence struct {
 	Pillar PillarName `json:"pillar" jsonschema:"柱位。"`
-	Branch ZhiName    `json:"branch" jsonschema:"地支。"`
-	Stem   GanName    `json:"stem" jsonschema:"天干。"`
+	Branch ZhiName    `json:"zhi" jsonschema:"地支。"`
+	Stem   GanName    `json:"gan" jsonschema:"天干。"`
 	Source string     `json:"source" jsonschema:"来源。"`
 	IsVoid bool       `json:"is_void" jsonschema:"是否旬空。"`
 }

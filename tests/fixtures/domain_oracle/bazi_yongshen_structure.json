@@ -22,14 +22,14 @@
       "expected_pattern_roots": [
         {
           "pillar": "nian",
-          "branch": "巳",
-          "stem": "庚",
+          "zhi": "巳",
+          "gan": "庚",
           "source": "mid_qi"
         },
         {
           "pillar": "yue",
-          "branch": "酉",
-          "stem": "辛",
+          "zhi": "酉",
+          "gan": "辛",
           "source": "main_qi"
         }
       ],
@@ -66,14 +66,14 @@
       "expected_pattern_roots": [
         {
           "pillar": "nian",
-          "branch": "巳",
-          "stem": "庚",
+          "zhi": "巳",
+          "gan": "庚",
           "source": "mid_qi"
         },
         {
           "pillar": "yue",
-          "branch": "酉",
-          "stem": "辛",
+          "zhi": "酉",
+          "gan": "辛",
           "source": "main_qi"
         }
       ],
@@ -98,20 +98,20 @@
       "expected_pattern_roots": [
         {
           "pillar": "yue",
-          "branch": "寅",
-          "stem": "甲",
+          "zhi": "寅",
+          "gan": "甲",
           "source": "main_qi"
         },
         {
           "pillar": "ri",
-          "branch": "寅",
-          "stem": "甲",
+          "zhi": "寅",
+          "gan": "甲",
           "source": "main_qi"
         },
         {
           "pillar": "shi",
-          "branch": "寅",
-          "stem": "甲",
+          "zhi": "寅",
+          "gan": "甲",
           "source": "main_qi"
         }
       ],
@@ -133,14 +133,14 @@
       "expected_pattern_roots": [
         {
           "pillar": "yue",
-          "branch": "辰",
-          "stem": "乙",
+          "zhi": "辰",
+          "gan": "乙",
           "source": "mid_qi"
         },
         {
           "pillar": "ri",
-          "branch": "卯",
-          "stem": "乙",
+          "zhi": "卯",
+          "gan": "乙",
           "source": "main_qi"
         }
       ],
@@ -200,14 +200,14 @@
       "expected_ri_zhu_roots": [
         {
           "pillar": "ri",
-          "branch": "卯",
-          "stem": "乙",
+          "zhi": "卯",
+          "gan": "乙",
           "source": "main_qi"
         },
         {
           "pillar": "shi",
-          "branch": "辰",
-          "stem": "乙",
+          "zhi": "辰",
+          "gan": "乙",
           "source": "mid_qi"
         }
       ],
@@ -233,33 +233,33 @@
         "庚午"
       ],
       "expected_primary": {
-        "stem": "丁",
+        "gan": "丁",
         "transparent": false,
         "hidden": true,
         "occurrences": [
           {
             "pillar": "ri",
-            "branch": "午",
-            "stem": "丁",
+            "zhi": "午",
+            "gan": "丁",
             "source": "main_qi"
           },
           {
             "pillar": "shi",
-            "branch": "午",
-            "stem": "丁",
+            "zhi": "午",
+            "gan": "丁",
             "source": "main_qi"
           }
         ]
       },
       "expected_secondary": {
-        "stem": "庚",
+        "gan": "庚",
         "transparent": true,
         "hidden": false,
         "occurrences": [
           {
             "pillar": "shi",
-            "branch": "午",
-            "stem": "庚",
+            "zhi": "午",
+            "gan": "庚",
             "source": "gan"
           }
         ]

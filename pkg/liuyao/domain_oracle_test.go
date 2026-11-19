@@ -18,7 +18,7 @@ func TestDomainOracle_LiuyaoNaJiaAndWorld(t *testing.T) {
 			Palace    string   `json:"gong"`
 			UpperStem string   `json:"upper_stem"`
 			LowerStem string   `json:"lower_stem"`
-			Branches  []string `json:"branches"`
+			Branches  []string `json:"zhi"`
 		} `json:"na_jia_all_8"`
 		World []struct {
 			Sequence int `json:"sequence"`

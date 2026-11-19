@@ -25,7 +25,7 @@ func TestDomainOracle_QimenAll72Ju(t *testing.T) {
 			DutyDoorPalace string `json:"duty_door_palace"`
 			Expected       []struct {
 				Type   string `json:"type"`
-				Branch string `json:"branch"`
+				Branch string `json:"zhi"`
 				Gong   string `json:"gong"`
 			} `json:"expected"`
 		} `json:"yingqi_cases"`

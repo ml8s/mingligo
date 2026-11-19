@@ -41,7 +41,7 @@ func TestDomainOracle_BaziClassicCorrections(t *testing.T) {
 	var doc struct {
 		YangRen []struct {
 			DayGan string `json:"day_gan"`
-			Branch string `json:"branch"`
+			Branch string `json:"zhi"`
 			Hit    bool   `json:"hit"`
 		} `json:"yang_ren"`
 		YueRenGe []struct {
@@ -77,7 +77,7 @@ func TestDomainOracle_BaziClassicCorrections(t *testing.T) {
 		TianLuo []struct {
 			ID     string `json:"id"`
 			Year   string `json:"year"`
-			Branch string `json:"branch"`
+			Branch string `json:"zhi"`
 			Name   string `json:"name"`
 		} `json:"tian_luo_di_wang"`
 	}

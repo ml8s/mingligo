@@ -22,8 +22,8 @@ type DayClashFact struct {
 // changing into its corresponding changed line.
 type MovingTransformation struct {
 	Position       int      `json:"position"`
-	FromBranch     string   `json:"from_branch"`
-	ToBranch       string   `json:"to_branch"`
+	FromBranch     string   `json:"from_zhi"`
+	ToBranch       string   `json:"to_zhi"`
 	ReturnRelation string   `json:"return_relation,omitempty"`
 	AdvanceRetreat string   `json:"advance_retreat,omitempty"`
 	ChangedVoid    bool     `json:"changed_void,omitempty"`
@@ -36,7 +36,7 @@ type MovingTransformation struct {
 // states, month/day support and the concrete target.
 type SanHeCandidate struct {
 	Positions       []int    `json:"positions"`
-	Branches        []string `json:"branches"`
+	Branches        []string `json:"zhi"`
 	Element         string   `json:"wuxing"`
 	Complete        bool     `json:"complete"`
 	MovingCount     int      `json:"moving_count"`
@@ -95,7 +95,7 @@ type ForceEntry struct {
 	Role      ForceRole `json:"role"`
 	Element   string    `json:"wuxing"`
 	Positions []int     `json:"positions,omitempty"`
-	Branches  []string  `json:"branches,omitempty"`
+	Branches  []string  `json:"zhi,omitempty"`
 	Relations []string  `json:"relations,omitempty"`
 	States    []string  `json:"states,omitempty"`
 	Note      string    `json:"note,omitempty"`
@@ -114,7 +114,7 @@ type ForceChain struct {
 // is the position currently used by deterministic engine functions.
 type YongShenCandidate struct {
 	Position  int      `json:"position"`
-	Branch    string   `json:"branch"`
+	Branch    string   `json:"zhi"`
 	IsHidden  bool     `json:"is_hidden"`
 	Selected  bool     `json:"selected"`
 	WangShuai string   `json:"wang_shuai,omitempty"`

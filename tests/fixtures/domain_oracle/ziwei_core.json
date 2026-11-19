@@ -6,7 +6,7 @@
   ],
   "si_hua_all_10": [
     {
-      "stem": "甲",
+      "gan": "甲",
       "transformations": {
         "禄": "廉贞",
         "权": "破军",
@@ -15,7 +15,7 @@
       }
     },
     {
-      "stem": "乙",
+      "gan": "乙",
       "transformations": {
         "禄": "天机",
         "权": "天梁",
@@ -24,7 +24,7 @@
       }
     },
     {
-      "stem": "丙",
+      "gan": "丙",
       "transformations": {
         "禄": "天同",
         "权": "天机",
@@ -33,7 +33,7 @@
       }
     },
     {
-      "stem": "丁",
+      "gan": "丁",
       "transformations": {
         "禄": "太阴",
         "权": "天同",
@@ -42,7 +42,7 @@
       }
     },
     {
-      "stem": "戊",
+      "gan": "戊",
       "transformations": {
         "禄": "贪狼",
         "权": "太阴",
@@ -51,7 +51,7 @@
       }
     },
     {
-      "stem": "己",
+      "gan": "己",
       "transformations": {
         "禄": "武曲",
         "权": "贪狼",
@@ -60,7 +60,7 @@
       }
     },
     {
-      "stem": "庚",
+      "gan": "庚",
       "transformations": {
         "禄": "太阳",
         "权": "武曲",
@@ -69,7 +69,7 @@
       }
     },
     {
-      "stem": "辛",
+      "gan": "辛",
       "transformations": {
         "禄": "巨门",
         "权": "太阳",
@@ -78,7 +78,7 @@
       }
     },
     {
-      "stem": "壬",
+      "gan": "壬",
       "transformations": {
         "禄": "天梁",
         "权": "紫微",
@@ -87,7 +87,7 @@
       }
     },
     {
-      "stem": "癸",
+      "gan": "癸",
       "transformations": {
         "禄": "破军",
         "权": "巨门",
@@ -198,86 +198,86 @@
   ],
   "tian_kui_all_10": [
     {
-      "stem": "甲",
-      "branch": "丑"
+      "gan": "甲",
+      "zhi": "丑"
     },
     {
-      "stem": "乙",
-      "branch": "子"
+      "gan": "乙",
+      "zhi": "子"
     },
     {
-      "stem": "丙",
-      "branch": "亥"
+      "gan": "丙",
+      "zhi": "亥"
     },
     {
-      "stem": "丁",
-      "branch": "亥"
+      "gan": "丁",
+      "zhi": "亥"
     },
     {
-      "stem": "戊",
-      "branch": "丑"
+      "gan": "戊",
+      "zhi": "丑"
     },
     {
-      "stem": "己",
-      "branch": "子"
+      "gan": "己",
+      "zhi": "子"
     },
     {
-      "stem": "庚",
-      "branch": "丑"
+      "gan": "庚",
+      "zhi": "丑"
     },
     {
-      "stem": "辛",
-      "branch": "午"
+      "gan": "辛",
+      "zhi": "午"
     },
     {
-      "stem": "壬",
-      "branch": "卯"
+      "gan": "壬",
+      "zhi": "卯"
     },
     {
-      "stem": "癸",
-      "branch": "卯"
+      "gan": "癸",
+      "zhi": "卯"
     }
   ],
   "tian_yue_all_10": [
     {
-      "stem": "甲",
-      "branch": "未"
+      "gan": "甲",
+      "zhi": "未"
     },
     {
-      "stem": "乙",
-      "branch": "申"
+      "gan": "乙",
+      "zhi": "申"
     },
     {
-      "stem": "丙",
-      "branch": "酉"
+      "gan": "丙",
+      "zhi": "酉"
     },
     {
-      "stem": "丁",
-      "branch": "酉"
+      "gan": "丁",
+      "zhi": "酉"
     },
     {
-      "stem": "戊",
-      "branch": "未"
+      "gan": "戊",
+      "zhi": "未"
     },
     {
-      "stem": "己",
-      "branch": "申"
+      "gan": "己",
+      "zhi": "申"
     },
     {
-      "stem": "庚",
-      "branch": "未"
+      "gan": "庚",
+      "zhi": "未"
     },
     {
-      "stem": "辛",
-      "branch": "寅"
+      "gan": "辛",
+      "zhi": "寅"
     },
     {
-      "stem": "壬",
-      "branch": "巳"
+      "gan": "壬",
+      "zhi": "巳"
     },
     {
-      "stem": "癸",
-      "branch": "巳"
+      "gan": "癸",
+      "zhi": "巳"
     }
   ],
   "leap_month_boundaries": [

@@ -53,7 +53,7 @@ func (r TiaoHouResult) MarshalJSON() ([]byte, error) {
 		Secondary json.RawMessage `json:"secondary"`
 	}{
 		plain:     plain(r),
-		Secondary: json.RawMessage(`{"guan_xi_links":null,"hidden":null,"occurrences":null,"stem":null,"transparent":null}`),
+		Secondary: json.RawMessage(`{"guan_xi_links":null,"hidden":null,"occurrences":null,"gan":null,"transparent":null}`),
 	})
 }
 

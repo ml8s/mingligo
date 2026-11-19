@@ -9,52 +9,52 @@
   "yang_ren": [
     {
       "day_gan": "甲",
-      "branch": "卯",
+      "zhi": "卯",
       "hit": true
     },
     {
       "day_gan": "乙",
-      "branch": "寅",
+      "zhi": "寅",
       "hit": false
     },
     {
       "day_gan": "丙",
-      "branch": "午",
+      "zhi": "午",
       "hit": true
     },
     {
       "day_gan": "丁",
-      "branch": "巳",
+      "zhi": "巳",
       "hit": false
     },
     {
       "day_gan": "戊",
-      "branch": "午",
+      "zhi": "午",
       "hit": true
     },
     {
       "day_gan": "己",
-      "branch": "巳",
+      "zhi": "巳",
       "hit": false
     },
     {
       "day_gan": "庚",
-      "branch": "酉",
+      "zhi": "酉",
       "hit": true
     },
     {
       "day_gan": "辛",
-      "branch": "申",
+      "zhi": "申",
       "hit": false
     },
     {
       "day_gan": "壬",
-      "branch": "子",
+      "zhi": "子",
       "hit": true
     },
     {
       "day_gan": "癸",
-      "branch": "亥",
+      "zhi": "亥",
       "hit": false
     }
   ],
@@ -231,37 +231,37 @@
     {
       "id": "fire-life-xu",
       "year": "甲辰",
-      "branch": "戌",
+      "zhi": "戌",
       "name": "天罗"
     },
     {
       "id": "fire-life-hai",
       "year": "乙巳",
-      "branch": "亥",
+      "zhi": "亥",
       "name": "天罗"
     },
     {
       "id": "water-life-chen",
       "year": "壬辰",
-      "branch": "辰",
+      "zhi": "辰",
       "name": "地网"
     },
     {
       "id": "water-life-si",
       "year": "癸巳",
-      "branch": "巳",
+      "zhi": "巳",
       "name": "地网"
     },
     {
       "id": "metal-life-xu",
       "year": "甲子",
-      "branch": "戌",
+      "zhi": "戌",
       "name": ""
     },
     {
       "id": "wood-life-chen",
       "year": "戊辰",
-      "branch": "辰",
+      "zhi": "辰",
       "name": ""
     }
   ]

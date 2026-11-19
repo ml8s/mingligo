@@ -11,8 +11,8 @@ import (
 // stem source is "gan"; for a hidden stem it is main_qi / mid_qi / minor_qi.
 type StemOccurrence struct {
 	Pillar string `json:"pillar"`
-	Branch string `json:"branch"`
-	Stem   string `json:"stem"`
+	Branch string `json:"zhi"`
+	Stem   string `json:"gan"`
 	Source string `json:"source"`
 }
 
@@ -67,7 +67,7 @@ type FuYiBasis struct {
 // TiaoHouAvailability records whether an exact tabulated stem is visible,
 // hidden, or absent, and which branch relations touch its containing palace.
 type TiaoHouAvailability struct {
-	Stem        string           `json:"stem"`
+	Stem        string           `json:"gan"`
 	Transparent bool             `json:"transparent"`
 	Hidden      bool             `json:"hidden"`
 	Occurrences []StemOccurrence `json:"occurrences"`

@@ -100,8 +100,8 @@ type nayinCross struct {
 
 type spouseStarOccurrence struct {
 	Pillar string `json:"pillar"`
-	Branch string `json:"branch"`
-	Stem   string `json:"stem"`
+	Branch string `json:"zhi"`
+	Stem   string `json:"gan"`
 	Source string `json:"source"`
 	IsVoid bool   `json:"is_void"`
 }
