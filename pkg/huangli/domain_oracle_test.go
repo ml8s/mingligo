@@ -24,7 +24,7 @@ func TestDomainOracle_HuangliCore(t *testing.T) {
 			Date         string `json:"date"`
 			DayGan       string `json:"day_gan"`
 			DayZhi       string `json:"day_zhi"`
-			Mansion      string `json:"mansion"`
+			Mansion      string `json:"xiu"`
 			JianChu      string `json:"jianchu"`
 			HuangDaoName string `json:"huangdao_name"`
 			HuangDaoPath string `json:"huangdao_path"`

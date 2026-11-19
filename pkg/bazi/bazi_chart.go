@@ -110,7 +110,7 @@ type Chart struct {
 	ChangSheng [12]ChangShengStage `json:"chang_sheng"`
 	SanQiName  string              `json:"san_qi_name,omitempty"`
 	// 生肖（年支对应动物，如酉→鸡）。
-	Zodiac string `json:"zodiac"`
+	Zodiac string `json:"sheng_xiao"`
 
 	// 日柱所在旬与日柱旬空。is_void 语义固定为该柱地支值日柱旬空；
 	// 各柱 xun/xun_kong 是该柱自身所在旬，两者是不同命理事实。

@@ -14,7 +14,7 @@ type Chart struct {
 	GanInteractions  []GanInteraction   `json:"gan_interaction"`
 	MenInteractions  []MenInteraction   `json:"men_interaction"`
 	XingInteractions []XingInteraction  `json:"xing_interaction"`
-	XingGongWuXing   []XingGongWuXing   `json:"xing_gong_wu_xing"`
+	XingGongWuXing   []XingGongWuXing   `json:"xing_gong_wuxing"`
 	MenPo            []GongIndex        `json:"men_po"`
 	MenZhi           []GongIndex        `json:"men_zhi"`
 	Patterns         []Pattern          `json:"ge_ju"`

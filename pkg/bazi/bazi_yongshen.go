@@ -64,7 +64,7 @@ type GeJuResult struct {
 	Pattern string `json:"ge_ju"`
 	// GeShenTou is the pattern-god transparency conclusion.
 	GeShenTou bool   `json:"ge_shen_tou"`
-	Usage     string `json:"yong_fa"` // "顺用" or "逆用"
+	Usage     string `json:"usage"` // "顺用" or "逆用"
 	// 结构事实：月令格神与来源。当前模型未完整实现相神、成格、败格、
 	// 救应，因此 Pattern 是格局候选，不是子平真诠完整成格结论。
 	PatternGod       string        `json:"pattern_god,omitempty"`

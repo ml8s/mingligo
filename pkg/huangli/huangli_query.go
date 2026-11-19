@@ -28,7 +28,7 @@ type Day struct {
 	FuShen      string           `json:"fu_shen"`
 	StemTaboo   string           `json:"gan_ji"`
 	BranchTaboo string           `json:"zhi_ji"`
-	Mansion     dayMansion       `json:"mansion"`
+	Mansion     dayMansion       `json:"xiu"`
 	JieQi       string           `json:"jie_qi"`
 	JieQiDays   int              `json:"jie_qi_days"`
 	RenYuan     string           `json:"ren_yuan"`

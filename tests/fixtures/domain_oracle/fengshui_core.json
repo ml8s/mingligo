@@ -10,7 +10,7 @@
       "index": 0,
       "name": "子",
       "angle": 0,
-      "trigram": "坎",
+      "gua": "坎",
       "yuan_long": "天元龙",
       "yin_yang": "阴",
       "wuxing": "水"
@@ -19,7 +19,7 @@
       "index": 1,
       "name": "癸",
       "angle": 15,
-      "trigram": "坎",
+      "gua": "坎",
       "yuan_long": "人元龙",
       "yin_yang": "阴",
       "wuxing": "水"
@@ -28,7 +28,7 @@
       "index": 2,
       "name": "丑",
       "angle": 30,
-      "trigram": "艮",
+      "gua": "艮",
       "yuan_long": "地元龙",
       "yin_yang": "阴",
       "wuxing": "土"
@@ -37,7 +37,7 @@
       "index": 3,
       "name": "艮",
       "angle": 45,
-      "trigram": "艮",
+      "gua": "艮",
       "yuan_long": "天元龙",
       "yin_yang": "阳",
       "wuxing": "土"
@@ -46,7 +46,7 @@
       "index": 4,
       "name": "寅",
       "angle": 60,
-      "trigram": "艮",
+      "gua": "艮",
       "yuan_long": "人元龙",
       "yin_yang": "阳",
       "wuxing": "木"
@@ -55,7 +55,7 @@
       "index": 5,
       "name": "甲",
       "angle": 75,
-      "trigram": "震",
+      "gua": "震",
       "yuan_long": "地元龙",
       "yin_yang": "阳",
       "wuxing": "木"
@@ -64,7 +64,7 @@
       "index": 6,
       "name": "卯",
       "angle": 90,
-      "trigram": "震",
+      "gua": "震",
       "yuan_long": "天元龙",
       "yin_yang": "阴",
       "wuxing": "木"
@@ -73,7 +73,7 @@
       "index": 7,
       "name": "乙",
       "angle": 105,
-      "trigram": "震",
+      "gua": "震",
       "yuan_long": "人元龙",
       "yin_yang": "阴",
       "wuxing": "木"
@@ -82,7 +82,7 @@
       "index": 8,
       "name": "辰",
       "angle": 120,
-      "trigram": "巽",
+      "gua": "巽",
       "yuan_long": "地元龙",
       "yin_yang": "阴",
       "wuxing": "土"
@@ -91,7 +91,7 @@
       "index": 9,
       "name": "巽",
       "angle": 135,
-      "trigram": "巽",
+      "gua": "巽",
       "yuan_long": "天元龙",
       "yin_yang": "阳",
       "wuxing": "木"
@@ -100,7 +100,7 @@
       "index": 10,
       "name": "巳",
       "angle": 150,
-      "trigram": "巽",
+      "gua": "巽",
       "yuan_long": "人元龙",
       "yin_yang": "阳",
       "wuxing": "火"
@@ -109,7 +109,7 @@
       "index": 11,
       "name": "丙",
       "angle": 165,
-      "trigram": "离",
+      "gua": "离",
       "yuan_long": "地元龙",
       "yin_yang": "阳",
       "wuxing": "火"
@@ -118,7 +118,7 @@
       "index": 12,
       "name": "午",
       "angle": 180,
-      "trigram": "离",
+      "gua": "离",
       "yuan_long": "天元龙",
       "yin_yang": "阴",
       "wuxing": "火"
@@ -127,7 +127,7 @@
       "index": 13,
       "name": "丁",
       "angle": 195,
-      "trigram": "离",
+      "gua": "离",
       "yuan_long": "人元龙",
       "yin_yang": "阴",
       "wuxing": "火"
@@ -136,7 +136,7 @@
       "index": 14,
       "name": "未",
       "angle": 210,
-      "trigram": "坤",
+      "gua": "坤",
       "yuan_long": "地元龙",
       "yin_yang": "阴",
       "wuxing": "土"
@@ -145,7 +145,7 @@
       "index": 15,
       "name": "坤",
       "angle": 225,
-      "trigram": "坤",
+      "gua": "坤",
       "yuan_long": "天元龙",
       "yin_yang": "阳",
       "wuxing": "土"
@@ -154,7 +154,7 @@
       "index": 16,
       "name": "申",
       "angle": 240,
-      "trigram": "坤",
+      "gua": "坤",
       "yuan_long": "人元龙",
       "yin_yang": "阳",
       "wuxing": "金"
@@ -163,7 +163,7 @@
       "index": 17,
       "name": "庚",
       "angle": 255,
-      "trigram": "兑",
+      "gua": "兑",
       "yuan_long": "地元龙",
       "yin_yang": "阳",
       "wuxing": "金"
@@ -172,7 +172,7 @@
       "index": 18,
       "name": "酉",
       "angle": 270,
-      "trigram": "兑",
+      "gua": "兑",
       "yuan_long": "天元龙",
       "yin_yang": "阴",
       "wuxing": "金"
@@ -181,7 +181,7 @@
       "index": 19,
       "name": "辛",
       "angle": 285,
-      "trigram": "兑",
+      "gua": "兑",
       "yuan_long": "人元龙",
       "yin_yang": "阴",
       "wuxing": "金"
@@ -190,7 +190,7 @@
       "index": 20,
       "name": "戌",
       "angle": 300,
-      "trigram": "乾",
+      "gua": "乾",
       "yuan_long": "地元龙",
       "yin_yang": "阴",
       "wuxing": "土"
@@ -199,7 +199,7 @@
       "index": 21,
       "name": "乾",
       "angle": 315,
-      "trigram": "乾",
+      "gua": "乾",
       "yuan_long": "天元龙",
       "yin_yang": "阳",
       "wuxing": "金"
@@ -208,7 +208,7 @@
       "index": 22,
       "name": "亥",
       "angle": 330,
-      "trigram": "乾",
+      "gua": "乾",
       "yuan_long": "人元龙",
       "yin_yang": "阳",
       "wuxing": "水"
@@ -217,7 +217,7 @@
       "index": 23,
       "name": "壬",
       "angle": 345,
-      "trigram": "坎",
+      "gua": "坎",
       "yuan_long": "地元龙",
       "yin_yang": "阳",
       "wuxing": "水"

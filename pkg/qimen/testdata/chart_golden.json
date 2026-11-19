@@ -372,7 +372,7 @@
       "auspicious": false
     }
   ],
-  "xing_gong_wu_xing": [
+  "xing_gong_wuxing": [
     {
       "xing": "天英",
       "gong": "坎",
@@ -451,7 +451,7 @@
     {
       "name": "反吟",
       "description": "值符星临对宫，凡事反复，动中求变",
-      "yi_ju": "值符星临本宫对冲之宫",
+      "basis": "值符星临本宫对冲之宫",
       "auspicious": false,
       "gong_wei": [
         "震"

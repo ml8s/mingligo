@@ -398,7 +398,7 @@ type MenInteraction struct {
 type Pattern struct {
 	Name        string      `json:"name"`
 	Description string      `json:"description"`
-	YiJu        string      `json:"yi_ju,omitempty"`
+	YiJu        string      `json:"basis,omitempty"`
 	Auspicious  bool        `json:"auspicious"`
 	GongWei     []GongIndex `json:"gong_wei,omitempty"`
 }

@@ -10,7 +10,7 @@ type Mountain24 struct {
 	Angle    int           `json:"angle"` // degrees, 0-345 in 15° steps
 	Element  ganzhi.Wuxing `json:"wuxing"`
 	YinYang  string        `json:"yin_yang"`  // "阳" or "阴"
-	Trigram  string        `json:"trigram"`   // Bagua trigram name
+	Trigram  string        `json:"gua"`   // Bagua trigram name
 	YuanLong string        `json:"yuan_long"` // "天元龙"/"地元龙"/"人元龙"
 }
 

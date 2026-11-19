@@ -44,7 +44,7 @@ type BaziChartOutput struct {
 	GongJia       *[]BaziChartGongJiaItem      `json:"gong_jia,omitempty" jsonschema:"经典拱局：三合拱 / 三会拱"`
 	NaYinRel      *[]BaziChartNayinRelItem     `json:"na_yin_rel,omitempty" jsonschema:"纳音生克"`
 	ChangSheng    *[]BaziChartChangShengItem   `json:"chang_sheng,omitempty" jsonschema:"日主十二宫全表（长生/沐浴/冠带/临官/帝旺/衰/病/死/墓/绝/胎/养在十二支的分布）"`
-	Zodiac        *string                      `json:"zodiac,omitempty" jsonschema:"生肖（年支对应动物，如酉→鸡）"`
+	Zodiac        *string                      `json:"sheng_xiao,omitempty" jsonschema:"生肖（年支对应动物，如酉→鸡）"`
 	SanQiName     *string                      `json:"san_qi_name,omitempty" jsonschema:"三奇贵人"`
 	ShenShaSchool BaziChartShenShaSchool       `json:"shen_sha_school" jsonschema:"神煞取参照系。"`
 	LuRoots       []BaziChartLuRootsItem       `json:"lu_roots" jsonschema:"透干十神得十干禄"`
@@ -273,7 +273,7 @@ type BaziChartTiaoHouSecondaryOccurrencesItem struct {
 
 type BaziChartGeJu struct {
 	GeJu             string                 `json:"ge_ju" jsonschema:"月令结构证据：月令格神 + 顺逆用 + 结构（非用神） 中的 ge_ju。"`
-	YongFa           string                 `json:"yong_fa" jsonschema:"月令结构证据：月令格神 + 顺逆用 + 结构（非用神） 中的 yong_fa。"`
+	YongFa           string                 `json:"usage" jsonschema:"月令结构证据：月令格神 + 顺逆用 + 结构（非用神） 中的 yong_fa。"`
 	PatternGod       *GanName               `json:"pattern_god,omitempty" jsonschema:"月令结构证据：月令格神 + 顺逆用 + 结构（非用神） 中的 pattern_god。"`
 	PatternGodTenGod *TenGodName            `json:"pattern_god_ten_god,omitempty" jsonschema:"月令结构证据：月令格神 + 顺逆用 + 结构（非用神） 中的 pattern_god_ten_god。"`
 	PatternGodSource string                 `json:"pattern_god_source" jsonschema:"月令结构证据：月令格神 + 顺逆用 + 结构（非用神） 中的 pattern_god_source。"`

@@ -62,7 +62,7 @@ type HuangliDayOutput struct {
 	FuShen      string                 `json:"fu_shen" jsonschema:"福神方位。"`
 	StemTaboo   string                 `json:"gan_ji" jsonschema:"彭祖日干忌。"`
 	BranchTaboo string                 `json:"zhi_ji" jsonschema:"彭祖日支忌。"`
-	Mansion     HuangliMansionOutput   `json:"mansion" jsonschema:"当日二十八宿。"`
+	Mansion     HuangliMansionOutput   `json:"xiu" jsonschema:"当日二十八宿。"`
 	JieQi       string                 `json:"jie_qi" jsonschema:"节气。"`
 	JieQiDays   int                    `json:"jie_qi_days" jsonschema:"进入节气天数。"`
 	RenYuan     string                 `json:"ren_yuan" jsonschema:"人元司令天干。"`

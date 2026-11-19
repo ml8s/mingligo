@@ -20,7 +20,7 @@ type JinhanChartMethod struct {
 	SpiritFlight string       `json:"spirit_flight"`
 	DunSource    string       `json:"dun_source"`
 	JieQi        string       `json:"jie_qi"`
-	MethodYiJu   string       `json:"method_yi_ju"`
+	MethodYiJu   string       `json:"basis"`
 }
 
 // JinhanPalace is one Golden Mirror palace. It deliberately does not reuse the

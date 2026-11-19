@@ -12,7 +12,7 @@ func loadFengshuiOracle(t *testing.T) struct {
 		Index    int    `json:"index"`
 		Name     string `json:"name"`
 		Angle    int    `json:"angle"`
-		Trigram  string `json:"trigram"`
+		Trigram  string `json:"gua"`
 		YuanLong string `json:"yuan_long"`
 		YinYang  string `json:"yin_yang"`
 		Wuxing   string `json:"wuxing"`
@@ -33,7 +33,7 @@ func loadFengshuiOracle(t *testing.T) struct {
 			Index    int    `json:"index"`
 			Name     string `json:"name"`
 			Angle    int    `json:"angle"`
-			Trigram  string `json:"trigram"`
+			Trigram  string `json:"gua"`
 			YuanLong string `json:"yuan_long"`
 			YinYang  string `json:"yin_yang"`
 			Wuxing   string `json:"wuxing"`

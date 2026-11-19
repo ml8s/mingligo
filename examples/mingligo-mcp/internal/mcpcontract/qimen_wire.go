@@ -297,7 +297,7 @@ type QimenStandardChartOutput struct {
 	GanInteraction   *[]QimenChartGanInteractionItem   `json:"gan_interaction,omitempty" jsonschema:"天盘干与地盘干克应列表。"`
 	MenInteraction   *[]QimenChartMenInteractionItem   `json:"men_interaction,omitempty" jsonschema:"八门与宫位克应列表。"`
 	XingInteraction  *[]QimenChartXingInteractionItem  `json:"xing_interaction,omitempty" jsonschema:"九星与宫位克应列表。"`
-	XingGongWuXing   *[]QimenChartXingGongWuXingItem   `json:"xing_gong_wu_xing,omitempty" jsonschema:"星与宫的五行关系；不是完整季节旺衰"`
+	XingGongWuXing   *[]QimenChartXingGongWuXingItem   `json:"xing_gong_wuxing,omitempty" jsonschema:"星与宫的五行关系；不是完整季节旺衰"`
 	MenPo            *[]QimenGongName                  `json:"men_po,omitempty" jsonschema:"门破宫位列表。"`
 	MenZhi           *[]QimenGongName                  `json:"men_zhi,omitempty" jsonschema:"门落地支宫位列表。"`
 	YingQi           *QimenChartYingQi                 `json:"ying_qi,omitempty" jsonschema:"应期候选。"`
@@ -337,7 +337,7 @@ type QimenChartMethod struct {
 	DayFuTou         *QimenChartMethodDayFuTou    `json:"day_fu_tou,omitempty" jsonschema:"排盘方法元数据 中的 day_fu_tou。"`
 	Quarter          *QimenChartMethodQuarter     `json:"quarter,omitempty" jsonschema:"刻家序数与主柱口径；干支不重复输出，以 lead_pillar 为准"`
 	DunSource        *MethodDunSourceName         `json:"dun_source,omitempty" jsonschema:"阴阳遁来源。"`
-	MethodYiJu       *string                      `json:"method_yi_ju,omitempty" jsonschema:"金函方法依据。"`
+	MethodYiJu       *string                      `json:"basis,omitempty" jsonschema:"金函方法依据。"`
 }
 
 type QimenChartMethodTianQin struct {
@@ -434,7 +434,7 @@ type QimenChartPanDaySpiritsItem struct {
 type QimenChartGeJuItem struct {
 	Name        PatternsName    `json:"name" jsonschema:"名称。"`
 	Description string          `json:"description" jsonschema:"说明。"`
-	YiJu        string          `json:"yi_ju" jsonschema:"格局依据。"`
+	YiJu        string          `json:"basis" jsonschema:"格局依据。"`
 	Auspicious  bool            `json:"auspicious" jsonschema:"是否为吉象。"`
 	GongWei     []QimenGongName `json:"gong_wei" jsonschema:"十二宫。"`
 }
