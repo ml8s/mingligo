@@ -7,9 +7,9 @@ type Bond struct {
 }
 
 type BondPalacePair struct {
-	A      BondPalaceFacts `json:"a" jsonschema:"甲方。"`
-	B      BondPalaceFacts `json:"b" jsonschema:"乙方。"`
-	Status string          `json:"status" jsonschema:"主星状态说明。"`
+	A      BondPalaceFacts `json:"a"`
+	B      BondPalaceFacts `json:"b"`
+	Status string          `json:"status"`
 }
 
 // ComputeBond returns side-by-side natal palace facts. It deliberately does
