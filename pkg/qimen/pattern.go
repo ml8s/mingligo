@@ -4,7 +4,7 @@ import "github.com/ml8s/mingligo/pkg/ganzhi"
 
 // findPatterns evaluates the table-driven pattern rules. All symbol conditions
 // are evaluated within one palace; board-wide scattered symbols never combine.
-func findPatterns(chart board) []Pattern {
+func findPatterns(chart Board) []Pattern {
 	patterns := []Pattern{}
 	for _, rule := range patternRules {
 		switch rule.DutyStarPosition {
@@ -115,7 +115,7 @@ func containsPalace(expected []GongIndex, actual GongIndex) bool {
 	return false
 }
 
-func dutyDoorPalace(chart board) GongIndex {
+func dutyDoorPalace(chart Board) GongIndex {
 	for i, palace := range chart.GongWei {
 		if palace.Door == chart.DutyDoor {
 			return GongIndex(i + 1)
@@ -124,7 +124,7 @@ func dutyDoorPalace(chart board) GongIndex {
 	return 0
 }
 
-func dutyStarSpecialPosition(chart board, position string) GongIndex {
+func dutyStarSpecialPosition(chart Board, position string) GongIndex {
 	duty := chart.DutyStar
 	if chart.School == SchoolZhuanPan && duty == tianQinStar {
 		duty = tianQinFollows

@@ -5,11 +5,11 @@ import (
 	"time"
 )
 
-func civilDateFromLunarForTest(t *testing.T, lunar LunarDate) CivilDate {
+func dateFromLunarForTest(t *testing.T, lunar LunarDate) Date {
 	t.Helper()
-	date, err := ShanghaiLunarReference().CivilDateFromLunar(lunar)
+	date, err := ShanghaiLunarReference().DateFromLunar(lunar)
 	if err != nil {
-		t.Fatalf("CivilDateFromLunar(%+v): %v", lunar, err)
+		t.Fatalf("DateFromLunar(%+v): %v", lunar, err)
 	}
 	return date
 }

@@ -4,6 +4,15 @@ import (
 	"github.com/ml8s/mingligo/pkg/ganzhi"
 )
 
+// LiuShiChen locates the flow hour: the observer's standard clock, standard
+// civil date, and the true-solar 时辰 that defines the hour pillar. Values are
+// already human-readable so the domain output can be transmitted directly.
+type LiuShiChen struct {
+	StandardTime string `json:"standard_time"`
+	StandardDate string `json:"standard_date"`
+	Shichen      string `json:"shichen"`
+}
+
 // LiuShi holds the hourly flow (流时) analysis: the current two-hour period's
 // pillar and its interactions with the bazi chart.
 type LiuShi struct {
@@ -13,6 +22,7 @@ type LiuShi struct {
 	ShiShen string        `json:"shi_shen"`
 	GanRels []GanRelation `json:"gan_rels"`
 	ZhiRels []ZhiRelation `json:"zhi_rels"`
+	ShiChen LiuShiChen    `json:"shi_chen"`
 }
 
 // computeLiuShi analyzes a resolved LAST hour pillar against the bazi chart.

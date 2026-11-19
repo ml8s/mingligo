@@ -516,7 +516,7 @@ func TestMingliContractCalls(t *testing.T) {
 		t.Fatal(err)
 	}
 	if bazhaiOutput.MingGua.Gua.Name == "" || bazhaiOutput.MingGua.Group == "" ||
-		string(bazhaiOutput.BaZhaiDirs.ShengQi) == "" || len(bazhaiOutput.YearStars.Palaces) != 9 {
+		len(bazhaiOutput.BaZhaiDirs.ShengQi) == 0 || len(bazhaiOutput.YearStars.Palaces) != 9 {
 		t.Fatalf("incomplete bazhai chart: %#v", bazhaiOutput)
 	}
 

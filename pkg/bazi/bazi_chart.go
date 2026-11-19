@@ -118,7 +118,7 @@ type Chart struct {
 	DayXunKong string `json:"ri_xun_kong"`
 
 	// 子时换日规则说明（引擎口径说明；供上层核验换日规则，非计算输入）。
-	ZiShiRule string `json:"zi_shi_rule,omitempty"`
+	ZiShiRule string `json:"zi_shi_rule"`
 }
 
 // ShenShaSchool records the union policy used by dual-reference shensha.

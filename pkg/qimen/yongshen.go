@@ -208,7 +208,7 @@ func computeYongShen(chart Chart, syms []YongShenSymbol, birthDate BirthDate, ha
 	return ys
 }
 
-func findSpiritPalaceIdx(p board, s SpiritIndex) GongIndex {
+func findSpiritPalaceIdx(p Board, s SpiritIndex) GongIndex {
 	for i, pg := range p.GongWei {
 		if pg.Spirit == s {
 			return GongIndex(i + 1)

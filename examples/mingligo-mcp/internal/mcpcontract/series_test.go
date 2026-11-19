@@ -9,9 +9,9 @@ import (
 	"github.com/ml8s/mingligo/pkg/tianwen"
 )
 
-func civilDateForLunar(t *testing.T, year, month, day int, leap bool) string {
+func dateForLunar(t *testing.T, year, month, day int, leap bool) string {
 	t.Helper()
-	date, err := tianwen.ShanghaiLunarReference().CivilDateFromLunar(tianwen.LunarDate{
+	date, err := tianwen.ShanghaiLunarReference().DateFromLunar(tianwen.LunarDate{
 		Year: year, Month: month, Day: day, Leap: leap,
 	})
 	if err != nil {
@@ -253,8 +253,8 @@ func TestSeriesApparentSolarCellsDoNotRepeat(t *testing.T) {
 	if len(days) != 2 {
 		t.Fatalf("bazi liu_ri returned %d items, want 2", len(days))
 	}
-	firstDay := days[0]["ri_jie"].(map[string]any)["solar_date"].(string)
-	secondDay := days[1]["ri_jie"].(map[string]any)["solar_date"].(string)
+	firstDay := days[0]["date"].(string)
+	secondDay := days[1]["date"].(string)
 	if firstDay == secondDay {
 		t.Fatalf("bazi liu_ri repeated LAST date %s", firstDay)
 	}
@@ -318,7 +318,7 @@ func TestSeriesBatchOutputContract(t *testing.T) {
 	ziweiChart := map[string]any{
 		"standard_time": "1984-02-16T12:00:00+08:00", "longitude": 116.4, "gender": "male",
 	}
-	ziweiDate := civilDateForLunar(t, 2026, 5, 10, false)
+	ziweiDate := dateForLunar(t, 2026, 5, 10, false)
 	ziweiCivilTime := ziweiDate + "T11:00:00+08:00"
 
 	cases := []struct {

@@ -22,13 +22,13 @@ func TestLunarProjectorBases(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if got, want := official.SelectorDate(at), NewCivilDate(2024, 2, 10); got != want {
+	if got, want := official.SelectorDate(at), NewDate(2024, 2, 10); got != want {
 		t.Fatalf("official selector date = %s, want %s", got, want)
 	}
-	if got, want := localLabel.SelectorDate(at), NewCivilDate(2024, 2, 9); got != want {
+	if got, want := localLabel.SelectorDate(at), NewDate(2024, 2, 9); got != want {
 		t.Fatalf("local_label selector date = %s, want %s", got, want)
 	}
-	if got, want := localAstro.SelectorDate(at), NewCivilDate(2024, 2, 9); got != want {
+	if got, want := localAstro.SelectorDate(at), NewDate(2024, 2, 9); got != want {
 		t.Fatalf("local_astronomical selector date = %s, want %s", got, want)
 	}
 
@@ -42,13 +42,13 @@ func TestLunarProjectorBases(t *testing.T) {
 		t.Fatalf("local_astronomical lunar = %+v, want %+v", got, want)
 	}
 
-	if got, want := official.SelectorInstant(NewCivilDate(2024, 2, 10)), time.Date(2024, 2, 10, 12, 0, 0, 0, cstLocation); !got.Equal(want) {
+	if got, want := official.SelectorInstant(NewDate(2024, 2, 10)), time.Date(2024, 2, 10, 12, 0, 0, 0, cstLocation); !got.Equal(want) {
 		t.Fatalf("official selector instant = %s, want %s", got, want)
 	}
-	if got, want := localLabel.SelectorInstant(NewCivilDate(2024, 2, 9)), time.Date(2024, 2, 9, 12, 0, 0, 0, ny); !got.Equal(want) {
+	if got, want := localLabel.SelectorInstant(NewDate(2024, 2, 9)), time.Date(2024, 2, 9, 12, 0, 0, 0, ny); !got.Equal(want) {
 		t.Fatalf("local_label selector instant = %s, want %s", got, want)
 	}
-	if got, want := localAstro.SelectorInstant(NewCivilDate(2024, 2, 9)), time.Date(2024, 2, 9, 12, 0, 0, 0, ny); !got.Equal(want) {
+	if got, want := localAstro.SelectorInstant(NewDate(2024, 2, 9)), time.Date(2024, 2, 9, 12, 0, 0, 0, ny); !got.Equal(want) {
 		t.Fatalf("local_astronomical selector instant = %s, want %s", got, want)
 	}
 

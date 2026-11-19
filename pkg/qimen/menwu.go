@@ -9,7 +9,7 @@ type doorEntry struct {
 }
 
 // computeMenInteractions returns door interactions for each gong.
-func computeMenInteractions(board board) []MenInteraction {
+func computeMenInteractions(board Board) []MenInteraction {
 	result := []MenInteraction{}
 	for i := 0; i < 9; i++ {
 		p := board.GongWei[i]
@@ -52,7 +52,7 @@ func doorWuxing(d DoorIndex) ganzhi.Wuxing {
 }
 
 // findMenPo returns palaces where the door is 门迫.
-func findMenPo(board board) []GongIndex {
+func findMenPo(board Board) []GongIndex {
 	result := []GongIndex{}
 	for i, p := range board.GongWei {
 		if p.Door != 0 && menPo(p.Door, GongIndex(i+1)) {
@@ -63,7 +63,7 @@ func findMenPo(board board) []GongIndex {
 }
 
 // findMenZhi returns palaces where the door is 门制.
-func findMenZhi(board board) []GongIndex {
+func findMenZhi(board Board) []GongIndex {
 	result := []GongIndex{}
 	for i, p := range board.GongWei {
 		if p.Door != 0 && menZhi(p.Door, GongIndex(i+1)) {

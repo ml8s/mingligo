@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/ml8s/mingligo/pkg/fengshui"
 	"github.com/ml8s/mingligo/pkg/tianwen"
 	"github.com/ml8s/mingligo/pkg/xuankong"
 )
@@ -115,18 +114,21 @@ type XuankongLiunianOutput struct {
 	NianJie      XuankongLiuNianJie           `json:"nian_jie" jsonschema:"玄空流年立春年界。"`
 }
 
-func XuankongChartCompute(_ context.Context, input XuankongChartInput) (XuankongChart, error) {
+type XuankongLiuNianSeries struct {
+	LiuNian []xuankong.LiuNianResult `json:"liu_nian" jsonschema:"玄空流年数组，长度 = count。"`
+}
+
+func XuankongChartCompute(_ context.Context, input XuankongChartInput) (xuankong.Chart, error) {
 	chart, err := xuankongComputeChart(input.StandardTime, input.ZuoShan, input.XiangShan)
 	if err != nil {
-		return XuankongChart{}, fmt.Errorf("xuankong.chart: %w", err)
+		return xuankong.Chart{}, fmt.Errorf("xuankong.chart: %w", err)
 	}
-	output := xuankongChartWire(chart)
-	return output, nil
+	return chart, nil
 }
 
 func XuankongLiunian(_ context.Context, input XuankongLiunianInput) (XuankongLiuNianSeries, error) {
 	items, err := runSeries(input, seriesCountValue(input.LiuNianCount), MaxSeriesCount,
-		func(in XuankongLiunianInput) (XuankongLiunianOutput, error) {
+		func(in XuankongLiunianInput) (xuankong.LiuNianResult, error) {
 			return computeXuankongLiunian(in)
 		},
 		func(in XuankongLiunianInput) (XuankongLiunianInput, error) {
@@ -148,30 +150,20 @@ func XuankongLiunian(_ context.Context, input XuankongLiunianInput) (XuankongLiu
 	return XuankongLiuNianSeries{LiuNian: items}, nil
 }
 
-func computeXuankongLiunian(input XuankongLiunianInput) (XuankongLiunianOutput, error) {
+func computeXuankongLiunian(input XuankongLiunianInput) (xuankong.LiuNianResult, error) {
 	at, loc, err := parseStandardTime(input.StandardTime)
 	if err != nil {
-		return XuankongLiunianOutput{}, fmt.Errorf("xuankong.liunian: %w", err)
-	}
-	ly, err := tianwen.LichunYearAt(at)
-	if err != nil {
-		return XuankongLiunianOutput{}, fmt.Errorf("xuankong.liunian: %w", err)
+		return xuankong.LiuNianResult{}, fmt.Errorf("xuankong.liunian: %w", err)
 	}
 	chart, err := xuankongComputeChart(input.StandardTime, input.ZuoShan, input.XiangShan)
 	if err != nil {
-		return XuankongLiunianOutput{}, fmt.Errorf("xuankong.liunian: %w", err)
+		return xuankong.LiuNianResult{}, fmt.Errorf("xuankong.liunian: %w", err)
 	}
-	result := xuankong.ComputeLiuNian(ly.Year, &chart)
-	output := xuankongLiunianWire(result)
-	startDate := tianwen.StandardDateAt(ly.Start, loc)
-	output.NianJie = XuankongLiuNianJie{
-		StandardTime: standardTimeValue(at),
-		LichunYear:   ly.Year,
-		LichunStart:  civilDateString(startDate),
-		LichunEnd:    civilDateString(tianwen.StandardDateAt(ly.End, loc)),
-		BoundaryDay:  tianwen.StandardDateAt(at, loc) == startDate,
+	result, err := xuankong.ComputeLiuNianAt(at, loc, &chart)
+	if err != nil {
+		return xuankong.LiuNianResult{}, fmt.Errorf("xuankong.liunian: %w", err)
 	}
-	return output, nil
+	return result, nil
 }
 
 func xuankongComputeChart(standardTime StandardTime, zuoShan MountainIndex, xiangShan MountainIndex) (xuankong.Chart, error) {
@@ -191,97 +183,3 @@ func xuankongComputeChart(standardTime StandardTime, zuoShan MountainIndex, xian
 	return xuankong.ComputeChartAtStandard(at, int(zuoShan), int(xiangShan))
 }
 
-func xuankongStarWire(star fengshui.FlyingStar) XuankongStarOutput {
-	return XuankongStarOutput{
-		Number: FlyingStarNumber(star.Number),
-		Color:  StarColorName(star.Color),
-		Name:   FlyingStarName(star.Name),
-		Wuxing: ElementName(star.Element.String()),
-	}
-}
-
-func xuankongChartWire(chart xuankong.Chart) XuankongChart {
-	output := XuankongChart{
-		Yun: XuankongYunOutput{
-			Year:         XuankongYear(chart.Yun.Year),
-			YearBoundary: YearBoundaryName(chart.Yun.YearBoundary),
-			Yuan:         XuankongYuanName(chart.Yun.Yuan),
-			YunNumber:    FlyingStarNumber(chart.Yun.YunNumber),
-			YunName:      YunName(chart.Yun.YunName),
-			StartYear:    chart.Yun.StartYear,
-			EndYear:      chart.Yun.EndYear,
-		},
-		FourSituation: XuankongFourSituationOutput{
-			Name:               XuankongSituationName(chart.FourSituation.Name),
-			SitMountainTimely:  chart.FourSituation.SitMountainTimely,
-			FaceFacingTimely:   chart.FourSituation.FaceFacingTimely,
-			SitFacingTimely:    chart.FourSituation.SitFacingTimely,
-			FaceMountainTimely: chart.FourSituation.FaceMountainTimely,
-		},
-		ZuoShan:       MountainIndex(chart.SitMountain),
-		ZuoShanName:   MountainName(chart.ZuoShanName),
-		XiangShan:     MountainIndex(chart.FaceMountain),
-		XiangShanName: MountainName(chart.XiangShanName),
-		ShouShanChuSha: XuankongShouShanOutput{
-			ZhengShen:  FlyingStarNumber(chart.ShouShanChuSha.ZhengShen),
-			LingShen:   FlyingStarNumber(chart.ShouShanChuSha.LingShen),
-			ShouShan:   chart.ShouShanChuSha.ShouShanOK,
-			ChuSha:     chart.ShouShanChuSha.ChuShaOK,
-			Assessment: XuankongAssessment(chart.ShouShanChuSha.Assessment),
-		},
-	}
-	for i, palace := range chart.Palaces {
-		output.GongWei[i] = XuankongPalaceOutput{
-			GongNum:   GuaNumber(palace.PalaceNum),
-			YunXing:   xuankongStarWire(palace.PeriodStar),
-			ShanXing:  xuankongStarWire(palace.MountainStar),
-			XiangXing: xuankongStarWire(palace.FacingStar),
-		}
-	}
-	for i, item := range chart.XingJiaHui {
-		output.XingJiaHui[i] = XuankongXingJiaHuiOutput{
-			ShanNum:  FlyingStarNumber(item.ShanNum),
-			XiangNum: FlyingStarNumber(item.XiangNum),
-			Name:     item.Name,
-			Meaning:  item.Meaning,
-		}
-	}
-	for _, layer := range chart.FuYinLayers {
-		output.FuYinLayers = append(output.FuYinLayers, XuankongFuYinLayer(layer))
-	}
-	for _, layer := range chart.FanYinLayers {
-		output.FanYinLayers = append(output.FanYinLayers, XuankongFanYinLayer(layer))
-	}
-	return output
-}
-
-func xuankongLiunianWire(result xuankong.LiuNianResult) XuankongLiunianOutput {
-	output := XuankongLiunianOutput{
-		Year:    XuankongYear(result.Year),
-		RuZhong: FlyingStarName(result.RuZhong),
-	}
-	for i, star := range result.GongWei {
-		if i >= len(output.GongWei) {
-			break
-		}
-		output.GongWei[i] = XuankongAnnualStarOutput{
-			GongNum:  GuaNumber(star.GongNum),
-			Xing:     FlyingStarNumber(star.Xing),
-			XingName: FlyingStarName(star.XingName),
-			Wuxing:   ElementName(star.Wuxing),
-			RuZhong:  star.RuZhong,
-		}
-	}
-	for _, overlay := range result.HouseOverlay {
-		output.HouseOverlay = append(output.HouseOverlay, XuankongHouseOverlayOutput{
-			GongNum:     GuaNumber(overlay.GongNum),
-			Star:        FlyingStarName(overlay.Star),
-			PalaceStars: overlay.PalaceStars,
-		})
-	}
-	return output
-}
-
-type XuankongLiuNianSeries struct {
-	LiuNian []XuankongLiunianOutput `json:"liu_nian" jsonschema:"玄空流年数组，长度 = count。"`
-}

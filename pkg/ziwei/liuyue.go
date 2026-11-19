@@ -2,6 +2,7 @@ package ziwei
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/ml8s/mingligo/pkg/tianwen"
 )
@@ -13,14 +14,27 @@ func hongLuanPos(zhi Zhi) int {
 
 // ── 流月 ──
 
+// LiuYueJie locates the flow lunar month: the observer's standard clock and
+// civil selection date, the lunar date, the month boundary, and the calendar
+// interval that disambiguates leap months. Values are human-readable.
+type LiuYueJie struct {
+	StandardTime    string            `json:"standard_time"`
+	StartDate       string            `json:"start_date"`
+	Lunar           tianwen.LunarDate `json:"lunar"`
+	LunarMonthStart string            `json:"lunar_month_start"`
+	LunarMonthEnd   string            `json:"lunar_month_end"`
+	BoundaryDay     bool              `json:"boundary_day"`
+	CalendarPeriod  LunarMonthPeriod  `json:"calendar_period"`
+	FlowMonth       LunarMonth        `json:"flow_month"`
+}
+
 type LiuYue struct {
-	TargetLunar    tianwen.LunarDate    `json:"target_lunar"`
-	ResolvedPeriod FlowMonthPeriod      `json:"resolved_period"`
-	MingGong       gongIndex            `json:"ming_gong"`
-	MingGongName   string               `json:"ming_gong_name"`
-	Zhi            Zhi                  `json:"zhi"`
-	SiHua          []FlowTransformation `json:"si_hua"`
-	GongWei        [12]flowPalace       `json:"gong_wei"`
+	MingGong     gongIndex            `json:"ming_gong"`
+	MingGongName string               `json:"ming_gong_name"`
+	Zhi          Zhi                  `json:"zhi"`
+	SiHua        []FlowTransformation `json:"si_hua"`
+	GongWei      [12]FlowPalace       `json:"gong_wei"`
+	YueJie       LiuYueJie            `json:"yue_jie"`
 }
 
 // FlowMonthPeriod separates calendar truth from the Ziwei flow-month choice.
@@ -74,14 +88,49 @@ func ComputeLiuYueWith(ctx FlowContext, target tianwen.LunarDate, p tianwen.Luna
 		starByAnXingIdx[anXingIdx] = append(starByAnXingIdx[anXingIdx], k)
 	}
 	return LiuYue{
-		TargetLunar:    target,
-		ResolvedPeriod: period,
-		MingGong:       0,
-		MingGongName:   "命宫",
-		Zhi:            yueZhi,
-		SiHua:          newFlowTransformations(computeSiHua(monthGan), ctx.SiHuaPalaces),
-		GongWei:        buildFlowPalaces(mi, starByAnXingIdx),
+		MingGong:     0,
+		MingGongName: "命宫",
+		Zhi:          yueZhi,
+		SiHua:        newFlowTransformations(computeSiHua(monthGan), ctx.SiHuaPalaces),
+		GongWei:      buildFlowPalaces(mi, starByAnXingIdx),
 	}, nil
+}
+
+// ComputeLiuYueAt computes the flow month directly from a standard time. It
+// builds the lunar projector, resolves the month boundary, and fills the YueJie
+// facts from the same standard time.
+func ComputeLiuYueAt(ctx FlowContext, standard time.Time, loc *time.Location) (LiuYue, error) {
+	p, err := tianwen.NewLunarProjector(tianwen.LunarBasisLocalAstronomical, loc)
+	if err != nil {
+		return LiuYue{}, err
+	}
+	date := p.SelectorDate(standard)
+	resolved, err := ResolveLiuYueTimeWith(p, date)
+	if err != nil {
+		return LiuYue{}, err
+	}
+	result, err := ComputeLiuYueWith(ctx, resolved.Lunar, p)
+	if err != nil {
+		return LiuYue{}, err
+	}
+	period, err := resolveLiuYuePeriodWith(p, resolved.Lunar)
+	if err != nil {
+		return LiuYue{}, err
+	}
+	if loc == nil {
+		loc = time.UTC
+	}
+	result.YueJie = LiuYueJie{
+		StandardTime:    standard.In(loc).Format(time.RFC3339Nano),
+		StartDate:       tianwen.StandardDateAt(standard, loc).String(),
+		Lunar:           resolved.Lunar,
+		LunarMonthStart: resolved.Start.String(),
+		LunarMonthEnd:   resolved.End.String(),
+		BoundaryDay:     resolved.BoundaryDay,
+		CalendarPeriod:  period.CalendarPeriod,
+		FlowMonth:       period.FlowMonth,
+	}
+	return result, nil
 }
 
 func resolveLiuYuePeriodWith(p tianwen.LunarProjector, target tianwen.LunarDate) (FlowMonthPeriod, error) {
@@ -136,12 +185,45 @@ func liuYueStars(gan Gan, zhi Zhi) map[string]Zhi {
 
 // ── 流日 ──
 
+// LiuRiJie locates the flow day: the observer's standard clock and civil date,
+// plus the lunar date. Values are human-readable.
+type LiuRiJie struct {
+	StandardTime string            `json:"standard_time"`
+	StandardDate string            `json:"standard_date"`
+	Lunar        tianwen.LunarDate `json:"lunar"`
+}
+
 type LiuRi struct {
 	MingGong     gongIndex            `json:"ming_gong"`
 	MingGongName string               `json:"ming_gong_name"`
 	Zhi          Zhi                  `json:"zhi"`
 	SiHua        []FlowTransformation `json:"si_hua"`
-	GongWei      [12]flowPalace       `json:"gong_wei"`
+	GongWei      [12]FlowPalace       `json:"gong_wei"`
+	RiJie        LiuRiJie             `json:"ri_jie"`
+}
+
+// ComputeLiuRiAt computes the flow day directly from a standard time. It
+// builds the lunar projector and resolves the lunar day internally, then fills
+// the RiJie facts from the same standard time.
+func ComputeLiuRiAt(ctx FlowContext, standard time.Time, loc *time.Location) (LiuRi, error) {
+	p, err := tianwen.NewLunarProjector(tianwen.LunarBasisLocalAstronomical, loc)
+	if err != nil {
+		return LiuRi{}, err
+	}
+	resolved, err := ResolveLiuRiTimeAtWith(p, standard, loc)
+	if err != nil {
+		return LiuRi{}, err
+	}
+	result, err := ComputeLiuRiWith(ctx, resolved.Lunar, p)
+	if err != nil {
+		return LiuRi{}, err
+	}
+	result.RiJie = LiuRiJie{
+		StandardTime: standard.In(loc).Format(time.RFC3339Nano),
+		StandardDate: resolved.StandardDate.String(),
+		Lunar:        resolved.Lunar,
+	}
+	return result, nil
 }
 
 // ComputeLiuRi computes the flow day chart using iztro's dailyIndex formula.
@@ -160,7 +242,7 @@ func ComputeLiuRiWith(ctx FlowContext, target tianwen.LunarDate, p tianwen.Lunar
 		IsLeapMonth: target.Leap,
 	})
 	// 流日干支 = 目标日干支（需公历——农历转公历）
-	date, err := p.CivilDateFromLunar(target)
+	date, err := p.DateFromLunar(target)
 	if err != nil {
 		return LiuRi{}, fmt.Errorf("validate flow day: %w", err)
 	}
@@ -201,12 +283,50 @@ func liuRiStars(gan Gan, zhi Zhi) map[string]Zhi {
 
 // ── 流时 ──
 
+// LiuShiChen locates the flow hour: the observer's standard clock and civil
+// date, the lunar date, and the true-solar 时辰. Values are human-readable.
+type LiuShiChen struct {
+	StandardTime string            `json:"standard_time"`
+	StandardDate string            `json:"standard_date"`
+	Lunar        tianwen.LunarDate `json:"lunar"`
+	Shichen      string            `json:"shichen"`
+}
+
 type LiuShi struct {
 	MingGong     gongIndex            `json:"ming_gong"`
 	MingGongName string               `json:"ming_gong_name"`
 	Zhi          Zhi                  `json:"zhi"`
 	SiHua        []FlowTransformation `json:"si_hua"`
-	GongWei      [12]flowPalace       `json:"gong_wei"`
+	GongWei      [12]FlowPalace       `json:"gong_wei"`
+	ShiChen      LiuShiChen           `json:"shi_chen"`
+}
+
+// ComputeLiuShiAt computes the flow hour directly from a standard time. It
+// builds the lunar projector and resolves the true-solar 时辰 internally, then
+// fills the ShiChen facts from the same standard time.
+func ComputeLiuShiAt(ctx FlowContext, standard time.Time, loc *time.Location, longitude float64) (LiuShi, error) {
+	p, err := tianwen.NewLunarProjector(tianwen.LunarBasisLocalAstronomical, loc)
+	if err != nil {
+		return LiuShi{}, err
+	}
+	resolved, err := ResolveLiuShiTimeWith(p, standard, loc, longitude)
+	if err != nil {
+		return LiuShi{}, err
+	}
+	result, err := ComputeLiuShiAtTimeWith(ctx, resolved, p)
+	if err != nil {
+		return LiuShi{}, err
+	}
+	if loc == nil {
+		loc = time.UTC
+	}
+	result.ShiChen = LiuShiChen{
+		StandardTime: standard.In(loc).Format(time.RFC3339Nano),
+		StandardDate: resolved.StandardDate.String(),
+		Lunar:        resolved.Lunar,
+		Shichen:      resolved.Shichen.String(),
+	}
+	return result, nil
 }
 
 // ComputeLiuShi computes the flow hour chart using iztro's hourlyIndex formula.
@@ -225,7 +345,7 @@ func ComputeLiuShiWith(ctx FlowContext, target tianwen.LunarDate, shiZhi Zhi, p 
 		ShiZhi:      shiZhi,
 	})
 	// 流时干支：日干 + 五鼠遁（需公历——农历转公历）
-	date, err := p.CivilDateFromLunar(target)
+	date, err := p.DateFromLunar(target)
 	if err != nil {
 		return LiuShi{}, fmt.Errorf("validate flow hour: %w", err)
 	}

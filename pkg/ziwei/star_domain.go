@@ -48,6 +48,6 @@ func starLei(star starIndex, isMajor bool) []string {
 	return values
 }
 
-func newStarInfo(star starIndex, isMajor bool) starInfo {
-	return starInfo{Star: star, Name: starName(star), IsMajor: isMajor, Lei: starLei(star, isMajor)}
+func newStarInfo(star starIndex, isMajor bool) StarInfo {
+	return StarInfo{Star: star, Name: starName(star), IsMajor: isMajor, Lei: starLei(star, isMajor)}
 }

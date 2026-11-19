@@ -94,7 +94,7 @@ func TestTianwenMultiOracleGolden_LunarMonthBoundaries(t *testing.T) {
 				t.Fatalf("lunar = %+v, want two-oracle %+v", gotLunar, wantLunar)
 			}
 
-			gotGregorian := civilDateFromLunarForTest(t, LunarDate{
+			gotGregorian := dateFromLunarForTest(t, LunarDate{
 				Year:  wantLunar.Year,
 				Month: wantLunar.Month,
 				Day:   wantLunar.Day,

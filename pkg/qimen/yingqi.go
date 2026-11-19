@@ -122,7 +122,7 @@ func yingQiDates(ruleType string, target ganzhi.Zhi, window yingQiWindow) []Ying
 }
 
 func yingQiAnchorDate(chart Chart, chartTime time.Time) time.Time {
-	base := civilDate(chartTime)
+	base := date(chartTime)
 	for _, offset := range []int{0, 1, -1} {
 		date := base.AddDate(0, 0, offset)
 		pillar := tianwen.RiZhu(time.Time(date))
@@ -133,7 +133,7 @@ func yingQiAnchorDate(chart Chart, chartTime time.Time) time.Time {
 	return base
 }
 
-func civilDate(value time.Time) time.Time {
+func date(value time.Time) time.Time {
 	year, month, day := value.Date()
 	return time.Date(year, month, day, 0, 0, 0, 0, value.Location())
 }

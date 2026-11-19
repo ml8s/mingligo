@@ -75,20 +75,20 @@ func assemblePalaces(
 	shenGong gongIndex,
 	mainByPalace map[int][]starIndex,
 	minorByPalace map[int][]starIndex,
-) [12]gong {
-	var palaces [12]gong
+) [12]Gong {
+	var palaces [12]Gong
 	for i := 0; i < 12; i++ {
 		zhiIdx := zhiToZhiIdx(palaceZhis[i])
 		major := mainByPalace[zhiIdx]
 		minor := minorByPalace[zhiIdx]
-		starInfos := make([]starInfo, 0, len(major)+len(minor))
+		starInfos := make([]StarInfo, 0, len(major)+len(minor))
 		for _, star := range major {
 			starInfos = append(starInfos, newStarInfo(star, true))
 		}
 		for _, star := range minor {
 			starInfos = append(starInfos, newStarInfo(star, false))
 		}
-		palaces[i] = gong{
+		palaces[i] = Gong{
 			Index:        gongIndex(i),
 			Name:         gongLabels[i],
 			Gan:          palaceGans[i],
@@ -100,7 +100,7 @@ func assemblePalaces(
 	return palaces
 }
 
-func assembleCoreChart(palaces [12]gong, facts coreCalendarFacts) Chart {
+func assembleCoreChart(palaces [12]Gong, facts coreCalendarFacts) Chart {
 	return Chart{
 		GongWei:         palaces,
 		MingGong:        0,
@@ -156,19 +156,19 @@ func markYuanGong(chart Chart) Chart {
 }
 
 // computeKongGong 找出所有无主星宫位，借对宫主星（紫微空宫借星——确定性派生）。
-func computeKongGong(gongWei [12]gong) []kongGongInfo {
-	var out []kongGongInfo
+func computeKongGong(gongWei [12]Gong) []KongGongInfo {
+	var out []KongGongInfo
 	for i := range gongWei {
 		if hasMajorStar(gongWei[i]) {
 			continue
 		}
 		dui := (i + 6) % 12
-		out = append(out, kongGongInfo{KongGong: gongIndex(i), JieGong: gongIndex(dui)})
+		out = append(out, KongGongInfo{KongGong: gongIndex(i), JieGong: gongIndex(dui)})
 	}
 	return out
 }
 
-func hasMajorStar(g gong) bool {
+func hasMajorStar(g Gong) bool {
 	for _, s := range g.Stars {
 		if s.IsMajor {
 			return true

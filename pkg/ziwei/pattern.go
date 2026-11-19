@@ -1,11 +1,11 @@
 package ziwei
 
-type pattern struct {
+type Pattern struct {
 	Name        string `json:"name"`
 	Description string `json:"description"`
 }
 
-func findPatterns(palaces [12]gong) []pattern {
+func findPatterns(palaces [12]Gong) []Pattern {
 	var p patterns
 	ming := palaces[0]
 	sf := sanFang(0)
@@ -143,16 +143,16 @@ func findPatterns(palaces [12]gong) []pattern {
 	return p.list
 }
 
-type patterns struct{ list []pattern }
+type patterns struct{ list []Pattern }
 
 func (p *patterns) add(name, desc string) {
-	p.list = append(p.list, pattern{Name: name, Description: desc})
+	p.list = append(p.list, Pattern{Name: name, Description: desc})
 }
 
 // ------ helpers ------
 
-func starAt(pa gong, star starIndex) bool { return starWith(pa, star) }
-func starWith(pa gong, star starIndex) bool {
+func starAt(pa Gong, star starIndex) bool { return starWith(pa, star) }
+func starWith(pa Gong, star starIndex) bool {
 	for _, s := range pa.Stars {
 		if s.Star == star {
 			return true
@@ -161,7 +161,7 @@ func starWith(pa gong, star starIndex) bool {
 	return false
 }
 
-func majorCount(pa gong) int {
+func majorCount(pa Gong) int {
 	count := 0
 	for _, item := range pa.Stars {
 		if mainStars[item.Star] {
@@ -171,7 +171,7 @@ func majorCount(pa gong) int {
 	return count
 }
 
-func noSixMalefic(pa gong) bool {
+func noSixMalefic(pa Gong) bool {
 	for _, item := range pa.Stars {
 		switch item.Star {
 		case QingYang, TuoLuo, HuoXing, LingXing, DiKong, DiJie:
@@ -181,7 +181,7 @@ func noSixMalefic(pa gong) bool {
 	return true
 }
 
-func sfLuCount(bz [12]gong, sf [4]gongIndex) int {
+func sfLuCount(bz [12]Gong, sf [4]gongIndex) int {
 	count := 0
 	for _, pi := range sf {
 		for _, s := range bz[pi].Stars {
@@ -193,12 +193,12 @@ func sfLuCount(bz [12]gong, sf [4]gongIndex) int {
 	return count
 }
 
-func hasCaiYinJiaYin(palaces [12]gong) bool {
+func hasCaiYinJiaYin(palaces [12]Gong) bool {
 	if !starWith(palaces[0], TianXiang) {
 		return false
 	}
 	prev, next := palaces[11], palaces[1]
-	hasLuCai := func(pa gong) bool {
+	hasLuCai := func(pa Gong) bool {
 		for _, item := range pa.Stars {
 			if item.Star == LuCun || item.SiHua == string(HuaLu) {
 				return true
@@ -221,7 +221,7 @@ func qingYangMiao(z Zhi) bool {
 	return false
 }
 
-func sunMoonBright(palaces [12]gong) bool {
+func sunMoonBright(palaces [12]Gong) bool {
 	sunBright := false
 	moonBright := false
 	brightPalaces := []gongIndex{0, 4, 6, 8} // 命财官迁（三方四正）
@@ -238,7 +238,7 @@ func sunMoonBright(palaces [12]gong) bool {
 	return sunBright && moonBright
 }
 
-func sunMoonDark(palaces [12]gong) bool {
+func sunMoonDark(palaces [12]Gong) bool {
 	// 《紫微斗数全书·卷三》：“日月最嫌反背……若反背日戌月辰，子月午。”
 	// 这里只取原文明确结构，不把命宫三方四正任意双落陷泛化为反背。
 	var sunZhis, moonZhis []Zhi
@@ -266,7 +266,7 @@ func sanFang(ming gongIndex) [4]gongIndex {
 	return [4]gongIndex{ming, (ming + 4) % 12, (ming + 8) % 12, (ming + 6) % 12}
 }
 
-func anyInSF(bz [12]gong, sf [4]gongIndex, star starIndex) bool {
+func anyInSF(bz [12]Gong, sf [4]gongIndex, star starIndex) bool {
 	for _, pi := range sf {
 		if starAt(bz[pi], star) {
 			return true
@@ -275,7 +275,7 @@ func anyInSF(bz [12]gong, sf [4]gongIndex, star starIndex) bool {
 	return false
 }
 
-func sfCount(bz [12]gong, sf [4]gongIndex, stars ...starIndex) int {
+func sfCount(bz [12]Gong, sf [4]gongIndex, stars ...starIndex) int {
 	count := 0
 	for _, pi := range sf {
 		for _, s := range stars {
@@ -287,7 +287,7 @@ func sfCount(bz [12]gong, sf [4]gongIndex, stars ...starIndex) int {
 	return count
 }
 
-func sfDistinctCount(bz [12]gong, sf [4]gongIndex, stars ...starIndex) int {
+func sfDistinctCount(bz [12]Gong, sf [4]gongIndex, stars ...starIndex) int {
 	count := 0
 	for _, star := range stars {
 		if anyInSF(bz, sf, star) {
@@ -297,7 +297,7 @@ func sfDistinctCount(bz [12]gong, sf [4]gongIndex, stars ...starIndex) int {
 	return count
 }
 
-func sfSiHuaCount(bz [12]gong, sf [4]gongIndex, h siHuaType) int {
+func sfSiHuaCount(bz [12]Gong, sf [4]gongIndex, h siHuaType) int {
 	count := 0
 	for _, pi := range sf {
 		for _, s := range bz[pi].Stars {

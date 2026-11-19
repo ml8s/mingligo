@@ -52,7 +52,7 @@ func bodyStar(nianZhi Zhi) string {
 
 // yuanGongPalace returns the gong index of 来因宫 (original gong).
 // iztro rule: the gong whose heavenly gan equals the birth year's heavenly gan.
-func yuanGongPalace(palaces [12]gong, nianGan Gan) gongIndex {
+func yuanGongPalace(palaces [12]Gong, nianGan Gan) gongIndex {
 	for i, p := range palaces {
 		if p.Gan == nianGan && p.Zhi != 1 && p.Zhi != 2 { // 排除子丑
 			return gongIndex(i)

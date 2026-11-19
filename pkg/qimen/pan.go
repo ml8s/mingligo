@@ -3,7 +3,7 @@ package qimen
 import "github.com/ml8s/mingligo/pkg/ganzhi"
 
 // ArrangePan builds a chart from its table-driven plates and method geometry.
-func ArrangePan(ju juShu, bz ganzhi.Bazi) board {
+func ArrangePan(ju juShu, bz ganzhi.Bazi) Board {
 	dipan := placeDiPan(ju.Number, ju.YinDun)
 	leadZhu := leadPillar(bz, ju)
 	duty := findDuty(leadZhu, dipan)
@@ -28,11 +28,11 @@ func ArrangePan(ju juShu, bz ganzhi.Bazi) board {
 	default:
 		tianPan, dutyStarLanding = placeTianPan(leadZhu, duty.Star, dipan)
 		renDoors, dutyDoorLanding = placeRenPan(leadZhu, duty.Door, ju.YinDun, dipan)
-		visibleDutyStar := findStarPalace(board{GongWei: palacesFromTianPan(tianPan)}, duty.Star)
+		visibleDutyStar := findStarPalace(Board{GongWei: palacesFromTianPan(tianPan)}, duty.Star)
 		shenSpirits = placeShenPan(ju.YinDun, visibleDutyStar)
 		hidden = placeHiddenPan(dipan, duty.Palace, dutyDoorLanding)
 	}
-	result := board{
+	result := Board{
 		Jushu:          ju.Number,
 		School:         ju.Method.School,
 		YinDun:         ju.YinDun,

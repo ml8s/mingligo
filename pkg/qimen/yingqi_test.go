@@ -34,7 +34,7 @@ func TestYingQiTableDefinesDateWindow(t *testing.T) {
 	}
 }
 
-func TestYingQiComputesCivilDateWindow(t *testing.T) {
+func TestYingQiComputesDateWindow(t *testing.T) {
 	you, err := ganzhi.ParseZhi("酉")
 	if err != nil {
 		t.Fatal(err)
@@ -47,7 +47,7 @@ func TestYingQiComputesCivilDateWindow(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	chart := Chart{Board: board{
+	chart := Chart{Board: Board{
 		RiGan:  riGan,
 		RiZhi:  you,
 		MaXing: BranchPalace{Branch: you, Gong: GongDui},

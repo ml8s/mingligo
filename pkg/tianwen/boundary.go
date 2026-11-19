@@ -200,7 +200,7 @@ func SplitWindow(w Window, boundaries []Boundary) []Window {
 // LunarNewYearInstantIn returns the first-day midnight of the lunar year in the
 // projector's date frame.
 func LunarNewYearInstantIn(lunarYear int, projector LunarProjector) time.Time {
-	date, err := projector.CivilDateFromLunar(LunarDate{Year: lunarYear, Month: 1, Day: 1})
+	date, err := projector.DateFromLunar(LunarDate{Year: lunarYear, Month: 1, Day: 1})
 	if err != nil {
 		return time.Time{}
 	}

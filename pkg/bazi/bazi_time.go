@@ -14,8 +14,8 @@ type LiuRiTime struct {
 	Standard  time.Time         `json:"-"`
 	Location  *time.Location    `json:"-"`
 	Longitude float64           `json:"longitude"`
-	Date      tianwen.CivilDate `json:"date"`
-	LocalDate tianwen.CivilDate `json:"local_date"`
+	Date      tianwen.Date `json:"date"`
+	StandardDate tianwen.Date `json:"standard_date"`
 	RiGan     ganzhi.Gan        `json:"ri_gan"`
 	RiZhi     ganzhi.Zhi        `json:"ri_zhi"`
 }
@@ -23,21 +23,21 @@ type LiuRiTime struct {
 // ResolveLiuRiTime resolves the day pillar of a civil date. The day pillar is
 // the almanac day pillar of that date; apparent-solar-time boundaries belong to
 // 流时, not to the day-level projection.
-func ResolveLiuRiTime(date tianwen.CivilDate) (LiuRiTime, error) {
+func ResolveLiuRiTime(date tianwen.Date) (LiuRiTime, error) {
 	if err := date.Validate(); err != nil {
 		return LiuRiTime{}, err
 	}
 	zhu := tianwen.RiZhu(date.Time())
 	return LiuRiTime{
 		Date:      date,
-		LocalDate: date,
+		StandardDate: date,
 		RiGan:     zhu.Gan,
 		RiZhi:     zhu.Zhi,
 	}, nil
 }
 
 // ResolveLiuRiTimeAt resolves the day pillar for a standard time. The day
-// pillar uses the local LAST date; LocalDate is echoed for
+// pillar uses the local LAST date; StandardDate is echoed for
 // audit. The observer's local date is not substituted for the LAST date.
 func ResolveLiuRiTimeAt(standard time.Time, loc *time.Location, longitude float64) (LiuRiTime, error) {
 	if longitude < -180 || longitude > 180 {
@@ -47,14 +47,14 @@ func ResolveLiuRiTimeAt(standard time.Time, loc *time.Location, longitude float6
 		loc = time.UTC
 	}
 	last := tianwen.ApparentSolarFromStandard(standard, longitude)
-	lastDate := tianwen.CivilDateOf(last)
+	lastDate := tianwen.DateOf(last)
 	pillar := tianwen.RiZhu(lastDate.Time())
 	return LiuRiTime{
 		Standard:  standard,
 		Location:  loc,
 		Longitude: longitude,
 		Date:      lastDate,
-		LocalDate: tianwen.StandardDateAt(standard, loc),
+		StandardDate: tianwen.StandardDateAt(standard, loc),
 		RiGan:     pillar.Gan,
 		RiZhi:     pillar.Zhi,
 	}, nil
@@ -82,22 +82,22 @@ type LiuNianTime struct {
 	LichunYear   int               `json:"lichun_year"`
 	NianGan      ganzhi.Gan        `json:"nian_gan"`
 	NianZhi      ganzhi.Zhi        `json:"nian_zhi"`
-	Start        tianwen.CivilDate `json:"start"`
-	End          tianwen.CivilDate `json:"end"`
+	Start        tianwen.Date `json:"start"`
+	End          tianwen.Date `json:"end"`
 	StartInstant time.Time         `json:"-"`
 	BoundaryDay  bool              `json:"boundary_day"`
 }
 
 // ResolveLiuNianTime resolves the 立春 year containing date and its year
 // pillar. The 立春 boundary date belongs to the new year.
-func ResolveLiuNianTime(date tianwen.CivilDate) (LiuNianTime, error) {
+func ResolveLiuNianTime(date tianwen.Date) (LiuNianTime, error) {
 	ly, err := tianwen.LichunYearOf(date)
 	if err != nil {
 		return LiuNianTime{}, err
 	}
 	// The year pillar is constant inside the resolved 立春 year; the mid-year
 	// The standard time is only an implementation detail of NianZhu.
-	pillar := tianwen.NianZhu(tianwen.NewCivilDate(ly.Year, 6, 15).Time())
+	pillar := tianwen.NianZhu(tianwen.NewDate(ly.Year, 6, 15).Time())
 	return LiuNianTime{
 		LichunYear:   ly.Year,
 		NianGan:      pillar.Gan,
@@ -112,13 +112,13 @@ func ResolveLiuNianTime(date tianwen.CivilDate) (LiuNianTime, error) {
 // LiuYueTime is the resolved month-level time for 流月. JieqiMonth is 1=寅 ..
 // 12=丑; Start is the 节 civil date and End is the next 节 date (exclusive).
 type LiuYueTime struct {
-	Date         tianwen.CivilDate `json:"date"`
+	Date         tianwen.Date `json:"date"`
 	LichunYear   int               `json:"lichun_year"`
 	JieqiMonth   int               `json:"jieqi_month"`
 	YueGan       ganzhi.Gan        `json:"yue_gan"`
 	YueZhi       ganzhi.Zhi        `json:"yue_zhi"`
-	Start        tianwen.CivilDate `json:"start"`
-	End          tianwen.CivilDate `json:"end"`
+	Start        tianwen.Date `json:"start"`
+	End          tianwen.Date `json:"end"`
 	StartInstant time.Time         `json:"-"`
 	EndInstant   time.Time         `json:"-"`
 	BoundaryDay  bool              `json:"boundary_day"`
@@ -134,7 +134,7 @@ func ResolveLiuNianTimeAt(standard time.Time, loc *time.Location) (LiuNianTime, 
 	if err != nil {
 		return LiuNianTime{}, err
 	}
-	pillar := tianwen.NianZhu(tianwen.NewCivilDate(ly.Year, 6, 15).Time())
+	pillar := tianwen.NianZhu(tianwen.NewDate(ly.Year, 6, 15).Time())
 	start := tianwen.StandardDateAt(ly.Start, loc)
 	end := tianwen.StandardDateAt(ly.End, loc)
 	return LiuNianTime{
@@ -195,8 +195,8 @@ type LiuShiTime struct {
 	Standard  time.Time         `json:"-"`
 	Location  *time.Location    `json:"-"`
 	Longitude float64           `json:"longitude"`
-	LocalDate tianwen.CivilDate `json:"local_date"`
-	LastDate  tianwen.CivilDate `json:"last_date"`
+	StandardDate tianwen.Date `json:"standard_date"`
+	LastDate  tianwen.Date `json:"last_date"`
 	Shichen   ganzhi.Zhi        `json:"shichen"`
 	ShiGan    ganzhi.Gan        `json:"shi_gan"`
 	ShiZhi    ganzhi.Zhi        `json:"shi_zhi"`
@@ -214,8 +214,8 @@ func ResolveLiuShiTime(standard time.Time, loc *time.Location, longitude float64
 	}
 
 	last := tianwen.ApparentSolarFromStandard(standard, longitude)
-	localDate := tianwen.StandardDateAt(standard, loc)
-	lastDate := tianwen.CivilDateOf(last)
+	standardDate := tianwen.StandardDateAt(standard, loc)
+	lastDate := tianwen.DateOf(last)
 	shichen := tianwen.ShichenOf(last)
 
 	dayGanDate := lastDate
@@ -232,7 +232,7 @@ func ResolveLiuShiTime(standard time.Time, loc *time.Location, longitude float64
 		Standard:  standard,
 		Location:  loc,
 		Longitude: longitude,
-		LocalDate: localDate,
+		StandardDate: standardDate,
 		LastDate:  lastDate,
 		Shichen:   shichen,
 		ShiGan:    shiGan,

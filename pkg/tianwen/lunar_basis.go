@@ -71,7 +71,7 @@ func LocalLabelProjector() LunarProjector {
 }
 
 // SelectorDate is the civil date used to look up the lunar date.
-func (p LunarProjector) SelectorDate(at time.Time) CivilDate {
+func (p LunarProjector) SelectorDate(at time.Time) Date {
 	if p.basis == LunarBasisOfficial {
 		return BeijingDateAt(at)
 	}
@@ -80,7 +80,7 @@ func (p LunarProjector) SelectorDate(at time.Time) CivilDate {
 
 // SelectorInstant is a representative instant for a selector date in the
 // basis's date frame.
-func (p LunarProjector) SelectorInstant(date CivilDate) time.Time {
+func (p LunarProjector) SelectorInstant(date Date) time.Time {
 	if p.basis == LunarBasisOfficial {
 		return date.Time()
 	}
@@ -88,7 +88,7 @@ func (p LunarProjector) SelectorInstant(date CivilDate) time.Time {
 }
 
 // DayStart is midnight on the civil date in the basis's date frame.
-func (p LunarProjector) DayStart(date CivilDate) time.Time {
+func (p LunarProjector) DayStart(date Date) time.Time {
 	if p.basis == LunarBasisOfficial {
 		return time.Date(date.Year, time.Month(date.Month), date.Day, 0, 0, 0, 0, cstLocation)
 	}
@@ -96,7 +96,7 @@ func (p LunarProjector) DayStart(date CivilDate) time.Time {
 }
 
 // SolarDateToLunar converts an already-selected civil date.
-func (p LunarProjector) SolarDateToLunar(date CivilDate) LunarDate {
+func (p LunarProjector) SolarDateToLunar(date Date) LunarDate {
 	return p.ref.SolarDateToLunar(date)
 }
 
@@ -105,9 +105,9 @@ func (p LunarProjector) LunarAt(at time.Time) LunarDate {
 	return p.ref.SolarDateToLunar(p.SelectorDate(at))
 }
 
-// CivilDateFromLunar converts a lunar date under this basis.
-func (p LunarProjector) CivilDateFromLunar(ld LunarDate) (CivilDate, error) {
-	return p.ref.CivilDateFromLunar(ld)
+// DateFromLunar converts a lunar date under this basis.
+func (p LunarProjector) DateFromLunar(ld LunarDate) (Date, error) {
+	return p.ref.DateFromLunar(ld)
 }
 
 // ValidateLunarDate validates a lunar date under this basis.

@@ -193,7 +193,7 @@ func TestSanQiRuMuUsesPalaceBoundConditions(t *testing.T) {
 }
 
 func TestSanQiRuMuRejectsUnboundPalace(t *testing.T) {
-	chart := board{School: SchoolZhuanPan}
+	chart := Board{School: SchoolZhuanPan}
 	chart.GongWei[int(GongLi)-1].TianPan = []TianPanSymbol{
 		{Gan: ganzhi.GanYi, Star: StarTianRui},
 	}
@@ -228,7 +228,7 @@ func assertPatternGoldenVector(t *testing.T, vector patternGoldenVector) {
 	}
 }
 
-func patternGoldenPan(t *testing.T, golden patternGoldenPanSpec) board {
+func patternGoldenPan(t *testing.T, golden patternGoldenPanSpec) Board {
 	t.Helper()
 	school, err := ParseSchool(golden.School)
 	if err != nil {
@@ -242,7 +242,7 @@ func patternGoldenPan(t *testing.T, golden patternGoldenPanSpec) board {
 	if err != nil {
 		t.Fatal(err)
 	}
-	result := board{School: school, YinDun: golden.YinDun, DutyStar: dutyStar, DutyDoor: dutyDoor}
+	result := Board{School: school, YinDun: golden.YinDun, DutyStar: dutyStar, DutyDoor: dutyDoor}
 	for _, goldenPalace := range golden.Palaces {
 		palace, err := ParsePalaceIndex(goldenPalace.Gong)
 		if err != nil {

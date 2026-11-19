@@ -1,6 +1,10 @@
 package bazi
 
-import "github.com/ml8s/mingligo/pkg/ganzhi"
+import (
+	"encoding/json"
+
+	"github.com/ml8s/mingligo/pkg/ganzhi"
+)
 
 // Candidate closures replace nullable domain facts with explicit states.
 const (
@@ -33,6 +37,24 @@ type TiaoHouResult struct {
 	Primary            TiaoHouAvailability  `json:"primary"`
 	Secondary          *TiaoHouAvailability `json:"secondary,omitempty"`
 	SecondaryCondition string               `json:"secondary_condition,omitempty"`
+}
+
+// MarshalJSON emits an explicit, all-null secondary object when there is no
+// 辅调候 candidate. An absent secondary is itself a meaningful 调候 fact
+// (checked and found none), so the output keeps the field present with null
+// facts instead of omitting it.
+func (r TiaoHouResult) MarshalJSON() ([]byte, error) {
+	type plain TiaoHouResult
+	if r.Secondary != nil {
+		return json.Marshal(plain(r))
+	}
+	return json.Marshal(struct {
+		plain
+		Secondary json.RawMessage `json:"secondary"`
+	}{
+		plain:     plain(r),
+		Secondary: json.RawMessage(`{"guan_xi_links":null,"hidden":null,"occurrences":null,"stem":null,"transparent":null}`),
+	})
 }
 
 // GeJuResult is the GeJu (格局) structural candidate based on the month

@@ -149,13 +149,13 @@ func TestMigratedZiweiDependentTools(t *testing.T) {
 		t.Fatal("ziwei.liupan liu_nian returned an empty document")
 	}
 	liuyue := callToolDocument(t, registry, "ziwei_liupan", map[string]any{
-		"scope": "liu_yue", "standard_time": civilDateForLunar(t, 2026, 5, 10, false) + "T12:00:00+08:00", "subject": chart,
+		"scope": "liu_yue", "standard_time": dateForLunar(t, 2026, 5, 10, false) + "T12:00:00+08:00", "subject": chart,
 	})
 	if len(liuyue) == 0 {
 		t.Fatal("ziwei.liupan liu_yue returned an empty document")
 	}
 	liuri := callToolDocument(t, registry, "ziwei_liupan", map[string]any{
-		"scope": "liu_ri", "standard_time": civilDateForLunar(t, 2026, 5, 10, false) + "T12:00:00+08:00", "subject": chart,
+		"scope": "liu_ri", "standard_time": dateForLunar(t, 2026, 5, 10, false) + "T12:00:00+08:00", "subject": chart,
 	})
 	if len(liuri) == 0 {
 		t.Fatal("ziwei.liupan liu_ri returned an empty document")

@@ -10,7 +10,7 @@ type ganEntry struct {
 }
 
 // computeGanInteractions returns the 十干克应 for each gong.
-func computeGanInteractions(board board) []GanInteraction {
+func computeGanInteractions(board Board) []GanInteraction {
 	result := []GanInteraction{}
 	for i := 0; i < 9; i++ {
 		p := board.GongWei[i]

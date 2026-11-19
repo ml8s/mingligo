@@ -56,7 +56,7 @@ func TestLiuNian_Golden(t *testing.T) {
 			}
 			chart := ComputeChart(time.Time(when), st, g)
 
-			liuNianTime1, err := ResolveLiuNianTime(tianwen.NewCivilDate(gc.Year, 6, 15))
+			liuNianTime1, err := ResolveLiuNianTime(tianwen.NewDate(gc.Year, 6, 15))
 			if err != nil {
 				t.Fatalf("resolve liunian time gc.Year: %v", err)
 			}

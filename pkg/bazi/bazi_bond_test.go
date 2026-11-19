@@ -118,10 +118,10 @@ func TestComputeBond_ElementYongShenAndSpouseStar(t *testing.T) {
 	aCount := convertWuxingCount(map[ganzhi.Wuxing]int(WuxingCountsAt(ca.ToBazi(), HiddenStemFacts(ca.ToBazi()))))
 	bCount := convertWuxingCount(map[ganzhi.Wuxing]int(WuxingCountsAt(cb.ToBazi(), HiddenStemFacts(cb.ToBazi()))))
 
-	if bond.DayMaster.A.Gan != "己" || bond.DayMaster.B.Gan == "" || bond.DayMaster.GanRel.Relation == "" {
+	if bond.DayMaster.A.Gan != "己" || bond.DayMaster.B.Gan == "" || bond.DayMaster.Relation.Relation == "" {
 		t.Fatalf("day master cross = %+v", bond.DayMaster)
 	}
-	if bond.SpousePalace.AZhi != "卯" || bond.SpousePalace.BZhi == "" || bond.SpousePalace.Relation.Detail == "" {
+	if bond.SpousePalace.A.Zhi != "卯" || bond.SpousePalace.B.Zhi == "" || bond.SpousePalace.Relation.Explanation == "" {
 		t.Fatalf("spouse palace cross = %+v", bond.SpousePalace)
 	}
 

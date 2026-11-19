@@ -22,12 +22,15 @@ const (
 // gongIndex identifies one of 12 palaces (0=命宫 … 11=父母).
 type gongIndex int
 
-func (p gongIndex) MarshalJSON() ([]byte, error) {
-	// 宫名 = gongLabels（gongIndex 定义的固定标签），不依赖命盘
-	if int(p) < 0 || int(p) >= 12 {
-		return json.Marshal("")
+func (p gongIndex) String() string {
+	if int(p) < 0 || int(p) >= len(gongLabels) {
+		return ""
 	}
-	return json.Marshal(gongLabels[p])
+	return gongLabels[p]
+}
+
+func (p gongIndex) MarshalJSON() ([]byte, error) {
+	return json.Marshal(p.String())
 }
 
 func (p *gongIndex) UnmarshalJSON(data []byte) error {
@@ -100,12 +103,12 @@ var starNames = map[starIndex]string{
 // starName returns the Chinese name of a star.
 func starName(s starIndex) string { return starNames[s] }
 
+func (s starIndex) String() string {
+	return starNames[s]
+}
+
 func (s starIndex) MarshalJSON() ([]byte, error) {
-	name, ok := starNames[s]
-	if !ok {
-		return json.Marshal("")
-	}
-	return json.Marshal(name)
+	return json.Marshal(s.String())
 }
 
 func (s *starIndex) UnmarshalJSON(data []byte) error {
@@ -176,12 +179,12 @@ var juShuCodes = map[juShu]string{
 	JuFire:  "fire_6",
 }
 
+func (j juShu) String() string {
+	return juShuCodes[j]
+}
+
 func (j juShu) MarshalJSON() ([]byte, error) {
-	s, ok := juShuCodes[j]
-	if !ok {
-		return json.Marshal("")
-	}
-	return json.Marshal(s)
+	return json.Marshal(j.String())
 }
 
 func (j *juShu) UnmarshalJSON(data []byte) error {
@@ -220,14 +223,14 @@ var juShuNames = map[juShu]string{
 func juShuName(j juShu) string { return juShuNames[j] }
 
 // gong holds all computed data for one gong.
-type gong struct {
+type Gong struct {
 	Index        gongIndex  `json:"-"`
 	Name         string     `json:"ming"`
 	Gan          Gan        `json:"gan"`
 	Zhi          Zhi        `json:"zhi"`
 	IsBodyPalace bool       `json:"shen_gong,omitempty"`
 	IsYuanGong   bool       `json:"lai_yin_gong,omitempty"`
-	Stars        []starInfo `json:"xing_yao"`
+	Stars        []StarInfo `json:"xing_yao"`
 	Ages         []int      `json:"xiao_xian,omitempty"`
 	ChangSheng   string     `json:"chang_sheng,omitempty"`
 	BoShi        string     `json:"bo_shi,omitempty"`
@@ -236,8 +239,8 @@ type gong struct {
 	ZaYao        []string   `json:"za_yao,omitempty"`
 }
 
-// starInfo is one star entry in a gong.
-type starInfo struct {
+// StarInfo is one star entry in a gong.
+type StarInfo struct {
 	Star       starIndex `json:"-"`
 	Name       string    `json:"ming"`
 	IsMajor    bool      `json:"-"`
@@ -246,8 +249,8 @@ type starInfo struct {
 	Brightness string    `json:"liang_du,omitempty"` // "庙"/"旺"/"利"/"平"/"陷"
 }
 
-// kongGongInfo 描述一个无主星宫位及其借星（对宫主星）。
-type kongGongInfo struct {
+// KongGongInfo 描述一个无主星宫位及其借星（对宫主星）。
+type KongGongInfo struct {
 	KongGong gongIndex `json:"kong_gong"`
 	JieGong  gongIndex `json:"jie_gong"`
 }
@@ -265,7 +268,7 @@ const (
 // Chart holds the complete ziwei chart.
 type Chart struct {
 	KouJing  ChartSchool `json:"kou_jing"`
-	GongWei  [12]gong    `json:"shi_er_gong"`
+	GongWei  [12]Gong    `json:"shi_er_gong"`
 	MingGong gongIndex   `json:"-"`
 	ShenGong gongIndex   `json:"-"`
 	JuShu    juShu       `json:"ju_shu"`
@@ -275,7 +278,7 @@ type Chart struct {
 	SiHua     siHuaResult `json:"-"`
 
 	// 空宫借星：只记录无主星宫和借星来源宫；星曜仍由来源宫唯一承载。
-	KongGong        []kongGongInfo `json:"kong_gong,omitempty"`
+	KongGong        []KongGongInfo `json:"kong_gong,omitempty"`
 	NianGan         Gan            `json:"nian_gan"`
 	NianZhi         Zhi            `json:"nian_zhi,omitempty"`
 	ShiZhi          Zhi            `json:"shi_zhi"`
@@ -287,7 +290,7 @@ type Chart struct {
 	Gender          ganzhi.Gender  `json:"-"`
 	MingZhu         string         `json:"ming_zhu,omitempty"`
 	ShenZhu         string         `json:"shen_zhu,omitempty"`
-	Patterns        []pattern      `json:"ge_ju,omitempty"`
+	Patterns        []Pattern      `json:"ge_ju,omitempty"`
 	SanFangSiZheng  SanFangSiZheng `json:"san_fang_si_zheng"`
 	DaXian          []DaXianStep   `json:"da_xian"`
 }
@@ -318,11 +321,23 @@ type DaXianStep struct {
 	MingGong  gongIndex `json:"ming_gong"`
 }
 
+// LiuNianJie locates the flow lunar year: the observer's standard clock and
+// civil selection date, plus the lunar-year boundary. Values are readable.
+type LiuNianJie struct {
+	StandardTime  string `json:"standard_time"`
+	StartDate     string `json:"start_date"`
+	LunarYear     int    `json:"lunar_year"`
+	LunarYearStart string `json:"lunar_year_start"`
+	LunarYearEnd   string `json:"lunar_year_end"`
+	BoundaryDay    bool   `json:"boundary_day"`
+}
+
 // LiuNian is the annual fate analysis.
 type LiuNian struct {
 	MingGong     gongIndex            `json:"ming_gong"`
 	MingGongName string               `json:"ming_gong_name"` // 流年命宫名
 	Zhi          Zhi                  `json:"zhi"`            // 流年地支
 	SiHua        []FlowTransformation `json:"si_hua"`
-	GongWei      [12]flowPalace       `json:"gong_wei"` // 流年盘（地支坐标 12 宫）
+	GongWei      [12]FlowPalace       `json:"gong_wei"` // 流年盘（地支坐标 12 宫）
+	NianJie      LiuNianJie           `json:"nian_jie"`
 }

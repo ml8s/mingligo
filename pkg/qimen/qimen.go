@@ -222,7 +222,7 @@ type Gong struct {
 }
 
 // board is the complete 奇门遁甲排盘。
-type board struct {
+type Board struct {
 	Jushu          int
 	School         School
 	YinDun         bool
@@ -280,7 +280,7 @@ type gongJSON struct {
 
 // MarshalJSON projects the API fields and renders spirit names for the current
 // 阴阳遁 and plate style.
-func (p board) MarshalJSON() ([]byte, error) {
+func (p Board) MarshalJSON() ([]byte, error) {
 	out := boardJSON{
 		Jushu: p.Jushu, YinDun: p.YinDun,
 		RiGan: p.RiGan, RiZhi: p.RiZhi,

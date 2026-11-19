@@ -5,18 +5,18 @@ import (
 	"time"
 )
 
-func TestCivilDateString(t *testing.T) {
-	d := NewCivilDate(2026, 6, 1)
+func TestDateString(t *testing.T) {
+	d := NewDate(2026, 6, 1)
 	if got := d.String(); got != "2026-06-01" {
 		t.Fatalf("String() = %q", got)
 	}
 }
 
-func TestCivilDateValidate(t *testing.T) {
-	valid := []CivilDate{
-		NewCivilDate(2024, 2, 29),
-		NewCivilDate(2026, 6, 1),
-		NewCivilDate(1, 1, 1),
+func TestDateValidate(t *testing.T) {
+	valid := []Date{
+		NewDate(2024, 2, 29),
+		NewDate(2026, 6, 1),
+		NewDate(1, 1, 1),
 	}
 	for _, d := range valid {
 		if err := d.Validate(); err != nil {
@@ -24,12 +24,12 @@ func TestCivilDateValidate(t *testing.T) {
 		}
 	}
 
-	invalid := []CivilDate{
-		NewCivilDate(2026, 2, 30),
-		NewCivilDate(2026, 13, 1),
-		NewCivilDate(2026, 0, 1),
-		NewCivilDate(2026, 1, 0),
-		NewCivilDate(0, 1, 1),
+	invalid := []Date{
+		NewDate(2026, 2, 30),
+		NewDate(2026, 13, 1),
+		NewDate(2026, 0, 1),
+		NewDate(2026, 1, 0),
+		NewDate(0, 1, 1),
 	}
 	for _, d := range invalid {
 		if err := d.Validate(); err == nil {
@@ -38,18 +38,18 @@ func TestCivilDateValidate(t *testing.T) {
 	}
 }
 
-func TestCivilDateAddDays(t *testing.T) {
+func TestDateAddDays(t *testing.T) {
 	cases := []struct {
-		start CivilDate
+		start Date
 		days  int
-		want  CivilDate
+		want  Date
 	}{
-		{NewCivilDate(2026, 6, 1), 1, NewCivilDate(2026, 6, 2)},
-		{NewCivilDate(2026, 6, 30), 1, NewCivilDate(2026, 7, 1)},
-		{NewCivilDate(2026, 12, 31), 1, NewCivilDate(2027, 1, 1)},
-		{NewCivilDate(2024, 2, 28), 1, NewCivilDate(2024, 2, 29)},
-		{NewCivilDate(2024, 2, 29), 1, NewCivilDate(2024, 3, 1)},
-		{NewCivilDate(2026, 3, 1), -1, NewCivilDate(2026, 2, 28)},
+		{NewDate(2026, 6, 1), 1, NewDate(2026, 6, 2)},
+		{NewDate(2026, 6, 30), 1, NewDate(2026, 7, 1)},
+		{NewDate(2026, 12, 31), 1, NewDate(2027, 1, 1)},
+		{NewDate(2024, 2, 28), 1, NewDate(2024, 2, 29)},
+		{NewDate(2024, 2, 29), 1, NewDate(2024, 3, 1)},
+		{NewDate(2026, 3, 1), -1, NewDate(2026, 2, 28)},
 	}
 	for _, tc := range cases {
 		if got := tc.start.AddDays(tc.days); got != tc.want {
@@ -58,8 +58,8 @@ func TestCivilDateAddDays(t *testing.T) {
 	}
 }
 
-func TestCivilDateTimeIsNoonCST(t *testing.T) {
-	d := NewCivilDate(2026, 6, 1)
+func TestDateTimeIsNoonCST(t *testing.T) {
+	d := NewDate(2026, 6, 1)
 	got := d.Time()
 
 	if got.Hour() != 12 || got.Minute() != 0 || got.Second() != 0 {
@@ -73,20 +73,20 @@ func TestCivilDateTimeIsNoonCST(t *testing.T) {
 	}
 }
 
-func TestCivilDateOfUsesInputLocation(t *testing.T) {
+func TestDateOfUsesInputLocation(t *testing.T) {
 	loc, err := time.LoadLocation("America/New_York")
 	if err != nil {
 		t.Fatal(err)
 	}
 	at := time.Date(2026, 6, 1, 23, 30, 0, 0, loc)
-	if got := CivilDateOf(at); got != (CivilDate{Year: 2026, Month: 6, Day: 1}) {
-		t.Fatalf("CivilDateOf = %s, want 2026-06-01", got)
+	if got := DateOf(at); got != (Date{Year: 2026, Month: 6, Day: 1}) {
+		t.Fatalf("DateOf = %s, want 2026-06-01", got)
 	}
 }
 
-func TestCivilDateOrdering(t *testing.T) {
-	earlier := NewCivilDate(2026, 6, 1)
-	later := NewCivilDate(2026, 6, 2)
+func TestDateOrdering(t *testing.T) {
+	earlier := NewDate(2026, 6, 1)
+	later := NewDate(2026, 6, 2)
 
 	if !earlier.Before(later) || earlier.After(later) {
 		t.Fatalf("ordering mismatch for %s and %s", earlier, later)
@@ -94,10 +94,10 @@ func TestCivilDateOrdering(t *testing.T) {
 	if later.Before(earlier) || !later.After(earlier) {
 		t.Fatalf("ordering mismatch for %s and %s", later, earlier)
 	}
-	if (CivilDate{}).IsZero() != true {
-		t.Fatal("zero CivilDate must report IsZero")
+	if (Date{}).IsZero() != true {
+		t.Fatal("zero Date must report IsZero")
 	}
 	if earlier.IsZero() {
-		t.Fatal("non-zero CivilDate reported IsZero")
+		t.Fatal("non-zero Date reported IsZero")
 	}
 }

@@ -250,7 +250,7 @@ func resolveBaseDate(in ResolveInput, form resolveForm) (int, time.Month, int, e
 		if err != nil {
 			return 0, 0, 0, fmt.Errorf("invalid lunar basis: %w", err)
 		}
-		date, err := projector.CivilDateFromLunar(in.Lunar)
+		date, err := projector.DateFromLunar(in.Lunar)
 		if err != nil {
 			return 0, 0, 0, fmt.Errorf("invalid lunar date: %w", err)
 		}

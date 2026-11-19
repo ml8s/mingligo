@@ -11,7 +11,7 @@ import (
 // Day is the huangli query result for one day.
 type ShiChenFortune struct {
 	Zhi         string `json:"zhi"`
-	Time        string `json:"time"` // e.g. "23:00-01:00"
+	Time        string `json:"clock_range"` // e.g. "23:00-01:00"
 	HuangDaoStr string `json:"huangdao"`
 	JianChu     string `json:"jian_chu"`
 	Suitable    bool   `json:"suitable"`

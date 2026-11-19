@@ -2,6 +2,6 @@ package mcpcontract
 
 import "github.com/ml8s/mingligo/pkg/tianwen"
 
-func civilDateString(date tianwen.CivilDate) DateString {
+func dateString(date tianwen.Date) DateString {
 	return DateString(date.String())
 }

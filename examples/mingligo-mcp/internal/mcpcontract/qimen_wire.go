@@ -260,8 +260,8 @@ type QimenJinhanChartOutput = qimen.JinhanChart
 // QimenChartOutput is the typed union for the two qimen schools. MarshalJSON
 // preserves the current direct standard/Jinhan wire faces.
 type QimenChartOutput struct {
-	Standard *QimenStandardChartOutput `json:"-"`
-	Jinhan   *QimenJinhanChartOutput   `json:"-"`
+	Standard *qimen.Chart            `json:"-"`
+	Jinhan   *QimenJinhanChartOutput `json:"-"`
 }
 
 func (output QimenChartOutput) MarshalJSON() ([]byte, error) {

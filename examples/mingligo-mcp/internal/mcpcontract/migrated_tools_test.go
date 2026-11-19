@@ -360,7 +360,7 @@ func TestMigratedZiweiLiuYueTargetLunarContract(t *testing.T) {
 	}
 
 	document := callToolDocument(t, registry, "ziwei_liupan", map[string]any{
-		"subject": chart, "scope": "liu_yue", "standard_time": civilDateForLunar(t, 2025, 6, 16, true) + "T12:00:00+08:00",
+		"subject": chart, "scope": "liu_yue", "standard_time": dateForLunar(t, 2025, 6, 16, true) + "T12:00:00+08:00",
 	})
 	item := firstSeriesItem(t, document)
 	yueJie, ok := item["yue_jie"].(map[string]any)

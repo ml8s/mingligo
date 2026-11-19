@@ -37,9 +37,9 @@ func zhiIdxToAnXingIdx(zhiIdx int) int {
 	return ((zhiIdx-2)%12 + 12) % 12
 }
 
-// flowPalace is one gong of a flow chart (流年/流月/流日/流时盘),
+// FlowPalace is one gong of a flow chart (流年/流月/流日/流时盘),
 // expressed in earth-zhi coordinates.
-type flowPalace struct {
+type FlowPalace struct {
 	Zhi    Zhi      `json:"zhi"`         // 地支
 	Name   string   `json:"name"`        // 宫名（命盘标签）
 	Stars  []string `json:"stars"`       // 流曜星名（无则为空）
@@ -50,8 +50,8 @@ type flowPalace struct {
 // 真相源：宫名 = 地支 → gongIndex → 标签，顺逆由公式表达，不存宫名顺序数组。
 // liuPanIdx 是流盘索引（流年/月/日/时），用于确定流盘命宫（IsMing 标记）。
 // liuPanIdx 是流盘起点（安星索引），用于宫名推导。
-func buildFlowPalaces(liuPanIdx int, starByAnXingIdx map[int][]string) [12]flowPalace {
-	var out [12]flowPalace
+func buildFlowPalaces(liuPanIdx int, starByAnXingIdx map[int][]string) [12]FlowPalace {
+	var out [12]FlowPalace
 	for i := 0; i < 12; i++ {
 		zhiIdx := anXingIdxToZhiIdx(i)
 		// 流盘宫名 = gongLabels（根）的反向索引（顺时针序）：
@@ -63,7 +63,7 @@ func buildFlowPalaces(liuPanIdx int, starByAnXingIdx map[int][]string) [12]flowP
 			stars = []string{}
 		}
 		stars = sortFlowStars(stars)
-		out[i] = flowPalace{
+		out[i] = FlowPalace{
 			Zhi:    zhiIdxToZhi(zhiIdx),
 			Name:   name,
 			Stars:  stars,
@@ -76,9 +76,9 @@ func buildFlowPalaces(liuPanIdx int, starByAnXingIdx map[int][]string) [12]flowP
 // FlowTransformation is one complete flow-period transformation: the
 // transformed natal star, its Hua, and the natal palace where it lands.
 type FlowTransformation struct {
-	Star   starIndex
-	Hua    siHuaType
-	Palace gongIndex
+	Star   starIndex `json:"star"`
+	Hua    siHuaType `json:"hua"`
+	Palace gongIndex `json:"palace"`
 }
 
 // newFlowTransformations projects the transformation map into a stable,

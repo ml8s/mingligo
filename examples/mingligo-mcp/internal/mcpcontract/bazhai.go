@@ -34,14 +34,14 @@ type BazhaiMingGuaOutput struct {
 }
 
 type BazhaiDirectionsOutput struct {
-	ShengQi DirectionName `json:"sheng_qi" jsonschema:"生气方。"`
-	TianYi  DirectionName `json:"tian_yi" jsonschema:"天医方。"`
-	YanNian DirectionName `json:"yan_nian" jsonschema:"延年方。"`
-	FuWei   DirectionName `json:"fu_wei" jsonschema:"伏位方。"`
-	HuoHai  DirectionName `json:"huo_hai" jsonschema:"祸害方。"`
-	WuGui   DirectionName `json:"wu_gui" jsonschema:"五鬼方。"`
-	LiuSha  DirectionName `json:"liu_sha" jsonschema:"六煞方。"`
-	JueMing DirectionName `json:"jue_ming" jsonschema:"绝命方。"`
+	ShengQi []DirectionName `json:"sheng_qi" jsonschema:"生气方。"`
+	TianYi  []DirectionName `json:"tian_yi" jsonschema:"天医方。"`
+	YanNian []DirectionName `json:"yan_nian" jsonschema:"延年方。"`
+	FuWei   []DirectionName `json:"fu_wei" jsonschema:"伏位方。"`
+	HuoHai  []DirectionName `json:"huo_hai" jsonschema:"祸害方。"`
+	WuGui   []DirectionName `json:"wu_gui" jsonschema:"五鬼方。"`
+	LiuSha  []DirectionName `json:"liu_sha" jsonschema:"六煞方。"`
+	JueMing []DirectionName `json:"jue_ming" jsonschema:"绝命方。"`
 }
 
 type BazhaiAnnualStarOutput struct {
@@ -90,87 +90,30 @@ type BazhaiLayoutOutput struct {
 	Stove   BazhaiDoorStoveOutput `json:"stove" jsonschema:"灶位判断。"`
 }
 
-func BazhaiChart(_ context.Context, input BazhaiChartInput) (BazhaiChartOutput, error) {
+func BazhaiChart(_ context.Context, input BazhaiChartInput) (bazhai.Chart, error) {
 	standard, _, err := parseStandardTime(input.Subject.StandardTime)
 	if err != nil {
-		return BazhaiChartOutput{}, fmt.Errorf("bazhai.chart: %w", err)
+		return bazhai.Chart{}, fmt.Errorf("bazhai.chart: %w", err)
 	}
 	gender, err := ganzhi.ParseGender(string(input.Subject.Gender))
 	if err != nil {
-		return BazhaiChartOutput{}, fmt.Errorf("bazhai.chart: %w", err)
+		return bazhai.Chart{}, fmt.Errorf("bazhai.chart: %w", err)
 	}
 	chart, err := bazhai.ComputeChartAtStandard(gender, standard)
 	if err != nil {
-		return BazhaiChartOutput{}, fmt.Errorf("bazhai.chart: %w", err)
+		return bazhai.Chart{}, fmt.Errorf("bazhai.chart: %w", err)
 	}
-	return bazhaiChartWire(chart), nil
+	return chart, nil
 }
 
-func BazhaiLayout(_ context.Context, input BazhaiLayoutInput) (BazhaiLayoutOutput, error) {
+func BazhaiLayout(_ context.Context, input BazhaiLayoutInput) (bazhai.LayoutResult, error) {
 	layout, err := bazhai.ComputeLayout(
 		string(input.MingGua), string(input.DoorGua),
 		string(input.MasterGua), string(input.StoveGua),
 	)
 	if err != nil {
-		return BazhaiLayoutOutput{}, err
+		return bazhai.LayoutResult{}, err
 	}
-	return BazhaiLayoutOutput{
-		Group:   LifeGroupName(layout.Group),
-		MingGua: EightGuaName(layout.MingGua),
-		Door:    bazhaiDoorStoveWire(layout.Door),
-		Master:  bazhaiDoorStoveWire(layout.Master),
-		Stove:   bazhaiDoorStoveWire(layout.Stove),
-	}, nil
+	return layout, nil
 }
 
-func bazhaiChartWire(chart bazhai.Chart) BazhaiChartOutput {
-	output := BazhaiChartOutput{
-		MingGua: BazhaiMingGuaOutput{
-			Gua: BazhaiGuaOutput{
-				Index:   GuaNumber(chart.MingGua.Gua.Index),
-				Name:    EightGuaName(chart.MingGua.Gua.Name),
-				Wuxing:  ElementName(chart.MingGua.Gua.Wuxing),
-				YinYang: YinYangName(chart.MingGua.Gua.YinYang),
-			},
-			Group:        LifeGroupName(chart.MingGua.Group),
-			YearBoundary: YearBoundaryName(chart.MingGua.YearBoundary),
-		},
-		BaZhaiDirs: BazhaiDirectionsOutput{
-			ShengQi: DirectionName(chart.BaZhaiDirs.ShengQi[0]),
-			TianYi:  DirectionName(chart.BaZhaiDirs.TianYi[0]),
-			YanNian: DirectionName(chart.BaZhaiDirs.YanNian[0]),
-			FuWei:   DirectionName(chart.BaZhaiDirs.FuWei[0]),
-			HuoHai:  DirectionName(chart.BaZhaiDirs.HuoHai[0]),
-			WuGui:   DirectionName(chart.BaZhaiDirs.WuGui[0]),
-			LiuSha:  DirectionName(chart.BaZhaiDirs.LiuSha[0]),
-			JueMing: DirectionName(chart.BaZhaiDirs.JueMing[0]),
-		},
-		YearStars: BazhaiYearStarsOutput{
-			Year:         BazhaiBirthYear(chart.YearStars.Year),
-			RuZhong:      FlyingStarName(chart.YearStars.RuZhong),
-			YearBoundary: YearBoundaryName(chart.YearStars.YearBoundary),
-		},
-	}
-	for i, star := range chart.YearStars.Palaces {
-		output.YearStars.Palaces[i] = BazhaiAnnualStarOutput{
-			GongNum:  GuaNumber(star.GongNum),
-			Xing:     FlyingStarNumber(star.Xing),
-			XingName: FlyingStarName(star.XingName),
-			Wuxing:   ElementName(star.Wuxing),
-			RuZhong:  star.RuZhong,
-		}
-	}
-	return output
-}
-
-func bazhaiDoorStoveWire(value bazhai.DoorStoveInfo) BazhaiDoorStoveOutput {
-	return BazhaiDoorStoveOutput{
-		Direction: DirectionName(value.Direction),
-		GuaName:   EightGuaName(value.GuaName),
-		Wuxing:    ElementName(value.Wuxing),
-		YouXing:   YouxingName(value.YouXing),
-		Rating:    BazhaiRatingName(value.Rating),
-		Group:     TrigramGroupName(value.Group),
-		Match:     BazhaiMatchName(value.Match),
-	}
-}

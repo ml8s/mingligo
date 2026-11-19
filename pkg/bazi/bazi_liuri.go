@@ -4,8 +4,15 @@ import (
 	"github.com/ml8s/mingligo/pkg/ganzhi"
 )
 
+// LiuRiJie locates the flow day: the observer's standard clock and standard
+// civil date. Values are already human-readable for direct transmission.
+type LiuRiJie struct {
+	StandardTime string `json:"standard_time"`
+	StandardDate string `json:"standard_date"`
+}
+
 // LiuRi holds the daily flow (流日) analysis: today's pillar
-// and its interactions with the bazi chart, dayun, and liunian pillars.
+// and its interactions with the bazi chart, current dayun, and current liunian.
 type LiuRi struct {
 	Date        string              `json:"date"`
 	RiGan       ganzhi.Gan          `json:"gan"`
@@ -17,6 +24,7 @@ type LiuRi struct {
 	DaYunRels   []ZhiRelation       `json:"da_yun_rels"`
 	LiuNianRels []ZhiRelation       `json:"liu_nian_rels"`
 	ShenSha     []ShenShaProjection `json:"shen_sha"`
+	RiJie       LiuRiJie            `json:"ri_jie"`
 }
 
 // ComputeLiuRi computes the day pillar for the resolved date and its full

@@ -7,11 +7,11 @@ of collapsing them into one opaque timestamp.
 ## The main conversion chain
 
 ```text
-civil / wall-clock time
-  → standard local time (DST removed)
+civil time (wall clock, may include DST)
+  → standard time (DST removed, see "Domain time concepts")
     → longitude correction
       → equation of time
-        → local apparent solar time (LAST, 真太阳时)
+        → solar time / LAST (真太阳时)
           → 时辰, solar day, solar-term boundary, year/month pillars
 ```
 
@@ -23,6 +23,31 @@ The direct `Compute*At` APIs expect the caller to provide a standard-time
 `time.Time`. When input may be a DST wall clock, a vague 时辰, a range, or a
 longitude range, call `ResolveStandard` first; it performs DST removal and
 boundary resolution before handing a standard instant to a chart API.
+
+## Domain time concepts
+
+MingliGo distinguishes four time scales. They are all **instants** and are all
+represented by Go's `time.Time`; the domain does **not** define separate Go
+types for them. The distinction is carried by the symbol name, e.g.
+`standard time.Time`, `solar time.Time`. This is deliberate: `type StandardTime
+time.Time` would lose `time.Time`'s methods and force conversions everywhere,
+while a type alias would add no compile-time safety.
+
+| Concept | Basis | DST | Example (Urumqi, ~87.6°E) |
+|---|---|---|---|
+| **standard time** | jurisdiction's legal UTC offset | excluded | UTC+8 (China Standard Time) |
+| **civil time** | standard time + DST where DST applies | included when applicable | UTC+8 in China (no DST) |
+| **local time / LMT** | longitude alone: `longitude / 15` hours | not applicable | ~UTC+5:50 (≈ +6) |
+| **solar time / LAST (真太阳时)** | LMT + equation of time | not applicable | sundial reading, drives 时辰/日柱 |
+
+Note: "civil" as used here is a **time-scale** concept (civil time). It is
+unrelated to the civil/Gregorian calendar. A calendar date (a `YYYY-MM-DD`
+selector with no time or zone) is a different data structure, defined as
+`tianwen.Date` (a `{Year, Month, Day}` container). Do not call it
+`CivilDate`/`civiltime`: that would imply it is a civil-time value convertible
+to other time scales, which it is not. Converting between a date and an
+instant requires an explicit projection such as `tianwen.DateOf` or
+`tianwen.StandardNoon`.
 
 ## Civil time and standard time
 

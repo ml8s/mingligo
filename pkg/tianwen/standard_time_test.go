@@ -61,7 +61,7 @@ func TestStandardDateAtNoDST(t *testing.T) {
 	}
 	// 00:30 EDT is 23:30 EST on the previous date.
 	at := time.Date(2024, 7, 1, 4, 30, 0, 0, time.UTC)
-	if got, want := StandardDateAt(at, ny), NewCivilDate(2024, 6, 30); got != want {
+	if got, want := StandardDateAt(at, ny), NewDate(2024, 6, 30); got != want {
 		t.Fatalf("standard date = %s, want %s", got, want)
 	}
 }

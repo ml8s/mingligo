@@ -4,6 +4,16 @@ import (
 	"github.com/ml8s/mingligo/pkg/ganzhi"
 )
 
+// LiuYueJieQi locates the flow month: the observer's standard clock and civil
+// selection date, plus the 节 boundary. Values are human-readable.
+type LiuYueJieQi struct {
+	StandardTime string `json:"standard_time"`
+	StartDate    string `json:"start_date"`
+	JieqiStart   string `json:"jieqi_start"`
+	JieqiEnd     string `json:"jieqi_end"`
+	BoundaryDay  bool   `json:"boundary_day"`
+}
+
 // LiuYue holds the monthly (流月) analysis output.
 type LiuYue struct {
 	Year         int                 `json:"year"`
@@ -17,6 +27,7 @@ type LiuYue struct {
 	GanRels      []GanRelation       `json:"gan_rels"`
 	ZhiRels      []ZhiRelation       `json:"zhi_rels"`
 	ShenSha      []ShenShaProjection `json:"shen_sha"`
+	JieQi        LiuYueJieQi         `json:"jie_qi"`
 }
 
 // ComputeLiuYue computes the month pillar for a resolved solar-term month and

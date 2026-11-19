@@ -62,8 +62,7 @@
         "liu_ri.0.date": "2026-06-01",
         "liu_ri.0.gan": "丙",
         "liu_ri.0.zhi": "午",
-        "liu_ri.0.ri_jie.local_date": "2026-06-01",
-        "liu_ri.0.ri_jie.solar_date": "2026-06-01"
+        "liu_ri.0.ri_jie.standard_date": "2026-06-01"
       }
     },
     {
@@ -77,7 +76,7 @@
         "count": 1
       },
       "expect": {
-        "liu_ri.0.ri_jie.local_date": "2026-06-01",
+        "liu_ri.0.ri_jie.standard_date": "2026-06-01",
         "liu_ri.0.ri_jie.lunar.year": 2026,
         "liu_ri.0.ri_jie.lunar.month": 4,
         "liu_ri.0.ri_jie.lunar.day": 17,
@@ -98,7 +97,7 @@
       "expect": {
         "liu_shi.0.zhi": "亥",
         "liu_shi.0.shi_chen.shichen": "亥",
-        "liu_shi.0.shi_chen.local_date": "2026-06-01",
+        "liu_shi.0.shi_chen.standard_date": "2026-06-01",
         "liu_shi.0.shi_chen.lunar.year": 2026,
         "liu_shi.0.shi_chen.lunar.month": 4,
         "liu_shi.0.shi_chen.lunar.day": 17
@@ -161,7 +160,7 @@
         "count": 1
       },
       "expect": {
-        "liu_ri.0.ri_jie.local_date": "2024-02-09",
+        "liu_ri.0.ri_jie.standard_date": "2024-02-09",
         "liu_ri.0.ri_jie.lunar.year": 2024,
         "liu_ri.0.ri_jie.lunar.month": 1,
         "liu_ri.0.ri_jie.lunar.day": 1
@@ -216,7 +215,7 @@
         "count": 1
       },
       "expect": {
-        "liu_shi.0.shi_chen.local_date": "2024-02-09",
+        "liu_shi.0.shi_chen.standard_date": "2024-02-09",
         "liu_shi.0.shi_chen.lunar.year": 2024,
         "liu_shi.0.shi_chen.lunar.month": 1,
         "liu_shi.0.shi_chen.lunar.day": 1,

@@ -4,8 +4,8 @@ import (
 	"testing"
 )
 
-func makeGong(idx gongIndex, stars []starInfo, zaYao []string) gong {
-	return gong{
+func makeGong(idx gongIndex, stars []StarInfo, zaYao []string) Gong {
+	return Gong{
 		Index: idx,
 		Name:  gongLabels[idx],
 		Stars: stars,
@@ -13,11 +13,11 @@ func makeGong(idx gongIndex, stars []starInfo, zaYao []string) gong {
 	}
 }
 
-func makeStar(star starIndex, name string, siHua string) starInfo {
-	return starInfo{Star: star, Name: name, IsMajor: star < 14, SiHua: siHua}
+func makeStar(star starIndex, name string, siHua string) StarInfo {
+	return StarInfo{Star: star, Name: name, IsMajor: star < 14, SiHua: siHua}
 }
 
-func hasPattern(patterns []pattern, name string) bool {
+func hasPattern(patterns []Pattern, name string) bool {
 	for _, p := range patterns {
 		if p.Name == name {
 			return true
@@ -27,27 +27,27 @@ func hasPattern(patterns []pattern, name string) bool {
 }
 
 func TestJuoHuoYang(t *testing.T) {
-	var palaces [12]gong
+	var palaces [12]Gong
 	for i := range palaces {
 		palaces[i] = makeGong(gongIndex(i), nil, nil)
 	}
-	palaces[0].Stars = []starInfo{
+	palaces[0].Stars = []StarInfo{
 		makeStar(JuMen, "巨门", ""),
 		makeStar(HuoXing, "火星", ""),
 		makeStar(QingYang, "擎羊", ""),
 	}
 	result := findPatterns(palaces)
 	if !hasPattern(result, "巨火羊") {
-		t.Errorf("expected 巨火羊 pattern, got: %v", result)
+		t.Errorf("expected 巨火羊 Pattern, got: %v", result)
 	}
 }
 
 func TestJuoHuoYangNegative(t *testing.T) {
-	var palaces [12]gong
+	var palaces [12]Gong
 	for i := range palaces {
 		palaces[i] = makeGong(gongIndex(i), nil, nil)
 	}
-	palaces[0].Stars = []starInfo{
+	palaces[0].Stars = []StarInfo{
 		makeStar(JuMen, "巨门", ""),
 		makeStar(HuoXing, "火星", ""),
 	}
@@ -58,27 +58,27 @@ func TestJuoHuoYangNegative(t *testing.T) {
 }
 
 func TestXingJiJiaYin(t *testing.T) {
-	var palaces [12]gong
+	var palaces [12]Gong
 	for i := range palaces {
 		palaces[i] = makeGong(gongIndex(i), nil, nil)
 	}
-	palaces[0].Stars = []starInfo{makeStar(TianXiang, "天相", "")}
-	palaces[11].Stars = []starInfo{makeStar(TianLiang, "天梁", "忌")}
+	palaces[0].Stars = []StarInfo{makeStar(TianXiang, "天相", "")}
+	palaces[11].Stars = []StarInfo{makeStar(TianLiang, "天梁", "忌")}
 	palaces[1].ZaYao = []string{"天刑"}
 	result := findPatterns(palaces)
 	if !hasPattern(result, "刑忌夹印") {
-		t.Errorf("expected 刑忌夹印 pattern, got: %v", result)
+		t.Errorf("expected 刑忌夹印 Pattern, got: %v", result)
 	}
 }
 
 func TestXingJiJiaYinReverse(t *testing.T) {
-	var palaces [12]gong
+	var palaces [12]Gong
 	for i := range palaces {
 		palaces[i] = makeGong(gongIndex(i), nil, nil)
 	}
-	palaces[0].Stars = []starInfo{makeStar(TianXiang, "天相", "")}
+	palaces[0].Stars = []StarInfo{makeStar(TianXiang, "天相", "")}
 	palaces[11].ZaYao = []string{"天刑"}
-	palaces[1].Stars = []starInfo{makeStar(TianLiang, "天梁", "忌")}
+	palaces[1].Stars = []StarInfo{makeStar(TianLiang, "天梁", "忌")}
 	result := findPatterns(palaces)
 	if !hasPattern(result, "刑忌夹印") {
 		t.Errorf("expected 刑忌夹印 (reverse), got: %v", result)
@@ -86,12 +86,12 @@ func TestXingJiJiaYinReverse(t *testing.T) {
 }
 
 func TestXingJiJiaYinNegative(t *testing.T) {
-	var palaces [12]gong
+	var palaces [12]Gong
 	for i := range palaces {
 		palaces[i] = makeGong(gongIndex(i), nil, nil)
 	}
-	palaces[0].Stars = []starInfo{makeStar(TianXiang, "天相", "")}
-	palaces[11].Stars = []starInfo{makeStar(TianLiang, "天梁", "")}
+	palaces[0].Stars = []StarInfo{makeStar(TianXiang, "天相", "")}
+	palaces[11].Stars = []StarInfo{makeStar(TianLiang, "天梁", "")}
 	palaces[1].ZaYao = []string{"天刑"}
 	result := findPatterns(palaces)
 	if hasPattern(result, "刑忌夹印") {
@@ -100,12 +100,12 @@ func TestXingJiJiaYinNegative(t *testing.T) {
 }
 
 func TestXingJiJiaYinNoTianXing(t *testing.T) {
-	var palaces [12]gong
+	var palaces [12]Gong
 	for i := range palaces {
 		palaces[i] = makeGong(gongIndex(i), nil, nil)
 	}
-	palaces[0].Stars = []starInfo{makeStar(TianXiang, "天相", "")}
-	palaces[11].Stars = []starInfo{makeStar(TianLiang, "天梁", "忌")}
+	palaces[0].Stars = []StarInfo{makeStar(TianXiang, "天相", "")}
+	palaces[11].Stars = []StarInfo{makeStar(TianLiang, "天梁", "忌")}
 	result := findPatterns(palaces)
 	if hasPattern(result, "刑忌夹印") {
 		t.Errorf("should NOT have 刑忌夹印 without 天刑")

@@ -8,9 +8,9 @@ import (
 	"github.com/ml8s/mingligo/pkg/tianwen"
 )
 
-func civilDateOfLunar(t *testing.T, lunar tianwen.LunarDate) tianwen.CivilDate {
+func dateOfLunar(t *testing.T, lunar tianwen.LunarDate) tianwen.Date {
 	t.Helper()
-	date, err := tianwen.ShanghaiLunarReference().CivilDateFromLunar(lunar)
+	date, err := tianwen.ShanghaiLunarReference().DateFromLunar(lunar)
 	if err != nil {
 		t.Fatalf("lunar %+v has no civil date: %v", lunar, err)
 	}
@@ -18,7 +18,7 @@ func civilDateOfLunar(t *testing.T, lunar tianwen.LunarDate) tianwen.CivilDate {
 }
 
 func TestResolveLiuNianTimeLunarNewYearBoundary(t *testing.T) {
-	start := civilDateOfLunar(t, tianwen.LunarDate{Year: 2026, Month: 1, Day: 1})
+	start := dateOfLunar(t, tianwen.LunarDate{Year: 2026, Month: 1, Day: 1})
 
 	before, err := ResolveLiuNianTimeWith(tianwen.LocalLabelProjector(), start.AddDays(-1))
 	if err != nil {
@@ -50,7 +50,7 @@ func TestResolveLiuNianTimeLunarNewYearBoundary(t *testing.T) {
 
 func TestResolveLiuYueTimeLeapMonth(t *testing.T) {
 	target := tianwen.LunarDate{Year: 2025, Month: 6, Day: 15, Leap: true}
-	date := civilDateOfLunar(t, target)
+	date := dateOfLunar(t, target)
 
 	resolved, err := ResolveLiuYueTimeWith(tianwen.LocalLabelProjector(), date)
 	if err != nil {
@@ -62,16 +62,16 @@ func TestResolveLiuYueTimeLeapMonth(t *testing.T) {
 	if !resolved.Lunar.Leap || resolved.Lunar.Month != 6 {
 		t.Fatalf("leap month lost: %+v", resolved.Lunar)
 	}
-	if resolved.Start != civilDateOfLunar(t, tianwen.LunarDate{Year: 2025, Month: 6, Day: 1, Leap: true}) {
+	if resolved.Start != dateOfLunar(t, tianwen.LunarDate{Year: 2025, Month: 6, Day: 1, Leap: true}) {
 		t.Fatalf("start = %s", resolved.Start)
 	}
-	if resolved.End != civilDateOfLunar(t, tianwen.LunarDate{Year: 2025, Month: 7, Day: 1}) {
+	if resolved.End != dateOfLunar(t, tianwen.LunarDate{Year: 2025, Month: 7, Day: 1}) {
 		t.Fatalf("end = %s", resolved.End)
 	}
 }
 
 func TestNextLiuYueTimeCrossesLeapMonth(t *testing.T) {
-	ordinary := civilDateOfLunar(t, tianwen.LunarDate{Year: 2025, Month: 6, Day: 15})
+	ordinary := dateOfLunar(t, tianwen.LunarDate{Year: 2025, Month: 6, Day: 15})
 	current, err := ResolveLiuYueTimeWith(tianwen.LocalLabelProjector(), ordinary)
 	if err != nil {
 		t.Fatal(err)
@@ -94,7 +94,7 @@ func TestNextLiuYueTimeCrossesLeapMonth(t *testing.T) {
 }
 
 func TestNextLiuRiTimeHandles29DayLeapMonth(t *testing.T) {
-	endOfLeap := civilDateOfLunar(t, tianwen.LunarDate{Year: 2025, Month: 6, Day: 29, Leap: true})
+	endOfLeap := dateOfLunar(t, tianwen.LunarDate{Year: 2025, Month: 6, Day: 29, Leap: true})
 	current, err := ResolveLiuRiTimeWith(tianwen.LocalLabelProjector(), endOfLeap)
 	if err != nil {
 		t.Fatal(err)
@@ -110,7 +110,7 @@ func TestNextLiuRiTimeHandles29DayLeapMonth(t *testing.T) {
 }
 
 func TestResolveLiuRiTimeMatchesLunarProjection(t *testing.T) {
-	date := tianwen.NewCivilDate(2026, 6, 1)
+	date := tianwen.NewDate(2026, 6, 1)
 	got, err := ResolveLiuRiTimeWith(tianwen.LocalLabelProjector(), date)
 	if err != nil {
 		t.Fatal(err)
@@ -237,8 +237,8 @@ func TestResolveLiuRiTimeAtWithUsesStandardDate(t *testing.T) {
 		t.Fatal(err)
 	}
 	wantDate := tianwen.StandardDateAt(standard, ny)
-	if got.LocalDate != wantDate || got.Date != wantDate {
-		t.Fatalf("dates = %s/%s, want %s", got.LocalDate, got.Date, wantDate)
+	if got.StandardDate != wantDate || got.Date != wantDate {
+		t.Fatalf("dates = %s/%s, want %s", got.StandardDate, got.Date, wantDate)
 	}
 	if want := projector.SolarDateToLunar(wantDate); got.Lunar != want {
 		t.Fatalf("lunar = %+v, want %+v", got.Lunar, want)

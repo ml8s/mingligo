@@ -9,18 +9,18 @@ import (
 // belongs to the new year; BoundaryDay reports that date-level truncation.
 type LichunYear struct {
 	Year        int
-	Start       CivilDate
-	End         CivilDate
+	Start       Date
+	End         Date
 	BoundaryDay bool
 }
 
 // LichunYearOf returns the 立春 year containing date. The 立春 boundary date
 // belongs to the new year.
-func LichunYearOf(date CivilDate) (LichunYear, error) {
+func LichunYearOf(date Date) (LichunYear, error) {
 	if err := date.Validate(); err != nil {
 		return LichunYear{}, err
 	}
-	lichunThisYear := SolarTermCivilDate(date.Year, 315)
+	lichunThisYear := SolarTermDate(date.Year, 315)
 	year := date.Year
 	if date.Before(lichunThisYear) {
 		year--
@@ -28,8 +28,8 @@ func LichunYearOf(date CivilDate) (LichunYear, error) {
 	if year < 1 {
 		return LichunYear{}, fmt.Errorf("lichun year: date %s precedes the supported calendar", date)
 	}
-	start := SolarTermCivilDate(year, 315)
-	end := SolarTermCivilDate(year+1, 315)
+	start := SolarTermDate(year, 315)
+	end := SolarTermDate(year+1, 315)
 	return LichunYear{
 		Year:        year,
 		Start:       start,
@@ -66,6 +66,6 @@ func LichunYearAt(instant time.Time) (LichunYearInstant, error) {
 		Year:        year,
 		Start:       start,
 		End:         end,
-		BoundaryDay: CivilDateOf(cst) == CivilDateOf(start.In(cstLocation)),
+		BoundaryDay: DateOf(cst) == DateOf(start.In(cstLocation)),
 	}, nil
 }

@@ -49,7 +49,8 @@ type HuangliShiChenOutput struct {
 	Suitable   bool   `json:"suitable" jsonschema:"该时辰是否宜。"`
 }
 
-// HuangliDayOutput is one day's almanac wire record.
+// HuangliDayOutput is the schema carrier for one almanac day. Its field names
+// match the domain Day JSON; the handler returns the domain value directly.
 type HuangliDayOutput struct {
 	Date        string                 `json:"date" jsonschema:"日期 YYYY-MM-DD。"`
 	RiZhu       HuangliRiZhuOutput     `json:"ri_zhu" jsonschema:"日柱信息。"`
@@ -72,68 +73,31 @@ type HuangliDayOutput struct {
 	EventReason string                 `json:"event_reason,omitempty" jsonschema:"事项适配依据。"`
 }
 
+// huangliDaysResult is the direct domain output; HuangliDaysOutput is only the
+// published schema carrier. The field names match the wire contract.
+type huangliDaysResult struct {
+	Days []huangli.Day `json:"days"`
+}
+
 // HuangliDays returns almanac facts for consecutive dates.
-func HuangliDays(_ context.Context, input HuangliDaysInput) (HuangliDaysOutput, error) {
+func HuangliDays(_ context.Context, input HuangliDaysInput) (huangliDaysResult, error) {
 	standard, loc, err := parseStandardTime(input.StandardTime)
 	if err != nil {
-		return HuangliDaysOutput{}, fmt.Errorf("huangli.days: %w", err)
+		return huangliDaysResult{}, fmt.Errorf("huangli.days: %w", err)
 	}
 	start := tianwen.StandardDateAt(standard, loc)
 	count := int(input.Count)
 	// 边界由 HuangliCount 的 schema 约束保证（1-30）；此处不再静默修正。
 
-	days := make([]HuangliDayOutput, 0, count)
+	days := make([]huangli.Day, 0, count)
 	for i := 0; i < count; i++ {
 		date := start.AddDays(i).String()
 		entry, err := huangli.QueryDate(date, string(input.Event))
 		if err != nil {
-			return HuangliDaysOutput{}, fmt.Errorf("huangli.days: %w", err)
+			return huangliDaysResult{}, fmt.Errorf("huangli.days: %w", err)
 		}
-		days = append(days, huangliDayWire(entry))
+		days = append(days, entry)
 	}
-	return HuangliDaysOutput{Days: days}, nil
+	return huangliDaysResult{Days: days}, nil
 }
 
-func huangliDayWire(day huangli.Day) HuangliDayOutput {
-	output := HuangliDayOutput{
-		Date: day.Date,
-		RiZhu: HuangliRiZhuOutput{
-			Gan:   day.RiZhu.Gan.String(),
-			Zhi:   day.RiZhu.Zhi.String(),
-			NaYin: day.RiZhu.NaYin,
-		},
-		Wuxing:      day.Wuxing,
-		JianChu:     day.JianChu,
-		HuangDao:    HuangliHuangDaoOutput(day.HuangDao),
-		XiShen:      day.XiShen,
-		CaiShen:     day.CaiShen,
-		FuShen:      day.FuShen,
-		StemTaboo:   day.StemTaboo,
-		BranchTaboo: day.BranchTaboo,
-		Mansion: HuangliMansionOutput{
-			Index:    day.Mansion.Index,
-			Name:     day.Mansion.Name,
-			DongWu:   day.Mansion.DongWu,
-			Wuxing:   day.Mansion.Element,
-			Group:    day.Mansion.Group,
-			GroupIdx: day.Mansion.GroupIdx,
-		},
-		JieQi:       day.JieQi,
-		JieQiDays:   day.JieQiDays,
-		RenYuan:     day.RenYuan,
-		Event:       day.Event,
-		EventLabel:  day.EventLabel,
-		Suitability: day.Suitability,
-		EventReason: day.EventReason,
-	}
-	for _, item := range day.ShiChen {
-		output.ShiChen = append(output.ShiChen, HuangliShiChenOutput{
-			Zhi:        item.Zhi,
-			ClockRange: item.Time,
-			HuangDao:   item.HuangDaoStr,
-			JianChu:    item.JianChu,
-			Suitable:   item.Suitable,
-		})
-	}
-	return output
-}

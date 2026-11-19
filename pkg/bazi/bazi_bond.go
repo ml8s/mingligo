@@ -2,45 +2,74 @@ package bazi
 
 import "github.com/ml8s/mingligo/pkg/ganzhi"
 
-type zhuPairEntry struct {
-	AZhu   string      `json:"a_zhu"`
-	BZhu   string      `json:"b_zhu"`
-	AGan   string      `json:"a_gan"`
-	BGan   string      `json:"b_gan"`
-	AZhi   string      `json:"a_zhi"`
-	BZhi   string      `json:"b_zhi"`
-	GanRel GanRelation `json:"gan_guan_xi"`
-	ZhiRel ZhiRelation `json:"zhi_guan_xi"`
+// Bond-side fact containers hold the two parties as nested objects, matching
+// the domain's readable output shape: a pillar is {zhu, gan, zhi}, not three
+// flat fields.
+type bondZhuSide struct {
+	Zhu string `json:"zhu"`
+	Gan string `json:"gan"`
+	Zhi string `json:"zhi"`
 }
+
+type bondGanRelation struct {
+	Kind     string `json:"kind"`
+	Relation string `json:"relation"`
+}
+
+type bondZhiRelation struct {
+	Kind        string `json:"kind"`
+	Explanation string `json:"explanation"`
+}
+
+type zhuPairEntry struct {
+	A           bondZhuSide     `json:"a"`
+	B           bondZhuSide     `json:"b"`
+	GanRelation bondGanRelation `json:"gan_relation"`
+	ZhiRelation bondZhiRelation `json:"zhi_relation"`
+}
+
 type zhuCross struct {
 	Pairs []zhuPairEntry `json:"pairs"`
 }
+
 type dayMasterCross struct {
-	A      crossGanParty `json:"a"`
-	B      crossGanParty `json:"b"`
-	GanRel GanRelation   `json:"gan_guan_xi"`
+	A        crossGanParty   `json:"a"`
+	B        crossGanParty   `json:"b"`
+	Relation bondGanRelation `json:"relation"`
 }
+
 type crossGanParty struct {
 	Gan    string `json:"gan"`
 	Wuxing string `json:"wuxing"`
 	Gender string `json:"gender"`
 }
+
 type spousePalaceCross struct {
-	AZhi     string      `json:"a_zhi"`
-	BZhi     string      `json:"b_zhi"`
-	Relation ZhiRelation `json:"relation"`
+	A        bondZhiSide     `json:"a"`
+	B        bondZhiSide     `json:"b"`
+	Relation bondZhiRelation `json:"relation"`
 }
+
+type bondZhiSide struct {
+	Zhi string `json:"zhi"`
+}
+
 type shiShenCross struct {
 	AToB map[string]string `json:"a_to_b"`
 	BToA map[string]string `json:"b_to_a"`
 }
+
 type naYinPairEntry struct {
-	AZhu     string `json:"a_zhu"`
-	BZhu     string `json:"b_zhu"`
-	ANaYin   string `json:"a_na_yin"`
-	BNaYin   string `json:"b_na_yin"`
-	Relation string `json:"relation"`
+	A        bondNaYinSide `json:"a"`
+	B        bondNaYinSide `json:"b"`
+	Relation string        `json:"relation"`
 }
+
+type bondNaYinSide struct {
+	Zhu   string `json:"zhu"`
+	NaYin string `json:"na_yin"`
+}
+
 type elementCross struct {
 	A        map[string]int `json:"a"`
 	B        map[string]int `json:"b"`
@@ -50,6 +79,7 @@ type elementCross struct {
 		B yongShenFitEntry `json:"b"`
 	} `json:"fu_yi_in_other"`
 }
+
 type yongShenFitEntry struct {
 	ModelID     string `json:"fu_yi_model_id"`
 	Yong        string `json:"yong"`
@@ -59,6 +89,7 @@ type yongShenFitEntry struct {
 	XiInOther   int    `json:"xi_in_other"`
 	JiInOther   int    `json:"ji_in_other"`
 }
+
 type nayinCross struct {
 	Pairs    []naYinPairEntry `json:"pairs"`
 	Elements struct {
@@ -66,6 +97,7 @@ type nayinCross struct {
 		B map[string]int `json:"b"`
 	} `json:"wuxing_counts"`
 }
+
 type spouseStarOccurrence struct {
 	Pillar string `json:"pillar"`
 	Branch string `json:"branch"`
@@ -73,25 +105,31 @@ type spouseStarOccurrence struct {
 	Source string `json:"source"`
 	IsVoid bool   `json:"is_void"`
 }
+
 type spouseStarGroup struct {
 	TenGod      string                 `json:"ten_god"`
 	Occurrences []spouseStarOccurrence `json:"occurrences"`
 }
+
 type spouseStarFact struct {
 	Gender    string          `json:"gender"`
 	Primary   spouseStarGroup `json:"primary"`
 	Secondary spouseStarGroup `json:"secondary"`
 }
+
 type SpouseStarFact = spouseStarFact
 type SpouseStarGroup = spouseStarGroup
+
 type spouseStarCross struct {
 	A spouseStarFact `json:"a"`
 	B spouseStarFact `json:"b"`
 }
+
 type ShenshaMutual struct {
-	AInB bool `json:"a_present_in_b"`
-	BInA bool `json:"b_present_in_a"`
+	AToB bool `json:"a_to_b"`
+	BToA bool `json:"b_to_a"`
 }
+
 type ShenshaCross struct {
 	TianYi   ShenshaMutual `json:"tian_yi"`
 	Lu       ShenshaMutual `json:"lu"`
@@ -161,9 +199,17 @@ func computeBondChartFacts(core Core) bondChartFacts {
 	}
 }
 
+func bondGanRelationOf(r GanRelation) bondGanRelation {
+	return bondGanRelation{Kind: r.Kind, Relation: r.Relation}
+}
+
+func bondZhiRelationOf(r ZhiRelation) bondZhiRelation {
+	return bondZhiRelation{Kind: r.Kind, Explanation: r.Detail}
+}
+
 func computeDayMasterCross(a, b Core) dayMasterCross {
 	cross := dayMasterCross{
-		GanRel: analyzeGanRelation(a.Pillars[zhuRi].Gan, b.Pillars[zhuRi].Gan),
+		Relation: bondGanRelationOf(analyzeGanRelation(a.Pillars[zhuRi].Gan, b.Pillars[zhuRi].Gan)),
 	}
 	cross.A = crossGanParty{
 		Gan: ganzhi.GanName(a.Pillars[zhuRi].Gan), Wuxing: ganzhi.GanWuxing(a.Pillars[zhuRi].Gan).String(), Gender: a.Gender.String(),
@@ -176,8 +222,9 @@ func computeDayMasterCross(a, b Core) dayMasterCross {
 
 func computeSpousePalaceCross(a, b Core) spousePalaceCross {
 	return spousePalaceCross{
-		AZhi: ganzhi.ZhiName(a.Pillars[zhuRi].Zhi), BZhi: ganzhi.ZhiName(b.Pillars[zhuRi].Zhi),
-		Relation: analyzeZhiRelation(a.Pillars[zhuRi].Zhi, b.Pillars[zhuRi].Zhi),
+		A:        bondZhiSide{Zhi: ganzhi.ZhiName(a.Pillars[zhuRi].Zhi)},
+		B:        bondZhiSide{Zhi: ganzhi.ZhiName(b.Pillars[zhuRi].Zhi)},
+		Relation: bondZhiRelationOf(analyzeZhiRelation(a.Pillars[zhuRi].Zhi, b.Pillars[zhuRi].Zhi)),
 	}
 }
 
@@ -292,11 +339,10 @@ func computeZhuCross(a, b Core) zhuCross {
 	for i := 0; i < 4; i++ {
 		for j := 0; j < 4; j++ {
 			pairs = append(pairs, zhuPairEntry{
-				AZhu: zhuLabels[i], BZhu: zhuLabels[j],
-				AGan: ganzhi.GanName(aG[i]), BGan: ganzhi.GanName(bG[j]),
-				AZhi: ganzhi.ZhiName(aZ[i]), BZhi: ganzhi.ZhiName(bZ[j]),
-				GanRel: analyzeGanRelation(aG[i], bG[j]),
-				ZhiRel: analyzeZhiRelation(aZ[i], bZ[j]),
+				A:           bondZhuSide{Zhu: zhuLabels[i], Gan: ganzhi.GanName(aG[i]), Zhi: ganzhi.ZhiName(aZ[i])},
+				B:           bondZhuSide{Zhu: zhuLabels[j], Gan: ganzhi.GanName(bG[j]), Zhi: ganzhi.ZhiName(bZ[j])},
+				GanRelation: bondGanRelationOf(analyzeGanRelation(aG[i], bG[j])),
+				ZhiRelation: bondZhiRelationOf(analyzeZhiRelation(aZ[i], bZ[j])),
 			})
 		}
 	}
@@ -331,7 +377,11 @@ func computeNaYinCross(a, b Core) nayinCross {
 					rel = "相克"
 				}
 			}
-			pairs = append(pairs, naYinPairEntry{AZhu: zhuLabels[i], BZhu: zhuLabels[j], ANaYin: aNy[i], BNaYin: bNy[j], Relation: rel})
+			pairs = append(pairs, naYinPairEntry{
+				A:        bondNaYinSide{Zhu: zhuLabels[i], NaYin: aNy[i]},
+				B:        bondNaYinSide{Zhu: zhuLabels[j], NaYin: bNy[j]},
+				Relation: rel,
+			})
 		}
 	}
 	nc := nayinCross{Pairs: pairs}

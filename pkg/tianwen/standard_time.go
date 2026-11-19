@@ -36,12 +36,12 @@ func StandardLocalTime(at time.Time, loc *time.Location) time.Time {
 }
 
 // StandardDateAt returns the standard local civil date of an instant.
-func StandardDateAt(at time.Time, loc *time.Location) CivilDate {
-	return CivilDateOf(StandardLocalTime(at, loc))
+func StandardDateAt(at time.Time, loc *time.Location) Date {
+	return DateOf(StandardLocalTime(at, loc))
 }
 
 // StandardMidnight returns the standard local midnight of a date.
-func StandardMidnight(date CivilDate, loc *time.Location) time.Time {
+func StandardMidnight(date Date, loc *time.Location) time.Time {
 	if loc == nil {
 		loc = time.UTC
 	}
@@ -52,7 +52,7 @@ func StandardMidnight(date CivilDate, loc *time.Location) time.Time {
 }
 
 // StandardNoon returns the standard local noon of a date.
-func StandardNoon(date CivilDate, loc *time.Location) time.Time {
+func StandardNoon(date Date, loc *time.Location) time.Time {
 	if loc == nil {
 		loc = time.UTC
 	}

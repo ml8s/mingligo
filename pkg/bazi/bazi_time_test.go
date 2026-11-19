@@ -10,7 +10,7 @@ import (
 )
 
 func TestResolveLiuRiTimeMatchesAlmanac(t *testing.T) {
-	date := tianwen.NewCivilDate(2026, 6, 4)
+	date := tianwen.NewDate(2026, 6, 4)
 	got, err := ResolveLiuRiTime(date)
 	if err != nil {
 		t.Fatalf("ResolveLiuRiTime: %v", err)
@@ -27,13 +27,13 @@ func TestResolveLiuRiTimeMatchesAlmanac(t *testing.T) {
 }
 
 func TestResolveLiuRiTimeRejectsInvalidDate(t *testing.T) {
-	if _, err := ResolveLiuRiTime(tianwen.NewCivilDate(2026, 2, 30)); err == nil {
+	if _, err := ResolveLiuRiTime(tianwen.NewDate(2026, 2, 30)); err == nil {
 		t.Fatal("expected invalid date error")
 	}
 }
 
 func TestNextLiuRiTimeAdvancesOneCivilDay(t *testing.T) {
-	current, err := ResolveLiuRiTime(tianwen.NewCivilDate(2026, 6, 30))
+	current, err := ResolveLiuRiTime(tianwen.NewDate(2026, 6, 30))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -41,7 +41,7 @@ func TestNextLiuRiTimeAdvancesOneCivilDay(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if next.Date != tianwen.NewCivilDate(2026, 7, 1) {
+	if next.Date != tianwen.NewDate(2026, 7, 1) {
 		t.Fatalf("next date = %s, want 2026-07-01", next.Date)
 	}
 
@@ -65,7 +65,7 @@ func TestNextLiuRiTimeAtAdvancesOneApparentSolarDay(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if current.Date != tianwen.NewCivilDate(2024, 1, 2) {
+	if current.Date != tianwen.NewDate(2024, 1, 2) {
 		t.Fatalf("current LAST date = %s, want 2024-01-02", current.Date)
 	}
 	if next.Date != current.Date.AddDays(1) {
@@ -79,7 +79,7 @@ func TestNextLiuRiTimeAtAdvancesOneApparentSolarDay(t *testing.T) {
 }
 
 func TestResolveLiuNianTimeLichunBoundary(t *testing.T) {
-	lichun := tianwen.SolarTermCivilDate(2026, 315)
+	lichun := tianwen.SolarTermDate(2026, 315)
 
 	before, err := ResolveLiuNianTime(lichun.AddDays(-1))
 	if err != nil {
@@ -131,7 +131,7 @@ func TestResolveLiuNianTimeAtUsesExactLichun(t *testing.T) {
 	if after.LichunYear != 2024 {
 		t.Fatalf("at 立春 year = %d, want 2024", after.LichunYear)
 	}
-	if want := tianwen.CivilDateOf(lichun.In(loc)); after.Start != want {
+	if want := tianwen.DateOf(lichun.In(loc)); after.Start != want {
 		t.Fatalf("start = %s, want %s", after.Start, want)
 	}
 }
@@ -154,7 +154,7 @@ func TestResolveLiuYueTimeAtUsesExactJie(t *testing.T) {
 	if before.JieqiMonth != 1 || after.JieqiMonth != 2 {
 		t.Fatalf("jieqi months = %d/%d, want 1/2", before.JieqiMonth, after.JieqiMonth)
 	}
-	if want := tianwen.CivilDateOf(jingzhe.In(loc)); after.Start != want {
+	if want := tianwen.DateOf(jingzhe.In(loc)); after.Start != want {
 		t.Fatalf("start = %s, want %s", after.Start, want)
 	}
 }
@@ -172,9 +172,9 @@ func TestResolveLiuRiTimeAtUsesStandardDateAcrossDST(t *testing.T) {
 	}
 	standard := tianwen.StandardDateAt(at, ny)
 	last := tianwen.ApparentSolarFromStandard(tianwen.StandardLocalTime(at, ny), -74)
-	lastDate := tianwen.CivilDateOf(last)
-	if got.LocalDate != standard {
-		t.Fatalf("local date = %s, want standard date %s", got.LocalDate, standard)
+	lastDate := tianwen.DateOf(last)
+	if got.StandardDate != standard {
+		t.Fatalf("local date = %s, want standard date %s", got.StandardDate, standard)
 	}
 	if got.Date != lastDate {
 		t.Fatalf("ri date = %s, want LAST date %s", got.Date, lastDate)

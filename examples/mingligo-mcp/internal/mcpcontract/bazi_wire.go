@@ -491,135 +491,6 @@ type BaziBondMutualFact struct {
 	BToA bool `json:"b_to_a" jsonschema:"乙方神煞是否见于甲方。"`
 }
 
-func newBaziBondOutput(value bazi.Bond) BaziBondOutput {
-	pairs := make([]BaziBondZhuCrossPairsItem, 0, len(value.ZhuCross.Pairs))
-	for _, pair := range value.ZhuCross.Pairs {
-		pairs = append(pairs, BaziBondZhuCrossPairsItem{
-			A: BaziBondZhuSide{Zhu: PillarName(pair.AZhu), Gan: GanName(pair.AGan), Zhi: ZhiName(pair.AZhi)},
-			B: BaziBondZhuSide{Zhu: PillarName(pair.BZhu), Gan: GanName(pair.BGan), Zhi: ZhiName(pair.BZhi)},
-			GanRelation: BaziBondRelation{
-				Kind: pair.GanRel.Kind, Relation: pair.GanRel.Relation,
-			},
-			ZhiRelation: BaziBondZhiRelation{
-				Kind: pair.ZhiRel.Kind, Explanation: pair.ZhiRel.Detail,
-			},
-		})
-	}
-	naYinPairs := make([]BaziBondNaYinCrossPairsItem, 0, len(value.NaYinCross.Pairs))
-	for _, pair := range value.NaYinCross.Pairs {
-		naYinPairs = append(naYinPairs, BaziBondNaYinCrossPairsItem{
-			A:        BaziBondNaYinSide{Zhu: PillarName(pair.AZhu), NaYin: pair.ANaYin},
-			B:        BaziBondNaYinSide{Zhu: PillarName(pair.BZhu), NaYin: pair.BNaYin},
-			Relation: pair.Relation,
-		})
-	}
-	tenGodPillars := func(source map[string]string) BaziBondTenGodPillars {
-		return BaziBondTenGodPillars{
-			NianGan: TenGodName(source["nian_gan"]),
-			YueGan:  TenGodName(source["yue_gan"]),
-			RiGan:   TenGodName(source["ri_gan"]),
-			ShiGan:  TenGodName(source["shi_gan"]),
-		}
-	}
-	return BaziBondOutput{
-		DayMaster: BaziBondDayMaster{
-			A: BaziBondSideIdentity{
-				Gan: GanName(value.DayMaster.A.Gan), Wuxing: ElementName(value.DayMaster.A.Wuxing), Gender: GenderName(value.DayMaster.A.Gender),
-			},
-			B: BaziBondSideIdentity{
-				Gan: GanName(value.DayMaster.B.Gan), Wuxing: ElementName(value.DayMaster.B.Wuxing), Gender: GenderName(value.DayMaster.B.Gender),
-			},
-			Relation: BaziBondRelation{
-				Kind:     value.DayMaster.GanRel.Kind,
-				Relation: value.DayMaster.GanRel.Relation,
-			},
-		},
-		SpousePalace: BaziBondSpousePalace{
-			A: BaziBondZhiSide{Zhi: ZhiName(value.SpousePalace.AZhi)},
-			B: BaziBondZhiSide{Zhi: ZhiName(value.SpousePalace.BZhi)},
-			Relation: BaziBondExplainedRelation{
-				Kind:        value.SpousePalace.Relation.Kind,
-				Explanation: value.SpousePalace.Relation.Detail,
-			},
-		},
-		ZhuCross: BaziBondZhuCross{Pairs: pairs},
-		ShiShenCross: BaziBondShiShenCross{
-			AToB: tenGodPillars(value.ShiShenCross.AToB),
-			BToA: tenGodPillars(value.ShiShenCross.BToA),
-		},
-		WuxingCross: BaziBondWuxingCross{
-			A:        newBaziBondElementCounts(value.ElementCross.A),
-			B:        newBaziBondElementCounts(value.ElementCross.B),
-			Combined: newBaziBondElementCounts(value.ElementCross.Combined),
-			FuYiInOther: BaziBondWuxingCrossFuYiInOther{
-				A: BaziBondFuYiInOtherSide{
-					ModelID: value.ElementCross.FuYi.A.ModelID, Yong: CandidateWuxingName(value.ElementCross.FuYi.A.Yong),
-					Xi: CandidateWuxingName(value.ElementCross.FuYi.A.Xi), Ji: CandidateWuxingName(value.ElementCross.FuYi.A.Ji),
-					YongInOther: value.ElementCross.FuYi.A.YongInOther, XiInOther: value.ElementCross.FuYi.A.XiInOther, JiInOther: value.ElementCross.FuYi.A.JiInOther,
-				},
-				B: BaziBondFuYiInOtherSide{
-					ModelID: value.ElementCross.FuYi.B.ModelID, Yong: CandidateWuxingName(value.ElementCross.FuYi.B.Yong),
-					Xi: CandidateWuxingName(value.ElementCross.FuYi.B.Xi), Ji: CandidateWuxingName(value.ElementCross.FuYi.B.Ji),
-					YongInOther: value.ElementCross.FuYi.B.YongInOther, XiInOther: value.ElementCross.FuYi.B.XiInOther, JiInOther: value.ElementCross.FuYi.B.JiInOther,
-				},
-			},
-		},
-		NaYinCross: BaziBondNaYinCross{
-			Pairs: naYinPairs,
-			WuxingCounts: BaziBondNaYinCrossWuxingCounts{
-				A: value.NaYinCross.Elements.A,
-				B: value.NaYinCross.Elements.B,
-			},
-		},
-		SpouseStar: BaziBondSpouseStar{
-			A: newBaziBondSpouseStarSide(value.SpouseStar.A),
-			B: newBaziBondSpouseStarSide(value.SpouseStar.B),
-		},
-		ShenshaCross: newBaziBondShenshaCross(value.ShenshaCross),
-	}
-}
-
-func newBaziBondShenshaCross(value bazi.ShenshaCross) BaziBondShenshaCross {
-	side := func(mutual bazi.ShenshaMutual) BaziBondMutualFact {
-		return BaziBondMutualFact{AToB: mutual.AInB, BToA: mutual.BInA}
-	}
-	return BaziBondShenshaCross{
-		TianYi:   side(value.TianYi),
-		Lu:       side(value.Lu),
-		TaoHua:   side(value.TaoHua),
-		YiMa:     side(value.YiMa),
-		KongWang: side(value.KongWang),
-		KuiGang:  side(value.KuiGang),
-		RiDe:     side(value.RiDe),
-		RiGui:    side(value.RiGui),
-	}
-}
-
-func newBaziBondSpouseStarSide(value bazi.SpouseStarFact) BaziBondSpouseStarSide {
-	return BaziBondSpouseStarSide{
-		Gender:    GenderName(value.Gender),
-		Primary:   newBaziBondSpouseStarCandidate(value.Primary),
-		Secondary: newBaziBondSpouseStarCandidate(value.Secondary),
-	}
-}
-
-func newBaziBondElementCounts(value map[string]int) BaziBondElementCounts {
-	return BaziBondElementCounts{
-		Mu: value["木"], Huo: value["火"], Tu: value["土"], Jin: value["金"], Shui: value["水"],
-	}
-}
-
-func newBaziBondSpouseStarCandidate(value bazi.SpouseStarGroup) BaziBondSpouseStarCandidate {
-	occurrences := make([]BaziBondSpouseStarOccurrence, 0, len(value.Occurrences))
-	for _, occurrence := range value.Occurrences {
-		occurrences = append(occurrences, BaziBondSpouseStarOccurrence{
-			Pillar: PillarName(occurrence.Pillar), Branch: ZhiName(occurrence.Branch), Stem: GanName(occurrence.Stem),
-			Source: occurrence.Source, IsVoid: occurrence.IsVoid,
-		})
-	}
-	return BaziBondSpouseStarCandidate{TenGod: TenGodName(value.TenGod), Occurrences: occurrences}
-}
-
 // ── bazi.liupan input ──
 
 type BaziLiupanInput struct {
@@ -658,8 +529,9 @@ type BaziLiuNianOutput struct {
 }
 
 type BaziSeriesShenshaItem struct {
-	Name     ShenshaName         `json:"name" jsonschema:"名称。"`
-	Category ShenShaCategoryName `json:"category" jsonschema:"类别。"`
+	Name        ShenshaName         `json:"name" jsonschema:"名称。"`
+	Category    ShenShaCategoryName `json:"category" jsonschema:"类别。"`
+	Description *string             `json:"description,omitempty" jsonschema:"神煞取象说明。"`
 }
 
 type BaziLiuNianFuyinFanyinItem struct {
@@ -719,6 +591,8 @@ type BaziLiuYueJieQi struct {
 }
 
 type BaziLiuYueOutput struct {
+	Year         int                          `json:"year" jsonschema:"流月公历年。"`
+	Month        int                          `json:"month" jsonschema:"流月公历月。"`
 	ShiShen      TenGodName                   `json:"shi_shen" jsonschema:"十神。"`
 	YueGan       *GanName                     `json:"gan,omitempty" jsonschema:"流月天干"`
 	YueZhi       *ZhiName                     `json:"zhi,omitempty" jsonschema:"流月地支"`
@@ -733,8 +607,7 @@ type BaziLiuYueOutput struct {
 
 type BaziLiuRiJie struct {
 	LiuRiStandardTime StandardTime `json:"standard_time" jsonschema:"流日选择器时区标准时间（无 DST）。"`
-	LiuRiLocalDate    DateString   `json:"local_date" jsonschema:"流日当地标准日。"`
-	LiuRiSolarDate    DateString   `json:"solar_date" jsonschema:"真太阳时日（日柱所用日期）。"`
+	LiuRiStandardDate DateString   `json:"standard_date" jsonschema:"流日选择器的时区标准日（无 DST）。"`
 }
 
 // ── bazi.liupan liu_ri output ──
@@ -764,7 +637,7 @@ type BaziLiuRiLiunianRelsItem struct {
 
 type BaziLiuShiChen struct {
 	LiuShiStandardTime StandardTime `json:"standard_time" jsonschema:"流时选择器时区标准时间（无 DST）。"`
-	LiuShiLocalDate    DateString   `json:"local_date" jsonschema:"流时当地标准日。"`
+	LiuShiStandardDate DateString   `json:"standard_date" jsonschema:"流时选择器的时区标准日（无 DST）。"`
 	Shichen            ZhiName      `json:"shichen" jsonschema:"真太阳时时辰。"`
 }
 
@@ -804,10 +677,10 @@ type BaziXiaoYunItemZhusItem struct {
 // output schema keeps the current single-root wire face while allowing one
 // typed handler to serve the five scope forms.
 type BaziLiupanOutput struct {
-	LiuNian []BaziLiuNianOutput `json:"liu_nian,omitempty" jsonschema:"流年数组，长度 = count。"`
-	LiuYue  []BaziLiuYueOutput  `json:"liu_yue,omitempty" jsonschema:"流月数组，长度 = count。"`
-	LiuRi   []BaziLiuRiOutput   `json:"liu_ri,omitempty" jsonschema:"流日数组，长度 = count。"`
-	LiuShi  []BaziLiuShiOutput  `json:"liu_shi,omitempty" jsonschema:"流时数组，长度 = count。"`
+	LiuNian []bazi.LiuNian     `json:"liu_nian,omitempty" jsonschema:"流年数组，长度 = count。"`
+	LiuYue  []bazi.LiuYue      `json:"liu_yue,omitempty" jsonschema:"流月数组，长度 = count。"`
+	LiuRi   []bazi.LiuRi       `json:"liu_ri,omitempty" jsonschema:"流日数组，长度 = count。"`
+	LiuShi  []bazi.LiuShi      `json:"liu_shi,omitempty" jsonschema:"流时数组，长度 = count。"`
 	XiaoYun []BaziXiaoYunItem   `json:"xiao_yun,omitempty" jsonschema:"各学派小运列表；长度 = count。"`
 }
 

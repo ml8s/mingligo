@@ -40,7 +40,7 @@ func TestLunarMonthMeta_MissingLeapMonth(t *testing.T) {
 func TestCivilTimeFromLunarDate_MissingLeapMonthDoesNotFallThrough(t *testing.T) {
 	// Regression: a fallback search previously mapped 2024 leap 6 to the
 	// real 2025 leap 6. A nonexistent lunar month must stay unresolved.
-	if _, err := ShanghaiLunarReference().CivilDateFromLunar(LunarDate{Year: 2024, Month: 6, Day: 1, Leap: true}); err == nil {
+	if _, err := ShanghaiLunarReference().DateFromLunar(LunarDate{Year: 2024, Month: 6, Day: 1, Leap: true}); err == nil {
 		t.Fatal("2024 leap 6 unexpectedly resolved")
 	}
 }

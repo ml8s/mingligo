@@ -33,7 +33,7 @@ func TestComputeLiuYue_WuHuDun(t *testing.T) {
 
 	// 2024 = 甲辰年, June = 午月.
 	// 甲年正月丙寅 → 午月 (正月+4) → 丙+4=庚 → 庚午月.
-	liuYueTime1, err := ResolveLiuYueTimeAt(tianwen.NewCivilDate(2024, 6, 15).Time(), time.UTC)
+	liuYueTime1, err := ResolveLiuYueTimeAt(tianwen.NewDate(2024, 6, 15).Time(), time.UTC)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -68,7 +68,7 @@ func TestComputeLiuYue_EthYear(t *testing.T) {
 	)
 
 	// 乙年正月戊寅 → 午月 (正月+4) → 戊+4=壬 → 壬午月.
-	liuYueTime2, err := ResolveLiuYueTimeAt(tianwen.NewCivilDate(2025, 6, 15).Time(), time.UTC)
+	liuYueTime2, err := ResolveLiuYueTimeAt(tianwen.NewDate(2025, 6, 15).Time(), time.UTC)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -99,7 +99,7 @@ func TestComputeLiuRi_DayPillar(t *testing.T) {
 	prevIdx := -1
 	for i := 0; i < 5; i++ {
 		day := base.AddDate(0, 0, i)
-		lt, err := ResolveLiuRiTime(tianwen.NewCivilDate(day.Year(), int(day.Month()), day.Day()))
+		lt, err := ResolveLiuRiTime(tianwen.NewDate(day.Year(), int(day.Month()), day.Day()))
 		if err != nil {
 			t.Fatalf("day %s: %v", day.Format("2006-01-02"), err)
 		}
@@ -126,7 +126,7 @@ func TestComputeLiuRi_HasRequiredFields(t *testing.T) {
 		time.Date(1982, 10, 13, 6, 45, 0, 0, time.FixedZone("", 8*3600)), 114.134, 8)
 	chart := ComputeChart(stgt, st, ganzhi.Male)
 
-	lt, err := ResolveLiuRiTime(tianwen.NewCivilDate(2024, 6, 15))
+	lt, err := ResolveLiuRiTime(tianwen.NewDate(2024, 6, 15))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -236,7 +236,7 @@ func TestComputeLiuYue_ShenSha(t *testing.T) {
 		ganzhi.Zhu{Gan: ganzhi.GanWu, Zhi: ganzhi.ZhiChen},
 		nil,
 	)
-	liuYueTime4, err := ResolveLiuYueTimeAt(tianwen.NewCivilDate(2026, 6, 15).Time(), time.UTC)
+	liuYueTime4, err := ResolveLiuYueTimeAt(tianwen.NewDate(2026, 6, 15).Time(), time.UTC)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -276,7 +276,7 @@ func TestComputeLiuRi_ShenSha(t *testing.T) {
 		ganzhi.Zhu{Gan: ganzhi.GanWu, Zhi: ganzhi.ZhiChen},
 		nil,
 	)
-	lt, err := ResolveLiuRiTime(tianwen.NewCivilDate(2026, 6, 4))
+	lt, err := ResolveLiuRiTime(tianwen.NewDate(2026, 6, 4))
 	if err != nil {
 		t.Fatalf("ResolveLiuRiTime: %v", err)
 	}

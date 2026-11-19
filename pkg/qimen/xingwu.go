@@ -12,7 +12,7 @@ type XingInteraction struct {
 }
 
 // computeXingInteractions returns star-gong 克应 for each gong.
-func computeXingInteractions(board board) []XingInteraction {
+func computeXingInteractions(board Board) []XingInteraction {
 	result := []XingInteraction{}
 	for i := 0; i < 9; i++ {
 		p := board.GongWei[i]
@@ -44,7 +44,7 @@ type XingGongWuXing struct {
 }
 
 // computeXingGongWuXing computes the 五行关系 for each star in the board.
-func computeXingGongWuXing(board board) []XingGongWuXing {
+func computeXingGongWuXing(board Board) []XingGongWuXing {
 	result := []XingGongWuXing{}
 	for i, p := range board.GongWei {
 		for _, item := range p.TianPan {

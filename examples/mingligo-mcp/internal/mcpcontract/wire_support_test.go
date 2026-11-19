@@ -3,8 +3,9 @@ package mcpcontract
 import "encoding/json"
 
 // wireFromDomain converts a domain value into its typed wire DTO through JSON.
-// The wire DTOs are faithful projections of the domain JSON shapes; output
-// schema checks are validated by contract tests.
+// It is retained only as the oracle in projection equivalence tests: production
+// handlers no longer round-trip through JSON, they project domain values
+// directly. The comparison guards those projections against the legacy shape.
 func wireFromDomain[Out any](value any) (Out, error) {
 	raw, err := json.Marshal(value)
 	if err != nil {

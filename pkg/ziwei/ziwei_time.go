@@ -12,43 +12,43 @@ import (
 // date of 正月初一; End is the next lunar year's 正月初一 (exclusive).
 type LiuNianTime struct {
 	LunarYear   int               `json:"lunar_year"`
-	Start       tianwen.CivilDate `json:"start"`
-	End         tianwen.CivilDate `json:"end"`
+	Start       tianwen.Date `json:"start"`
+	End         tianwen.Date `json:"end"`
 	BoundaryDay bool              `json:"boundary_day"`
 }
 
 // LiuYueTime is the resolved lunar-month period for 流月. It keeps the target
 // lunar date because the flow-month projection distinguishes month halves.
 type LiuYueTime struct {
-	Date        tianwen.CivilDate `json:"date"`
+	Date        tianwen.Date `json:"date"`
 	Lunar       tianwen.LunarDate `json:"lunar"`
-	Start       tianwen.CivilDate `json:"start"`
-	End         tianwen.CivilDate `json:"end"`
+	Start       tianwen.Date `json:"start"`
+	End         tianwen.Date `json:"end"`
 	BoundaryDay bool              `json:"boundary_day"`
 }
 
 // LiuRiTime is the resolved lunar day for 流日. Date is the selector date for
-// the chosen basis; LocalDate is echoed projection.
+// the chosen basis; StandardDate is echoed projection.
 type LiuRiTime struct {
 	Standard  time.Time         `json:"-"`
 	Location  *time.Location    `json:"-"`
-	Date      tianwen.CivilDate `json:"date"`
-	LocalDate tianwen.CivilDate `json:"local_date"`
+	Date      tianwen.Date `json:"date"`
+	StandardDate tianwen.Date `json:"standard_date"`
 	Lunar     tianwen.LunarDate `json:"lunar"`
 }
 
 // ResolveLiuNianTime resolves the lunar year containing date. The 正月初一
 // boundary date belongs to the new year.
-func ResolveLiuNianTimeWith(p tianwen.LunarProjector, date tianwen.CivilDate) (LiuNianTime, error) {
+func ResolveLiuNianTimeWith(p tianwen.LunarProjector, date tianwen.Date) (LiuNianTime, error) {
 	if err := date.Validate(); err != nil {
 		return LiuNianTime{}, err
 	}
 	lunar := p.SolarDateToLunar(date)
-	start, err := lunarDayCivilDateWith(p, lunar.Year, 1, 1, false)
+	start, err := lunarDayDateWith(p, lunar.Year, 1, 1, false)
 	if err != nil {
 		return LiuNianTime{}, err
 	}
-	end, err := lunarDayCivilDateWith(p, lunar.Year+1, 1, 1, false)
+	end, err := lunarDayDateWith(p, lunar.Year+1, 1, 1, false)
 	if err != nil {
 		return LiuNianTime{}, err
 	}
@@ -68,7 +68,7 @@ func NextLiuNianTimeWith(p tianwen.LunarProjector, t LiuNianTime) (LiuNianTime, 
 
 // ResolveLiuYueTime resolves the lunar month containing date. The lunar month
 // start date belongs to the new month.
-func ResolveLiuYueTimeWith(p tianwen.LunarProjector, date tianwen.CivilDate) (LiuYueTime, error) {
+func ResolveLiuYueTimeWith(p tianwen.LunarProjector, date tianwen.Date) (LiuYueTime, error) {
 	if err := date.Validate(); err != nil {
 		return LiuYueTime{}, err
 	}
@@ -85,7 +85,7 @@ func resolveLiuYueTimeWith(p tianwen.LunarProjector, lunar tianwen.LunarDate) (L
 	if _, err := p.ValidateLunarDate(lunar); err != nil {
 		return LiuYueTime{}, err
 	}
-	start, err := lunarDayCivilDateWith(p, lunar.Year, lunar.Month, 1, lunar.Leap)
+	start, err := lunarDayDateWith(p, lunar.Year, lunar.Month, 1, lunar.Leap)
 	if err != nil {
 		return LiuYueTime{}, err
 	}
@@ -93,7 +93,7 @@ func resolveLiuYueTimeWith(p tianwen.LunarProjector, lunar tianwen.LunarDate) (L
 	if err != nil {
 		return LiuYueTime{}, err
 	}
-	end, err := lunarDayCivilDateWith(p, next.Year, next.Month, 1, next.Leap)
+	end, err := lunarDayDateWith(p, next.Year, next.Month, 1, next.Leap)
 	if err != nil {
 		return LiuYueTime{}, err
 	}
@@ -126,7 +126,7 @@ func NextLiuYueTimeWith(p tianwen.LunarProjector, t LiuYueTime) (LiuYueTime, err
 	if err != nil {
 		return LiuYueTime{}, err
 	}
-	date, err := p.CivilDateFromLunar(nextLunar)
+	date, err := p.DateFromLunar(nextLunar)
 	if err != nil {
 		return LiuYueTime{}, err
 	}
@@ -135,13 +135,13 @@ func NextLiuYueTimeWith(p tianwen.LunarProjector, t LiuYueTime) (LiuYueTime, err
 }
 
 // ResolveLiuRiTime resolves the lunar day containing date.
-func ResolveLiuRiTimeWith(p tianwen.LunarProjector, date tianwen.CivilDate) (LiuRiTime, error) {
+func ResolveLiuRiTimeWith(p tianwen.LunarProjector, date tianwen.Date) (LiuRiTime, error) {
 	if err := date.Validate(); err != nil {
 		return LiuRiTime{}, err
 	}
 	return LiuRiTime{
 		Date:      date,
-		LocalDate: date,
+		StandardDate: date,
 		Lunar:     p.SolarDateToLunar(date),
 	}, nil
 }
@@ -152,13 +152,13 @@ func ResolveLiuRiTimeAtWith(p tianwen.LunarProjector, standard time.Time, loc *t
 	if loc == nil {
 		loc = time.UTC
 	}
-	localDate := tianwen.StandardDateAt(standard, loc)
+	standardDate := tianwen.StandardDateAt(standard, loc)
 	selectorDate := p.SelectorDate(standard)
 	return LiuRiTime{
 		Standard:  standard,
 		Location:  loc,
 		Date:      selectorDate,
-		LocalDate: localDate,
+		StandardDate: standardDate,
 		Lunar:     p.SolarDateToLunar(selectorDate),
 	}, nil
 }
@@ -175,7 +175,7 @@ func NextLiuRiTimeWith(p tianwen.LunarProjector, t LiuRiTime) (LiuRiTime, error)
 	if _, err := p.ValidateLunarDate(t.Lunar); err != nil {
 		return LiuRiTime{}, err
 	}
-	nextDate, err := p.CivilDateFromLunar(t.Lunar)
+	nextDate, err := p.DateFromLunar(t.Lunar)
 	if err != nil {
 		return LiuRiTime{}, err
 	}
@@ -183,14 +183,14 @@ func NextLiuRiTimeWith(p tianwen.LunarProjector, t LiuRiTime) (LiuRiTime, error)
 	return ResolveLiuRiTimeWith(p, nextDate)
 }
 
-func lunarDayCivilDateWith(p tianwen.LunarProjector, year, month, day int, leap bool) (tianwen.CivilDate, error) {
+func lunarDayDateWith(p tianwen.LunarProjector, year, month, day int, leap bool) (tianwen.Date, error) {
 	ld := tianwen.LunarDate{Year: year, Month: month, Day: day, Leap: leap}
 	if _, err := p.ValidateLunarDate(ld); err != nil {
-		return tianwen.CivilDate{}, err
+		return tianwen.Date{}, err
 	}
-	date, err := p.CivilDateFromLunar(ld)
+	date, err := p.DateFromLunar(ld)
 	if err != nil {
-		return tianwen.CivilDate{}, fmt.Errorf("lunar %04d-%02d-%02d has no civil date: %w", year, month, day, err)
+		return tianwen.Date{}, fmt.Errorf("lunar %04d-%02d-%02d has no civil date: %w", year, month, day, err)
 	}
 	return date, nil
 }
@@ -201,7 +201,7 @@ type LiuShiTime struct {
 	Standard  time.Time         `json:"-"`
 	Location  *time.Location    `json:"-"`
 	Longitude float64           `json:"longitude"`
-	LocalDate tianwen.CivilDate `json:"local_date"`
+	StandardDate tianwen.Date `json:"standard_date"`
 	Lunar     tianwen.LunarDate `json:"lunar"`
 	Shichen   ganzhi.Zhi        `json:"shichen"`
 }
@@ -219,7 +219,7 @@ func ResolveLiuShiTimeWith(p tianwen.LunarProjector, standard time.Time, loc *ti
 		Standard:  standard,
 		Location:  loc,
 		Longitude: longitude,
-		LocalDate: tianwen.StandardDateAt(standard, loc),
+		StandardDate: tianwen.StandardDateAt(standard, loc),
 		Lunar:     p.LunarAt(standard),
 		Shichen:   shichen,
 	}, nil

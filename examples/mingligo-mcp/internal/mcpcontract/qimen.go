@@ -37,10 +37,7 @@ func QimenChart(_ context.Context, input QimenChartInput) (QimenChartOutput, err
 		if len(input.YongShen) > 0 || input.Subject != nil {
 			return QimenChartOutput{}, fmt.Errorf("qimen.chart: jinhan_yujing does not support yong_shen or subject")
 		}
-		jinhan, err := wireFromDomain[QimenJinhanChartOutput](qimen.ComputeJinhanChartAt(at, float64(input.Longitude)))
-		if err != nil {
-			return QimenChartOutput{}, fmt.Errorf("qimen.chart: %w", err)
-		}
+		jinhan := qimen.ComputeJinhanChartAt(at, float64(input.Longitude))
 		return QimenChartOutput{Jinhan: &jinhan}, nil
 	}
 	var birthDate qimen.BirthDate
@@ -64,19 +61,11 @@ func QimenChart(_ context.Context, input QimenChartInput) (QimenChartOutput, err
 		if err != nil {
 			return QimenChartOutput{}, fmt.Errorf("qimen.chart: %w", err)
 		}
-		standard, err := wireFromDomain[QimenStandardChartOutput](result)
-		if err != nil {
-			return QimenChartOutput{}, fmt.Errorf("qimen.chart: %w", err)
-		}
-		return QimenChartOutput{Standard: &standard}, nil
+		return QimenChartOutput{Standard: &result}, nil
 	}
 	result, err := qimen.ComputeChartWithMethodAt(at, float64(input.Longitude), method)
 	if err != nil {
 		return QimenChartOutput{}, fmt.Errorf("qimen.chart: %w", err)
 	}
-	standard, err := wireFromDomain[QimenStandardChartOutput](result)
-	if err != nil {
-		return QimenChartOutput{}, fmt.Errorf("qimen.chart: %w", err)
-	}
-	return QimenChartOutput{Standard: &standard}, nil
+	return QimenChartOutput{Standard: &result}, nil
 }

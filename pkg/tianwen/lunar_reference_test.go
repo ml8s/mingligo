@@ -26,12 +26,12 @@ func TestLunarReferenceShanghaiMatchesLegacy(t *testing.T) {
 			t.Fatalf("%s: reference = %+v, legacy = %+v", at.Format("2006-01-02"), got, want)
 		}
 
-		date, err := ref.CivilDateFromLunar(got)
+		date, err := ref.DateFromLunar(got)
 		if err != nil {
 			t.Fatalf("%s: round trip %+v: %v", at.Format("2006-01-02"), got, err)
 		}
-		if date != CivilDateOf(at) {
-			t.Fatalf("%s: round trip date = %s, want %s", at.Format("2006-01-02"), date, CivilDateOf(at))
+		if date != DateOf(at) {
+			t.Fatalf("%s: round trip date = %s, want %s", at.Format("2006-01-02"), date, DateOf(at))
 		}
 	}
 }
@@ -40,7 +40,7 @@ func TestLunarReferenceLocalDateAssignment(t *testing.T) {
 	ny := mustLoadLocation(t, "America/New_York")
 	cst := ShanghaiLunarReference()
 	local := NewLunarReference(ny)
-	date := NewCivilDate(2024, 2, 9)
+	date := NewDate(2024, 2, 9)
 
 	if got, want := cst.SolarDateToLunar(date), (LunarDate{Year: 2023, Month: 12, Day: 30}); got != want {
 		t.Fatalf("CST 2024-02-09 = %+v, want %+v", got, want)
@@ -93,10 +93,10 @@ func TestLunarReferenceLeapMonthDependsOnReference(t *testing.T) {
 		t.Fatalf("CST next after 2025-6 = %+v, want leap 6", next)
 	}
 
-	if got, want := cst.SolarDateToLunar(NewCivilDate(2025, 7, 25)), (LunarDate{Year: 2025, Month: 6, Day: 1, Leap: true}); got != want {
+	if got, want := cst.SolarDateToLunar(NewDate(2025, 7, 25)), (LunarDate{Year: 2025, Month: 6, Day: 1, Leap: true}); got != want {
 		t.Fatalf("CST 2025-07-25 = %+v, want %+v", got, want)
 	}
-	if got, want := local.SolarDateToLunar(NewCivilDate(2025, 7, 25)), (LunarDate{Year: 2025, Month: 7, Day: 2}); got != want {
+	if got, want := local.SolarDateToLunar(NewDate(2025, 7, 25)), (LunarDate{Year: 2025, Month: 7, Day: 2}); got != want {
 		t.Fatalf("NY 2025-07-25 = %+v, want %+v", got, want)
 	}
 }
@@ -109,11 +109,11 @@ func TestLunarReferenceLocalRoundTrip(t *testing.T) {
 
 	for at := start; !at.After(end); at = at.AddDate(0, 0, 1) {
 		lunar := lunarDateAtForTest(ref, at)
-		date, err := ref.CivilDateFromLunar(lunar)
+		date, err := ref.DateFromLunar(lunar)
 		if err != nil {
 			t.Fatalf("%s: %+v: %v", at.Format("2006-01-02"), lunar, err)
 		}
-		if date != CivilDateOf(at) {
+		if date != DateOf(at) {
 			t.Fatalf("%s: %+v -> %s", at.Format("2006-01-02"), lunar, date)
 		}
 	}
@@ -123,13 +123,13 @@ func TestLunarReferenceDateSerialAcrossDST(t *testing.T) {
 	ny := mustLoadLocation(t, "America/New_York")
 	ref := NewLunarReference(ny)
 
-	for _, date := range []CivilDate{
-		NewCivilDate(2024, 3, 9),
-		NewCivilDate(2024, 3, 10),
-		NewCivilDate(2024, 3, 11),
-		NewCivilDate(2024, 11, 2),
-		NewCivilDate(2024, 11, 3),
-		NewCivilDate(2024, 11, 4),
+	for _, date := range []Date{
+		NewDate(2024, 3, 9),
+		NewDate(2024, 3, 10),
+		NewDate(2024, 3, 11),
+		NewDate(2024, 11, 2),
+		NewDate(2024, 11, 3),
+		NewDate(2024, 11, 4),
 	} {
 		if diff := ref.dateToJD(date.AddDays(1)) - ref.dateToJD(date); diff != 1 {
 			t.Fatalf("%s -> next: date serial diff = %v, want 1", date, diff)
@@ -140,31 +140,31 @@ func TestLunarReferenceDateSerialAcrossDST(t *testing.T) {
 func TestLunarReferenceZhongQiDates(t *testing.T) {
 	ref := ShanghaiLunarReference()
 	got := ref.zhongQiDates(2024)
-	want := []CivilDate{
-		NewCivilDate(2024, 1, 20),
-		NewCivilDate(2024, 2, 19),
-		NewCivilDate(2024, 3, 20),
-		NewCivilDate(2024, 4, 19),
-		NewCivilDate(2024, 5, 20),
-		NewCivilDate(2024, 6, 21),
-		NewCivilDate(2024, 7, 22),
-		NewCivilDate(2024, 8, 22),
-		NewCivilDate(2024, 9, 22),
-		NewCivilDate(2024, 10, 23),
-		NewCivilDate(2024, 11, 22),
-		NewCivilDate(2024, 12, 21),
-		NewCivilDate(2025, 1, 20),
-		NewCivilDate(2025, 2, 18),
-		NewCivilDate(2025, 3, 20),
-		NewCivilDate(2025, 4, 20),
-		NewCivilDate(2025, 5, 21),
-		NewCivilDate(2025, 6, 21),
-		NewCivilDate(2025, 7, 22),
-		NewCivilDate(2025, 8, 23),
-		NewCivilDate(2025, 9, 23),
-		NewCivilDate(2025, 10, 23),
-		NewCivilDate(2025, 11, 22),
-		NewCivilDate(2025, 12, 21),
+	want := []Date{
+		NewDate(2024, 1, 20),
+		NewDate(2024, 2, 19),
+		NewDate(2024, 3, 20),
+		NewDate(2024, 4, 19),
+		NewDate(2024, 5, 20),
+		NewDate(2024, 6, 21),
+		NewDate(2024, 7, 22),
+		NewDate(2024, 8, 22),
+		NewDate(2024, 9, 22),
+		NewDate(2024, 10, 23),
+		NewDate(2024, 11, 22),
+		NewDate(2024, 12, 21),
+		NewDate(2025, 1, 20),
+		NewDate(2025, 2, 18),
+		NewDate(2025, 3, 20),
+		NewDate(2025, 4, 20),
+		NewDate(2025, 5, 21),
+		NewDate(2025, 6, 21),
+		NewDate(2025, 7, 22),
+		NewDate(2025, 8, 23),
+		NewDate(2025, 9, 23),
+		NewDate(2025, 10, 23),
+		NewDate(2025, 11, 22),
+		NewDate(2025, 12, 21),
 	}
 	if len(got) != len(want) {
 		t.Fatalf("zhongqi count = %d, want %d", len(got), len(want))
@@ -224,10 +224,10 @@ func TestMonthHasZhongQiBoundaries(t *testing.T) {
 	ref := ShanghaiLunarReference()
 	zhongQi := ref.zhongQiDates(2024)
 
-	if !monthHasZhongQi(NewCivilDate(2025, 6, 25), NewCivilDate(2025, 7, 25), zhongQi) {
+	if !monthHasZhongQi(NewDate(2025, 6, 25), NewDate(2025, 7, 25), zhongQi) {
 		t.Fatal("2025 month 6 should contain 大暑 on 2025-07-22")
 	}
-	if monthHasZhongQi(NewCivilDate(2025, 7, 25), NewCivilDate(2025, 8, 23), zhongQi) {
+	if monthHasZhongQi(NewDate(2025, 7, 25), NewDate(2025, 8, 23), zhongQi) {
 		t.Fatal("2025 leap 6 must not contain 处暑 on its next-month boundary")
 	}
 }
@@ -237,7 +237,7 @@ func TestLunarReferenceFixedUTC8MatchesOfficial(t *testing.T) {
 	fixed := NewLunarReference(fixedLoc)
 	official := ShanghaiLunarReference()
 
-	for date := NewCivilDate(2024, 1, 1); !date.After(NewCivilDate(2027, 12, 31)); date = date.AddDays(1) {
+	for date := NewDate(2024, 1, 1); !date.After(NewDate(2027, 12, 31)); date = date.AddDays(1) {
 		got := fixed.SolarDateToLunar(date)
 		want := official.SolarDateToLunar(date)
 		if got != want {

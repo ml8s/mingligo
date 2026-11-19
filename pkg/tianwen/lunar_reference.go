@@ -33,29 +33,29 @@ func NewLunarReference(loc *time.Location) *LunarReference {
 	return &LunarReference{id: "loc:" + loc.String(), loc: loc}
 }
 
-func (r *LunarReference) dateOf(at time.Time) CivilDate {
+func (r *LunarReference) dateOf(at time.Time) Date {
 	return StandardDateAt(at, r.loc)
 }
 
-func (r *LunarReference) offsetHours(date CivilDate) float64 {
+func (r *LunarReference) offsetHours(date Date) float64 {
 	return float64(StandardOffsetSeconds(date.TimeIn(r.loc), r.loc)) / 3600.0
 }
 
 // dateToJD is a civil-date serial, not a local instant: both endpoints use the
 // same reference, so DST transitions cannot make day arithmetic non-integral.
-func (r *LunarReference) dateToJD(date CivilDate) float64 {
+func (r *LunarReference) dateToJD(date Date) float64 {
 	return gregorianToJD(date.Year, date.Month, date.Day, 0)
 }
 
-func (r *LunarReference) dateOfJD(jd float64) CivilDate {
+func (r *LunarReference) dateOfJD(jd float64) Date {
 	return StandardDateAt(jdToUTCTime(jd), r.loc)
 }
 
-func (r *LunarReference) approximateK(date CivilDate) float64 {
+func (r *LunarReference) approximateK(date Date) float64 {
 	return approximateK(date.Year, date.Month, date.Day, r.offsetHours(date))
 }
 
-func (r *LunarReference) newMoonDate(k float64) CivilDate {
+func (r *LunarReference) newMoonDate(k float64) Date {
 	td := getNewMoonJDTD(k)
 	ut := td - deltaTDays(td)
 	return r.dateOfJD(ut)
@@ -83,8 +83,8 @@ func (r *LunarReference) month11K(year int) float64 {
 	return result
 }
 
-func (r *LunarReference) zhongQiDates(anchorYear int) []CivilDate {
-	dates := make([]CivilDate, 0, 26)
+func (r *LunarReference) zhongQiDates(anchorYear int) []Date {
+	dates := make([]Date, 0, 26)
 	for year := anchorYear; year <= anchorYear+1; year++ {
 		for i := 1; i < len(JieQiLongitudes); i += 2 {
 			dates = append(dates, r.dateOf(SolarTermTime(year, JieQiLongitudes[i])))
@@ -94,7 +94,7 @@ func (r *LunarReference) zhongQiDates(anchorYear int) []CivilDate {
 	return dates
 }
 
-func monthHasZhongQi(start, next CivilDate, zhongQi []CivilDate) bool {
+func monthHasZhongQi(start, next Date, zhongQi []Date) bool {
 	for _, date := range zhongQi {
 		if !date.Before(start) && date.Before(next) {
 			return true
@@ -131,7 +131,7 @@ func (r *LunarReference) leapMonthK(currentYearMonth11K, nextYearMonth11K float6
 
 // SolarDateToLunar converts a civil solar date to the Chinese lunar date. The
 // date is taken as given; month/leap boundaries follow this reference.
-func (r *LunarReference) SolarDateToLunar(date CivilDate) LunarDate {
+func (r *LunarReference) SolarDateToLunar(date Date) LunarDate {
 	gDayJD := r.dateToJD(date)
 	targetK := math.Round(r.approximateK(date))
 
@@ -182,16 +182,16 @@ func (r *LunarReference) SolarDateToLunar(date CivilDate) LunarDate {
 	return LunarDate{Year: lunarYear, Month: lunarMonth, Day: day, Leap: leap}
 }
 
-// CivilDateFromLunar converts a Chinese lunar date to the civil date assigned
+// DateFromLunar converts a Chinese lunar date to the civil date assigned
 // by this reference.
-func (r *LunarReference) CivilDateFromLunar(ld LunarDate) (CivilDate, error) {
+func (r *LunarReference) DateFromLunar(ld LunarDate) (Date, error) {
 	targetK, ok := r.findLunarMonthInLunarYear(ld.Year, ld.Month, ld.Leap)
 	if !ok {
 		label := "month"
 		if ld.Leap {
 			label = "leap month"
 		}
-		return CivilDate{}, fmt.Errorf("lunar %s %d-%02d does not exist", label, ld.Year, ld.Month)
+		return Date{}, fmt.Errorf("lunar %s %d-%02d does not exist", label, ld.Year, ld.Month)
 	}
 
 	start := r.newMoonDate(targetK)
@@ -199,7 +199,7 @@ func (r *LunarReference) CivilDateFromLunar(ld LunarDate) (CivilDate, error) {
 	monthSize := int(math.Round(r.dateToJD(next) - r.dateToJD(start)))
 
 	if ld.Day < 1 || ld.Day > monthSize {
-		return CivilDate{}, fmt.Errorf(
+		return Date{}, fmt.Errorf(
 			"lunar day %d is outside %d-%02d%s (1-%d)",
 			ld.Day, ld.Year, ld.Month, leapSuffix(ld.Leap), monthSize,
 		)

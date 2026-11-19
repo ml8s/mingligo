@@ -43,7 +43,7 @@ func buildPatternSemanticChart(t *testing.T, input []patternSemanticPalace) Char
 			}
 			zhi = parsed
 		}
-		stars := make([]starInfo, 0, len(item.Stars))
+		stars := make([]StarInfo, 0, len(item.Stars))
 		for _, semantic := range item.Stars {
 			var star starIndex
 			if err := star.fromName(semantic.Name); err != nil {

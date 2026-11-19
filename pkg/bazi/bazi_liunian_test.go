@@ -33,7 +33,7 @@ func TestLiuNian_DaYunInteraction(t *testing.T) {
 	}
 
 	// 2026: 虚岁 = 2026-1984+1 = 43 → step3 庚午(36-45)
-	liuNianTime1, err := ResolveLiuNianTime(tianwen.NewCivilDate(2026, 6, 15))
+	liuNianTime1, err := ResolveLiuNianTime(tianwen.NewDate(2026, 6, 15))
 	if err != nil {
 		t.Fatalf("resolve liunian time 2026: %v", err)
 	}
@@ -49,7 +49,7 @@ func TestLiuNian_DaYunInteraction(t *testing.T) {
 	}
 
 	// 1999: 1984-02-15 起运 1990-08-04 → step0 丁卯(1990-2000) 覆盖 1999
-	liuNianTime2, err := ResolveLiuNianTime(tianwen.NewCivilDate(1999, 6, 15))
+	liuNianTime2, err := ResolveLiuNianTime(tianwen.NewDate(1999, 6, 15))
 	if err != nil {
 		t.Fatalf("resolve liunian time 1999: %v", err)
 	}
@@ -65,7 +65,7 @@ func TestLiuNian_DaYunInteraction(t *testing.T) {
 	}
 
 	// 1985: 虚岁 2，未起运 → 空
-	liuNianTime3, err := ResolveLiuNianTime(tianwen.NewCivilDate(1985, 6, 15))
+	liuNianTime3, err := ResolveLiuNianTime(tianwen.NewDate(1985, 6, 15))
 	if err != nil {
 		t.Fatalf("resolve liunian time 1985: %v", err)
 	}
@@ -145,7 +145,7 @@ func TestLiuNian_DaYunInteraction_NegativeIndex(t *testing.T) {
 		t.Fatal("DaYun is nil")
 	}
 
-	liuNianTime4, err := ResolveLiuNianTime(tianwen.NewCivilDate(2023, 6, 15))
+	liuNianTime4, err := ResolveLiuNianTime(tianwen.NewDate(2023, 6, 15))
 	if err != nil {
 		t.Fatalf("resolve liunian time 2023: %v", err)
 	}
@@ -168,7 +168,7 @@ func TestLiuNian_ShenSha(t *testing.T) {
 	)
 	chart := ComputeChart(stgt, st, ganzhi.Male)
 
-	liuNianTime5, err := ResolveLiuNianTime(tianwen.NewCivilDate(2026, 6, 15))
+	liuNianTime5, err := ResolveLiuNianTime(tianwen.NewDate(2026, 6, 15))
 	if err != nil {
 		t.Fatalf("resolve liunian time 2026: %v", err)
 	}
@@ -196,7 +196,7 @@ func TestLiuNian_ShenSha(t *testing.T) {
 	}
 
 	// 2025 乙巳年：己为阴干无经典羊刃；年支子见巳 → 劫煞。
-	liuNianTime6, err := ResolveLiuNianTime(tianwen.NewCivilDate(2025, 6, 15))
+	liuNianTime6, err := ResolveLiuNianTime(tianwen.NewDate(2025, 6, 15))
 	if err != nil {
 		t.Fatalf("resolve liunian time 2025: %v", err)
 	}
@@ -231,7 +231,7 @@ func TestLiuNian_FuYinFanYin_Exists(t *testing.T) {
 	chart := ComputeChart(stgt, st, ganzhi.Male)
 
 	// 甲子日 → 2044 甲子年 should have 伏吟 on 日柱
-	liuNianTime7, err := ResolveLiuNianTime(tianwen.NewCivilDate(2044, 6, 15))
+	liuNianTime7, err := ResolveLiuNianTime(tianwen.NewDate(2044, 6, 15))
 	if err != nil {
 		t.Fatalf("resolve liunian time 2044: %v", err)
 	}
@@ -255,7 +255,7 @@ func TestLiuNian_FuYinFanYin_Nil(t *testing.T) {
 	)
 	chart := ComputeChart(stgt, st, ganzhi.Male)
 
-	liuNianTime8, err := ResolveLiuNianTime(tianwen.NewCivilDate(2026, 6, 15))
+	liuNianTime8, err := ResolveLiuNianTime(tianwen.NewDate(2026, 6, 15))
 	if err != nil {
 		t.Fatalf("resolve liunian time 2026: %v", err)
 	}
@@ -281,7 +281,7 @@ func TestLiuNian_YearFields(t *testing.T) {
 	)
 	chart := ComputeChart(stgt, st, ganzhi.Male)
 
-	liuNianTime9, err := ResolveLiuNianTime(tianwen.NewCivilDate(2026, 6, 15))
+	liuNianTime9, err := ResolveLiuNianTime(tianwen.NewDate(2026, 6, 15))
 	if err != nil {
 		t.Fatalf("resolve liunian time 2026: %v", err)
 	}

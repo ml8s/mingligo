@@ -10,7 +10,7 @@ import (
 // Chart bundles a complete奇门盘 with all analysis layers.
 type Chart struct {
 	Method           ChartMethod        `json:"method"`
-	Board            board              `json:"pan"`
+	Board            Board              `json:"pan"`
 	GanInteractions  []GanInteraction   `json:"gan_interaction"`
 	MenInteractions  []MenInteraction   `json:"men_interaction"`
 	XingInteractions []XingInteraction  `json:"xing_interaction"`
@@ -178,7 +178,7 @@ func newPillarInfo(zhu ganzhi.Zhu) PillarInfo {
 	}
 }
 
-func affectedVoidSymbols(p board, dayPalace, hourPalace, leadPalace GongIndex) []AffectedSymbol {
+func affectedVoidSymbols(p Board, dayPalace, hourPalace, leadPalace GongIndex) []AffectedSymbol {
 	result := []AffectedSymbol{}
 	for _, void := range p.KongWang {
 		for _, focus := range focusSymbols(dayPalace, hourPalace, leadPalace) {
@@ -192,7 +192,7 @@ func affectedVoidSymbols(p board, dayPalace, hourPalace, leadPalace GongIndex) [
 	return result
 }
 
-func affectedHorseSymbols(p board, dayPalace, hourPalace, leadPalace GongIndex) []AffectedSymbol {
+func affectedHorseSymbols(p Board, dayPalace, hourPalace, leadPalace GongIndex) []AffectedSymbol {
 	result := []AffectedSymbol{}
 	for _, focus := range focusSymbols(dayPalace, hourPalace, leadPalace) {
 		if p.MaXing.Gong == focus.palace {
@@ -218,7 +218,7 @@ func focusSymbols(dayPalace, hourPalace, leadPalace GongIndex) []focusSymbol {
 	}
 }
 
-func palaceWangShuai(p board, yueZhi ganzhi.Zhi) []GongWangShuai {
+func palaceWangShuai(p Board, yueZhi ganzhi.Zhi) []GongWangShuai {
 	result := []GongWangShuai{}
 	for i := range p.GongWei {
 		wuxing := luoshu.PalaceTable[i+1].Element
@@ -232,7 +232,7 @@ func palaceWangShuai(p board, yueZhi ganzhi.Zhi) []GongWangShuai {
 	return result
 }
 
-func palaceWangShuaiForPalace(p board, yueZhi ganzhi.Zhi, palace GongIndex) GongWangShuai {
+func palaceWangShuaiForPalace(p Board, yueZhi ganzhi.Zhi, palace GongIndex) GongWangShuai {
 	if palace < GongKan || palace > GongLi {
 		return GongWangShuai{}
 	}
@@ -248,7 +248,7 @@ func newStemPalace(palace GongIndex, facts []GanGongFact, wangShuai GongWangShua
 	return StemPalace{Palace: palace, Facts: facts, WangShuai: wangShuai}
 }
 
-func leadPillarPalace(p board) GongIndex {
+func leadPillarPalace(p Board) GongIndex {
 	return findGanPalaceIdx(p, resolveJiaDunGan(p.LeadGan, p.LeadZhi))
 }
 
@@ -256,7 +256,7 @@ func leadPillarPalace(p board) GongIndex {
 // 奇门领域规则：用神落宫以天盘为核心判断依据（天盘主求测人/所问事之当下状态，
 // 地盘反映过去/潜藏）。故优先取天盘干所在宫；无天盘则取地盘干所在宫。
 // 甲遁：甲不露，遁于六仪（由 resolveJiaDunGan 先转成六仪）。
-func findGanPalaceIdx(p board, g ganzhi.Gan) GongIndex {
+func findGanPalaceIdx(p Board, g ganzhi.Gan) GongIndex {
 	for i := range p.GongWei {
 		for _, item := range p.GongWei[i].TianPan {
 			if item.Gan == g {
@@ -272,7 +272,7 @@ func findGanPalaceIdx(p board, g ganzhi.Gan) GongIndex {
 	return 0
 }
 
-func findGanGongFacts(p board, g ganzhi.Gan) []GanGongFact {
+func findGanGongFacts(p Board, g ganzhi.Gan) []GanGongFact {
 	facts := []GanGongFact{}
 	for i := range p.GongWei {
 		for _, item := range p.GongWei[i].TianPan {
@@ -289,7 +289,7 @@ func findGanGongFacts(p board, g ganzhi.Gan) []GanGongFact {
 	return facts
 }
 
-func findStarPalace(p board, star StarIndex) GongIndex {
+func findStarPalace(p Board, star StarIndex) GongIndex {
 	for i, palace := range p.GongWei {
 		for _, item := range palace.TianPan {
 			if item.Star == star {
@@ -324,7 +324,7 @@ func analyzeRiShiRelation(dayPalace, hourPalace GongIndex) RiShiRelation {
 }
 
 // findDoorPalaceIdx finds which gong a door resides in.
-func findDoorPalaceIdx(p board, d DoorIndex) GongIndex {
+func findDoorPalaceIdx(p Board, d DoorIndex) GongIndex {
 	for i, pg := range p.GongWei {
 		if pg.Door == d {
 			return GongIndex(i + 1)

@@ -4,6 +4,17 @@ import (
 	"github.com/ml8s/mingligo/pkg/ganzhi"
 )
 
+// LiuNianJie locates the flow year: the observer's standard clock and civil
+// selection date, plus the 立春 year boundary. Values are human-readable.
+type LiuNianJie struct {
+	StandardTime string `json:"standard_time"`
+	StartDate    string `json:"start_date"`
+	LichunYear   int    `json:"lichun_year"`
+	LichunStart  string `json:"lichun_start"`
+	LichunEnd    string `json:"lichun_end"`
+	BoundaryDay  bool   `json:"boundary_day"`
+}
+
 // LiuNian holds the annual (流年) analysis output.
 type LiuNian struct {
 	Year              int                 `json:"year"`
@@ -18,6 +29,7 @@ type LiuNian struct {
 	DaYunInteractions []zhuInteraction    `json:"da_yun_interactions"`
 	ShenSha           []ShenShaProjection `json:"shen_sha"`
 	FuYinFanYin       []FuYinFanYin       `json:"fu_yin_fan_yin"`
+	NianJie           LiuNianJie          `json:"nian_jie"`
 }
 
 // ComputeLiuNian computes the year pillar for a resolved 立春 year and

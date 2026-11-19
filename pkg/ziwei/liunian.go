@@ -1,6 +1,36 @@
 package ziwei
 
-import "github.com/ml8s/mingligo/pkg/ganzhi"
+import (
+	"time"
+
+	"github.com/ml8s/mingligo/pkg/ganzhi"
+	"github.com/ml8s/mingligo/pkg/tianwen"
+)
+
+// ComputeLiuNianAt computes the flow year directly from a standard time. It
+// builds the lunar projector and resolves the lunar-year boundary internally,
+// then fills the NianJie location facts from the same standard time.
+func ComputeLiuNianAt(ctx FlowContext, standard time.Time, loc *time.Location) (LiuNian, error) {
+	p, err := tianwen.NewLunarProjector(tianwen.LunarBasisLocalAstronomical, loc)
+	if err != nil {
+		return LiuNian{}, err
+	}
+	date := p.SelectorDate(standard)
+	resolved, err := ResolveLiuNianTimeWith(p, date)
+	if err != nil {
+		return LiuNian{}, err
+	}
+	result := ComputeLiuNian(ctx, resolved.LunarYear)
+	result.NianJie = LiuNianJie{
+		StandardTime:   standard.In(loc).Format(time.RFC3339Nano),
+		StartDate:      date.String(),
+		LunarYear:      resolved.LunarYear,
+		LunarYearStart: resolved.Start.String(),
+		LunarYearEnd:   resolved.End.String(),
+		BoundaryDay:    resolved.BoundaryDay,
+	}
+	return result, nil
+}
 
 // yearGanZhi returns the nian gan-zhi (年干支) for a lunar year number.
 // e.g., yearGanZhi(2026) = 丙午. The formula uses (year-4)%10/%12 from the 1984 甲子 anchor.
@@ -68,13 +98,13 @@ func ComputeLiuNian(ctx FlowContext, liuNian int) LiuNian {
 	njAnXingIdx := zhiIdxToAnXingIdx(nianJiePos(liuYearZhi))
 	starByAnXingIdx[njAnXingIdx] = append(starByAnXingIdx[njAnXingIdx], "年解")
 	yearlyIndex := zhiIdxToAnXingIdx(zhiToZhiIdx(liuYearZhi))
-	flowPalaces := buildFlowPalaces(yearlyIndex, starByAnXingIdx)
+	FlowPalaces := buildFlowPalaces(yearlyIndex, starByAnXingIdx)
 
 	return LiuNian{
 		MingGong:     flowMing,
 		MingGongName: ctx.MingGongName,
 		Zhi:          liuYearZhi,
 		SiHua:        transformations,
-		GongWei:      flowPalaces,
+		GongWei:      FlowPalaces,
 	}
 }

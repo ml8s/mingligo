@@ -10,8 +10,8 @@ import (
 // inclusive and End is exclusive. Index is 0=寅 .. 11=丑.
 type JieqiMonthWindow struct {
 	Index        int
-	Start        CivilDate
-	End          CivilDate
+	Start        Date
+	End          Date
 	StartInstant time.Time
 	EndInstant   time.Time
 	BoundaryDay  bool

@@ -2,10 +2,10 @@ package ziwei
 
 import "testing"
 
-func blankPalaces() [12]gong {
-	var palaces [12]gong
+func blankPalaces() [12]Gong {
+	var palaces [12]Gong
 	for i := range palaces {
-		palaces[i] = gong{Index: gongIndex(i), Name: gongLabels[i]}
+		palaces[i] = Gong{Index: gongIndex(i), Name: gongLabels[i]}
 	}
 	return palaces
 }
@@ -21,8 +21,8 @@ func firstBrightZhi(star starIndex) Zhi {
 
 func TestFuXiangChaoyuanRequiresBothStars(t *testing.T) {
 	palaces := blankPalaces()
-	palaces[4].Stars = []starInfo{makeStar(TianFu, "天府", "")}
-	palaces[8].Stars = []starInfo{makeStar(TianXiang, "天相", "")}
+	palaces[4].Stars = []StarInfo{makeStar(TianFu, "天府", "")}
+	palaces[8].Stars = []StarInfo{makeStar(TianXiang, "天相", "")}
 	if !hasPattern(findPatterns(palaces), "府相朝垣") {
 		t.Error("府相朝垣 should match when 天府 and 天相 are present")
 	}
@@ -30,7 +30,7 @@ func TestFuXiangChaoyuanRequiresBothStars(t *testing.T) {
 
 func TestFuXiangChaoyuanOnlyFuShouldNotMatch(t *testing.T) {
 	palaces := blankPalaces()
-	palaces[4].Stars = []starInfo{makeStar(TianFu, "天府", "")}
+	palaces[4].Stars = []StarInfo{makeStar(TianFu, "天府", "")}
 	if hasPattern(findPatterns(palaces), "府相朝垣") {
 		t.Error("府相朝垣 should require both 天府 and 天相")
 	}
@@ -38,7 +38,7 @@ func TestFuXiangChaoyuanOnlyFuShouldNotMatch(t *testing.T) {
 
 func TestFuXiangChaoyuanOnlyXiangShouldNotMatch(t *testing.T) {
 	palaces := blankPalaces()
-	palaces[4].Stars = []starInfo{makeStar(TianXiang, "天相", "")}
+	palaces[4].Stars = []StarInfo{makeStar(TianXiang, "天相", "")}
 	if hasPattern(findPatterns(palaces), "府相朝垣") {
 		t.Error("府相朝垣 should require both 天府 and 天相")
 	}
@@ -47,9 +47,9 @@ func TestFuXiangChaoyuanOnlyXiangShouldNotMatch(t *testing.T) {
 func TestSunMoonBrightIncludesWealthAndTravelPalaces(t *testing.T) {
 	palaces := blankPalaces()
 	palaces[4].Zhi = firstBrightZhi(TaiYang)
-	palaces[4].Stars = []starInfo{makeStar(TaiYang, "太阳", "")}
+	palaces[4].Stars = []StarInfo{makeStar(TaiYang, "太阳", "")}
 	palaces[6].Zhi = firstBrightZhi(TaiYin)
-	palaces[6].Stars = []starInfo{makeStar(TaiYin, "太阴", "")}
+	palaces[6].Stars = []StarInfo{makeStar(TaiYin, "太阴", "")}
 	if !sunMoonBright(palaces) {
 		t.Error("日月并明 should include bright sun and moon in wealth and travel palaces")
 	}
@@ -57,8 +57,8 @@ func TestSunMoonBrightIncludesWealthAndTravelPalaces(t *testing.T) {
 
 func TestXingJiJiaYinSameSideShouldNotMatch(t *testing.T) {
 	palaces := blankPalaces()
-	palaces[3].Stars = []starInfo{makeStar(TianXiang, "天相", "")}
-	palaces[2].Stars = []starInfo{makeStar(TianLiang, "天梁", "忌")}
+	palaces[3].Stars = []StarInfo{makeStar(TianXiang, "天相", "")}
+	palaces[2].Stars = []StarInfo{makeStar(TianLiang, "天梁", "忌")}
 	palaces[2].ZaYao = []string{"天刑"}
 	if hasPattern(findPatterns(palaces), "刑忌夹印") {
 		t.Error("刑忌夹印 should require 化忌 and 天刑 on opposite sides")
@@ -68,7 +68,7 @@ func TestXingJiJiaYinSameSideShouldNotMatch(t *testing.T) {
 func TestJinCanGuangHuiRequiresSunInWuPalace(t *testing.T) {
 	palaces := blankPalaces()
 	palaces[0].Zhi = Zhi(7)
-	palaces[0].Stars = []starInfo{makeStar(TaiYang, "太阳", "")}
+	palaces[0].Stars = []StarInfo{makeStar(TaiYang, "太阳", "")}
 	if !hasPattern(findPatterns(palaces), "金灿光辉") {
 		t.Error("金灿光辉 should match a sun alone in the ming palace at 午")
 	}
@@ -81,17 +81,17 @@ func TestJinCanGuangHuiRequiresSunInWuPalace(t *testing.T) {
 
 func TestZiWeiChaoyuanRequiresAuxiliaryStars(t *testing.T) {
 	palaces := blankPalaces()
-	palaces[0].Stars = []starInfo{makeStar(ZiWei, "紫微", "")}
+	palaces[0].Stars = []StarInfo{makeStar(ZiWei, "紫微", "")}
 	if hasPattern(findPatterns(palaces), "紫微朝垣") {
 		t.Error("紫微朝垣 should require auxiliary stars")
 	}
 
-	palaces[4].Stars = []starInfo{makeStar(ZuoFu, "左辅", "")}
+	palaces[4].Stars = []StarInfo{makeStar(ZuoFu, "左辅", "")}
 	if hasPattern(findPatterns(palaces), "紫微朝垣") {
 		t.Error("紫微朝垣 should require at least two distinct court stars")
 	}
 
-	palaces[8].Stars = []starInfo{makeStar(YouBi, "右弼", "")}
+	palaces[8].Stars = []StarInfo{makeStar(YouBi, "右弼", "")}
 	if !hasPattern(findPatterns(palaces), "紫微朝垣") {
 		t.Error("紫微朝垣 should match with 左辅 and 右弼")
 	}
@@ -99,8 +99,8 @@ func TestZiWeiChaoyuanRequiresAuxiliaryStars(t *testing.T) {
 
 func TestFuXiangChaoyuanRequiresBothStarsOutsideCommand(t *testing.T) {
 	palaces := blankPalaces()
-	palaces[0].Stars = []starInfo{makeStar(TianXiang, "天相", "")}
-	palaces[4].Stars = []starInfo{makeStar(TianFu, "天府", "")}
+	palaces[0].Stars = []StarInfo{makeStar(TianXiang, "天相", "")}
+	palaces[4].Stars = []StarInfo{makeStar(TianFu, "天府", "")}
 	if hasPattern(findPatterns(palaces), "府相朝垣") {
 		t.Error("府相朝垣 should not count a star sitting in the command palace as flanking it")
 	}
@@ -108,8 +108,8 @@ func TestFuXiangChaoyuanRequiresBothStarsOutsideCommand(t *testing.T) {
 
 func TestKuiYueJiaMatchesReverseDirection(t *testing.T) {
 	palaces := blankPalaces()
-	palaces[1].Stars = []starInfo{makeStar(TianYue, "天钺", "")}
-	palaces[11].Stars = []starInfo{makeStar(TianKui, "天魁", "")}
+	palaces[1].Stars = []StarInfo{makeStar(TianYue, "天钺", "")}
+	palaces[11].Stars = []StarInfo{makeStar(TianKui, "天魁", "")}
 	if !hasPattern(findPatterns(palaces), "魁钺夹命") {
 		t.Error("魁钺夹命 should match both directions")
 	}
@@ -117,8 +117,8 @@ func TestKuiYueJiaMatchesReverseDirection(t *testing.T) {
 
 func TestZuoYouJiaMatchesReverseDirection(t *testing.T) {
 	palaces := blankPalaces()
-	palaces[1].Stars = []starInfo{makeStar(YouBi, "右弼", "")}
-	palaces[11].Stars = []starInfo{makeStar(ZuoFu, "左辅", "")}
+	palaces[1].Stars = []StarInfo{makeStar(YouBi, "右弼", "")}
+	palaces[11].Stars = []StarInfo{makeStar(ZuoFu, "左辅", "")}
 	if !hasPattern(findPatterns(palaces), "左右夹命") {
 		t.Error("左右夹命 should match both directions")
 	}
@@ -126,7 +126,7 @@ func TestZuoYouJiaMatchesReverseDirection(t *testing.T) {
 
 func TestYangLiangChangLuAcceptsLuCun(t *testing.T) {
 	palaces := blankPalaces()
-	palaces[4].Stars = []starInfo{
+	palaces[4].Stars = []StarInfo{
 		makeStar(TaiYang, "太阳", ""),
 		makeStar(TianLiang, "天梁", ""),
 		makeStar(WenChang, "文昌", ""),

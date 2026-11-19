@@ -48,7 +48,7 @@ type flowPalaceRef struct {
 }
 
 type daxianRef struct {
-	Gong  string `json:"gong"`
+	Gong  string `json:"Gong"`
 	Start int    `json:"start"`
 	End   int    `json:"end"`
 }
@@ -317,14 +317,14 @@ func TestChartPatternsMatchFinalPalaces(t *testing.T) {
 			}
 			for i := range want {
 				if full.Patterns[i] != want[i] {
-					t.Fatalf("pattern %d = %#v, want %#v", i, full.Patterns[i], want[i])
+					t.Fatalf("Pattern %d = %#v, want %#v", i, full.Patterns[i], want[i])
 				}
 			}
 		})
 	}
 }
 
-func assertFlowPalaces(t *testing.T, label string, got [12]flowPalace, ref []flowPalaceRef, pass, fail *int) {
+func assertFlowPalaces(t *testing.T, label string, got [12]FlowPalace, ref []flowPalaceRef, pass, fail *int) {
 	if len(ref) != 12 {
 		return
 	}
@@ -363,7 +363,7 @@ func hasFlowTransformation(value []FlowTransformation, star starIndex, hua siHua
 	return false
 }
 
-func findPalace(p [12]gong, name string) *gong {
+func findPalace(p [12]Gong, name string) *Gong {
 	for i := range p {
 		if p[i].Name == name {
 			return &p[i]
@@ -371,7 +371,7 @@ func findPalace(p [12]gong, name string) *gong {
 	}
 	return nil
 }
-func starBrNames(stars []starInfo, major bool) []string {
+func starBrNames(stars []StarInfo, major bool) []string {
 	var r []string
 	for _, s := range stars {
 		if s.IsMajor == major {
@@ -381,7 +381,7 @@ func starBrNames(stars []starInfo, major bool) []string {
 	sortS(r)
 	return r
 }
-func starsToNames(stars []starInfo, major bool) []string {
+func starsToNames(stars []StarInfo, major bool) []string {
 	var r []string
 	for _, s := range stars {
 		if s.IsMajor == major {

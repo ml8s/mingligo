@@ -51,21 +51,21 @@ func TestCoreIsNotMutatedByDerivedMethods(t *testing.T) {
 	core := ComputeChart(stgt, st, ganzhi.Male).Core()
 	want := cloneCoreForBondTest(core)
 
-	liuNianTime, err := ResolveLiuNianTime(tianwen.NewCivilDate(2026, 6, 15))
+	liuNianTime, err := ResolveLiuNianTime(tianwen.NewDate(2026, 6, 15))
 	if err != nil {
 		t.Fatal(err)
 	}
 	if _, err := ComputeLiuNianAtTime(core, liuNianTime); err != nil {
 		t.Fatal(err)
 	}
-	liuYueTime, err := ResolveLiuYueTimeAt(tianwen.NewCivilDate(2026, 6, 15).Time(), time.UTC)
+	liuYueTime, err := ResolveLiuYueTimeAt(tianwen.NewDate(2026, 6, 15).Time(), time.UTC)
 	if err != nil {
 		t.Fatal(err)
 	}
 	if _, err := ComputeLiuYueAtTime(core, liuYueTime); err != nil {
 		t.Fatal(err)
 	}
-	if _, err := ComputeLiuRi(core, LiuRiTime{Date: tianwen.NewCivilDate(2026, 6, 15)}); err != nil {
+	if _, err := ComputeLiuRi(core, LiuRiTime{Date: tianwen.NewDate(2026, 6, 15)}); err != nil {
 		t.Fatal(err)
 	}
 	if _, err := ComputeLiuShi(core, resolveTestLiuShi(t, 2026, 6, 15, 12, 30)); err != nil {

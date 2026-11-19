@@ -248,7 +248,7 @@ func TestExactSolarTermBoundary(t *testing.T) {
 }
 
 func TestPatternConditionsRequireSamePalace(t *testing.T) {
-	scattered := board{
+	scattered := Board{
 		DutyDoor: DoorSheng,
 		GongWei: [9]Gong{
 			0: {DiPanGan: ganzhi.GanWu, TianPan: []TianPanSymbol{{Gan: ganzhi.GanBing}}},

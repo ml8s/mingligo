@@ -132,7 +132,7 @@ func TestResolve_LunarInput(t *testing.T) {
 	if len(result.Candidates) != 1 {
 		t.Fatalf("candidates=%d, want 1", len(result.Candidates))
 	}
-	date := civilDateFromLunarForTest(t, lunar)
+	date := dateFromLunarForTest(t, lunar)
 	want := time.Date(date.Year, time.Month(date.Month), date.Day, 6, 0, 0, 0,
 		time.FixedZone("CST", 8*3600))
 	if got := inputCandidate(t, result).StandardTime; !got.Equal(want) {
@@ -247,7 +247,7 @@ func TestResolve_LunarInputFixedUTC8MatchesOfficial(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	date := civilDateFromLunarForTest(t, lunar)
+	date := dateFromLunarForTest(t, lunar)
 	want := time.Date(date.Year, time.Month(date.Month), date.Day, 6, 0, 0, 0, time.FixedZone("CST", 8*3600))
 	if got := inputCandidate(t, result).StandardTime; !got.Equal(want) {
 		t.Fatalf("fixed UTC+8 local_astronomical = %s, want official %s", got, want)

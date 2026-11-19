@@ -113,9 +113,60 @@ func fillDaYunRoots(chart *Chart, bz ganzhi.Bazi) {
 }
 
 // ComputeLiuNianAtTime computes the year pillar from a resolved 立春 year.
+// ComputeLiuNianAt computes the flow year directly from a standard time. It
+// resolves the 立春 year boundary internally and fills the NianJie location
+// facts, so callers only pass the standard time.
+func ComputeLiuNianAt(core Core, standard time.Time, loc *time.Location) (*LiuNian, error) {
+	t, err := ResolveLiuNianTimeAt(standard, loc)
+	if err != nil {
+		return nil, fmt.Errorf("computeLiuNian: resolve: %w", err)
+	}
+	cd := dayunStepForYear(core.DaYun, core.BirthYear, t.LichunYear)
+	result, err := computeLiuNian(core.ToBazi(), t, cd)
+	if err != nil {
+		return nil, err
+	}
+	if loc == nil {
+		loc = time.UTC
+	}
+	result.NianJie = LiuNianJie{
+		StandardTime: standard.In(loc).Format(time.RFC3339Nano),
+		StartDate:    tianwen.StandardDateAt(standard, loc).String(),
+		LichunYear:   t.LichunYear,
+		LichunStart:  t.Start.String(),
+		LichunEnd:    t.End.String(),
+		BoundaryDay:  t.BoundaryDay,
+	}
+	return result, nil
+}
+
 func ComputeLiuNianAtTime(core Core, t LiuNianTime) (*LiuNian, error) {
 	cd := dayunStepForYear(core.DaYun, core.BirthYear, t.LichunYear)
 	return computeLiuNian(core.ToBazi(), t, cd)
+}
+
+// ComputeLiuYueAt computes the flow month directly from a standard time. It
+// resolves the solar-term boundary internally and fills the JieQi facts.
+func ComputeLiuYueAt(core Core, standard time.Time, loc *time.Location) (*LiuYue, error) {
+	t, err := ResolveLiuYueTimeAt(standard, loc)
+	if err != nil {
+		return nil, fmt.Errorf("computeLiuYue: resolve: %w", err)
+	}
+	result, err := computeLiuYue(core.ToBazi(), t)
+	if err != nil {
+		return nil, err
+	}
+	if loc == nil {
+		loc = time.UTC
+	}
+	result.JieQi = LiuYueJieQi{
+		StandardTime: standard.In(loc).Format(time.RFC3339Nano),
+		StartDate:    t.Date.String(),
+		JieqiStart:   t.Start.String(),
+		JieqiEnd:     t.End.String(),
+		BoundaryDay:  t.BoundaryDay,
+	}
+	return result, nil
 }
 
 // ComputeLiuYueAtTime computes the month pillar from a resolved solar-term month.
@@ -123,13 +174,38 @@ func ComputeLiuYueAtTime(core Core, t LiuYueTime) (*LiuYue, error) {
 	return computeLiuYue(core.ToBazi(), t)
 }
 
-// ComputeLiuRi computes the day pillar and its interactions with the bazi chart.
-func ComputeLiuRi(core Core, t LiuRiTime) (*LiuRi, error) {
+// ComputeLiuRiAt computes the flow day directly from a standard time. It
+// resolves the true-solar day boundary internally and fills the RiJie location
+// facts, so callers only pass the standard time.
+func ComputeLiuRiAt(core Core, standard time.Time, loc *time.Location, longitude float64) (*LiuRi, error) {
+	t, err := ResolveLiuRiTimeAt(standard, loc, longitude)
+	if err != nil {
+		return nil, fmt.Errorf("computeLiuRi: resolve: %w", err)
+	}
 	// 流日的流年/大运按该日所属的立春年取，而不是公历年。
 	nianTime, err := ResolveLiuNianTime(t.Date)
 	if err != nil {
 		return nil, fmt.Errorf("computeLiuRi: liunian time: %w", err)
 	}
+	dzZhu, lnZhu, err := liuRiDayunLiunian(core, nianTime)
+	if err != nil {
+		return nil, err
+	}
+	result, err := computeLiuRi(core.ToBazi(), t, dzZhu, lnZhu)
+	if err != nil {
+		return nil, err
+	}
+	if loc == nil {
+		loc = time.UTC
+	}
+	result.RiJie = LiuRiJie{
+		StandardTime: t.Standard.In(loc).Format(time.RFC3339Nano),
+		StandardDate: t.StandardDate.String(),
+	}
+	return result, nil
+}
+
+func liuRiDayunLiunian(core Core, nianTime LiuNianTime) (*ganzhi.Zhu, *ganzhi.Zhu, error) {
 	ds := dayunStepForYear(core.DaYun, core.BirthYear, nianTime.LichunYear)
 	var dzZhu *ganzhi.Zhu
 	if ds != nil {
@@ -137,11 +213,24 @@ func ComputeLiuRi(core Core, t LiuRiTime) (*LiuRi, error) {
 	}
 	ln, err := ComputeLiuNianAtTime(core, nianTime)
 	if err != nil {
-		return nil, fmt.Errorf("computeLiuRi: liunian: %w", err)
+		return nil, nil, fmt.Errorf("computeLiuRi: liunian: %w", err)
 	}
 	var lnZhu *ganzhi.Zhu
 	if ln != nil {
 		lnZhu = &ganzhi.Zhu{Gan: ln.NianGan, Zhi: ln.NianZhi}
+	}
+	return dzZhu, lnZhu, nil
+}
+
+// ComputeLiuRi computes the day pillar and its interactions with the bazi chart.
+func ComputeLiuRi(core Core, t LiuRiTime) (*LiuRi, error) {
+	nianTime, err := ResolveLiuNianTime(t.Date)
+	if err != nil {
+		return nil, fmt.Errorf("computeLiuRi: liunian time: %w", err)
+	}
+	dzZhu, lnZhu, err := liuRiDayunLiunian(core, nianTime)
+	if err != nil {
+		return nil, err
 	}
 	return computeLiuRi(core.ToBazi(), t, dzZhu, lnZhu)
 }
@@ -149,6 +238,30 @@ func ComputeLiuRi(core Core, t LiuRiTime) (*LiuRi, error) {
 // ComputeLiuShi computes the hour pillar and its interactions with the bazi chart.
 func ComputeLiuShi(core Core, t LiuShiTime) (*LiuShi, error) {
 	return computeLiuShi(core.ToBazi(), t)
+}
+
+// ComputeLiuShiAt computes the flow hour directly from a standard time. It
+// resolves the true-solar hour boundary internally and fills the ShiChen
+// location facts, so callers only pass the standard time and need not
+// pre-resolve a LiuShiTime or assemble boundary fields themselves.
+func ComputeLiuShiAt(core Core, standard time.Time, loc *time.Location, longitude float64) (*LiuShi, error) {
+	t, err := ResolveLiuShiTime(standard, loc, longitude)
+	if err != nil {
+		return nil, fmt.Errorf("computeLiuShi: resolve: %w", err)
+	}
+	result, err := computeLiuShi(core.ToBazi(), t)
+	if err != nil {
+		return nil, err
+	}
+	if loc == nil {
+		loc = time.UTC
+	}
+	result.ShiChen = LiuShiChen{
+		StandardTime: t.Standard.In(loc).Format(time.RFC3339Nano),
+		StandardDate: t.StandardDate.String(),
+		Shichen:      t.Shichen.String(),
+	}
+	return result, nil
 }
 
 // dayunStepForYear returns the DaYun step governing the given year, based on
