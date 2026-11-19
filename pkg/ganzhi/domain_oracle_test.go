@@ -11,7 +11,7 @@ type baziOracle struct {
 		Day      string `json:"day"`
 		Other    string `json:"other"`
 		Expected string `json:"expected"`
-	} `json:"ten_gods_all_100"`
+	} `json:"shi_shens_all_100"`
 	Hidden []struct {
 		Branch string  `json:"branch"`
 		Main   string  `json:"main"`

@@ -169,7 +169,7 @@
       ],
       "expected_root_type": "none",
       "expected_yin_bi_count": 1,
-      "expected_day_master_roots": [],
+      "expected_ri_zhu_roots": [],
       "expected_relation_facts": [
         {
           "field": "gan_he_candidate",
@@ -197,7 +197,7 @@
       ],
       "expected_root_type": "zhi_main",
       "expected_yin_bi_count": 1,
-      "expected_day_master_roots": [
+      "expected_ri_zhu_roots": [
         {
           "pillar": "ri",
           "branch": "卯",

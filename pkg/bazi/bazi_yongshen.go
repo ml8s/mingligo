@@ -22,7 +22,7 @@ type FuYiResult struct {
 	Xi          string            `json:"xi"`
 	Ji          string            `json:"ji"`
 	Strength    string            `json:"qiang_ruo"`
-	Pattern     string            `json:"pattern,omitempty"`
+	Pattern     string            `json:"ge_ju,omitempty"`
 	ModelID     string            `json:"fu_yi_model_id"`
 	Basis       FuYiBasis         `json:"basis"`
 }
@@ -67,9 +67,9 @@ type GeJuResult struct {
 	Usage     string `json:"usage"` // "顺用" or "逆用"
 	// 结构事实：月令格神与来源。当前模型未完整实现相神、成格、败格、
 	// 救应，因此 Pattern 是格局候选，不是子平真诠完整成格结论。
-	PatternGod       string        `json:"pattern_god,omitempty"`
-	PatternGodTenGod string        `json:"pattern_god_ten_god,omitempty"`
-	PatternGodSource string        `json:"pattern_god_source"`
+	PatternGod       string        `json:"ge_ju_shen,omitempty"`
+	PatternGodTenGod string        `json:"ge_ju_shen_shi_shen,omitempty"`
+	PatternGodSource string        `json:"ge_ju_shen_source"`
 	Structure        GeJuStructure `json:"structure"`
 }
 

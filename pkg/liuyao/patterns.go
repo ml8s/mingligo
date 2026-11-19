@@ -21,7 +21,7 @@ const (
 
 // Pattern 特殊格局
 type Pattern struct {
-	Type     PatternType `json:"pattern_kind"` // 格局类型
+	Type     PatternType `json:"ge_ju_kind"` // 格局类型
 	SubType  string      `json:"sub_type"`     // 子类型（如真空/假空）
 	Position int         `json:"position"`     // 相关爻位（0=全卦）
 	IsTrue   bool        `json:"is_true"`      // 结构是否有实质效力（空破区分真假，其余表示已成立）

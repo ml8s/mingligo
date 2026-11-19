@@ -44,7 +44,7 @@ type external8CharCase struct {
 		PillarLabels []string   `json:"pillar_labels"`
 		HiddenLabels [][]string `json:"hidden_labels"`
 		TenGodLabels [][]string `json:"ten_god_labels"`
-		TrendLabels  []string   `json:"day_master_trend_labels"`
+		TrendLabels  []string   `json:"ri_zhu_trend_labels"`
 		XunLabels    []string   `json:"xun_labels"`
 		XunKong      []string   `json:"xun_kong_labels"`
 		SelfSitting  []string   `json:"self_sitting_labels"`

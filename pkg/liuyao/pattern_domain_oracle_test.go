@@ -140,7 +140,7 @@ func TestDomainOracle_LiuyaoPatternSemantics(t *testing.T) {
 			} `json:"lines"`
 			RiZhi            string   `json:"ri_zhi"`
 			YueZhi           string   `json:"yue_zhi"`
-			Element          string   `json:"element"`
+			Element          string   `json:"wuxing"`
 			ExpectedComplete bool     `json:"expected_complete"`
 			ExpectedMissing  []string `json:"expected_missing"`
 		} `json:"sanhe_cases"`

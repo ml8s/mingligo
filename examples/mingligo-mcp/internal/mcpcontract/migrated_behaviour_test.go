@@ -86,7 +86,7 @@ func TestMigratedBaziChartCompleteFacts(t *testing.T) {
 	chart := callToolDocument(t, registry, "bazi_chart", map[string]any{"subject": subject})
 
 	for _, field := range []string{
-		"san_yuan", "guan_xi", "ten_god_states", "element_states", "da_yun",
+		"san_yuan", "guan_xi", "shi_shen_states", "wuxing_states", "da_yun",
 	} {
 		if value, ok := chart[field]; !ok || value == nil {
 			t.Errorf("bazi.chart missing %s", field)

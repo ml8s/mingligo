@@ -203,7 +203,7 @@
   ],
   "ge_ju": [
     {
-      "pattern_kind": "冲合",
+      "ge_ju_kind": "冲合",
       "sub_type": "六冲",
       "position": 0,
       "is_true": true
@@ -283,7 +283,7 @@
         "辰",
         "申"
       ],
-      "element": "水",
+      "wuxing": "水",
       "complete": true,
       "moving_count": 0,
       "qualification": "卦中三支齐但无发动或见空破，作潜在聚气候选，不直接论成局",
@@ -310,7 +310,7 @@
         "午",
         "戌"
       ],
-      "element": "火",
+      "wuxing": "火",
       "complete": true,
       "moving_count": 0,
       "qualification": "卦中三支齐但无发动或见空破，作潜在聚气候选，不直接论成局",
@@ -330,13 +330,13 @@
   ],
   "yong_shen_force_chain": {
     "yong_shen": "官鬼",
-    "yong_element": "火",
+    "yong_wuxing": "火",
     "position": 4,
     "is_hidden": false,
     "entries": [
       {
         "role": "用神",
-        "element": "火",
+        "wuxing": "火",
         "positions": [
           4
         ],
@@ -353,7 +353,7 @@
       },
       {
         "role": "原神",
-        "element": "木",
+        "wuxing": "木",
         "positions": [
           2
         ],
@@ -370,7 +370,7 @@
       },
       {
         "role": "忌神",
-        "element": "水",
+        "wuxing": "水",
         "positions": [
           1
         ],
@@ -387,7 +387,7 @@
       },
       {
         "role": "仇神",
-        "element": "金",
+        "wuxing": "金",
         "positions": [
           5
         ],

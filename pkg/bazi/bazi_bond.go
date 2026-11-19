@@ -107,7 +107,7 @@ type spouseStarOccurrence struct {
 }
 
 type spouseStarGroup struct {
-	TenGod      string                 `json:"ten_god"`
+	TenGod      string                 `json:"shi_shen"`
 	Occurrences []spouseStarOccurrence `json:"occurrences"`
 }
 
@@ -145,7 +145,7 @@ type ShenshaCross struct {
 // each person's own chart and yearly tools; this type does not synthesize a
 // compatibility rhythm or rating.
 type Bond struct {
-	DayMaster    dayMasterCross    `json:"day_master"`
+	DayMaster    dayMasterCross    `json:"ri_zhu"`
 	SpousePalace spousePalaceCross `json:"pei_ou_gong"`
 	ZhuCross     zhuCross          `json:"zhu_cross"`
 	ShiShenCross shiShenCross      `json:"shi_shen_cross"`

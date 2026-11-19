@@ -155,10 +155,10 @@
       "寅",
       "卯"
     ],
-    "patterns": [
+    "ge_ju": [
       {
         "id": "pattern-1",
-        "pattern_kind": "两现",
+        "ge_ju_kind": "两现",
         "sub_type": "用神两现",
         "position": 0,
         "is_true": true
@@ -370,7 +370,7 @@
       ],
       "yong_shen_force_chain": {
         "yong_shen": "官鬼",
-        "yong_element": "土",
+        "yong_wuxing": "土",
         "position": 2,
         "is_hidden": false,
         "entries": [

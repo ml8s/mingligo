@@ -49,8 +49,8 @@ type BaziChartOutput struct {
 	ShenShaSchool BaziChartShenShaSchool       `json:"shen_sha_school" jsonschema:"神煞取参照系。"`
 	LuRoots       []BaziChartLuRootsItem       `json:"lu_roots" jsonschema:"透干十神得十干禄"`
 	GuanXi        []BaziChartGuanXiItem        `json:"guan_xi" jsonschema:"canonical 命局关系事实；每条 occurrence 使用稳定 id。"`
-	TenGodStates  []BaziChartTenGodStatesItem  `json:"ten_god_states" jsonschema:"十神显隐 / 通根 / 得令 / 旺弱状态"`
-	ElementStates []BaziChartElementStatesItem `json:"element_states" jsonschema:"五行季节旺弱、组合旺弱与生克方向"`
+	TenGodStates  []BaziChartTenGodStatesItem  `json:"shi_shen_states" jsonschema:"十神显隐 / 通根 / 得令 / 旺弱状态"`
+	ElementStates []BaziChartElementStatesItem `json:"wuxing_states" jsonschema:"五行季节旺弱、组合旺弱与生克方向"`
 	GuanSha       BaziChartGuanSha             `json:"guan_sha" jsonschema:"官杀取清结论。"`
 	CaiKu         BaziChartCaiKu               `json:"cai_ku" jsonschema:"财库结论。"`
 	TiaoHou       BaziChartTiaoHou             `json:"tiao_hou" jsonschema:"调候候选：主辅调候五行候选 + 季节 + 条件"`
@@ -65,7 +65,7 @@ type BaziChartPillar struct {
 	NaYin          string                   `json:"na_yin" jsonschema:"干支纳音。"`
 	CangGan        BaziPillarCangGan        `json:"cang_gan" jsonschema:"藏干"`
 	ShiShens       []BaziPillarShiShensItem `json:"shi_shens" jsonschema:"十神"`
-	DayMasterTrend ChangShengStageName      `json:"day_master_trend" jsonschema:"日主在此柱地支的十二长生（地势）"`
+	DayMasterTrend ChangShengStageName      `json:"ri_zhu_trend" jsonschema:"日主在此柱地支的十二长生（地势）"`
 	Xun            string                   `json:"xun" jsonschema:"该柱所在旬"`
 	XunKong        string                   `json:"xun_kong" jsonschema:"该柱所在旬的旬空二支；is_void 另指该柱值日柱旬空"`
 	SelfSitting    ChangShengStageName      `json:"self_sitting" jsonschema:"自坐长生（该柱天干在自己的地支上的十二长生阶段）"`
@@ -113,7 +113,7 @@ type BaziChartFuYi struct {
 	Xi          CandidateWuxingName      `json:"xi" jsonschema:"扶抑候选喜神五行；缺省为 无候选"`
 	Ji          CandidateWuxingName      `json:"ji" jsonschema:"扶抑候选忌神五行；缺省为 无候选"`
 	QiangRuo    string                   `json:"qiang_ruo" jsonschema:"身强弱"`
-	Pattern     *string                  `json:"pattern,omitempty" jsonschema:"从格标签"`
+	Pattern     *string                  `json:"ge_ju,omitempty" jsonschema:"从格标签"`
 	ModelID     string                   `json:"fu_yi_model_id" jsonschema:"扶抑候选模型 ID。"`
 	Basis       BaziChartFuYiBasis       `json:"basis" jsonschema:"强弱表输入"`
 }
@@ -274,15 +274,15 @@ type BaziChartTiaoHouSecondaryOccurrencesItem struct {
 type BaziChartGeJu struct {
 	GeJu             string                 `json:"ge_ju" jsonschema:"月令结构证据：月令格神 + 顺逆用 + 结构（非用神） 中的 ge_ju。"`
 	YongFa           string                 `json:"usage" jsonschema:"月令结构证据：月令格神 + 顺逆用 + 结构（非用神） 中的 yong_fa。"`
-	PatternGod       *GanName               `json:"pattern_god,omitempty" jsonschema:"月令结构证据：月令格神 + 顺逆用 + 结构（非用神） 中的 pattern_god。"`
-	PatternGodTenGod *TenGodName            `json:"pattern_god_ten_god,omitempty" jsonschema:"月令结构证据：月令格神 + 顺逆用 + 结构（非用神） 中的 pattern_god_ten_god。"`
-	PatternGodSource string                 `json:"pattern_god_source" jsonschema:"月令结构证据：月令格神 + 顺逆用 + 结构（非用神） 中的 pattern_god_source。"`
+	PatternGod       *GanName               `json:"ge_ju_shen,omitempty" jsonschema:"月令结构证据：月令格神 + 顺逆用 + 结构（非用神） 中的 pattern_god。"`
+	PatternGodTenGod *TenGodName            `json:"ge_ju_shen_shi_shen,omitempty" jsonschema:"月令结构证据：月令格神 + 顺逆用 + 结构（非用神） 中的 pattern_god_ten_god。"`
+	PatternGodSource string                 `json:"ge_ju_shen_source" jsonschema:"月令结构证据：月令格神 + 顺逆用 + 结构（非用神） 中的 pattern_god_source。"`
 	GeShenTou        bool                   `json:"ge_shen_tou" jsonschema:"格神是否透干。"`
 	Structure        BaziChartGeJuStructure `json:"structure" jsonschema:"格局结构。"`
 }
 
 type BaziChartGeJuStructure struct {
-	Pattern     BaziChartGeJuStructurePattern    `json:"pattern" jsonschema:"格神。"`
+	Pattern     BaziChartGeJuStructurePattern    `json:"ge_ju_shen" jsonschema:"格神。"`
 	Controller  BaziChartGeJuStructureController `json:"controller" jsonschema:"克神。"`
 	Generator   BaziChartGeJuStructureGenerator  `json:"generator" jsonschema:"生神。"`
 	GuanXiLinks []BaziChartRelationLink          `json:"guan_xi_links" jsonschema:"canonical guan_xi 引用与本证据目标。"`
@@ -324,7 +324,7 @@ type BaziBondSideInput struct {
 // ── bazi.bond output ──
 
 type BaziBondOutput struct {
-	DayMaster    BaziBondDayMaster    `json:"day_master" jsonschema:"双方日主及日主生克关系。"`
+	DayMaster    BaziBondDayMaster    `json:"ri_zhu" jsonschema:"双方日主及日主生克关系。"`
 	SpousePalace BaziBondSpousePalace `json:"pei_ou_gong" jsonschema:"双方配偶宫（日支）及其关系。"`
 	ZhuCross     BaziBondZhuCross     `json:"zhu_cross" jsonschema:"双方四柱逐柱干支交叉。"`
 	ShiShenCross BaziBondShiShenCross `json:"shi_shen_cross" jsonschema:"双方日主互视的十神柱位。"`
@@ -471,7 +471,7 @@ type BaziBondSpouseStarOccurrence struct {
 }
 
 type BaziBondSpouseStarCandidate struct {
-	TenGod      TenGodName                     `json:"ten_god" jsonschema:"配偶星十神。"`
+	TenGod      TenGodName                     `json:"shi_shen" jsonschema:"配偶星十神。"`
 	Occurrences []BaziBondSpouseStarOccurrence `json:"occurrences" jsonschema:"出现位置。"`
 }
 

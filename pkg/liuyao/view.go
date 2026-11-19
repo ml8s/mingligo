@@ -17,7 +17,7 @@ type LineFlags struct {
 	XunKong     bool   `json:"xun_kong"`
 	MuKu        bool   `json:"mu_ku"`
 	MuKuBranch  string `json:"mu_ku_branch,omitempty"`
-	MuKuElement string `json:"mu_ku_element,omitempty"`
+	MuKuElement string `json:"mu_ku_wuxing,omitempty"`
 	DongSheng   bool   `json:"dong_sheng"`
 	DongKe      bool   `json:"dong_ke"`
 }
@@ -38,7 +38,7 @@ type LineView struct {
 
 type PatternView struct {
 	ID          string `json:"id"`
-	PatternKind string `json:"pattern_kind"`
+	PatternKind string `json:"ge_ju_kind"`
 	SubType     string `json:"sub_type"`
 	Position    int    `json:"position"`
 	IsTrue      bool   `json:"is_true"`
@@ -164,7 +164,7 @@ type ForceEntryView struct {
 
 type ForceChainView struct {
 	YongShen    string           `json:"yong_shen"`
-	YongElement string           `json:"yong_element"`
+	YongElement string           `json:"yong_wuxing"`
 	Position    int              `json:"position"`
 	IsHidden    bool             `json:"is_hidden"`
 	Entries     []ForceEntryView `json:"entries"`
@@ -212,7 +212,7 @@ type ChartView struct {
 	YueJianGan   string         `json:"yue_jian_gan"`
 	YueJianZhi   string         `json:"yue_jian_zhi"`
 	XunKong      []string       `json:"xun_kong"`
-	Patterns     []PatternView  `json:"patterns"`
+	Patterns     []PatternView  `json:"ge_ju"`
 	YongShen     YongShenView   `json:"yong_shen"`
 	GuaCi        *GuaCiView     `json:"gua_ci,omitempty"`
 	Analysis     AnalysisView   `json:"analysis"`

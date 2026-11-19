@@ -18,7 +18,7 @@ type HiddenStemProjection struct {
 // the pillar itself and all pillar-owned projections in one domain value.
 type Pillar struct {
 	ganzhi.Zhu
-	DayMasterTrend string               `json:"day_master_trend"`
+	DayMasterTrend string               `json:"ri_zhu_trend"`
 	Xun            string               `json:"xun"`
 	XunKong        string               `json:"xun_kong"`
 	NaYin          string               `json:"na_yin"`
@@ -36,7 +36,7 @@ func (p Pillar) MarshalJSON() ([]byte, error) {
 	return json.Marshal(struct {
 		Gan            string               `json:"gan"`
 		Zhi            string               `json:"zhi"`
-		DayMasterTrend string               `json:"day_master_trend"`
+		DayMasterTrend string               `json:"ri_zhu_trend"`
 		Xun            string               `json:"xun"`
 		XunKong        string               `json:"xun_kong"`
 		NaYin          string               `json:"na_yin"`
@@ -95,9 +95,9 @@ type Chart struct {
 	// 合会冲刑 canonical facts；旧并列数组是 detection evidence，待消费方迁移。
 	GuanXi []NatalRelationFact `json:"guan_xi"`
 	// 十神显隐、通根、得令与旺弱状态；Python 因子层只读。
-	TenGodStates []TenGodState `json:"ten_god_states"`
+	TenGodStates []TenGodState `json:"shi_shen_states"`
 	// 五行季节旺弱、组合旺弱与生克方向；Python 因子层只读。
-	ElementStates []ElementState `json:"element_states"`
+	ElementStates []ElementState `json:"wuxing_states"`
 	// 官杀与财库是具体命理结论，不是通用事实袋。
 	GuanSha GuanSha `json:"guan_sha"`
 	CaiKu   CaiKu   `json:"cai_ku"`

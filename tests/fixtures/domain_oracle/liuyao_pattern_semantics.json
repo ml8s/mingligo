@@ -171,7 +171,7 @@
       ],
       "ri_zhi": "子",
       "yue_zhi": "辰",
-      "element": "水",
+      "wuxing": "水",
       "expected_complete": false,
       "expected_missing": ["申"]
     },
@@ -183,7 +183,7 @@
       ],
       "ri_zhi": "申",
       "yue_zhi": "辰",
-      "element": "水",
+      "wuxing": "水",
       "expected_complete": true,
       "expected_missing": []
     }

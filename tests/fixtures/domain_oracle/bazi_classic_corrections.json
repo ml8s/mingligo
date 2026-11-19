@@ -62,61 +62,61 @@
     {
       "day_gan": "甲",
       "month": "卯",
-      "pattern": "月刃格",
+      "ge_ju": "月刃格",
       "usage": "逆用"
     },
     {
       "day_gan": "乙",
       "month": "寅",
-      "pattern": "伤官格",
+      "ge_ju": "伤官格",
       "usage": "逆用"
     },
     {
       "day_gan": "丙",
       "month": "午",
-      "pattern": "月刃格",
+      "ge_ju": "月刃格",
       "usage": "逆用"
     },
     {
       "day_gan": "丁",
       "month": "巳",
-      "pattern": "杂格",
+      "ge_ju": "杂格",
       "usage": "逆用"
     },
     {
       "day_gan": "戊",
       "month": "午",
-      "pattern": "月刃格",
+      "ge_ju": "月刃格",
       "usage": "逆用"
     },
     {
       "day_gan": "己",
       "month": "巳",
-      "pattern": "正印格",
+      "ge_ju": "正印格",
       "usage": "顺用"
     },
     {
       "day_gan": "庚",
       "month": "酉",
-      "pattern": "月刃格",
+      "ge_ju": "月刃格",
       "usage": "逆用"
     },
     {
       "day_gan": "辛",
       "month": "申",
-      "pattern": "伤官格",
+      "ge_ju": "伤官格",
       "usage": "逆用"
     },
     {
       "day_gan": "壬",
       "month": "子",
-      "pattern": "月刃格",
+      "ge_ju": "月刃格",
       "usage": "逆用"
     },
     {
       "day_gan": "癸",
       "month": "亥",
-      "pattern": "杂格",
+      "ge_ju": "杂格",
       "usage": "逆用"
     }
   ],
@@ -130,9 +130,9 @@
         "癸巳"
       ],
       "yang_ren": false,
-      "pattern": "杂格",
-      "pattern_god": "庚",
-      "pattern_god_source": "main_qi_not_transparent",
+      "ge_ju": "杂格",
+      "ge_ju_shen": "庚",
+      "ge_ju_shen_source": "main_qi_not_transparent",
       "usage": "逆用",
       "strength": "身强",
       "tiao_hou_primary": "壬",

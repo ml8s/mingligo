@@ -111,7 +111,7 @@ type Line struct {
 	XunKong       bool     `json:"xun_kong,omitempty"`        // 该爻地支值日柱旬空
 	MuKu          bool     `json:"mu_ku,omitempty"`           // 入墓（地支为墓库）
 	MuKuBranch    string   `json:"mu_ku_branch,omitempty"`    // 本五行墓库地支
-	MuKuElement   string   `json:"mu_ku_element,omitempty"`   // 被入库的五行
+	MuKuElement   string   `json:"mu_ku_wuxing,omitempty"`   // 被入库的五行
 	MuKuTypes     []string `json:"mu_ku_types,omitempty"`     // day/moving/transformed
 	ChangShengYue string   `json:"chang_sheng_yue,omitempty"` // 本爻五行在月支的十二长生
 }

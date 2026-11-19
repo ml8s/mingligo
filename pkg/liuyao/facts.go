@@ -37,7 +37,7 @@ type MovingTransformation struct {
 type SanHeCandidate struct {
 	Positions       []int    `json:"positions"`
 	Branches        []string `json:"branches"`
-	Element         string   `json:"element"`
+	Element         string   `json:"wuxing"`
 	Complete        bool     `json:"complete"`
 	MovingCount     int      `json:"moving_count"`
 	Qualification   string   `json:"qualification"`
@@ -93,7 +93,7 @@ const (
 // ForceEntry describes one role in the support/opposition chain.
 type ForceEntry struct {
 	Role      ForceRole `json:"role"`
-	Element   string    `json:"element"`
+	Element   string    `json:"wuxing"`
 	Positions []int     `json:"positions,omitempty"`
 	Branches  []string  `json:"branches,omitempty"`
 	Relations []string  `json:"relations,omitempty"`
@@ -104,7 +104,7 @@ type ForceEntry struct {
 // ForceChain is the structured support/opposition map around the YongShen.
 type ForceChain struct {
 	YongShen    string       `json:"yong_shen"`
-	YongElement string       `json:"yong_element"`
+	YongElement string       `json:"yong_wuxing"`
 	Position    int          `json:"position"`
 	IsHidden    bool         `json:"is_hidden"`
 	Entries     []ForceEntry `json:"entries"`

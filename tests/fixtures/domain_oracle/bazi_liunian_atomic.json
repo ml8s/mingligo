@@ -37,7 +37,7 @@
         "dayun_gan_combines": false,
         "dayun_zhi_clashes_year": false,
         "controls_targets": {
-          "day_master": false,
+          "ri_zhu": false,
           "wealth_star": false,
           "officer_killing": false,
           "seal_star": true,

@@ -30,7 +30,7 @@ func TestDomainOracle_BaziYongShenStructure(t *testing.T) {
 			Pillars               []string               `json:"pillars"`
 			ExpectedRootType      string                 `json:"expected_root_type"`
 			ExpectedYinBiCount    int                    `json:"expected_yin_bi_count"`
-			ExpectedDayRoots      []StemOccurrence       `json:"expected_day_master_roots"`
+			ExpectedDayRoots      []StemOccurrence       `json:"expected_ri_zhu_roots"`
 			ExpectedRelationLinks []expectedRelationLink `json:"expected_relation_facts"`
 		} `json:"fu_yi_cases"`
 		TiaoHouCases []struct {

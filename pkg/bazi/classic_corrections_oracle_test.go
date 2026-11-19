@@ -47,16 +47,16 @@ func TestDomainOracle_BaziClassicCorrections(t *testing.T) {
 		YueRenGe []struct {
 			DayGan  string `json:"day_gan"`
 			Month   string `json:"month"`
-			Pattern string `json:"pattern"`
+			Pattern string `json:"ge_ju"`
 			Usage   string `json:"usage"`
 		} `json:"yue_ren_ge"`
 		FeedbackCharts []struct {
 			ID                      string   `json:"id"`
 			Pillars                 []string `json:"pillars"`
 			YangRen                 bool     `json:"yang_ren"`
-			Pattern                 string   `json:"pattern"`
-			PatternGod              string   `json:"pattern_god"`
-			PatternGodSource        string   `json:"pattern_god_source"`
+			Pattern                 string   `json:"ge_ju"`
+			PatternGod              string   `json:"ge_ju_shen"`
+			PatternGodSource        string   `json:"ge_ju_shen_source"`
 			Usage                   string   `json:"usage"`
 			Yong                    string   `json:"yong"`
 			Xi                      string   `json:"xi"`

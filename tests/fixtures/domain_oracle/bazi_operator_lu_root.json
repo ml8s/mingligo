@@ -3,7 +3,7 @@
   "cases": [
     {
       "id": "ding-shangguan-lu-wrong-element-root",
-      "day_master": "甲",
+      "ri_zhu": "甲",
       "op": "禄根",
       "args": [
         "伤官"
@@ -27,7 +27,7 @@
     },
     {
       "id": "ding-shangguan-lu-hit",
-      "day_master": "甲",
+      "ri_zhu": "甲",
       "op": "禄根",
       "args": [
         "伤官"
@@ -57,7 +57,7 @@
     },
     {
       "id": "bing-shishen-lu-hit",
-      "day_master": "己",
+      "ri_zhu": "己",
       "op": "禄根",
       "args": [
         "食神"
@@ -87,7 +87,7 @@
     },
     {
       "id": "class-includes-yin-yang",
-      "day_master": "甲",
+      "ri_zhu": "甲",
       "op": "禄根",
       "args": [
         "财星"
@@ -127,7 +127,7 @@
     },
     {
       "id": "hidden-only-not-lu",
-      "day_master": "甲",
+      "ri_zhu": "甲",
       "op": "禄根",
       "args": [
         "伤官"

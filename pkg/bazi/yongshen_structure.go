@@ -49,7 +49,7 @@ type TargetedRelationEvidence struct {
 // generator. These are structural inputs only; classical success, failure and
 // rescue conclusions remain outside this candidate model.
 type GeJuStructure struct {
-	Pattern     ElementStructure `json:"pattern"`
+	Pattern     ElementStructure `json:"ge_ju_shen"`
 	Controller  ElementStructure `json:"controller"`
 	Generator   ElementStructure `json:"generator"`
 	GuanXiLinks []RelationLink   `json:"guan_xi_links"`
