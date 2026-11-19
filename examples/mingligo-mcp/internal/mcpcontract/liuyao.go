@@ -7,7 +7,6 @@ import (
 
 	"github.com/google/jsonschema-go/jsonschema"
 
-	"github.com/ml8s/mingligo/pkg/ganzhi"
 	"github.com/ml8s/mingligo/pkg/liuyao"
 )
 
@@ -642,7 +641,7 @@ type LiuyaoConflictOutput struct {
 
 type LiuyaoChartResultOutput struct {
 	Event LiuyaoCastingEvent `json:"event" jsonschema:"本次排盘原样回传的不可变卦象事件。"`
-	Chart LiuyaoChartView    `json:"chart" jsonschema:"六爻盘面统一视图；analysis 一并置于 chart 内。"`
+	Chart liuyao.ChartView   `json:"chart" jsonschema:"六爻盘面统一视图；analysis 一并置于 chart 内。"`
 }
 
 // liuyaoMatterYongShen is the single source of truth for matter -> yong_shen.
@@ -895,8 +894,7 @@ func LiuyaoChart(_ context.Context, input LiuyaoChartInput) (LiuyaoChartResultOu
 		return LiuyaoChartResultOutput{}, fmt.Errorf("liuyao.chart: %w", err)
 	}
 	chart := liuyao.ComputeChartAt(standard, float64(input.Event.CastingContext.Longitude), ys, casting.Yaos)
-	view := liuyaoChartViewWire(chart)
-	view.Analysis = liuyaoAnalysisWire(chart)
+	view := chart.View()
 	return LiuyaoChartResultOutput{
 		Event: LiuyaoCastingEvent{
 			Casting: input.Event.Casting,
@@ -946,249 +944,6 @@ func liuyaoCastingDomain(output LiuyaoCastingOutput) (liuyao.Casting, error) {
 		return liuyao.Casting{}, err
 	}
 	return casting, nil
-}
-
-func liuyaoLineView(line liuyao.Line, dayRelation liuyao.DayRelation, wangShuai ganzhi.WangShuai) LiuyaoChartLineView {
-	flags := LiuyaoChartLineFlags{
-		Moving: line.DongSelf, YuePo: line.YuePo, XunKong: line.XunKong,
-		MuKu: line.MuKu, MuKuBranch: line.MuKuBranch, MuKuElement: line.MuKuElement,
-		DongSheng: line.DongSheng, DongKe: line.DongKe,
-	}
-	view := LiuyaoChartLineView{
-		Position: LiuyaoOptionalPosition(line.Position), YaoValue: LiuyaoOptionalYaoValue(line.Type),
-		GanZhi: ganzhi.GanName(line.Gan) + ganzhi.ZhiName(line.Zhi),
-		Wuxing: line.Wuxing.String(), LiuQin: line.LiuQin.String(),
-		ShiYing: LiuyaoShiYing(line.ShiYing), LiuShou: line.LiuShou.String(),
-		WangShuai: wangShuai.String(), ChangShengYue: line.ChangShengYue,
-		Flags: flags,
-	}
-	if len(dayRelation.Relations) > 0 {
-		view.RiChenRelations = map[string][]string{"relations": append([]string(nil), dayRelation.Relations...)}
-	}
-	return view
-}
-
-func liuyaoFuShenView(value *liuyao.FuShen) *LiuyaoFuShenView {
-	if value == nil {
-		return nil
-	}
-	return &LiuyaoFuShenView{
-		Position: LiuyaoPosition(value.Position),
-		LiuQin:   value.LiuQin.String(),
-		Zhi:      value.Zhi,
-	}
-}
-
-func liuyaoYongShenView(value liuyao.YongShenResult) LiuyaoYongShenView {
-	view := LiuyaoYongShenView{
-		Name:       string(value.Name),
-		Position:   int(value.Position),
-		IsHidden:   value.IsHidden,
-		WangShuai:  value.WangShuai,
-		YuePo:      value.YuePo,
-		XunKong:    value.XunKong,
-		MuKu:       value.MuKu,
-		LiuShou:    value.LiuShou.String(),
-		ChangSheng: value.ChangSheng,
-		FuShen:     liuyaoFuShenView(value.FuShen),
-	}
-	for _, candidate := range value.FuShenCandidates {
-		view.FuShenCandidates = append(view.FuShenCandidates, LiuyaoFuShenView{
-			Position: LiuyaoPosition(candidate.Position),
-			LiuQin:   candidate.LiuQin.String(),
-			Zhi:      candidate.Zhi,
-		})
-	}
-	return view
-}
-
-func liuyaoChartViewWire(chart liuyao.Chart) LiuyaoChartView {
-	bianGua := LiuyaoHexagramName(liuyaoEncodedName(chart.BianGua))
-	if int(chart.BianGua) == 0 {
-		bianGua = ""
-	}
-	view := LiuyaoChartView{
-		GuaName:      liuyaoEncodedName(chart.BenGua),
-		Palace:       chart.Palace,
-		PalaceWuxing: chart.PalaceWuxing.String(),
-		Lines:        make([]LiuyaoChartLineView, 0, 6),
-		BianLines:    make([]LiuyaoChartLineView, 0, 6),
-		RiGan:        ganzhi.GanName(chart.RiGan),
-		RiZhi:        ganzhi.ZhiName(chart.RiZhi),
-		YueGan:       ganzhi.GanName(chart.YueGan),
-		YueZhi:       ganzhi.ZhiName(chart.YueZhi),
-		XunKong: []string{
-			ganzhi.ZhiName(chart.XunKong[0]), ganzhi.ZhiName(chart.XunKong[1]),
-		},
-		Patterns: make([]LiuyaoChartPatternView, 0, len(chart.Patterns)),
-		YongShen: liuyaoYongShenView(chart.YongShen),
-	}
-	if bianGua == "" {
-		view.BianGua = nil
-	} else {
-		name := string(bianGua)
-		view.BianGua = &name
-	}
-	for i, line := range chart.Lines {
-		view.Lines = append(view.Lines, liuyaoLineView(line, chart.DayRelations[i], chart.WangShuai[i]))
-	}
-	for _, line := range chart.BianLines {
-		if line.Position != 0 {
-			view.BianLines = append(view.BianLines, liuyaoLineView(line, liuyao.DayRelation{}, ganzhi.WangShuai(-1)))
-		}
-	}
-	for index, pattern := range chart.Patterns {
-		view.Patterns = append(view.Patterns, LiuyaoChartPatternView{
-			ID:          fmt.Sprintf("pattern-%d", index+1),
-			PatternKind: string(pattern.Type), SubType: pattern.SubType,
-			Position: LiuyaoOptionalPosition(pattern.Position), IsTrue: pattern.IsTrue,
-		})
-	}
-	if chart.GuaCi.Name != "" {
-		yaoCi := make([]string, 0, len(chart.GuaCi.YaoCi))
-		yaoCi = append(yaoCi, chart.GuaCi.YaoCi[:]...)
-		view.GuaCi = &LiuyaoGuaCiView{
-			Name: liuyaoEncodedName(chart.GuaCi.Name), Text: chart.GuaCi.GuaCi, YaoCi: yaoCi,
-		}
-	}
-	return view
-}
-
-func liuyaoEncodedName(value any) string {
-	raw, err := json.Marshal(value)
-	if err != nil {
-		return ""
-	}
-	var name string
-	if err := json.Unmarshal(raw, &name); err != nil {
-		return ""
-	}
-	return name
-}
-
-func liuyaoAnalysisWire(chart liuyao.Chart) LiuyaoAnalysisOutput {
-	output := LiuyaoAnalysisOutput{
-		TombSchool: LiuyaoTombOutput{
-			EarthBranch: LiuyaoTombBranch(chart.TombSchool.EarthBranch),
-			School:      LiuyaoTombSchool(chart.TombSchool.School),
-		},
-	}
-	for _, value := range chart.TimingCandidates {
-		output.TimingCandidates = append(output.TimingCandidates, LiuyaoTimingOutput{
-			ID:            LiuyaoTimingID(value.ID),
-			Mechanism:     value.Mechanism,
-			Position:      LiuyaoOptionalPosition(value.Position),
-			TriggerBranch: ZhiName(value.TriggerBranch),
-			Window:        value.Window,
-			Basis:         append([]string(nil), value.Basis...),
-		})
-	}
-	for _, value := range chart.DongYaoRelations {
-		relations := make([]LiuyaoDongRelationType, 0, len(value.Relations))
-		for _, relation := range value.Relations {
-			relations = append(relations, LiuyaoDongRelationType(relation))
-		}
-		output.DongYaoRelations = append(output.DongYaoRelations, LiuyaoDongRelationOutput{
-			Position: LiuyaoPosition(value.Position), Relations: relations,
-		})
-	}
-	for _, value := range chart.HiddenLines {
-		output.HiddenLines = append(output.HiddenLines, LiuyaoHiddenLineOutput{
-			Position: LiuyaoPosition(value.Position), LiuQin: LiuyaoLiuQinName(value.LiuQin),
-			Gan: GanName(value.Gan), Zhi: ZhiName(value.Zhi),
-			Wuxing: ElementName(value.Wuxing), FlyingPosition: LiuyaoPosition(value.FlyingPosition),
-			FlyingLiuQin: LiuyaoLiuQinName(value.FlyingLiuQin), FlyingGan: GanName(value.FlyingGan),
-			FlyingZhi: ZhiName(value.FlyingZhi), FlyingWuxing: ElementName(value.FlyingWuxing),
-			FeiFuRelation: value.FeiFuRelation, XunKong: value.XunKong, YuePo: value.YuePo,
-			MuKu: value.MuKu, ExitCondition: value.ExitCondition,
-		})
-	}
-	for _, value := range chart.BranchRelationFacts {
-		relations := append([]string(nil), value.Relations...)
-		targets := append([]string(nil), value.Targets...)
-		basis := append([]string(nil), value.Basis...)
-		output.BranchRelationFacts = append(output.BranchRelationFacts, LiuyaoBranchRelationOutput{
-			LeftPosition: LiuyaoPosition(value.LeftPosition), RightPosition: LiuyaoPosition(value.RightPosition),
-			Relations: relations, Targets: targets, Basis: basis,
-		})
-	}
-	for _, value := range chart.DayClashFacts {
-		output.DayClashFacts = append(output.DayClashFacts, LiuyaoDayClashOutput{
-			Position: LiuyaoPosition(value.Position), Kind: value.Kind,
-			Basis: append([]string(nil), value.Basis...), Condition: value.Condition,
-		})
-	}
-	for _, value := range chart.MovingTransformations {
-		output.MovingTransformations = append(output.MovingTransformations, LiuyaoMovingTransformationOutput{
-			Position: LiuyaoPosition(value.Position), FromBranch: ZhiName(value.FromBranch),
-			ToBranch: ZhiName(value.ToBranch), ReturnRelation: value.ReturnRelation,
-			AdvanceRetreat: value.AdvanceRetreat, ChangedVoid: value.ChangedVoid,
-			ChangedBreak: value.ChangedBreak, Basis: append([]string(nil), value.Basis...),
-		})
-	}
-	for _, value := range chart.SanHeCandidates {
-		positions := make([]LiuyaoPosition, 0, len(value.Positions))
-		for _, position := range value.Positions {
-			positions = append(positions, LiuyaoPosition(position))
-		}
-		branches := make([]ZhiName, 0, len(value.Branches))
-		for _, branch := range value.Branches {
-			branches = append(branches, ZhiName(branch))
-		}
-		missing := make([]ZhiName, 0, len(value.Missing))
-		for _, branch := range value.Missing {
-			missing = append(missing, ZhiName(branch))
-		}
-		output.SanHeCandidates = append(output.SanHeCandidates, LiuyaoSanHeOutput{
-			Positions: positions, Branches: branches, Element: ElementName(value.Element),
-			Complete: value.Complete, MovingCount: value.MovingCount,
-			Qualification: value.Qualification, LineComplete: value.LineComplete,
-			DayPresent: value.DayPresent, MonthPresent: value.MonthPresent,
-			Missing: missing, StaticCount: value.StaticCount, VoidCount: value.VoidCount,
-			BreakCount: value.BreakCount, Activated: value.Activated,
-			Targets: append([]string(nil), value.Targets...), ConclusionScope: value.ConclusionScope,
-		})
-	}
-	if chart.ForceChain != nil {
-		force := LiuyaoForceChainOutput{
-			YongShen:    LiuyaoYongShenName(chart.ForceChain.YongShen),
-			YongElement: ElementName(chart.ForceChain.YongElement),
-			Position:    LiuyaoOptionalPosition(chart.ForceChain.Position),
-			IsHidden:    chart.ForceChain.IsHidden,
-		}
-		for _, entry := range chart.ForceChain.Entries {
-			positions := make([]LiuyaoPosition, 0, len(entry.Positions))
-			for _, position := range entry.Positions {
-				positions = append(positions, LiuyaoPosition(position))
-			}
-			branches := make([]ZhiName, 0, len(entry.Branches))
-			for _, branch := range entry.Branches {
-				branches = append(branches, ZhiName(branch))
-			}
-			force.Entries = append(force.Entries, LiuyaoForceEntryOutput{
-				Role: LiuyaoForceRole(entry.Role), Element: ElementName(entry.Element),
-				Positions: positions, Branches: branches,
-				Relations: append([]string(nil), entry.Relations...),
-				States:    append([]string(nil), entry.States...), Note: entry.Note,
-			})
-		}
-		output.ForceChain = &force
-	}
-	for _, value := range chart.YongShenCandidates {
-		output.YongShenCandidates = append(output.YongShenCandidates, LiuyaoCandidateOutput{
-			Position: LiuyaoOptionalPosition(value.Position), Branch: ZhiName(value.Branch),
-			IsHidden: value.IsHidden, Selected: value.Selected,
-			WangShuai: WangShuaiName(value.WangShuai), Reason: value.Reason,
-			Basis: append([]string(nil), value.Basis...),
-		})
-	}
-	for _, value := range chart.Conflicts {
-		output.Conflicts = append(output.Conflicts, LiuyaoConflictOutput{
-			ID: LiuyaoConflictID(value.ID), Reason: value.Reason,
-			Facts: append([]string(nil), value.Facts...),
-		})
-	}
-	return output
 }
 
 func liuyaoCastingWire(casting liuyao.Casting) LiuyaoCastingOutput {
