@@ -170,11 +170,11 @@ func loadHeHua() error {
 		} `json:"branch_he"`
 		TripleHe []struct {
 			Zhi     []string `json:"zhi"`
-			Element string   `json:"element"`
+			Element string   `json:"wuxing"`
 		} `json:"triple_he"`
 		TripleHui []struct {
 			Zhi     []string `json:"zhi"`
-			Element string   `json:"element"`
+			Element string   `json:"wuxing"`
 		} `json:"triple_hui"`
 	}
 	if err := json.Unmarshal(heHuaJSON, &cfg); err != nil {

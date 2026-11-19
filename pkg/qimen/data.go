@@ -375,7 +375,7 @@ func loadGanInteractions() error {
 	type entry struct {
 		Earth      string `json:"di_pan_gan"`
 		Heaven     string `json:"tian_pan_gan"`
-		Pattern    string `json:"pattern"`
+		Pattern    string `json:"ge_ju"`
 		Meaning    string `json:"meaning"`
 		Auspicious bool   `json:"auspicious"`
 	}
@@ -460,7 +460,7 @@ func loadJushu() error {
 
 func loadMenInteractions() error {
 	type entry struct {
-		Door    string `json:"door"`
+		Door    string `json:"men"`
 		Gong    string `json:"gong"`
 		Name    string `json:"name"`
 		Meaning string `json:"meaning"`
@@ -1042,7 +1042,7 @@ func loadTwelveMinuteQuarter(entry quarterJSONEntry, variant quarterVariant) (qu
 func loadPlate() error {
 	var table struct {
 		TianQin struct {
-			Star                  string `json:"star"`
+			Star                  string `json:"xing"`
 			HomeGong              string `json:"home_gong"`
 			LodgingGong           string `json:"lodging_gong"`
 			Follows               string `json:"follows"`
@@ -1059,16 +1059,16 @@ func loadPlate() error {
 			Yin  string `json:"yin"`
 		} `json:"spirits"`
 		FlySpiritOrder    []string `json:"fly_spirit_order"`
-		MingFaDoorOrder   []string `json:"mingfa_door_order"`
-		MingFaSpiritOrder []string `json:"mingfa_spirit_order"`
+		MingFaDoorOrder   []string `json:"mingfa_men_order"`
+		MingFaSpiritOrder []string `json:"mingfa_shen_order"`
 		StarWuxing        []struct {
-			Star   string `json:"star"`
+			Star   string `json:"xing"`
 			Wuxing string `json:"wuxing"`
-		} `json:"star_wuxing"`
+		} `json:"xing_wuxing"`
 		DoorWuxing []struct {
-			Door   string `json:"door"`
+			Door   string `json:"men"`
 			Wuxing string `json:"wuxing"`
-		} `json:"door_wuxing"`
+		} `json:"men_wuxing"`
 		WuxingRelations []struct {
 			Relation         string `json:"relation"`
 			Name             string `json:"name"`

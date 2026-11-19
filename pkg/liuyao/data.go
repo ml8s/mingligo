@@ -51,7 +51,7 @@ func loadHexagrams() error {
 		Palaces   []string `json:"palaces"`
 		Hexagrams []struct {
 			Name   string `json:"name"`
-			Palace string `json:"palace"`
+			Palace string `json:"gong"`
 			ShiPos int    `json:"shi_pos"`
 		} `json:"hexagrams"`
 		NaGan map[string]interface{} `json:"na_gan"`

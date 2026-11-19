@@ -1,6 +1,6 @@
 {
   "tian_qin": {
-    "star": "天禽",
+    "xing": "天禽",
     "home_gong": "中",
     "lodging_gong": "坤",
     "follows": "天芮",
@@ -101,79 +101,79 @@
     "九地",
     "九天"
   ],
-  "star_wuxing": [
+  "xing_wuxing": [
     {
-      "star": "天蓬",
+      "xing": "天蓬",
       "wuxing": "水"
     },
     {
-      "star": "天芮",
+      "xing": "天芮",
       "wuxing": "土"
     },
     {
-      "star": "天冲",
+      "xing": "天冲",
       "wuxing": "木"
     },
     {
-      "star": "天辅",
+      "xing": "天辅",
       "wuxing": "木"
     },
     {
-      "star": "天禽",
+      "xing": "天禽",
       "wuxing": "土"
     },
     {
-      "star": "天心",
+      "xing": "天心",
       "wuxing": "金"
     },
     {
-      "star": "天柱",
+      "xing": "天柱",
       "wuxing": "金"
     },
     {
-      "star": "天任",
+      "xing": "天任",
       "wuxing": "土"
     },
     {
-      "star": "天英",
+      "xing": "天英",
       "wuxing": "火"
     }
   ],
-  "door_wuxing": [
+  "men_wuxing": [
     {
-      "door": "休门",
+      "men": "休门",
       "wuxing": "水"
     },
     {
-      "door": "生门",
+      "men": "生门",
       "wuxing": "土"
     },
     {
-      "door": "伤门",
+      "men": "伤门",
       "wuxing": "木"
     },
     {
-      "door": "杜门",
+      "men": "杜门",
       "wuxing": "木"
     },
     {
-      "door": "景门",
+      "men": "景门",
       "wuxing": "火"
     },
     {
-      "door": "死门",
+      "men": "死门",
       "wuxing": "土"
     },
     {
-      "door": "惊门",
+      "men": "惊门",
       "wuxing": "金"
     },
     {
-      "door": "开门",
+      "men": "开门",
       "wuxing": "金"
     },
     {
-      "door": "中门",
+      "men": "中门",
       "wuxing": "土"
     }
   ],
@@ -391,7 +391,7 @@
       "yuan": "下元"
     }
   ],
-  "mingfa_door_order": [
+  "mingfa_men_order": [
     "休门",
     "死门",
     "伤门",
@@ -402,7 +402,7 @@
     "生门",
     "景门"
   ],
-  "mingfa_spirit_order": [
+  "mingfa_shen_order": [
     "值符",
     "螣蛇",
     "太阴",
