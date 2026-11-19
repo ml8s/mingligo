@@ -681,7 +681,7 @@ type BaziLiupanOutput struct {
 	LiuYue  []bazi.LiuYue      `json:"liu_yue,omitempty" jsonschema:"流月数组，长度 = count。"`
 	LiuRi   []bazi.LiuRi       `json:"liu_ri,omitempty" jsonschema:"流日数组，长度 = count。"`
 	LiuShi  []bazi.LiuShi      `json:"liu_shi,omitempty" jsonschema:"流时数组，长度 = count。"`
-	XiaoYun []BaziXiaoYunItem   `json:"xiao_yun,omitempty" jsonschema:"各学派小运列表；长度 = count。"`
+	XiaoYun []bazi.XiaoYunSet   `json:"xiao_yun,omitempty" jsonschema:"各学派小运列表；长度 = count。"`
 }
 
 // ── named natal series roots ──

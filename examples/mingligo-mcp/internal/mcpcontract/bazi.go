@@ -126,7 +126,7 @@ func BaziLiupan(_ context.Context, input BaziLiupanInput) (out BaziLiupanOutput,
 		out = BaziLiupanOutput{LiuShi: items}
 		return out, nil
 	case "xiao_yun":
-		out = BaziLiupanOutput{XiaoYun: newBaziXiaoYunItems(bazi.ComputeXiaoYun(core, count))}
+		out = BaziLiupanOutput{XiaoYun: bazi.ComputeXiaoYun(core, count)}
 		return out, nil
 	default:
 		return BaziLiupanOutput{}, fmt.Errorf("bazi.liupan: invalid scope %q", input.Scope)
@@ -310,14 +310,3 @@ func advanceBaziLiuShi(input BaziLiupanInput) (BaziLiupanInput, error) {
 
 func ref[T any](v T) *T { return &v }
 
-func newBaziXiaoYunItems(in []bazi.XiaoYunSet) []BaziXiaoYunItem {
-	out := make([]BaziXiaoYunItem, len(in))
-	for i, s := range in {
-		zhus := make([]BaziXiaoYunItemZhusItem, len(s.Zhus))
-		for j, z := range s.Zhus {
-			zhus[j] = BaziXiaoYunItemZhusItem{Age: z.Age, Gan: GanName(z.Gan.String()), Zhi: ZhiName(z.Zhi.String()), Name: z.Name, ShiShen: ref(TenGodName(z.ShiShen))}
-		}
-		out[i] = BaziXiaoYunItem{Method: s.Method, Basis: s.Basis, Zhus: zhus}
-	}
-	return out
-}

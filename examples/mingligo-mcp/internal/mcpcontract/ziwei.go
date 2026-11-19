@@ -9,15 +9,6 @@ import (
 	"github.com/ml8s/mingligo/pkg/ziwei"
 )
 
-func ziweiLunarDate(lunar tianwen.LunarDate) ZiweiLunarDate {
-	return ZiweiLunarDate{
-		Year:  lunar.Year,
-		Month: lunar.Month,
-		Day:   lunar.Day,
-		Leap:  lunar.Leap,
-	}
-}
-
 func ziweiLunarProjector(loc *time.Location) (tianwen.LunarProjector, error) {
 	return tianwen.NewLunarProjector(tianwen.LunarBasisLocalAstronomical, loc)
 }
