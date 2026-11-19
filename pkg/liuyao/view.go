@@ -70,134 +70,18 @@ type YongShenView struct {
 	FuShenCandidates []FuShenView  `json:"fu_shen_candidates,omitempty"`
 }
 
-type TimingView struct {
-	ID            string   `json:"id"`
-	Mechanism     string   `json:"mechanism"`
-	Position      int      `json:"position,omitempty"`
-	TriggerBranch string   `json:"trigger_zhi,omitempty"`
-	Window        string   `json:"window,omitempty"`
-	Basis         []string `json:"basis,omitempty"`
-}
-
-type DongRelationView struct {
-	Position  int      `json:"position"`
-	Relations []string `json:"relations"`
-}
-
-type HiddenLineView struct {
-	Position       int    `json:"position"`
-	LiuQin         string `json:"liu_qin"`
-	Gan            string `json:"gan"`
-	Zhi            string `json:"zhi"`
-	Wuxing         string `json:"wuxing"`
-	FlyingPosition int    `json:"flying_position"`
-	FlyingLiuQin   string `json:"flying_liu_qin"`
-	FlyingGan      string `json:"flying_gan"`
-	FlyingZhi      string `json:"flying_zhi"`
-	FlyingWuxing   string `json:"flying_wuxing"`
-	FeiFuRelation  string `json:"fei_fu_relation"`
-	XunKong        bool   `json:"xun_kong,omitempty"`
-	YuePo          bool   `json:"yue_po,omitempty"`
-	MuKu           bool   `json:"mu_ku,omitempty"`
-	ExitCondition  string `json:"exit_condition,omitempty"`
-}
-
-type BranchRelationView struct {
-	LeftPosition  int      `json:"left_position"`
-	RightPosition int      `json:"right_position"`
-	Relations     []string `json:"relations"`
-	Targets       []string `json:"targets,omitempty"`
-	Basis         []string `json:"basis,omitempty"`
-}
-
-type TombView struct {
-	EarthBranch string `json:"di_zhi"`
-	School      string `json:"school"`
-}
-
-type DayClashView struct {
-	Position  int      `json:"position"`
-	Kind      string   `json:"kind"`
-	Basis     []string `json:"basis,omitempty"`
-	Condition string   `json:"condition,omitempty"`
-}
-
-type MovingTransformationView struct {
-	Position       int      `json:"position"`
-	FromBranch     string   `json:"from_zhi"`
-	ToBranch       string   `json:"to_zhi"`
-	ReturnRelation string   `json:"return_relation,omitempty"`
-	AdvanceRetreat string   `json:"advance_retreat,omitempty"`
-	ChangedVoid    bool     `json:"changed_void,omitempty"`
-	ChangedBreak   bool     `json:"changed_break,omitempty"`
-	Basis          []string `json:"basis,omitempty"`
-}
-
-type SanHeView struct {
-	Positions       []int    `json:"positions"`
-	Branches        []string `json:"zhi"`
-	Element         string   `json:"wuxing"`
-	Complete        bool     `json:"complete"`
-	MovingCount     int      `json:"moving_count"`
-	Qualification   string   `json:"qualification"`
-	LineComplete    bool     `json:"line_complete"`
-	DayPresent      bool     `json:"day_present"`
-	MonthPresent    bool     `json:"month_present"`
-	Missing         []string `json:"missing,omitempty"`
-	StaticCount     int      `json:"static_count"`
-	VoidCount       int      `json:"void_count"`
-	BreakCount      int      `json:"break_count"`
-	Activated       bool     `json:"activated"`
-	Targets         []string `json:"targets,omitempty"`
-	ConclusionScope string   `json:"conclusion_scope"`
-}
-
-type ForceEntryView struct {
-	Role      string   `json:"role"`
-	Element   string   `json:"wuxing"`
-	Positions []int    `json:"positions,omitempty"`
-	Branches  []string `json:"zhi,omitempty"`
-	Relations []string `json:"relations,omitempty"`
-	States    []string `json:"states,omitempty"`
-	Note      string   `json:"note,omitempty"`
-}
-
-type ForceChainView struct {
-	YongShen    string           `json:"yong_shen"`
-	YongElement string           `json:"yong_wuxing"`
-	Position    int              `json:"position"`
-	IsHidden    bool             `json:"is_hidden"`
-	Entries     []ForceEntryView `json:"entries"`
-}
-
-type CandidateView struct {
-	Position  int      `json:"position"`
-	Branch    string   `json:"zhi"`
-	IsHidden  bool     `json:"is_hidden"`
-	Selected  bool     `json:"selected"`
-	WangShuai string   `json:"wang_shuai,omitempty"`
-	Reason    string   `json:"reason"`
-	Basis     []string `json:"basis,omitempty"`
-}
-
-type ConflictView struct {
-	ID     string   `json:"id"`
-	Reason string   `json:"reason"`
-	Facts  []string `json:"facts,omitempty"`
-}
-
 type AnalysisView struct {
-	TimingCandidates      []TimingView              `json:"timing_candidates,omitempty"`
-	DongYaoRelations      []DongRelationView        `json:"dong_yao_relations,omitempty"`
-	HiddenLines           []HiddenLineView          `json:"hidden_lines,omitempty"`
-	BranchRelationFacts   []BranchRelationView      `json:"zhi_relation_facts,omitempty"`
-	TombSchool            TombView                  `json:"tomb_school"`
-	DayClashFacts         []DayClashView            `json:"day_clash_facts,omitempty"`
-	MovingTransformations []MovingTransformationView `json:"moving_transformations,omitempty"`
-	SanHeCandidates       []SanHeView               `json:"san_he_candidates,omitempty"`
-	ForceChain            *ForceChainView           `json:"yong_shen_force_chain,omitempty"`
-	YongShenCandidates    []CandidateView           `json:"yong_shen_candidates,omitempty"`
-	Conflicts             []ConflictView            `json:"conflicts,omitempty"`
+	TimingCandidates      []TimingCandidate       `json:"timing_candidates,omitempty"`
+	DongYaoRelations      []DongYaoRelation       `json:"dong_yao_relations,omitempty"`
+	HiddenLines           []HiddenLine            `json:"hidden_lines,omitempty"`
+	BranchRelationFacts   []BranchRelationFact    `json:"zhi_relation_facts,omitempty"`
+	TombSchool            TombSchool              `json:"tomb_school"`
+	DayClashFacts         []DayClashFact          `json:"day_clash_facts,omitempty"`
+	MovingTransformations []MovingTransformation  `json:"moving_transformations,omitempty"`
+	SanHeCandidates       []SanHeCandidate        `json:"san_he_candidates,omitempty"`
+	ForceChain            *ForceChain             `json:"yong_shen_force_chain,omitempty"`
+	YongShenCandidates    []YongShenCandidate     `json:"yong_shen_candidates,omitempty"`
+	Conflicts             []Conflict              `json:"conflicts,omitempty"`
 }
 
 type ChartView struct {
@@ -303,91 +187,17 @@ func (c Chart) View() ChartView {
 // Analysis returns the domain-aggregated analysis view: the deterministic
 // judgment facts grouped into one section.
 func (c Chart) Analysis() AnalysisView {
-	out := AnalysisView{
-		TombSchool: TombView{EarthBranch: c.TombSchool.EarthBranch, School: c.TombSchool.School},
+	return AnalysisView{
+		TimingCandidates:      c.TimingCandidates,
+		DongYaoRelations:      c.DongYaoRelations,
+		HiddenLines:           c.HiddenLines,
+		BranchRelationFacts:   c.BranchRelationFacts,
+		TombSchool:            c.TombSchool,
+		DayClashFacts:         c.DayClashFacts,
+		MovingTransformations: c.MovingTransformations,
+		SanHeCandidates:       c.SanHeCandidates,
+		ForceChain:            c.ForceChain,
+		YongShenCandidates:    c.YongShenCandidates,
+		Conflicts:             c.Conflicts,
 	}
-	for _, v := range c.TimingCandidates {
-		out.TimingCandidates = append(out.TimingCandidates, TimingView{
-			ID: v.ID, Mechanism: v.Mechanism, Position: v.Position,
-			TriggerBranch: v.TriggerBranch, Window: v.Window,
-			Basis: append([]string(nil), v.Basis...),
-		})
-	}
-	for _, v := range c.DongYaoRelations {
-		rels := make([]string, 0, len(v.Relations))
-		for _, r := range v.Relations {
-			rels = append(rels, string(r))
-		}
-		out.DongYaoRelations = append(out.DongYaoRelations, DongRelationView{Position: v.Position, Relations: rels})
-	}
-	for _, v := range c.HiddenLines {
-		out.HiddenLines = append(out.HiddenLines, HiddenLineView{
-			Position: v.Position, LiuQin: v.LiuQin,
-			Gan: v.Gan, Zhi: v.Zhi, Wuxing: v.Wuxing,
-			FlyingPosition: v.FlyingPosition, FlyingLiuQin: v.FlyingLiuQin,
-			FlyingGan: v.FlyingGan, FlyingZhi: v.FlyingZhi,
-			FlyingWuxing: v.FlyingWuxing, FeiFuRelation: v.FeiFuRelation,
-			XunKong: v.XunKong, YuePo: v.YuePo, MuKu: v.MuKu, ExitCondition: v.ExitCondition,
-		})
-	}
-	for _, v := range c.BranchRelationFacts {
-		out.BranchRelationFacts = append(out.BranchRelationFacts, BranchRelationView{
-			LeftPosition: v.LeftPosition, RightPosition: v.RightPosition,
-			Relations: append([]string(nil), v.Relations...),
-			Targets: append([]string(nil), v.Targets...), Basis: append([]string(nil), v.Basis...),
-		})
-	}
-	for _, v := range c.DayClashFacts {
-		out.DayClashFacts = append(out.DayClashFacts, DayClashView{
-			Position: v.Position, Kind: v.Kind,
-			Basis: append([]string(nil), v.Basis...), Condition: v.Condition,
-		})
-	}
-	for _, v := range c.MovingTransformations {
-		out.MovingTransformations = append(out.MovingTransformations, MovingTransformationView{
-			Position: v.Position, FromBranch: v.FromBranch, ToBranch: v.ToBranch,
-			ReturnRelation: v.ReturnRelation, AdvanceRetreat: v.AdvanceRetreat,
-			ChangedVoid: v.ChangedVoid, ChangedBreak: v.ChangedBreak,
-			Basis: append([]string(nil), v.Basis...),
-		})
-	}
-	for _, v := range c.SanHeCandidates {
-		out.SanHeCandidates = append(out.SanHeCandidates, SanHeView{
-			Positions: append([]int(nil), v.Positions...), Branches: append([]string(nil), v.Branches...),
-			Element: v.Element, Complete: v.Complete, MovingCount: v.MovingCount,
-			Qualification: v.Qualification, LineComplete: v.LineComplete,
-			DayPresent: v.DayPresent, MonthPresent: v.MonthPresent,
-			Missing: append([]string(nil), v.Missing...), StaticCount: v.StaticCount,
-			VoidCount: v.VoidCount, BreakCount: v.BreakCount, Activated: v.Activated,
-			Targets: append([]string(nil), v.Targets...), ConclusionScope: v.ConclusionScope,
-		})
-	}
-	if c.ForceChain != nil {
-		force := ForceChainView{
-			YongShen: c.ForceChain.YongShen, YongElement: c.ForceChain.YongElement,
-			Position: c.ForceChain.Position, IsHidden: c.ForceChain.IsHidden,
-		}
-		for _, e := range c.ForceChain.Entries {
-			force.Entries = append(force.Entries, ForceEntryView{
-				Role: string(e.Role), Element: e.Element, Positions: append([]int(nil), e.Positions...),
-				Branches: append([]string(nil), e.Branches...),
-				Relations: append([]string(nil), e.Relations...),
-				States: append([]string(nil), e.States...), Note: e.Note,
-			})
-		}
-		out.ForceChain = &force
-	}
-	for _, v := range c.YongShenCandidates {
-		out.YongShenCandidates = append(out.YongShenCandidates, CandidateView{
-			Position: v.Position, Branch: v.Branch, IsHidden: v.IsHidden,
-			Selected: v.Selected, WangShuai: v.WangShuai, Reason: v.Reason,
-			Basis: append([]string(nil), v.Basis...),
-		})
-	}
-	for _, v := range c.Conflicts {
-		out.Conflicts = append(out.Conflicts, ConflictView{
-			ID: v.ID, Reason: v.Reason, Facts: append([]string(nil), v.Facts...),
-		})
-	}
-	return out
 }
