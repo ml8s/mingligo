@@ -33,8 +33,8 @@ func anXingXiaoXian(nianZhi Zhi, gender ganzhi.Gender, count int, mingZhi Zhi) [
 		}
 		// display坐标i映射到Mingli宫位：通过anXingIdx（经ageIdx偏移）确定实际放置位置
 		placeIdx := (anXingIdx + 2) % 12
-		likiPalace := zhiIdxToPalaceIndex(zhiToZhiIdx(mingZhi), placeIdx)
-		result[likiPalace] = ages
+		palaceIndex := zhiIdxToPalaceIndex(zhiToZhiIdx(mingZhi), placeIdx)
+		result[palaceIndex] = ages
 	}
 	return result
 }

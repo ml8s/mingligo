@@ -1,7 +1,8 @@
 # Domain packages
 
-MingliGo is a fact core. Each `pkg/*` package computes deterministic Chinese
-metaphysics facts from explicit inputs and rules. The packages do not provide
+MingliGo is a general-purpose calculation layer for Chinese metaphysics. Each
+`pkg/*` package computes structured, reproducible chart, calendar, board, and
+layout data from explicit inputs and rules. The packages do not provide
 life advice, product UX, transport, or persistence.
 
 ## Layered model

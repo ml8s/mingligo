@@ -9,17 +9,17 @@
 > **O README em inglês é a documentação canônica.**
 > Esta página é um resumo em português do Brasil, não uma tradução completa.
 
-MingliGo é um núcleo determinista de fatos em Go puro para cálculos de metafísica chinesa. Ele expõe pacotes de domínio estáveis para uso direto. O servidor `examples/mingligo-mcp` é um adapter MCP de exemplo. O projeto Liki usa esse exemplo, mas ele não faz parte do produto da biblioteca.
+MingliGo é uma biblioteca Go de código aberto e uso geral para cálculos de metafísica chinesa. Ela calcula cartas, tabuleiros e disposições reproduzíveis a partir de entradas explícitas de tempo, localidade, lançamento e escola. Os pacotes de domínio podem ser usados diretamente; o adapter MCP é apenas um exemplo e não faz parte da API.
 
 ## Limites de design
 
 | Limite | Responsabilidade |
 | --- | --- |
-| `pkg/*` | Fatos deterministas do domínio, tabelas e validação |
+| `pkg/*` | Cálculos de domínio, tabelas e validação |
 | `examples/mingligo-mcp` | Typed tool adapter do SDK oficial e composition root |
 | `examples/mingligo-mcp/contracts/mcp-tools.json` | Catálogo de ferramentas MCP do adapter de exemplo |
 
-O núcleo de fatos nunca importa código de MCP, transporte, produto ou implantação. Os DTOs de MCP e o mapeamento de transporte permanecem no adapter de referência.
+O núcleo da biblioteca nunca importa código de MCP, transporte, produto ou implantação. Os DTOs de MCP e o mapeamento de transporte permanecem no adapter de referência.
 
 ## Pacotes de domínio
 

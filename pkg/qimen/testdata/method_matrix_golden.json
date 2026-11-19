@@ -135,7 +135,7 @@
           },
           {
             "fact": "center_door_serialization",
-            "reason": "qimen-go emits the moving ninth center door; the liki domain model keeps only the eight actionable doors and leaves that palace unset"
+            "reason": "qimen-go emits the moving ninth center door; the MingliGo domain model keeps only the eight actionable doors and leaves that palace unset"
           },
           {
             "fact": "spirit",
@@ -234,7 +234,7 @@
           },
           {
             "fact": "center_heaven_and_star",
-            "reason": "mingyu leaves the rotating center heaven and star slots empty; liki preserves the center heaven stem and omits its star"
+            "reason": "mingyu leaves the rotating center heaven and star slots empty; MingliGo preserves the center heaven stem and omits its star"
           },
           {
             "fact": "duty_landing_serialization",
@@ -548,7 +548,7 @@
           },
           {
             "fact": "center_door_serialization",
-            "reason": "qimen-go emits the moving ninth center door; the liki domain model keeps only the eight actionable doors and leaves that palace unset"
+            "reason": "qimen-go emits the moving ninth center door; the MingliGo domain model keeps only the eight actionable doors and leaves that palace unset"
           }
         ],
         "yin_dun": true,
@@ -689,7 +689,7 @@
           },
           {
             "fact": "center_door_serialization",
-            "reason": "qimen-go emits the moving ninth center door; the liki domain model keeps only the eight actionable doors and leaves that palace unset"
+            "reason": "qimen-go emits the moving ninth center door; the MingliGo domain model keeps only the eight actionable doors and leaves that palace unset"
           }
         ],
         "yin_dun": true,
@@ -802,11 +802,11 @@
           },
           {
             "fact": "outer_door",
-            "reason": "mingyu rotates the eight-door ring while liki flies the eight doors by palace number with a real center step"
+            "reason": "mingyu rotates the eight-door ring while MingliGo flies the eight doors by palace number with a real center step"
           },
           {
             "fact": "spirit",
-            "reason": "the compared mingyu fly layout emits eight spirits while liki emits the nine-spirit Baihu-Taichang-Xuanwu sequence"
+            "reason": "the compared mingyu fly layout emits eight spirits while MingliGo emits the nine-spirit Baihu-Taichang-Xuanwu sequence"
           }
         ],
         "yin_dun": false,
@@ -914,7 +914,7 @@
         },
         {
           "fact": "spirit",
-          "reason": "Fly-plate nine-spirit naming and ordering differ across published conventions; liki uses the fixed Baihu-Taichang-Xuanwu sequence."
+          "reason": "Fly-plate nine-spirit naming and ordering differ across published conventions; MingliGo uses the fixed Baihu-Taichang-Xuanwu sequence."
         }
       ],
       "required_conventions": [

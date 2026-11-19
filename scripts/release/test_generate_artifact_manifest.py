@@ -22,7 +22,6 @@ class ArtifactManifestTests(unittest.TestCase):
         document = json.loads(result.stdout)
         self.assertEqual(set(document), {"kind", "source_commit", "image"})
         self.assertEqual(document["kind"], "mingligo-artifact")
-        self.assertNotIn("hk.liki", result.stdout)
 
     def test_rejects_mutable_image(self):
         result = subprocess.run(

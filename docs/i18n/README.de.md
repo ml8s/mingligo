@@ -9,17 +9,17 @@
 > **Das englische README ist die kanonische Dokumentation.**
 > Diese Seite ist eine lokalisierte Übersicht und keine vollständige Übersetzung.
 
-MingliGo ist ein deterministischer Datenkern in pure Go für Berechnungen der chinesischen Metaphysik. Er stellt stabile Domänenpakete für die direkte Nutzung bereit. Der Server `examples/mingligo-mcp` ist ein MCP-Beispieladapter. Das Liki-Projekt nutzt diesen Beispieladapter; er gehört nicht zur Produkt Oberfläche der Bibliothek.
+MingliGo ist eine allgemeine Open-Source-Go-Bibliothek für Berechnungen der chinesischen Metaphysik. Sie berechnet aus expliziten Zeit-, Orts-, Wurf- und Schulen-Eingaben reproduzierbare Karten, Tafeln und Layouts. Die Domänenpakete sind direkt nutzbar; der MCP-Adapter ist nur ein Beispiel und keine Bibliotheks-API.
 
 ## Designgrenzen
 
 | Grenze | Verantwortung |
 | --- | --- |
-| `pkg/*` | Deterministische Domänenfakten, Tabellen und Validierung |
+| `pkg/*` | Domänenberechnungen, Tabellen und Validierung |
 | `examples/mingligo-mcp` | Typed Tool Adapter des offiziellen SDK und Composition Root |
 | `examples/mingligo-mcp/contracts/mcp-tools.json` | MCP-Toolkatalog des Beispieladapters |
 
-Der Datenkern importiert keinen MCP-, Transport-, Produkt- oder Deployment-Code. MCP-DTOs und Wire-Mapping bleiben im Referenzadapter.
+Der Bibliothekskern importiert keinen MCP-, Transport-, Produkt- oder Deployment-Code. MCP-DTOs und Wire-Mapping bleiben im Referenzadapter.
 
 ## Domänenpakete
 

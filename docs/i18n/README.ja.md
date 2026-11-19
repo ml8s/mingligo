@@ -9,17 +9,17 @@
 > **英語版 README が正本です。**
 > このページは日本語の概要であり、全文翻訳ではありません。
 
-MingliGo は、中国命理計算のための pure Go 製 deterministic fact core です。安定したドメインパッケージを直接利用できます。`examples/mingligo-mcp` はサンプル MCP adapter であり、Liki プロジェクトが利用していますが、ライブラリの製品ではありません。
+MingliGo は、中国命理計算のための汎用オープンソース Go ライブラリです。明示的な時間・地点・占い・流派の入力から再現可能な命盤や盤面を計算します。ドメインパッケージは直接利用でき、MCP adapter は例でありライブラリ API には含まれません。
 
 ## 設計境界
 
 | 境界 | 責務 |
 | --- | --- |
-| `pkg/*` | 決定論的なドメインファクト、テーブル、検証 |
+| `pkg/*` | ドメイン計算、テーブル、検証 |
 | `examples/mingligo-mcp` | official SDK の typed tool adapter と composition root |
 | `examples/mingligo-mcp/contracts/mcp-tools.json` | サンプル adapter の MCP ツールカタログ |
 
-fact core は MCP、transport、プロダクト、デプロイのコードを import しません。MCP DTO と wire mapping はリファレンス adapter 内にだけ置きます。
+ライブラリコアは MCP、transport、プロダクト、デプロイのコードを import しません。MCP DTO と wire mapping はリファレンス adapter 内にだけ置きます。
 
 ## ドメインパッケージ
 

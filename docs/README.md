@@ -33,7 +33,8 @@ MingliGo documentation has three layers:
 
 - English is canonical for implementation docs.
 - Chinese domain terms are kept when they are the precise terminology.
-- "Fact" means a deterministic domain output; it is not life advice.
+- A "result" is a reproducible calculated value with explicit inputs and
+  conventions; it is not life advice.
 - Rule names, policy names, and school names are public API whenever callers
   must reproduce or audit a result.
 - A reference fixture proves agreement with a source at a recorded version; it

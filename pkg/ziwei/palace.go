@@ -54,8 +54,8 @@ func arrangePalaceGans(nianGan Gan, mingZhi Zhi, soulIzTroIdx int) (mingGan Gan,
 		// i是display坐标索引，需要映射到Mingli gong order
 		// display i → zhiIdx → Mingli gong
 		palaceZhiM1 := (i + 2) % 12
-		likiIdx := zhiIdxToPalaceIndex(zhiToZhiIdx(mingZhi), palaceZhiM1)
-		gans[likiIdx] = gan
+		palaceIndex := zhiIdxToPalaceIndex(zhiToZhiIdx(mingZhi), palaceZhiM1)
+		gans[palaceIndex] = gan
 	}
 	return
 }

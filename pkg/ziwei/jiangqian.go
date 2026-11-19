@@ -27,8 +27,8 @@ func computeJiangQian(nianZhi Zhi, mingZhi Zhi) [12]string {
 	for i := 0; i < 12; i++ {
 		anXingIdx := (jqStartIdx + i) % 12
 		zhiIdx := (anXingIdx + 2) % 12
-		likiPalace := zhiIdxToPalaceIndex(zhiToZhiIdx(mingZhi), zhiIdx)
-		result[likiPalace] = jiangQianNames[i]
+		palaceIndex := zhiIdxToPalaceIndex(zhiToZhiIdx(mingZhi), zhiIdx)
+		result[palaceIndex] = jiangQianNames[i]
 	}
 	return result
 }
@@ -40,8 +40,8 @@ func computeSuiQian(nianZhi Zhi, mingZhi Zhi) [12]string {
 	for i := 0; i < 12; i++ {
 		anXingIdx := (nianAnXingIdx + i) % 12
 		zhiIdx := (anXingIdx + 2) % 12
-		likiPalace := zhiIdxToPalaceIndex(zhiToZhiIdx(mingZhi), zhiIdx)
-		result[likiPalace] = suiQianNames[i]
+		palaceIndex := zhiIdxToPalaceIndex(zhiToZhiIdx(mingZhi), zhiIdx)
+		result[palaceIndex] = suiQianNames[i]
 	}
 	return result
 }

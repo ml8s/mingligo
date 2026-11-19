@@ -63,12 +63,12 @@ func TestFlowStarsAgainstIz(t *testing.T) {
 		shiGan := shiGanCalc(riGan, shiZhi)
 
 		// 计算Mingli expected star positions
-		likiStars := starZhiIdxMap(monthGan, yueZhi, riGan, riZhi, shiGan, shiZhi)
+		engineStars := starZhiIdxMap(monthGan, yueZhi, riGan, riZhi, shiGan, shiZhi)
 
 		// 对比iztro golden
 		for sName, goldenZhiIdx := range tc.FlowStars {
 			total++
-			engineZhiIdx, ok := likiStars[sName]
+			engineZhiIdx, ok := engineStars[sName]
 			if !ok {
 				t.Errorf("%s %s: missing in Mingli", tc.Lunar, sName)
 				continue

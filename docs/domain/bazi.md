@@ -1,6 +1,6 @@
 # `pkg/bazi`
 
-`bazi` computes the deterministic facts needed by a 八字 chart and its time
+`bazi` computes the structured, reproducible values needed by a 八字 chart and its time
 cycles. It is the largest chart domain and the reference implementation of
 MingliGo's standard-time API style.
 

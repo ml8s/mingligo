@@ -1,7 +1,7 @@
 # MingliGo MCP local/development stack.
 #
-# Production image composition is owned by the liki-deploy repository. This
-# file is only for building and running the MCP image from this source tree.
+# This file is only for building and running the example MCP image from this
+# source tree.
 
 services:
   mingligo-mcp:

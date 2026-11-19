@@ -1,9 +1,7 @@
 # MingliGo logo assets
 
-The Liki ecosystem brand family source of truth lives in
-`liki-web/web/brand/family/`. These files are MingliGo runtime and README
-assets copied from that family direction; do not introduce a separate brand
-palette here.
+These files are the source assets for MingliGo runtime and README branding.
+Keep the palette defined here as the single direction for this repository.
 
 `logo.svg` is the product mark: a solid Jilan / indigo-blue yin-yang fish.
 The eye dot is intentionally merged into the body color, so the mark stays a

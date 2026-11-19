@@ -7,11 +7,11 @@
 </h1>
 
 <p align="center">
-  <strong>A deterministic fact core for Chinese metaphysics in pure Go.</strong>
+  <strong>An open-source, general-purpose Go library for Chinese metaphysics calculations.</strong>
 </p>
 
 <p align="center">
-  Accurate time · True solar 时辰 · Explicit schools · Typed chart facts
+  Accurate time · True solar 时辰 · Explicit schools · Reproducible charts
 </p>
 
 <p align="center">
@@ -32,11 +32,11 @@
 
 ## Overview
 
-MingliGo is a pure Go library for deterministic Chinese metaphysics facts. It
-computes calendars, natal charts, divination boards, and feng-shui boards as
-typed Go values. The public product is `pkg/*`; the MCP adapter is only an
-example. It is maintained carefully because the Liki project uses that example,
-but downstream adoption does not make MCP part of the core-library product.
+MingliGo is an open-source, general-purpose Go library for Chinese metaphysics
+calculations. It computes calendars, natal charts, divination and date-selection
+boards, and feng-shui layouts from explicit time, location, casting, and school
+inputs. Results are typed and reproducible. The public library surface is
+`pkg/*`; the MCP adapter is only an example, not part of that API.
 
 ## Why MingliGo
 
@@ -192,11 +192,11 @@ The full provenance, license, fixture paths, tolerances, and known limits are in
 
 | Boundary | Responsibility |
 | --- | --- |
-| `pkg/*` | Deterministic domain facts, embedded tables, and validation |
-| `examples/mingligo-mcp` | Example MCP adapter; used by Liki, but not a library product |
+| `pkg/*` | Domain calculations, embedded tables, and validation |
+| `examples/mingligo-mcp` | Example MCP adapter; isolated from the library API |
 | `examples/mingligo-mcp/contracts/mcp-tools.json` | Frozen tool catalog for the example adapter |
 
-The fact core never imports MCP, transport, product, deployment, or judgment
+The library core never imports MCP, transport, product, deployment, or judgment
 product code. Domain packages can be consumed directly by Go services, CLIs, or
 an adapter.
 
@@ -206,7 +206,7 @@ not accepted in `pkg/*`.
 ## Example: MCP adapter
 
 The MCP adapter is an example, not a MingliGo product. It is deliberately kept
-production-quality because Liki consumes it, but its implementation, wire DTOs,
+production-quality as a robust reference integration, but its implementation, wire DTOs,
 tool catalog, and deployment assets remain isolated under `examples/`.
 
 The optional adapter publishes 17 tools with the official Go MCP SDK. Typed wire
