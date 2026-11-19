@@ -806,31 +806,40 @@ type LiuyaoChartView struct {
 	Analysis     LiuyaoAnalysisOutput     `json:"analysis" jsonschema:"六爻判断层确定性分析事实。"`
 }
 
-func LiuyaoQigua(_ context.Context, input LiuyaoQiguaInput) (LiuyaoQiguaOutput, error) {
+// liuyaoQiguaResult carries the domain casting directly; LiuyaoQiguaOutput is
+// the published schema carrier with enum constraints. Their JSON shapes match.
+type liuyaoQiguaResult struct {
+	Event struct {
+		Casting        liuyao.Casting       `json:"casting"`
+		CastingContext LiuyaoCastingContext `json:"casting_context"`
+	} `json:"event"`
+}
+
+func LiuyaoQigua(_ context.Context, input LiuyaoQiguaInput) (liuyaoQiguaResult, error) {
 	yongShen, err := liuyaoResolveFocus(input.CastingContext.Focus)
 	if err != nil {
-		return LiuyaoQiguaOutput{}, fmt.Errorf("liuyao_qigua: invalid focus: %w", err)
+		return liuyaoQiguaResult{}, fmt.Errorf("liuyao_qigua: invalid focus: %w", err)
 	}
 	if _, _, err := parseStandardTime(input.CastingContext.StandardTime); err != nil {
-		return LiuyaoQiguaOutput{}, fmt.Errorf("liuyao_qigua: %w", err)
+		return liuyaoQiguaResult{}, fmt.Errorf("liuyao_qigua: %w", err)
 	}
 	if float64(input.CastingContext.Longitude) < -180 || float64(input.CastingContext.Longitude) > 180 {
-		return LiuyaoQiguaOutput{}, fmt.Errorf("liuyao_qigua: longitude must be within [-180,180], got %v", float64(input.CastingContext.Longitude))
+		return liuyaoQiguaResult{}, fmt.Errorf("liuyao_qigua: longitude must be within [-180,180], got %v", float64(input.CastingContext.Longitude))
 	}
 	var casting liuyao.Casting
 	request := input.Origin
 	switch request.Mode {
 	case "auto":
 		if request.Rounds != nil || request.Yaos != nil {
-			return LiuyaoQiguaOutput{}, fmt.Errorf("liuyao_qigua: auto mode does not accept rounds or yaos")
+			return liuyaoQiguaResult{}, fmt.Errorf("liuyao_qigua: auto mode does not accept rounds or yaos")
 		}
 		casting, err = liuyao.SecureQigua()
 	case "coins":
 		if request.Yaos != nil {
-			return LiuyaoQiguaOutput{}, fmt.Errorf("liuyao_qigua: coins mode accepts rounds only")
+			return liuyaoQiguaResult{}, fmt.Errorf("liuyao_qigua: coins mode accepts rounds only")
 		}
 		if len(request.Rounds) != 6 {
-			return LiuyaoQiguaOutput{}, fmt.Errorf("liuyao_qigua: casting.coins requires exactly 6 rounds, got %d", len(request.Rounds))
+			return liuyaoQiguaResult{}, fmt.Errorf("liuyao_qigua: casting.coins requires exactly 6 rounds, got %d", len(request.Rounds))
 		}
 		rounds := make([][]liuyao.CoinFace, 0, 6)
 		for _, round := range request.Rounds {
@@ -843,10 +852,10 @@ func LiuyaoQigua(_ context.Context, input LiuyaoQiguaInput) (LiuyaoQiguaOutput, 
 		casting, err = liuyao.NewCoinsCasting(rounds)
 	case "yaos":
 		if request.Rounds != nil {
-			return LiuyaoQiguaOutput{}, fmt.Errorf("liuyao_qigua: yaos mode accepts yaos only")
+			return liuyaoQiguaResult{}, fmt.Errorf("liuyao_qigua: yaos mode accepts yaos only")
 		}
 		if len(request.Yaos) != 6 {
-			return LiuyaoQiguaOutput{}, fmt.Errorf("liuyao_qigua: casting.yaos requires exactly 6 values, got %d", len(request.Yaos))
+			return liuyaoQiguaResult{}, fmt.Errorf("liuyao_qigua: casting.yaos requires exactly 6 values, got %d", len(request.Yaos))
 		}
 		var values [6]int
 		for i, value := range request.Yaos {
@@ -854,19 +863,19 @@ func LiuyaoQigua(_ context.Context, input LiuyaoQiguaInput) (LiuyaoQiguaOutput, 
 		}
 		casting, err = liuyao.NewValuesCasting(values)
 	default:
-		return LiuyaoQiguaOutput{}, fmt.Errorf("liuyao_qigua: casting.mode unsupported %q", string(request.Mode))
+		return liuyaoQiguaResult{}, fmt.Errorf("liuyao_qigua: casting.mode unsupported %q", string(request.Mode))
 	}
 	if err != nil {
-		return LiuyaoQiguaOutput{}, fmt.Errorf("liuyao_qigua: %w", err)
+		return liuyaoQiguaResult{}, fmt.Errorf("liuyao_qigua: %w", err)
 	}
-	return LiuyaoQiguaOutput{Event: LiuyaoCastingEvent{
-		Casting: liuyaoCastingWire(casting),
-		CastingContext: LiuyaoCastingContext{
-			StandardTime: input.CastingContext.StandardTime,
-			Longitude:    input.CastingContext.Longitude,
-			YongShen:     yongShen,
-		},
-	}}, nil
+	var result liuyaoQiguaResult
+	result.Event.Casting = casting
+	result.Event.CastingContext = LiuyaoCastingContext{
+		StandardTime: input.CastingContext.StandardTime,
+		Longitude:    input.CastingContext.Longitude,
+		YongShen:     yongShen,
+	}
+	return result, nil
 }
 
 // LiuyaoChartInput consumes the immutable minimal event created by liuyao_qigua.
@@ -946,39 +955,3 @@ func liuyaoCastingDomain(output LiuyaoCastingOutput) (liuyao.Casting, error) {
 	return casting, nil
 }
 
-func liuyaoCastingWire(casting liuyao.Casting) LiuyaoCastingOutput {
-	output := LiuyaoCastingOutput{
-		Mode:    LiuyaoCastMode(casting.Mode),
-		Order:   LiuyaoOrderName(casting.Order),
-		Yaos:    make(LiuyaoYaoValuesOutput, 0, len(casting.Yaos)),
-		DongYao: make(LiuyaoPositions, 0, len(casting.DongYao)),
-	}
-	if casting.CoinConvention != nil {
-		output.CoinConvention = &LiuyaoCoinConvention{
-			Heads: LiuyaoHeadsScore(casting.CoinConvention.Heads),
-			Tails: LiuyaoTailsScore(casting.CoinConvention.Tails),
-		}
-	}
-	for _, round := range casting.Rounds {
-		coins := [3]LiuyaoCoinSymbol{}
-		for i, coin := range round.Coins {
-			if i < len(coins) {
-				coins[i] = LiuyaoCoinSymbol(coin)
-			}
-		}
-		output.Rounds = append(output.Rounds, LiuyaoCoinRoundOutput{
-			Position: LiuyaoPosition(round.Position),
-			Coins:    coins,
-			Value:    LiuyaoYaoValue(round.Value),
-			Label:    LiuyaoYaoLabel(round.Label),
-			Changing: round.Changing,
-		})
-	}
-	for _, value := range casting.Yaos {
-		output.Yaos = append(output.Yaos, LiuyaoYaoValue(value))
-	}
-	for _, position := range casting.DongYao {
-		output.DongYao = append(output.DongYao, LiuyaoPosition(position))
-	}
-	return output
-}
