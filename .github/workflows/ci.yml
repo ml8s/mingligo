@@ -1,21 +1,45 @@
 name: CI
 
 on:
-  push:
   pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
-  fact-library:
+  gate:
+    name: Local gate
     runs-on: ubuntu-latest
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
       - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7
         with:
           go-version-file: go.mod
-          cache: true
-      - run: go test -count=1 ./...
-      - run: go vet ./...
-      - run: test -z "$(go fmt ./...)"
-      - run: make boundary
+          cache-dependency-path: go.sum
+      - name: Install golangci-lint
+        run: |
+          curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/HEAD/install.sh \
+            | sh -s -- -b "$(go env GOPATH)/bin"
+          echo "$(go env GOPATH)/bin" >> "$GITHUB_PATH"
+      - run: make gate
+
+  container:
+    name: MCP container
+    needs: gate
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
       - run: make image-mcp IMAGE_REGISTRY=mingligo-review IMAGE_TAG=ci
       - run: IMAGE_REGISTRY=mingligo-review IMAGE_TAG=ci make smoke-mcp

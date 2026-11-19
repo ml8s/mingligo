@@ -1,0 +1,88 @@
+name: MingliGo artifacts
+
+on:
+  workflow_dispatch:
+    inputs:
+      registry:
+        description: "OCI registry prefix"
+        required: true
+        default: "ghcr.io/ml8s"
+
+permissions:
+  contents: read
+  packages: write
+
+concurrency:
+  group: mingligo-artifacts-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  gate:
+    name: Source gate
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7
+        with:
+          go-version-file: go.mod
+          cache-dependency-path: go.sum
+      - name: Install golangci-lint
+        run: |
+          curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/HEAD/install.sh \
+            | sh -s -- -b "$(go env GOPATH)/bin"
+          echo "$(go env GOPATH)/bin" >> "$GITHUB_PATH"
+      - run: make gate
+
+  image:
+    name: Build, smoke, and publish MCP image
+    needs: gate
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+
+      - name: Normalize registry namespace
+        env:
+          REGISTRY: ${{ inputs.registry || 'ghcr.io/ml8s' }}
+        run: |
+          set -euo pipefail
+          lowered="${REGISTRY,,}"
+          if [[ "$lowered" == ghcr.io/* ]]; then
+            owner="${GITHUB_REPOSITORY_OWNER,,}"
+            lowered="ghcr.io/$owner"
+          fi
+          printf 'IMAGE_PREFIX=%s\n' "$lowered" >> "$GITHUB_ENV"
+
+      - name: Log in to GHCR
+        if: startsWith(env.REGISTRY, 'ghcr.io')
+        env:
+          TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          printf '%s' "$TOKEN" | docker login ghcr.io -u "$GITHUB_ACTOR" --password-stdin
+
+      - name: Build image
+        env:
+          GIT_COMMIT: ${{ github.sha }}
+          BUILD_TIME: ${{ github.event.head_commit.timestamp || '1970-01-01T00:00:00Z' }}
+        run: |
+          set -euo pipefail
+          short="${GITHUB_SHA::12}"
+          printf 'MINGLIGO_MCP_IMAGE=%s/mingligo-mcp:sha-%s\n' "$IMAGE_PREFIX" "$short" >> "$GITHUB_ENV"
+          docker build \
+            --build-arg GIT_SHA="$short" \
+            --build-arg COMMIT="$GIT_COMMIT" \
+            --build-arg BUILD_TIME="$BUILD_TIME" \
+            -f examples/mingligo-mcp/deploy/Dockerfile \
+            -t "$MINGLIGO_MCP_IMAGE" .
+
+      - name: Smoke image
+        run: MINGLIGO_MCP_IMAGE="$MINGLIGO_MCP_IMAGE" examples/mingligo-mcp/deploy/smoke-mcp.sh
+
+      - name: Push image
+        run: docker push "$MINGLIGO_MCP_IMAGE"
