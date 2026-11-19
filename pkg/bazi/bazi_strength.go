@@ -36,7 +36,7 @@ type congGeRule struct {
 type congGeConditions struct {
 	Root       string        `json:"root"`
 	Season     []string      `json:"season"`
-	Gan        ganConditions `json:"stems"`
+	Gan        ganConditions `json:"gan"`
 	RootDetail []string      `json:"root_detail,omitempty"`
 }
 

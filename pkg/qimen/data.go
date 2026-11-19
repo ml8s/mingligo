@@ -229,7 +229,7 @@ type quarterDingjuJSON struct {
 }
 
 type quarterSanyuanGroupJSON struct {
-	Branches []string `json:"branches"`
+	Branches []string `json:"zhi"`
 	Yuan     string   `json:"yuan"`
 	YangJu   int      `json:"yang_ju"`
 	YinJu    int      `json:"yin_ju"`
@@ -562,7 +562,7 @@ func loadCatalog() error {
 			Direction        string `json:"direction"`
 			YinDun           bool   `json:"yin_dun"`
 			Groups           []struct {
-				Branches  []string `json:"branches"`
+				Branches  []string `json:"zhi"`
 				LeadingJu int      `json:"leading_ju"`
 				Yuan      string   `json:"yuan"`
 			} `json:"groups"`
@@ -1080,7 +1080,7 @@ func loadPlate() error {
 		} `json:"ri_shi_relations"`
 		ZhiGong map[string]string `json:"zhi_gong"`
 		MaXing  []struct {
-			Branches []string `json:"branches"`
+			Branches []string `json:"zhi"`
 			Ma       string   `json:"ma"`
 		} `json:"ma_xing"`
 		LiuJiaLiuYi []struct {
@@ -1090,11 +1090,11 @@ func loadPlate() error {
 		} `json:"liu_jia_liu_yi"`
 		XunKong []struct {
 			Xun      string   `json:"xun"`
-			Branches []string `json:"branches"`
+			Branches []string `json:"zhi"`
 		} `json:"xun_kong"`
 		WuBuYuShi []string `json:"wu_bu_yu_shi"`
 		FuTouYuan []struct {
-			Branches []string `json:"branches"`
+			Branches []string `json:"zhi"`
 			Yuan     string   `json:"yuan"`
 		} `json:"fu_tou_yuan"`
 	}

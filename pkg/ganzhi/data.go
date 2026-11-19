@@ -169,11 +169,11 @@ func loadHeHua() error {
 			Pairs [][3]string `json:"pairs"`
 		} `json:"branch_he"`
 		TripleHe []struct {
-			Zhi     []string `json:"branches"`
+			Zhi     []string `json:"zhi"`
 			Element string   `json:"element"`
 		} `json:"triple_he"`
 		TripleHui []struct {
-			Zhi     []string `json:"branches"`
+			Zhi     []string `json:"zhi"`
 			Element string   `json:"element"`
 		} `json:"triple_hui"`
 	}
@@ -212,7 +212,7 @@ func loadChongXingHai() error {
 		} `json:"chong"`
 		Xing []struct {
 			Type string   `json:"type"`
-			Zhi  []string `json:"branches"`
+			Zhi  []string `json:"zhi"`
 		} `json:"xing"`
 		Hai struct {
 			Pairs [][2]string `json:"pairs"`
@@ -286,7 +286,7 @@ func loadCangGan() error {
 			Main  string  `json:"main"`
 			Mid   *string `json:"mid"`
 			Minor *string `json:"minor"`
-		} `json:"branches"`
+		} `json:"zhi"`
 	}
 	if err := json.Unmarshal(cangGanJSON, &cfg); err != nil {
 		return err
@@ -313,7 +313,7 @@ func loadLifeStages() error {
 	var cfg struct {
 		Gan map[string]struct {
 			Stages []string `json:"stages"`
-		} `json:"stems"`
+		} `json:"gan"`
 	}
 	if err := json.Unmarshal(lifeStagesJSON, &cfg); err != nil {
 		return err

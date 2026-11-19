@@ -10,10 +10,10 @@
     ]
   },
   "xing": [
-    {"type": "wuli", "branches": ["子","卯"]},
-    {"type": "wuen", "branches": ["寅","巳","申"]},
-    {"type": "shishi", "branches": ["丑","未","戌"]},
-    {"type": "zi", "branches": ["辰","午","酉","亥"]}
+    {"type": "wuli", "zhi": ["子","卯"]},
+    {"type": "wuen", "zhi": ["寅","巳","申"]},
+    {"type": "shishi", "zhi": ["丑","未","戌"]},
+    {"type": "zi", "zhi": ["辰","午","酉","亥"]}
   ],
   "hai": {
     "pairs": [

@@ -74,7 +74,7 @@
         "fu_tou_units": 5,
         "groups": [
           {
-            "branches": [
+            "zhi": [
               "子",
               "午",
               "卯",
@@ -85,7 +85,7 @@
             "yin_ju": 9
           },
           {
-            "branches": [
+            "zhi": [
               "寅",
               "申",
               "巳",
@@ -96,7 +96,7 @@
             "yin_ju": 3
           },
           {
-            "branches": [
+            "zhi": [
               "辰",
               "戌",
               "丑",

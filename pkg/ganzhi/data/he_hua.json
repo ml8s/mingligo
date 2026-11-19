@@ -19,15 +19,15 @@
     ]
   },
   "triple_he": [
-    {"branches": ["申","子","辰"], "element": "水"},
-    {"branches": ["亥","卯","未"], "element": "木"},
-    {"branches": ["寅","午","戌"], "element": "火"},
-    {"branches": ["巳","酉","丑"], "element": "金"}
+    {"zhi": ["申","子","辰"], "element": "水"},
+    {"zhi": ["亥","卯","未"], "element": "木"},
+    {"zhi": ["寅","午","戌"], "element": "火"},
+    {"zhi": ["巳","酉","丑"], "element": "金"}
   ],
   "triple_hui": [
-    {"branches": ["寅","卯","辰"], "element": "木"},
-    {"branches": ["巳","午","未"], "element": "火"},
-    {"branches": ["申","酉","戌"], "element": "金"},
-    {"branches": ["亥","子","丑"], "element": "水"}
+    {"zhi": ["寅","卯","辰"], "element": "木"},
+    {"zhi": ["巳","午","未"], "element": "火"},
+    {"zhi": ["申","酉","戌"], "element": "金"},
+    {"zhi": ["亥","子","丑"], "element": "水"}
   ]
 }
