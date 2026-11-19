@@ -468,7 +468,7 @@ func TestMigratedBaziChartTrueSolarChain(t *testing.T) {
 		t.Fatal("subject_candidates returned no candidates")
 	}
 	candidate := resolved.Candidates[0]
-	if len(candidate.Reasons) != 1 || candidate.Reasons[0].ReasonKind != "input" {
+	if len(candidate.Reasons) != 1 || candidate.Reasons[0].Domain != "input" {
 		t.Fatalf("input candidate reasons = %+v", candidate.Reasons)
 	}
 

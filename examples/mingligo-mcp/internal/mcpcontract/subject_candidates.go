@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"time"
 
 	"github.com/google/jsonschema-go/jsonschema"
 
@@ -149,18 +150,13 @@ func tianwenResolveFormsSchema(options *jsonschema.ForOptions) (json.RawMessage,
 // ── subject_candidates output ──
 
 // TianwenSubjectCandidatesReasonOutput explains why a candidate exists.
-type TianwenSubjectCandidatesReasonOutput struct {
-	ReasonKind  string `json:"reason_kind" jsonschema:"原因领域：input / 时辰 / 日界 / 交节 / 时制。"`
-	Explanation string `json:"explanation" jsonschema:"领域术语说明（如 输入时间、丑时、立春后、夏令时）。"`
-}
-
 // TianwenSubjectCandidateOutput is one possible natal subject.
 //
 // StandardTime is local standard time (fixed offset, no DST), not true solar time.
 // Longitude remains explicit for domain-specific solar corrections.
 type TianwenSubjectCandidateOutput struct {
 	Subject NatalSubject                           `json:"subject" jsonschema:"候选 canonical 出生主体；用户确认后可原样用于下游 subject 参数，客户端也可用明确事实组装等价 subject。"`
-	Reasons []TianwenSubjectCandidatesReasonOutput `json:"reasons" jsonschema:"候选原因；input 候选恒定存在。"`
+	Reasons []tianwen.ResolveReason `json:"reasons" jsonschema:"候选原因；input 候选恒定存在。"`
 }
 
 // TianwenSubjectCandidatesOutput is the candidate set for one natal subject.
@@ -205,25 +201,14 @@ func TianwenSubjectCandidates(_ context.Context, input TianwenSubjectCandidatesI
 	output := TianwenSubjectCandidatesOutput{
 		Candidates: make([]TianwenSubjectCandidateOutput, 0, len(result.Candidates)),
 	}
-	zone, err := loadTimezone(input.RecordTimezone)
-	if err != nil {
-		return TianwenSubjectCandidatesOutput{}, fmt.Errorf("tianwen.subject_candidates: %w", err)
-	}
 	for _, candidate := range result.Candidates {
-		reasons := make([]TianwenSubjectCandidatesReasonOutput, 0, len(candidate.Reasons))
-		for _, reason := range candidate.Reasons {
-			reasons = append(reasons, TianwenSubjectCandidatesReasonOutput{
-				ReasonKind:  reason.Domain,
-				Explanation: reason.Detail,
-			})
-		}
 		output.Candidates = append(output.Candidates, TianwenSubjectCandidateOutput{
 			Subject: NatalSubject{
-				StandardTime: StandardTime(standardTimeString(candidate.StandardTime, zone)),
+				StandardTime: StandardTime(candidate.StandardTime.Format(time.RFC3339Nano)),
 				Longitude:    input.Longitude,
 				Gender:       input.SubjectGender,
 			},
-			Reasons: reasons,
+			Reasons: candidate.Reasons,
 		})
 	}
 	return output, nil

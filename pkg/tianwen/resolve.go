@@ -54,8 +54,8 @@ var chartBoundaryKinds = []BoundaryKind{
 
 // ResolveReason explains why a candidate exists.
 type ResolveReason struct {
-	Domain string `json:"domain"`
-	Detail string `json:"detail"`
+	Domain string `json:"reason_kind"`
+	Detail string `json:"explanation"`
 }
 
 // ResolveCandidate is one possible chart time point with its reasons.

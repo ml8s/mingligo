@@ -5,12 +5,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ml8s/mingligo/pkg/tianwen"
 )
-
-func standardTimeString(at time.Time, loc *time.Location) string {
-	return tianwen.StandardLocalTime(at, loc).Format(time.RFC3339Nano)
-}
 
 func parseStandardTime(value StandardTime) (time.Time, *time.Location, error) {
 	if strings.HasSuffix(string(value), "-00:00") {
