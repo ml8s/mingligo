@@ -85,29 +85,29 @@ go get github.com/ml8s/mingligo@main
 package main
 
 import (
-	"encoding/json"
-	"fmt"
-	"time"
+  "encoding/json"
+  "fmt"
+  "time"
 
-	"github.com/ml8s/mingligo/pkg/bazi"
-	"github.com/ml8s/mingligo/pkg/ganzhi"
-	"github.com/ml8s/mingligo/pkg/tables"
+  "github.com/ml8s/mingligo/pkg/bazi"
+  "github.com/ml8s/mingligo/pkg/ganzhi"
+  "github.com/ml8s/mingligo/pkg/tables"
 )
 
 func main() {
-	// Optional fail-fast startup. Domain APIs also load embedded tables lazily.
-	if err := tables.Load(); err != nil {
-		panic(err)
-	}
+  // Optional fail-fast startup. Domain APIs also load embedded tables lazily.
+  if err := tables.Load(); err != nil {
+    panic(err)
+  }
 
-	birth := time.Date(1984, 2, 15, 8, 0, 0, 0, time.FixedZone("CST", 8*3600))
-	chart := bazi.ComputeChartAt(birth, 116.407526, ganzhi.Male)
+  birth := time.Date(1984, 2, 15, 8, 0, 0, 0, time.FixedZone("CST", 8*3600))
+  chart := bazi.ComputeChartAt(birth, 116.407526, ganzhi.Male)
 
-	data, err := json.MarshalIndent(chart, "", "  ")
-	if err != nil {
-		panic(err)
-	}
-	fmt.Println(string(data))
+  data, err := json.MarshalIndent(chart, "", "  ")
+  if err != nil {
+    panic(err)
+  }
+  fmt.Println(string(data))
 }
 ```
 
