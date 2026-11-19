@@ -336,7 +336,7 @@ type juShu struct {
 }
 
 type TianQinRule struct {
-	Star                  string `json:"star"`
+	Star                  string `json:"xing"`
 	HomeGong              string `json:"home_gong"`
 	LodgingGong           string `json:"lodging_gong"`
 	Follows               string `json:"follows"`
@@ -352,11 +352,11 @@ type ChartMethod struct {
 	BaseDingjuMethod string        `json:"base_dingju_method,omitempty"`
 	MethodSource     string        `json:"method_source"`
 	DayBoundary      string        `json:"day_boundary"`
-	SpiritMode       string        `json:"spirit_mode"`
+	SpiritMode       string        `json:"shen_mode"`
 	Geometry         string        `json:"geometry"`
-	StarMode         string        `json:"star_mode"`
-	DoorMode         string        `json:"door_mode"`
-	SpiritFlight     string        `json:"spirit_flight"`
+	StarMode         string        `json:"xing_mode"`
+	DoorMode         string        `json:"men_mode"`
+	SpiritFlight     string        `json:"shen_flight"`
 	TianQin          *TianQinRule  `json:"tian_qin,omitempty"`
 	JieQi            string        `json:"jie_qi"`
 	YongJuJieQi      string        `json:"yong_ju_jie_qi"`
@@ -388,7 +388,7 @@ type GanInteraction struct {
 
 // MenInteraction represents an 八门克应 for a door in a specific gong.
 type MenInteraction struct {
-	Door    DoorIndex `json:"door,omitempty"`
+	Door    DoorIndex `json:"men,omitempty"`
 	Gong    GongIndex `json:"gong,omitempty"`
 	Name    string    `json:"name"`
 	Meaning string    `json:"meaning"`

@@ -11,7 +11,7 @@ import (
 type LayoutResult struct {
 	Group   string        `json:"group"` // 东四命/西四命
 	MingGua string        `json:"ming_gua"`
-	Door    DoorStoveInfo `json:"door"`
+	Door    DoorStoveInfo `json:"men"`
 	Master  DoorStoveInfo `json:"master"`
 	Stove   DoorStoveInfo `json:"stove"`
 }

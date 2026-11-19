@@ -54,7 +54,7 @@ type LiuNianResult struct {
 // HouseOverlay highlights a 流年凶星落宫 and the 宅盘 stars in that palace.
 type HouseOverlay struct {
 	GongNum     int    `json:"gong_num"`
-	Star        string `json:"star"`         // 流年星名（如 五黄廉贞）
+	Star        string `json:"xing"`         // 流年星名（如 五黄廉贞）
 	PalaceStars string `json:"gong_stars"` // 宅盘该宫 运星/山星/向星
 }
 

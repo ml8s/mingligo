@@ -18,13 +18,13 @@ type SpecializedContext struct {
 type GengGeFact struct {
 	Level    string     `json:"level"`
 	Gong     GongIndex  `json:"gong"`
-	Door     string     `json:"door,omitempty"`
+	Door     string     `json:"men,omitempty"`
 	EarthGan ganzhi.Gan `json:"earth_gan"`
 }
 
 type LostContextFact struct {
 	Gong      GongIndex `json:"gong"`
-	Door      string    `json:"door,omitempty"`
+	Door      string    `json:"men,omitempty"`
 	WangShuai string    `json:"wang_shuai,omitempty"`
 }
 

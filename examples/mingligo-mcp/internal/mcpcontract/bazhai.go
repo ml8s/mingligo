@@ -67,7 +67,7 @@ type BazhaiChartOutput struct {
 
 type BazhaiLayoutInput struct {
 	MingGua   EightGuaName `json:"ming_gua" jsonschema:"命卦。"`
-	DoorGua   EightGuaName `json:"door_gua" jsonschema:"门卦。"`
+	DoorGua   EightGuaName `json:"men_gua" jsonschema:"门卦。"`
 	MasterGua EightGuaName `json:"master_gua" jsonschema:"主卧卦。"`
 	StoveGua  EightGuaName `json:"stove_gua" jsonschema:"灶卦。"`
 }
@@ -85,7 +85,7 @@ type BazhaiDoorStoveOutput struct {
 type BazhaiLayoutOutput struct {
 	Group   LifeGroupName         `json:"group" jsonschema:"东四命或西四命。"`
 	MingGua EightGuaName          `json:"ming_gua" jsonschema:"命卦。"`
-	Door    BazhaiDoorStoveOutput `json:"door" jsonschema:"门位判断。"`
+	Door    BazhaiDoorStoveOutput `json:"men" jsonschema:"门位判断。"`
 	Master  BazhaiDoorStoveOutput `json:"master" jsonschema:"主卧判断。"`
 	Stove   BazhaiDoorStoveOutput `json:"stove" jsonschema:"灶位判断。"`
 }

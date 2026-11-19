@@ -162,8 +162,8 @@ func TestJinhanChartDoesNotExposeStandardPlate(t *testing.T) {
 			t.Fatalf("Jin Han board must not expose standard-plate field %q", field)
 		}
 	}
-	if _, exists := board["day_spirits"]; !exists {
-		t.Fatal("Jin Han board lacks day_spirits")
+	if _, exists := board["ri_shen"]; !exists {
+		t.Fatal("Jin Han board lacks ri_shen")
 	}
 }
 

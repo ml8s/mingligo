@@ -14,10 +14,10 @@ type JinhanChartMethod struct {
 	MethodSource string       `json:"method_source"`
 	DayBoundary  string       `json:"day_boundary"`
 	Geometry     string       `json:"geometry"`
-	StarMode     string       `json:"star_mode"`
-	DoorMode     string       `json:"door_mode"`
-	SpiritMode   string       `json:"spirit_mode"`
-	SpiritFlight string       `json:"spirit_flight"`
+	StarMode     string       `json:"xing_mode"`
+	DoorMode     string       `json:"men_mode"`
+	SpiritMode   string       `json:"shen_mode"`
+	SpiritFlight string       `json:"shen_flight"`
 	DunSource    string       `json:"dun_source"`
 	JieQi        string       `json:"jie_qi"`
 	MethodYiJu   string       `json:"basis"`
@@ -45,7 +45,7 @@ type JinhanBoard struct {
 	RiGan      ganzhi.Gan          `json:"ri_gan"`
 	RiZhi      ganzhi.Zhi          `json:"ri_zhi"`
 	GongWei    [9]JinhanPalace     `json:"gong_wei"`
-	DaySpirits [12]JinhanDaySpirit `json:"day_spirits"`
+	DaySpirits [12]JinhanDaySpirit `json:"ri_shen"`
 }
 
 // JinhanChart is the public result of qimen.chart for school=jinhan_yujing.

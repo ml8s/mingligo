@@ -10,9 +10,9 @@ import (
 
 // YongShenSymbol 表示一个奇门事象用神符号（门/星/神/干）。
 type YongShenSymbol struct {
-	Door   *DoorIndex   `json:"door,omitempty"`   // 事象门
-	Star   *StarIndex   `json:"star,omitempty"`   // 事象星
-	Spirit *SpiritIndex `json:"spirit,omitempty"` // 事象神
+	Door   *DoorIndex   `json:"men,omitempty"`   // 事象门
+	Star   *StarIndex   `json:"xing,omitempty"`   // 事象星
+	Spirit *SpiritIndex `json:"shen,omitempty"` // 事象神
 	Gan    *ganzhi.Gan  `json:"gan,omitempty"`   // 事象干
 }
 

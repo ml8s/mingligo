@@ -55,7 +55,7 @@ type ZiweiLiuNianResolved struct {
 }
 
 type ZiweiFlowTransformation struct {
-	Star   string          `json:"star" jsonschema:"被化的本命星。"`
+	Star   string          `json:"xing" jsonschema:"被化的本命星。"`
 	Hua    SiHuaName       `json:"hua" jsonschema:"化禄/化权/化科/化忌。"`
 	Palace ZiweiPalaceName `json:"gong" jsonschema:"本命星所在宫。"`
 }
@@ -63,7 +63,7 @@ type ZiweiFlowTransformation struct {
 type ZiweiFlowPalace struct {
 	Zhi       ZhiName         `json:"zhi" jsonschema:"地支。"`
 	Name      ZiweiPalaceName `json:"name" jsonschema:"宫名。"`
-	Stars     []string        `json:"stars" jsonschema:"流曜。"`
+	Stars     []string        `json:"xing" jsonschema:"流曜。"`
 	IsLiuMing bool            `json:"is_liu_ming" jsonschema:"是否流盘命宫。"`
 }
 

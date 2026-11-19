@@ -61,7 +61,7 @@ func (c Chart) FlowContext() FlowContext {
 // BondPalaceFacts carries only the palace facts consumed by bond output.
 type BondPalaceFacts struct {
 	Palace     string   `json:"gong"`
-	MajorStars []string `json:"major_stars"`
+	MajorStars []string `json:"major_xing"`
 }
 
 // BondSideFacts carries only the natal palace facts consumed by bond.

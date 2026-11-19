@@ -102,7 +102,7 @@ type XuankongAnnualStarOutput struct {
 
 type XuankongHouseOverlayOutput struct {
 	GongNum     GuaNumber      `json:"gong_num" jsonschema:"洛书宫数。"`
-	Star        FlyingStarName `json:"star" jsonschema:"流年星名。"`
+	Star        FlyingStarName `json:"xing" jsonschema:"流年星名。"`
 	PalaceStars string         `json:"gong_stars" jsonschema:"宅盘该宫运星/山星/向星。"`
 }
 

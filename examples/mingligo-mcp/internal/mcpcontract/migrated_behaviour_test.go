@@ -286,8 +286,8 @@ func TestMigratedQimenJinhanContract(t *testing.T) {
 			t.Errorf("金函玉镜 board must not expose standard field %q", field)
 		}
 	}
-	if _, exists := board["day_spirits"]; !exists {
-		t.Error("金函玉镜 board lacks day_spirits")
+	if _, exists := board["ri_shen"]; !exists {
+		t.Error("金函玉镜 board lacks ri_shen")
 	}
 	for _, field := range []string{
 		"gan_interaction", "men_interaction", "xing_interaction", "xing_gong_wu_xing",

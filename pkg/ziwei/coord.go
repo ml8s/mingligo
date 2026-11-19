@@ -42,7 +42,7 @@ func zhiIdxToAnXingIdx(zhiIdx int) int {
 type FlowPalace struct {
 	Zhi    Zhi      `json:"zhi"`         // 地支
 	Name   string   `json:"name"`        // 宫名（命盘标签）
-	Stars  []string `json:"stars"`       // 流曜星名（无则为空）
+	Stars  []string `json:"xing"`       // 流曜星名（无则为空）
 	IsMing bool     `json:"is_liu_ming"` // 是否流盘命宫
 }
 
@@ -76,7 +76,7 @@ func buildFlowPalaces(liuPanIdx int, starByAnXingIdx map[int][]string) [12]FlowP
 // FlowTransformation is one complete flow-period transformation: the
 // transformed natal star, its Hua, and the natal palace where it lands.
 type FlowTransformation struct {
-	Star   starIndex `json:"star"`
+	Star   starIndex `json:"xing"`
 	Hua    siHuaType `json:"hua"`
 	Palace gongIndex `json:"gong"`
 }

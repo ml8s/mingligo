@@ -5,13 +5,13 @@
     "dingju_method": "chaibu",
     "method_source": "solar_term",
     "day_boundary": "late_zi_rolls_day_pillar",
-    "spirit_mode": "eight_spirits_yang_gouchen_zhuque_yin_baihu_xuanwu",
+    "shen_mode": "eight_spirits_yang_gouchen_zhuque_yin_baihu_xuanwu",
     "geometry": "luoshu_ring_rotation",
-    "star_mode": "tian_qin_lodges_kun",
-    "door_mode": "center_projects_kun",
-    "spirit_flight": "yang_forward_yin_reverse",
+    "xing_mode": "tian_qin_lodges_kun",
+    "men_mode": "center_projects_kun",
+    "shen_flight": "yang_forward_yin_reverse",
     "tian_qin": {
-      "star": "天禽",
+      "xing": "天禽",
       "home_gong": "中",
       "lodging_gong": "坤",
       "follows": "天芮",
@@ -313,37 +313,37 @@
   ],
   "men_interaction": [
     {
-      "door": "景门",
+      "men": "景门",
       "gong": "坎",
       "name": "景门加坎",
       "meaning": "文书水火之灾"
     },
     {
-      "door": "生门",
+      "men": "生门",
       "gong": "坤",
       "name": "生门加坤",
       "meaning": "田宅之利，内财之喜"
     },
     {
-      "door": "惊门",
+      "men": "惊门",
       "gong": "震",
       "name": "惊门加震",
       "meaning": "争斗之象，出行惊恐"
     },
     {
-      "door": "开门",
+      "men": "开门",
       "gong": "巽",
       "name": "开门加巽",
       "meaning": "长女之利，入仕之吉"
     },
     {
-      "door": "杜门",
+      "men": "杜门",
       "gong": "乾",
       "name": "杜门加乾",
       "meaning": "公门不利，出行有阻"
     },
     {
-      "door": "休门",
+      "men": "休门",
       "gong": "离",
       "name": "休门加离",
       "meaning": "和合得财，文书酒食"
@@ -856,14 +856,14 @@
       {
         "level": "month",
         "gong": "离",
-        "door": "休门",
+        "men": "休门",
         "earth_gan": "辛"
       }
     ],
     "lost_facts": [
       {
         "gong": "兑",
-        "door": "伤门",
+        "men": "伤门",
         "wang_shuai": "死"
       }
     ],
