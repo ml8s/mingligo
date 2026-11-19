@@ -7,11 +7,17 @@ import (
 )
 
 // xuanKongStar holds the three stars (运星, 山星, 向星) for one palace.
+type palaceJiaHui struct {
+	Name    string `json:"name"`
+	Meaning string `json:"meaning"`
+}
+
 type xuanKongStar struct {
 	PalaceNum    int                 `json:"gong_num"`
 	PeriodStar   fengshui.FlyingStar `json:"yun_xing"`
 	MountainStar fengshui.FlyingStar `json:"shan_xing"`
 	FacingStar   fengshui.FlyingStar `json:"xiang_xing"`
+	JiaHui       palaceJiaHui        `json:"jia_hui"`
 }
 
 // Chart is the complete 玄空飞星排盘 for a given坐向 and 运.
@@ -25,7 +31,6 @@ type Chart struct {
 	FourSituation  FourSituation   `json:"four_situation"`
 	FuYinLayers    []string        `json:"fu_yin_layers"`
 	FanYinLayers   []string        `json:"fan_yin_layers"`
-	XingJiaHui     [9]xingJiaHui   `json:"xing_jia_hui"`
 	ShouShanChuSha shouShanChuSha  `json:"shou_shan_chu_sha"`
 }
 
@@ -89,8 +94,8 @@ func computeChart(sitMountain, faceMountain int, year int) Chart {
 	// 5. Evaluate 旺山旺向/上山下水/伏吟.
 	pan.evaluate()
 
-	// 6. 双星加会 + 收山出煞.
-	pan.XingJiaHui = pan.computeXingJiaHui()
+	// 6. 双星加会（填入各宫） + 收山出煞.
+	pan.computeXingJiaHui()
 	pan.ShouShanChuSha = pan.computeShouShanChuSha()
 
 	return pan
@@ -212,22 +217,19 @@ type xingJiaHui struct {
 	Meaning  string `json:"meaning"`
 }
 
-func (p *Chart) computeXingJiaHui() [9]xingJiaHui {
-	var result [9]xingJiaHui
-	for i, pal := range p.Palaces {
+func (p *Chart) computeXingJiaHui() {
+	for i := range p.Palaces {
+		pal := &p.Palaces[i]
 		key := [2]int{pal.MountainStar.Number, pal.FacingStar.Number}
 		if entry, ok := xingJiaHuiTable[key]; ok {
-			result[i] = entry
+			pal.JiaHui = palaceJiaHui{Name: entry.Name, Meaning: entry.Meaning}
 		} else {
-			result[i] = xingJiaHui{
-				ShanNum:  pal.MountainStar.Number,
-				XiangNum: pal.FacingStar.Number,
-				Name:     "星曜加会",
-				Meaning:  "该组合未列入固定通则，须参合星、宫、运与峦头判断",
+			pal.JiaHui = palaceJiaHui{
+				Name:    "星曜加会",
+				Meaning: "该组合未列入固定通则，须参合星、宫、运与峦头判断",
 			}
 		}
 	}
-	return result
 }
 
 func (p *Chart) recitationLayers() (fuYin, fanYin []string) {

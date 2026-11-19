@@ -225,8 +225,8 @@ func TestWangShanWangXiang(t *testing.T) {
 	}
 
 	// Verify XingJiaHui computed for all palaces.
-	for i, x := range chart.XingJiaHui {
-		if x.Name == "" {
+	for i, x := range chart.Palaces {
+		if x.JiaHui.Name == "" {
 			t.Errorf("palace %d: empty xingJiaHui name", i)
 		}
 	}

@@ -65,7 +65,7 @@ func TestXingJiaHuiUnknownCombinationIsUnlisted(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	encoded, err := json.Marshal(chart.XingJiaHui)
+	encoded, err := json.Marshal(chart.Palaces)
 	if err != nil {
 		t.Fatalf("marshal: %v", err)
 	}

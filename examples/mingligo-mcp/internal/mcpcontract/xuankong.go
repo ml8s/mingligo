@@ -36,6 +36,7 @@ type XuankongPalaceOutput struct {
 	YunXing   XuankongStarOutput `json:"yun_xing" jsonschema:"运星。"`
 	ShanXing  XuankongStarOutput `json:"shan_xing" jsonschema:"山星。"`
 	XiangXing XuankongStarOutput `json:"xiang_xing" jsonschema:"向星。"`
+	JiaHui    XuankongJiaHuiOutput `json:"jia_hui" jsonschema:"该宫双星加会。"`
 }
 
 type XuankongFourSituationOutput struct {
@@ -46,11 +47,9 @@ type XuankongFourSituationOutput struct {
 	FaceMountainTimely bool                  `json:"face_mountain_timely" jsonschema:"向宫山星是否当令。"`
 }
 
-type XuankongXingJiaHuiOutput struct {
-	ShanNum  FlyingStarNumber `json:"shan_num" jsonschema:"山星数。"`
-	XiangNum FlyingStarNumber `json:"xiang_num" jsonschema:"向星数。"`
-	Name     string           `json:"name" jsonschema:"星曜加会名称。"`
-	Meaning  string           `json:"meaning" jsonschema:"星曜加会通则含义。"`
+type XuankongJiaHuiOutput struct {
+	Name    string `json:"name" jsonschema:"星曜加会名称。"`
+	Meaning string `json:"meaning" jsonschema:"星曜加会通则含义。"`
 }
 
 type XuankongShouShanOutput struct {
@@ -69,7 +68,6 @@ type XuankongChart struct {
 	FourSituation  XuankongFourSituationOutput `json:"four_situation" jsonschema:"四大局。"`
 	FuYinLayers    []XuankongFuYinLayer        `json:"fu_yin_layers" jsonschema:"伏吟层。"`
 	FanYinLayers   []XuankongFanYinLayer       `json:"fan_yin_layers" jsonschema:"反吟层。"`
-	XingJiaHui     [9]XuankongXingJiaHuiOutput `json:"xing_jia_hui" jsonschema:"星加会。"`
 	ZuoShan        MountainIndex               `json:"zuo_shan" jsonschema:"坐山(0-23)。"`
 	ZuoShanName    MountainName                `json:"zuo_shan_name" jsonschema:"坐山名。"`
 	XiangShan      MountainIndex               `json:"xiang_shan" jsonschema:"向山(0-23)。"`
