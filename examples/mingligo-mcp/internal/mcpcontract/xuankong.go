@@ -3,6 +3,7 @@ package mcpcontract
 import (
 	"context"
 	"fmt"
+	"time"
 
 	"github.com/ml8s/mingligo/pkg/tianwen"
 	"github.com/ml8s/mingligo/pkg/xuankong"
@@ -117,7 +118,11 @@ type XuankongLiuNianSeries struct {
 }
 
 func XuankongChartCompute(_ context.Context, input XuankongChartInput) (xuankong.Chart, error) {
-	chart, err := xuankongComputeChart(input.StandardTime, input.ZuoShan, input.XiangShan)
+	at, _, err := parseStandardTime(input.StandardTime)
+	if err != nil {
+		return xuankong.Chart{}, fmt.Errorf("xuankong.chart: %w", err)
+	}
+	chart, err := xuankongComputeChart(at, input.ZuoShan, input.XiangShan)
 	if err != nil {
 		return xuankong.Chart{}, fmt.Errorf("xuankong.chart: %w", err)
 	}
@@ -153,7 +158,7 @@ func computeXuankongLiunian(input XuankongLiunianInput) (xuankong.LiuNianResult,
 	if err != nil {
 		return xuankong.LiuNianResult{}, fmt.Errorf("xuankong.liunian: %w", err)
 	}
-	chart, err := xuankongComputeChart(input.StandardTime, input.ZuoShan, input.XiangShan)
+	chart, err := xuankongComputeChart(at, input.ZuoShan, input.XiangShan)
 	if err != nil {
 		return xuankong.LiuNianResult{}, fmt.Errorf("xuankong.liunian: %w", err)
 	}
@@ -164,11 +169,7 @@ func computeXuankongLiunian(input XuankongLiunianInput) (xuankong.LiuNianResult,
 	return result, nil
 }
 
-func xuankongComputeChart(standardTime StandardTime, zuoShan MountainIndex, xiangShan MountainIndex) (xuankong.Chart, error) {
-	at, _, err := parseStandardTime(standardTime)
-	if err != nil {
-		return xuankong.Chart{}, err
-	}
+func xuankongComputeChart(at time.Time, zuoShan MountainIndex, xiangShan MountainIndex) (xuankong.Chart, error) {
 	if at.UTC().Year() < 1864 || at.UTC().Year() > 2200 {
 		return xuankong.Chart{}, fmt.Errorf("year %d out of range (1864-2200)", at.UTC().Year())
 	}

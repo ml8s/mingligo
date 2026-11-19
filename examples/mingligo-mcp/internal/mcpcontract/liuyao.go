@@ -177,11 +177,7 @@ type LiuyaoCastingContextInput struct {
 
 // LiuyaoCastingContext is the immutable event context. It carries only the
 // resolved yong_shen so chart/ask never re-interpret the user-facing focus.
-type LiuyaoCastingContext struct {
-	StandardTime StandardTime       `json:"standard_time" jsonschema:"起卦地标准时间（无 DST），RFC3339 带 offset。"`
-	Longitude    Longitude          `json:"longitude" jsonschema:"起卦地经度（-180..180）；真太阳时校正用于时辰。"`
-	YongShen     LiuyaoYongShenName `json:"yong_shen" jsonschema:"起卦时解析出的用神；chart/ask 唯一取用依据。"`
-}
+type LiuyaoCastingContext = LiuyaoCastingContextEventInput
 
 type LiuyaoCastingEvent struct {
 	Casting        LiuyaoCastingOutput  `json:"casting" jsonschema:"一次起卦的完整源事实。"`
@@ -699,12 +695,8 @@ func LiuyaoChart(_ context.Context, input LiuyaoChartInput) (LiuyaoChartResultOu
 	view := chart.View()
 	return LiuyaoChartResultOutput{
 		Event: LiuyaoCastingEvent{
-			Casting: input.Event.Casting,
-			CastingContext: LiuyaoCastingContext{
-				StandardTime: input.Event.CastingContext.StandardTime,
-				Longitude:    input.Event.CastingContext.Longitude,
-				YongShen:     input.Event.CastingContext.YongShen,
-			},
+			Casting:        input.Event.Casting,
+			CastingContext: input.Event.CastingContext,
 		},
 		Chart: view,
 	}, nil
