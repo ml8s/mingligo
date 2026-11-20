@@ -1,7 +1,6 @@
 package qimen
 
 import (
-	"encoding/json"
 	"sort"
 
 	"github.com/ml8s/mingligo/pkg/ganzhi"
@@ -14,36 +13,6 @@ type SpecializedContext struct {
 	LostContext []LostContextFact `json:"lost_facts"`
 	Thief       []ThiefFact       `json:"thief_facts"`
 	Tianwang    []TianwangFact    `json:"tianwang_facts"`
-}
-
-// PillarLevel is the qimen-domain symbol for a four-pillar level.
-type PillarLevel uint8
-
-const (
-	levelYear  PillarLevel = iota // year
-	levelMonth                    // month
-	levelDay                      // day
-	levelHour                     // hour
-)
-
-var pillarLevelNames = [...]string{"year", "month", "day", "hour"}
-
-func (l PillarLevel) String() string {
-	if int(l) < len(pillarLevelNames) {
-		return pillarLevelNames[l]
-	}
-	return ""
-}
-
-func (l PillarLevel) MarshalJSON() ([]byte, error) { return json.Marshal(l.String()) }
-
-func ParsePillarLevel(name string) (PillarLevel, bool) {
-	for i, n := range pillarLevelNames {
-		if n == name {
-			return PillarLevel(i), true
-		}
-	}
-	return 0, false
 }
 
 type GengGeFact struct {
