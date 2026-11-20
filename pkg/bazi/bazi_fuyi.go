@@ -23,7 +23,7 @@ func FuYi(
 			Yong:        candidateString(congYong),
 			Xi:          candidateString(congXi),
 			Ji:          candidateString(congJi),
-			Strength:    strength.Label,
+			Strength:    DecodeStrengthLevel(strength.Label),
 			Pattern:     pat,
 			ModelID:     "support_control_with_day_master_strength",
 			Basis:       basis,
@@ -39,29 +39,29 @@ func FuYi(
 		Yong:        yong,
 		Xi:          xi,
 		Ji:          ji,
-		Strength:    strength.Label,
+		Strength:    DecodeStrengthLevel(strength.Label),
 		ModelID:     "support_control_with_day_master_strength",
 		Basis:       basis,
 	}
 }
 
 // computeNormalYongJi determines yong/xi/ji by strength (qualitative, no scoring).
-func computeNormalYongJi(riYuan ganzhi.Gan, strengthLabel string) (yongShen, xiShen, jiShen string) {
+func computeNormalYongJi(riYuan ganzhi.Gan, strength StrengthLevel) (yongShen, xiShen, jiShen string) {
 	dmElem := ganzhi.GanWuxing(riYuan)
-	rule, ok := yongJiRules[strengthLabel]
+	rule, ok := yongJiRules[strength]
 	if !ok {
 		return NoCandidateWuxing, NoCandidateWuxing, NoCandidateWuxing
 	}
 	// 五行关系 → 具体五行：克我者官杀、生我者印、同我者比劫、生克我者财生官杀。
-	resolve := func(rel string) ganzhi.Wuxing {
+	resolve := func(rel RelationKind) ganzhi.Wuxing {
 		switch rel {
-		case "克我者":
+		case relationKeWo:
 			return elementThatControls(dmElem)
-		case "生我者":
+		case relationShengWo:
 			return elementThatGenerates(dmElem)
-		case "同我者":
+		case relationTongWo:
 			return dmElem
-		case "生克我者":
+		case relationShengKeWo:
 			return elementThatGenerates(elementThatControls(dmElem))
 		}
 		return 0

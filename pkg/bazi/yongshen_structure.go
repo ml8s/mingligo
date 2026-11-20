@@ -103,12 +103,12 @@ func buildGeJuStructure(
 }
 
 func buildFuYiBasis(
-	bz ganzhi.Bazi, rootType string, yinBi int, relations []NatalRelationFact,
+	bz ganzhi.Bazi, rootType RootKind, yinBi int, relations []NatalRelationFact,
 ) FuYiBasis {
 	dayMaster := ganzhi.GanWuxing(bz.Ri.Gan)
 	support := elementThatGenerates(dayMaster)
 	return FuYiBasis{
-		RiGanGen:      rootType,
+		RiGanGen:      DecodeRootKind(rootType),
 		YinBiShuLiang: yinBi,
 		RiGanTongGen:  hiddenStemOccurrences(bz, dayMaster),
 		GuanXiLinks: relationLinks(buildTargetedRelationEvidence(relations,

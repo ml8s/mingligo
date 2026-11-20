@@ -11,33 +11,33 @@ import (
 
 // ── Data-driven strength & congge rule lookup ────────────────
 
-// strengthRule represents one strength classification rule.
+// strengthRule is the symbol-typed strength classification rule.
 type strengthRule struct {
-	Rule      int      `json:"rule"`
-	Root      string   `json:"root"`
-	Season    []string `json:"season"`
-	Strength  string   `json:"strength"`
-	Upgrade   *string  `json:"upgrade,omitempty"`
-	NeedYinBi int      `json:"need_yinbi,omitempty"`
-	Note      string   `json:"note"`
+	Rule      int
+	Root      RootKind
+	Season    []ganzhi.WangShuai
+	Strength  StrengthLevel
+	Upgrade   *StrengthLevel
+	NeedYinBi int
+	Note      string
 }
 
-// congGeRule represents one 从格 detection rule.
+// congGeRule is the symbol-typed 从格 detection rule.
 type congGeRule struct {
-	Rule       int              `json:"rule"`
-	Type       string           `json:"type"`
-	Conditions congGeConditions `json:"conditions"`
-	Yong       string           `json:"yong"`
-	Xi         string           `json:"xi"`
-	Ji         string           `json:"ji"`
-	Source     string           `json:"source"`
+	Rule       int
+	Type       string
+	Conditions congGeConditions
+	Yong       YongXiJiKind
+	Xi         YongXiJiKind
+	Ji         YongXiJiKind
+	Source     string
 }
 
 type congGeConditions struct {
-	Root       string        `json:"root"`
-	Season     []string      `json:"season"`
-	Gan        ganConditions `json:"gan"`
-	RootDetail []string      `json:"root_detail,omitempty"`
+	Root       RootKind
+	Season     []ganzhi.WangShuai
+	Gan        ganConditions
+	RootDetail []RootKind
 }
 
 type ganConditions struct {
@@ -64,8 +64,42 @@ var (
 )
 
 func loadStrengthRules() error {
-	if err := json.Unmarshal(strengthRulesJSON, &strengthRules); err != nil {
+	var raw []struct {
+		Rule      int      `json:"rule"`
+		Root      string   `json:"root"`
+		Season    []string `json:"season"`
+		Strength  string   `json:"strength"`
+		Upgrade   *string  `json:"upgrade,omitempty"`
+		NeedYinBi int      `json:"need_yinbi,omitempty"`
+		Note      string   `json:"note"`
+	}
+	if err := json.Unmarshal(strengthRulesJSON, &raw); err != nil {
 		return fmt.Errorf("unmarshal: %w", err)
+	}
+	for _, r := range raw {
+		rule := strengthRule{Rule: r.Rule, NeedYinBi: r.NeedYinBi, Note: r.Note}
+		var ok bool
+		if rule.Root, ok = EncodeRootKind(r.Root); !ok {
+			return fmt.Errorf("strength rule %d: invalid root %q", r.Rule, r.Root)
+		}
+		if rule.Strength, ok = EncodeStrengthLevel(r.Strength); !ok {
+			return fmt.Errorf("strength rule %d: invalid strength %q", r.Rule, r.Strength)
+		}
+		for _, name := range r.Season {
+			ws, err := ganzhi.EncodeWangShuai(name)
+			if err != nil {
+				return fmt.Errorf("strength rule %d: invalid season %q", r.Rule, name)
+			}
+			rule.Season = append(rule.Season, ws)
+		}
+		if r.Upgrade != nil {
+			up, ok := EncodeStrengthLevel(*r.Upgrade)
+			if !ok {
+				return fmt.Errorf("strength rule %d: invalid upgrade %q", r.Rule, *r.Upgrade)
+			}
+			rule.Upgrade = &up
+		}
+		strengthRules = append(strengthRules, rule)
 	}
 	if len(strengthRules) == 0 {
 		return fmt.Errorf("empty strength rules")
@@ -74,8 +108,54 @@ func loadStrengthRules() error {
 }
 
 func loadCongGeRules() error {
-	if err := json.Unmarshal(congGeRulesJSON, &congGeRules); err != nil {
+	var raw []struct {
+		Rule       int    `json:"rule"`
+		Type       string `json:"type"`
+		Conditions struct {
+			Root       string        `json:"root"`
+			Season     []string      `json:"season"`
+			Gan        ganConditions `json:"gan"`
+			RootDetail []string      `json:"root_detail,omitempty"`
+		} `json:"conditions"`
+		Yong   string `json:"yong"`
+		Xi     string `json:"xi"`
+		Ji     string `json:"ji"`
+		Source string `json:"source"`
+	}
+	if err := json.Unmarshal(congGeRulesJSON, &raw); err != nil {
 		return fmt.Errorf("unmarshal: %w", err)
+	}
+	for _, r := range raw {
+		rule := congGeRule{Rule: r.Rule, Type: r.Type, Source: r.Source}
+		var ok bool
+		if rule.Conditions.Root, ok = EncodeRootKind(r.Conditions.Root); !ok {
+			return fmt.Errorf("congge rule %d: invalid root %q", r.Rule, r.Conditions.Root)
+		}
+		if rule.Yong, ok = EncodeYongXiJiKind(r.Yong); !ok {
+			return fmt.Errorf("congge rule %d: invalid yong %q", r.Rule, r.Yong)
+		}
+		if rule.Xi, ok = EncodeYongXiJiKind(r.Xi); !ok {
+			return fmt.Errorf("congge rule %d: invalid xi %q", r.Rule, r.Xi)
+		}
+		if rule.Ji, ok = EncodeYongXiJiKind(r.Ji); !ok {
+			return fmt.Errorf("congge rule %d: invalid ji %q", r.Rule, r.Ji)
+		}
+		for _, name := range r.Conditions.Season {
+			ws, err := ganzhi.EncodeWangShuai(name)
+			if err != nil {
+				return fmt.Errorf("congge rule %d: invalid season %q", r.Rule, name)
+			}
+			rule.Conditions.Season = append(rule.Conditions.Season, ws)
+		}
+		for _, name := range r.Conditions.RootDetail {
+			rk, ok := EncodeRootKind(name)
+			if !ok {
+				return fmt.Errorf("congge rule %d: invalid root_detail %q", r.Rule, name)
+			}
+			rule.Conditions.RootDetail = append(rule.Conditions.RootDetail, rk)
+		}
+		rule.Conditions.Gan = r.Conditions.Gan
+		congGeRules = append(congGeRules, rule)
 	}
 	if len(congGeRules) == 0 {
 		return fmt.Errorf("empty congge rules")
@@ -86,16 +166,16 @@ func loadCongGeRules() error {
 // ── Root type classification ──
 
 // classifyRoot determines the root type for the day master.
-func classifyRoot(riYuan ganzhi.Gan, yueZhi ganzhi.Zhi, cangGan [4]HiddenStemProjection) string {
+func classifyRoot(riYuan ganzhi.Gan, yueZhi ganzhi.Zhi, cangGan [4]HiddenStemProjection) RootKind {
 	dmElem := ganzhi.GanWuxing(riYuan)
 
 	monthCG := cangGan[1]
 	if ganzhi.GanWuxing(monthCG.Main) == dmElem {
-		return "month_main"
+		return rootMonthMain
 	}
 	if (monthCG.Mid != nil && ganzhi.GanWuxing(*monthCG.Mid) == dmElem) ||
 		(monthCG.Minor != nil && ganzhi.GanWuxing(*monthCG.Minor) == dmElem) {
-		return "month_mid"
+		return rootMonthMid
 	}
 
 	for i, hs := range cangGan {
@@ -103,18 +183,18 @@ func classifyRoot(riYuan ganzhi.Gan, yueZhi ganzhi.Zhi, cangGan [4]HiddenStemPro
 			continue
 		}
 		if ganzhi.GanWuxing(hs.Main) == dmElem {
-			return "zhi_main"
+			return rootZhiMain
 		}
 		if (hs.Mid != nil && ganzhi.GanWuxing(*hs.Mid) == dmElem) ||
 			(hs.Minor != nil && ganzhi.GanWuxing(*hs.Minor) == dmElem) {
-			return "zhi_mid"
+			return rootZhiMid
 		}
 	}
-	return "none"
+	return rootNone
 }
 
 // classifySeason returns the season label (旺相休囚死) for the day master.
-func classifySeason(riYuan ganzhi.Gan, yueZhi ganzhi.Zhi) string {
+func classifySeason(riYuan ganzhi.Gan, yueZhi ganzhi.Zhi) ganzhi.WangShuai {
 	dmElem := ganzhi.GanWuxing(riYuan)
 	monthElem := ganzhi.ZhiWuxing(yueZhi)
 	genElem := elementThatGenerates(dmElem)
@@ -122,23 +202,23 @@ func classifySeason(riYuan ganzhi.Gan, yueZhi ganzhi.Zhi) string {
 
 	switch {
 	case monthElem == dmElem:
-		return "旺"
+		return ganzhi.WSWang
 	case monthElem == genElem:
-		return "相"
+		return ganzhi.WSXiang
 	case monthElem == ctrlElem:
-		return "死"
+		return ganzhi.WSSi
 	case elementThatControls(monthElem) == dmElem:
-		return "囚"
+		return ganzhi.WSQiu
 	default:
-		return "休"
+		return ganzhi.WSXiu
 	}
 }
 
 // DayMasterStrength is the qualitative strength verdict used by 扶抑 and 从格.
 type DayMasterStrength struct {
-	RootType   string
-	Season     string
-	Label      string
+	RootType   RootKind
+	Season     ganzhi.WangShuai
+	Label      StrengthLevel
 	YinBiCount int
 }
 
@@ -209,7 +289,7 @@ func countYinBi(bz ganzhi.Bazi) int {
 
 // lookupStrength returns the day master's strength by matching
 // root type, season, and 印比 against the strength rules JSON.
-func lookupStrength(rootType, season string, yinBiCount int) string {
+func lookupStrength(rootType RootKind, season ganzhi.WangShuai, yinBiCount int) StrengthLevel {
 	for _, rule := range strengthRules {
 		if rule.Root != rootType {
 			continue
@@ -229,7 +309,7 @@ func lookupStrength(rootType, season string, yinBiCount int) string {
 		}
 		return rule.Strength
 	}
-	return "身弱"
+	return strengthWeak
 }
 
 // lookupCongGe checks the day master against 从格 rules in priority order.
@@ -291,20 +371,20 @@ func countGan(bz ganzhi.Bazi) ganCounts {
 	return sc
 }
 
-func matchRoot(ruleRoot, actualRoot string, rootDetail []string) bool {
+func matchRoot(ruleRoot, actualRoot RootKind, rootDetail []RootKind) bool {
 	switch ruleRoot {
-	case "any":
+	case rootAny:
 		return true
-	case "none":
-		return actualRoot == "none"
-	case "mid":
-		return actualRoot == "month_mid" || actualRoot == "zhi_mid"
+	case rootNone:
+		return actualRoot == rootNone
+	case rootMid:
+		return actualRoot == rootMonthMid || actualRoot == rootZhiMid
 	default:
 		return ruleRoot == actualRoot
 	}
 }
 
-func matchSeasons(allowed []string, actual string) bool {
+func matchSeasons(allowed []ganzhi.WangShuai, actual ganzhi.WangShuai) bool {
 	for _, s := range allowed {
 		if s == actual {
 			return true
@@ -339,23 +419,23 @@ func matchGanConditions(cond ganConditions, sc ganCounts) bool {
 }
 
 func resolveCongGeYongXiJi(rule congGeRule, dmElem ganzhi.Wuxing) (yong, xi, ji string) {
-	resolve := func(symbol string) string {
+	resolve := func(symbol YongXiJiKind) string {
 		switch symbol {
-		case "dm_elem":
+		case yxjDmElem:
 			return ganzhi.DecodeWuxing(dmElem)
-		case "ke_dm":
+		case yxjKeDm:
 			return ganzhi.DecodeWuxing(elementThatControls(dmElem))
-		case "xi_from_dm":
+		case yxjXiFromDm:
 			return ganzhi.DecodeWuxing(elementThatDrains(dmElem))
-		case "guansha":
+		case yxjGuansha:
 			return ganzhi.DecodeWuxing(elementThatControls(dmElem))
-		case "cai":
+		case yxjCai:
 			return ganzhi.DecodeWuxing(elementControlledBy(dmElem))
-		case "yin":
+		case yxjYin:
 			return ganzhi.DecodeWuxing(elementThatGenerates(dmElem))
-		case "bijie":
+		case yxjBiJie:
 			return ganzhi.DecodeWuxing(dmElem)
-		case "shishang":
+		case yxjShiShang:
 			return ganzhi.DecodeWuxing(elementThatDrains(dmElem))
 		default:
 			return ""

@@ -140,12 +140,12 @@ func loadGeJuRules() error {
 
 // yongJiRule 扶抑喜忌规则（《子平真诠》）：身强/身弱 → 用/喜/忌的五行关系。
 type yongJiRule struct {
-	Yong string // 克我者 / 生我者
-	Xi   string // 生克我者 / 同我者
-	Ji   string // 生我者 / 克我者
+	Yong RelationKind
+	Xi   RelationKind
+	Ji   RelationKind
 }
 
-var yongJiRules map[string]yongJiRule
+var yongJiRules map[StrengthLevel]yongJiRule
 
 func loadYongJiRules() error {
 	var raw []struct {
@@ -158,9 +158,25 @@ func loadYongJiRules() error {
 	if err := json.Unmarshal(yongjiRulesJSON, &raw); err != nil {
 		return fmt.Errorf("unmarshal yongji_rules.json: %w", err)
 	}
-	yongJiRules = make(map[string]yongJiRule, len(raw))
+	yongJiRules = make(map[StrengthLevel]yongJiRule, len(raw))
 	for _, r := range raw {
-		yongJiRules[r.Strength] = yongJiRule{Yong: r.Yong, Xi: r.Xi, Ji: r.Ji}
+		strength, ok := EncodeStrengthLevel(r.Strength)
+		if !ok {
+			return fmt.Errorf("invalid yongji strength %q", r.Strength)
+		}
+		yong, ok := EncodeRelationKind(r.Yong)
+		if !ok {
+			return fmt.Errorf("invalid yongji yong %q", r.Yong)
+		}
+		xi, ok := EncodeRelationKind(r.Xi)
+		if !ok {
+			return fmt.Errorf("invalid yongji xi %q", r.Xi)
+		}
+		ji, ok := EncodeRelationKind(r.Ji)
+		if !ok {
+			return fmt.Errorf("invalid yongji ji %q", r.Ji)
+		}
+		yongJiRules[strength] = yongJiRule{Yong: yong, Xi: xi, Ji: ji}
 	}
 	return nil
 }

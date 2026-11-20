@@ -24,7 +24,7 @@ func TestNormalYongJi_StrongUsesController(t *testing.T) {
 		{ganzhi.GanXin, "火", "木", "土"},  // 辛金：克者火（官杀）、财木生火、印土生金
 	}
 	for _, tc := range cases {
-		yong, xi, ji := computeNormalYongJi(tc.gan, "身强")
+		yong, xi, ji := computeNormalYongJi(tc.gan, strengthStrong)
 		if yong != tc.wantYong || xi != tc.wantXi || ji != tc.wantJi {
 			t.Errorf("干 %d 身强: yong=%s xi=%s ji=%s, want %s/%s/%s",
 				tc.gan, yong, xi, ji, tc.wantYong, tc.wantXi, tc.wantJi)
@@ -45,7 +45,7 @@ func TestNormalYongJi_WeakUsesGenerator(t *testing.T) {
 		{ganzhi.GanXin, "土", "金", "火"},  // 辛金：印土生金、比劫金帮、官杀火克
 	}
 	for _, tc := range cases {
-		yong, xi, ji := computeNormalYongJi(tc.gan, "身弱")
+		yong, xi, ji := computeNormalYongJi(tc.gan, strengthWeak)
 		if yong != tc.wantYong || xi != tc.wantXi || ji != tc.wantJi {
 			t.Errorf("干 %d 身弱: yong=%s xi=%s ji=%s, want %s/%s/%s",
 				tc.gan, yong, xi, ji, tc.wantYong, tc.wantXi, tc.wantJi)
@@ -54,7 +54,7 @@ func TestNormalYongJi_WeakUsesGenerator(t *testing.T) {
 }
 
 func TestNormalYongJi_NeutralNoAdjust(t *testing.T) {
-	yong, xi, ji := computeNormalYongJi(ganzhi.GanYi, "中和")
+	yong, xi, ji := computeNormalYongJi(ganzhi.GanYi, strengthBalance)
 	if yong != NoCandidateWuxing || xi != NoCandidateWuxing || ji != NoCandidateWuxing {
 		t.Errorf("中和不应扶抑: yong=%s xi=%s ji=%s", yong, xi, ji)
 	}

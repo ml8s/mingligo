@@ -40,7 +40,7 @@ func TestAnalyzeDayMasterStrengthHasCompleteEvidence(t *testing.T) {
 	analysis := AnalyzePillars(chart.ToBazi(), chart.Gender)
 	strength := AnalyzeDayMasterStrength(chart.ToBazi(), analysis.HiddenStems)
 
-	if strength.RootType == "" || strength.Season == "" || strength.Label == "" {
+	if strength.RootType == rootUnknown || strength.Season == ganzhi.WSNone || strength.Label == strengthUnknown {
 		t.Fatalf("incomplete strength evidence: %+v", strength)
 	}
 	if strength.YinBiCount < 0 || strength.YinBiCount > 3 {

@@ -25,8 +25,8 @@ func TestStrength_AllRules_FirstHit(t *testing.T) {
 			rt := classifyRoot(ganzhi.GanJia, s, cg)
 			season := classifySeason(ganzhi.GanJia, s)
 			strength := lookupStrength(rt, season, 1)
-			if strength != "身强" {
-				t.Errorf("%s(season=%s) = %q, want 身强", rt, season, strength)
+			if strength != strengthStrong {
+				t.Errorf("%s(season=%s) = %q, want 身强", DecodeRootKind(rt), season, strength)
 			}
 		}
 	})
@@ -41,12 +41,12 @@ func TestStrength_AllRules_FirstHit(t *testing.T) {
 			{Main: ganzhi.GanWu},
 		}
 		rt := classifyRoot(ganzhi.GanJia, ganzhi.ZhiHai, cg)
-		if rt != "month_mid" {
+		if rt != rootMonthMid {
 			t.Fatalf("classifyRoot = %q, want month_mid", rt)
 		}
 		season := classifySeason(ganzhi.GanJia, ganzhi.ZhiHai) // 亥=水→木, 相
 		str := lookupStrength(rt, season, 1)
-		if str != "身强" {
+		if str != strengthStrong {
 			t.Errorf("month_mid+相 = %q, want 身强", str)
 		}
 	})
@@ -63,12 +63,12 @@ func TestStrength_AllRules_FirstHit(t *testing.T) {
 		rt := classifyRoot(ganzhi.GanJia, ganzhi.ZhiShen, cg)
 		season := classifySeason(ganzhi.GanJia, ganzhi.ZhiShen)
 		str := lookupStrength(rt, season, 0)
-		if str != "身弱" {
+		if str != strengthWeak {
 			t.Errorf("month_mid+死+yinBi=0 = %q, want 身弱", str)
 		}
 		// 印比≥2 → 中和
 		str2 := lookupStrength(rt, season, 2)
-		if str2 != "中和" {
+		if str2 != strengthBalance {
 			t.Errorf("month_mid+死+yinBi=2 = %q, want 中和", str2)
 		}
 	})
@@ -76,14 +76,14 @@ func TestStrength_AllRules_FirstHit(t *testing.T) {
 
 func TestStrength_All25Combos_NoGaps(t *testing.T) {
 	// 验证所有 25 种 root×season 组合每一条都能命中且有值
-	roots := []string{"month_main", "month_mid", "zhi_main", "zhi_mid", "none"}
-	seasons := []string{"旺", "相", "休", "囚", "死"}
+	roots := []RootKind{rootMonthMain, rootMonthMid, rootZhiMain, rootZhiMid, rootNone}
+	seasons := []ganzhi.WangShuai{ganzhi.WSWang, ganzhi.WSXiang, ganzhi.WSXiu, ganzhi.WSQiu, ganzhi.WSSi}
 
 	for _, r := range roots {
 		for _, s := range seasons {
-			result := lookupStrength(r, s, 0)
+			result := DecodeStrengthLevel(lookupStrength(r, s, 0))
 			if result != "身强" && result != "中和" && result != "身弱" {
-				t.Errorf("root=%q, season=%q → result=%q (invalid)", r, s, result)
+				t.Errorf("root=%q, season=%q → result=%q (invalid)", DecodeRootKind(r), ganzhi.DecodeWangShuai(s), result)
 			}
 		}
 	}
@@ -185,7 +185,7 @@ func TestClassifyRoot_AllTypes(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			got := classifyRoot(tt.riGan, tt.yueZhi, tt.cg)
-			if got != tt.want {
+			if DecodeRootKind(got) != tt.want {
 				t.Errorf("classifyRoot = %q, want %q", got, tt.want)
 			}
 		})
@@ -207,7 +207,7 @@ func TestClassifySeason_AllFive(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			got := classifySeason(tt.riGan, tt.zhi)
-			if got != tt.want {
+			if ganzhi.DecodeWangShuai(got) != tt.want {
 				t.Errorf("classifySeason = %q, want %q", got, tt.want)
 			}
 		})
