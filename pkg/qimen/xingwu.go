@@ -51,7 +51,7 @@ func computeXingGongWuXing(board Board) []XingGongWuXing {
 			relation := xingGongRelation(item.Star, GongIndex(i+1))
 			result = append(result, XingGongWuXing{
 				Star: item.Star, Gong: GongIndex(i + 1),
-				Relation: relation.String(), RelationName: wuxingRelations[relation].Name,
+				Relation: DecodeWuxingRelation(relation), RelationName: wuxingRelations[relation].Name,
 				TraditionalLabel: wuxingRelations[relation].TraditionalLabel,
 			})
 		}

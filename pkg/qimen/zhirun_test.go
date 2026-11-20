@@ -180,10 +180,10 @@ func TestLateZiRollsQimenDayPillar(t *testing.T) {
 func TestZhiRunExternalRotatingPlateAnchor(t *testing.T) {
 	chart := zhiRunChartForTest(t, "2026-01-05 13:00", DingjuZhiRun)
 	if chart.Board.DutyStar != StarTianRui || chart.Board.DutyDoor != DoorSi {
-		t.Fatalf("duty = %s/%s, want 天芮/死门", chart.Board.DutyStar, chart.Board.DutyDoor)
+		t.Fatalf("duty = %s/%s, want 天芮/死门", DecodeStarIndex(chart.Board.DutyStar), DecodeDoorIndex(chart.Board.DutyDoor))
 	}
 	if chart.DutyStarPalace != GongKun || chart.DutyDoorPalace != GongLi {
-		t.Fatalf("duty palaces = %s/%s, want 坤/离", chart.DutyStarPalace, chart.DutyDoorPalace)
+		t.Fatalf("duty palaces = %s/%s, want 坤/离", DecodeGongIndex(chart.DutyStarPalace), DecodeGongIndex(chart.DutyDoorPalace))
 	}
 	assertExternalPalaces(t, chart, [9]string{
 		"乙乙丁蓬生合", "戊戊癸芮惊符", "己己庚冲杜玄",

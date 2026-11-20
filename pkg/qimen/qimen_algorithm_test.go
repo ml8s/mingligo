@@ -15,7 +15,7 @@ func TestPlateRingTables(t *testing.T) {
 			t.Fatalf("outer ring contains central palace at %d", i)
 		}
 		if starHomePalace(starOrder8[i]) != int(palace)-1 {
-			t.Errorf("ring %d: star %s does not originate from %s", i, starOrder8[i], palace)
+			t.Errorf("ring %d: star %s does not originate from %s", i, DecodeStarIndex(starOrder8[i]), DecodeGongIndex(palace))
 		}
 		if int(doorOrder[i]) == 0 {
 			t.Errorf("ring %d: empty door", i)
@@ -142,7 +142,7 @@ func TestStandardRotatingPlateAnchor(t *testing.T) {
 		}
 	}
 	if chart.DutyStar != StarTianZhu || chart.DutyDoor != DoorJingMen {
-		t.Fatalf("duty = %s/%s, want 天柱/惊门", chart.DutyStar, chart.DutyDoor)
+		t.Fatalf("duty = %s/%s, want 天柱/惊门", DecodeStarIndex(chart.DutyStar), DecodeDoorIndex(chart.DutyDoor))
 	}
 
 	wantHeaven := []struct {
@@ -168,7 +168,7 @@ func TestStandardRotatingPlateAnchor(t *testing.T) {
 			}
 		}
 		if !found {
-			t.Errorf("%s lacks heaven %s/%s", want.palace, want.gan, want.star)
+			t.Errorf("%s lacks heaven %s/%s", DecodeGongIndex(want.palace), want.gan, DecodeStarIndex(want.star))
 		}
 	}
 
@@ -179,7 +179,7 @@ func TestStandardRotatingPlateAnchor(t *testing.T) {
 	}
 	for palace, want := range wantDoors {
 		if got := chart.GongWei[int(palace)-1].Door; got != want {
-			t.Errorf("%s door = %s, want %s", palace, got, want)
+			t.Errorf("%s door = %s, want %s", DecodeGongIndex(palace), DecodeDoorIndex(got), DecodeDoorIndex(want))
 		}
 	}
 	if got := chart.GongWei[int(GongGen)-1].Spirit; got != SpiritZhiFu {
@@ -194,10 +194,10 @@ func TestHourJiaUsesCycleHeadLiuYi(t *testing.T) {
 	bz := ganzhi.Bazi{Ri: ganzhi.Zhu{Gan: ganzhi.GanWu}, Shi: hour}
 	chart := ArrangePan(ju, bz)
 	if chart.DutyStar != StarTianRui {
-		t.Fatalf("duty star = %s, want 天芮 by Jia-Xu→Ji", chart.DutyStar)
+		t.Fatalf("duty star = %s, want 天芮 by Jia-Xu→Ji", DecodeStarIndex(chart.DutyStar))
 	}
 	if got := findGanPalaceIdx(chart, ganzhi.GanJi); got != GongKun {
-		t.Errorf("Jia-Xu hidden Ji palace = %s, want 坤", got)
+		t.Errorf("Jia-Xu hidden Ji palace = %s, want 坤", DecodeGongIndex(got))
 	}
 }
 
@@ -212,7 +212,7 @@ func TestCentralCycleHeadMetadata(t *testing.T) {
 		t.Errorf("cycle head = %+v, want 甲辰/壬", method.LeadXunShou)
 	}
 	if method.LeadXunShouGong != GongZhong {
-		t.Errorf("cycle-head palace = %s, want 中", method.LeadXunShouGong)
+		t.Errorf("cycle-head palace = %s, want 中", DecodeGongIndex(method.LeadXunShouGong))
 	}
 	if method.TianQin.Star != "天禽" || method.TianQin.HomeGong != "中" ||
 		method.TianQin.LodgingGong != "坤" || method.TianQin.Follows != "天芮" ||
@@ -279,13 +279,13 @@ func TestTianQinSpecialPositionFollowsPlateGeometry(t *testing.T) {
 		Method{Scope: ScopeDay, School: SchoolLuoShuFeiPan, Dingju: DingjuZhiRun},
 	)
 	if rotate.Board.DutyStar != StarTianQin || fly.Board.DutyStar != StarTianQin {
-		t.Fatalf("duty stars = %s/%s, want 天禽/天禽", rotate.Board.DutyStar, fly.Board.DutyStar)
+		t.Fatalf("duty stars = %s/%s, want 天禽/天禽", DecodeStarIndex(rotate.Board.DutyStar), DecodeStarIndex(fly.Board.DutyStar))
 	}
 	if got := patternPalaceByName(rotate.Patterns, "伏吟"); got != GongKun {
-		t.Fatalf("rotate TianQin FuYin palace = %s, want effective 坤", got)
+		t.Fatalf("rotate TianQin FuYin palace = %s, want effective 坤", DecodeGongIndex(got))
 	}
 	if got := patternPalaceByName(fly.Patterns, "伏吟"); got != GongZhong {
-		t.Fatalf("fly TianQin FuYin palace = %s, want real 中", got)
+		t.Fatalf("fly TianQin FuYin palace = %s, want real 中", DecodeGongIndex(got))
 	}
 }
 

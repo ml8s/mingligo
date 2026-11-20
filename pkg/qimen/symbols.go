@@ -72,12 +72,14 @@ var wuxingRelationNames = [...]string{
 	"ri_controls_shi", "shi_controls_ri",
 }
 
-func (r WuxingRelation) String() string {
-	if int(r) < len(wuxingRelationNames) {
-		return wuxingRelationNames[r]
+// DecodeWuxingRelation decodes a WuxingRelation symbol into its display text (authoritative mapping).
+func DecodeWuxingRelation(v WuxingRelation) string {
+	if int(v) < len(wuxingRelationNames) {
+		return wuxingRelationNames[v]
 	}
 	return ""
 }
+
 
 func EncodeWuxingRelation(name string) (WuxingRelation, bool) {
 	for i, n := range wuxingRelationNames {
@@ -100,12 +102,14 @@ const (
 
 var yuanLabels = [...]string{"上元", "中元", "下元"}
 
-func (y Yuan) String() string {
-	if int(y) < len(yuanLabels) {
-		return yuanLabels[y]
+// DecodeYuan decodes a Yuan symbol into its display text (authoritative mapping).
+func DecodeYuan(v Yuan) string {
+	if int(v) < len(yuanLabels) {
+		return yuanLabels[v]
 	}
 	return ""
 }
+
 
 func EncodeYuan(name string) (Yuan, bool) {
 	for i, n := range yuanLabels {
@@ -130,12 +134,14 @@ const (
 var zhiRunStateNamesByKey = [...]string{"", "exact", "ahead", "behind", "repeat"}
 var zhiRunStateLabels = [...]string{"", "正授", "超神", "接气", "置闰"}
 
-func (s ZhiRunState) String() string {
-	if int(s) < len(zhiRunStateLabels) {
-		return zhiRunStateLabels[s]
+// DecodeZhiRunState decodes a ZhiRunState symbol into its display text (authoritative mapping).
+func DecodeZhiRunState(v ZhiRunState) string {
+	if int(v) < len(zhiRunStateLabels) {
+		return zhiRunStateLabels[v]
 	}
 	return ""
 }
+
 
 func (s ZhiRunState) Key() string {
 	if int(s) < len(zhiRunStateNamesByKey) {
@@ -164,14 +170,16 @@ const (
 
 var dunSourceNames = [...]string{"hour_branch", "solar_term"}
 
-func (d DunSource) String() string {
-	if int(d) < len(dunSourceNames) {
-		return dunSourceNames[d]
+// DecodeDunSource decodes a DunSource symbol into its display text (authoritative mapping).
+func DecodeDunSource(v DunSource) string {
+	if int(v) < len(dunSourceNames) {
+		return dunSourceNames[v]
 	}
 	return ""
 }
 
-func (d DunSource) MarshalJSON() ([]byte, error) { return json.Marshal(d.String()) }
+
+func (d DunSource) MarshalJSON() ([]byte, error) { return json.Marshal(DecodeDunSource(d)) }
 
 func EncodeDunSource(name string) (DunSource, bool) {
 	for i, n := range dunSourceNames {
@@ -193,14 +201,16 @@ const (
 
 var hourBoundaryNames = [...]string{"late_zi", "zi_zheng"}
 
-func (h HourBoundary) String() string {
-	if int(h) < len(hourBoundaryNames) {
-		return hourBoundaryNames[h]
+// DecodeHourBoundary decodes a HourBoundary symbol into its display text (authoritative mapping).
+func DecodeHourBoundary(v HourBoundary) string {
+	if int(v) < len(hourBoundaryNames) {
+		return hourBoundaryNames[v]
 	}
 	return ""
 }
 
-func (h HourBoundary) MarshalJSON() ([]byte, error) { return json.Marshal(h.String()) }
+
+func (h HourBoundary) MarshalJSON() ([]byte, error) { return json.Marshal(DecodeHourBoundary(h)) }
 
 func EncodeHourBoundary(name string) (HourBoundary, bool) {
 	for i, n := range hourBoundaryNames {
@@ -233,7 +243,9 @@ func EncodeDingjuMethod(value string) (DingjuMethod, error) {
 	}
 }
 
-func (m DingjuMethod) String() string { return string(m) }
+// DecodeDingjuMethod decodes a DingjuMethod symbol into its display text.
+func DecodeDingjuMethod(v DingjuMethod) string { return string(v) }
+
 
 // QuarterRule selects a named Kejia time-division rule.
 type QuarterRule string
@@ -255,7 +267,9 @@ func EncodeQuarterRule(value string) (QuarterRule, error) {
 	}
 }
 
-func (r QuarterRule) String() string { return string(r) }
+// DecodeQuarterRule decodes a QuarterRule symbol into its display text.
+func DecodeQuarterRule(v QuarterRule) string { return string(v) }
+
 
 // Scope selects the chart's time layer and duty pillar.
 type Scope string
@@ -278,7 +292,9 @@ func EncodeScope(value string) (Scope, error) {
 	}
 }
 
-func (s Scope) String() string { return string(s) }
+// DecodeScope decodes a Scope symbol into its display text.
+func DecodeScope(v Scope) string { return string(v) }
+
 
 // School selects a plate geometry and its spirit convention.
 type School string
@@ -300,7 +316,9 @@ func EncodeSchool(value string) (School, error) {
 	}
 }
 
-func (s School) String() string { return string(s) }
+// DecodeSchool decodes a School symbol into its display text.
+func DecodeSchool(v School) string { return string(v) }
+
 
 // GongIndex is a 洛书九宫 index:
 // 1=坎, 2=坤, 3=震, 4=巽, 5=中, 6=乾, 7=兑, 8=艮, 9=离.
@@ -320,15 +338,17 @@ const (
 
 var gongNames = [10]string{"", "坎", "坤", "震", "巽", "中", "乾", "兑", "艮", "离"}
 
-func (p GongIndex) String() string {
-	if p >= 1 && p <= 9 {
-		return gongNames[p]
+// DecodeGongIndex decodes a GongIndex symbol into its display text (authoritative mapping).
+func DecodeGongIndex(v GongIndex) string {
+	if v >= 1 && v <= 9 {
+		return gongNames[v]
 	}
 	return "?"
 }
 
+
 func (p GongIndex) MarshalJSON() ([]byte, error) {
-	return json.Marshal(p.String())
+	return json.Marshal(DecodeGongIndex(p))
 }
 
 func (p *GongIndex) UnmarshalJSON(data []byte) error {
@@ -362,15 +382,17 @@ const (
 
 var starNames = [10]string{"", "天蓬", "天芮", "天冲", "天辅", "天禽", "天心", "天柱", "天任", "天英"}
 
-func (s StarIndex) String() string {
-	if s >= 1 && s <= 9 {
-		return starNames[s]
+// DecodeStarIndex decodes a StarIndex symbol into its display text (authoritative mapping).
+func DecodeStarIndex(v StarIndex) string {
+	if v >= 1 && v <= 9 {
+		return starNames[v]
 	}
 	return "?"
 }
 
+
 func (s StarIndex) MarshalJSON() ([]byte, error) {
-	return json.Marshal(s.String())
+	return json.Marshal(DecodeStarIndex(s))
 }
 
 func (s *StarIndex) UnmarshalJSON(data []byte) error {
@@ -404,15 +426,17 @@ const (
 
 var doorNames = [10]string{"", "休", "生", "伤", "杜", "景", "死", "惊", "开", "中"}
 
-func (d DoorIndex) String() string {
-	if d >= 1 && d <= 9 {
-		return doorNames[d] + "门"
+// DecodeDoorIndex decodes a DoorIndex symbol into its display text (authoritative mapping).
+func DecodeDoorIndex(v DoorIndex) string {
+	if v >= 1 && v <= 9 {
+		return doorNames[v] + "门"
 	}
 	return "?"
 }
 
+
 func (d DoorIndex) MarshalJSON() ([]byte, error) {
-	return json.Marshal(d.String())
+	return json.Marshal(DecodeDoorIndex(d))
 }
 
 func (d *DoorIndex) UnmarshalJSON(data []byte) error {
@@ -506,8 +530,9 @@ func EncodeDutyStarPosition(name string) (DutyStarPosition, bool) {
 	}
 }
 
-func (d DutyStarPosition) String() string {
-	switch d {
+// DecodeDutyStarPosition decodes a DutyStarPosition symbol into its display text (authoritative mapping).
+func DecodeDutyStarPosition(v DutyStarPosition) string {
+	switch v {
 	case dspHome:
 		return "home"
 	case dspOpposite:
@@ -516,6 +541,7 @@ func (d DutyStarPosition) String() string {
 		return ""
 	}
 }
+
 
 // PillarLevel is the qimen-domain symbol for a four-pillar level.
 type PillarLevel uint8
@@ -529,14 +555,16 @@ const (
 
 var pillarLevelNames = [...]string{"year", "month", "day", "hour"}
 
-func (l PillarLevel) String() string {
-	if int(l) < len(pillarLevelNames) {
-		return pillarLevelNames[l]
+// DecodePillarLevel decodes a PillarLevel symbol into its display text (authoritative mapping).
+func DecodePillarLevel(v PillarLevel) string {
+	if int(v) < len(pillarLevelNames) {
+		return pillarLevelNames[v]
 	}
 	return ""
 }
 
-func (l PillarLevel) MarshalJSON() ([]byte, error) { return json.Marshal(l.String()) }
+
+func (l PillarLevel) MarshalJSON() ([]byte, error) { return json.Marshal(DecodePillarLevel(l)) }
 
 func EncodePillarLevel(name string) (PillarLevel, bool) {
 	for i, n := range pillarLevelNames {

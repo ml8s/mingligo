@@ -150,7 +150,7 @@ func TestLiuYiJiXingUsesPalaceBoundConditions(t *testing.T) {
 	for i, expected := range want {
 		condition := rule.Conditions[i]
 		if len(condition.HeavenGan) != 1 || condition.HeavenGan[0].String() != expected.heavenGan ||
-			len(condition.Palaces) != 1 || condition.Palaces[0].String() != expected.palace ||
+			len(condition.Palaces) != 1 || DecodeGongIndex(condition.Palaces[0]) != expected.palace ||
 			len(condition.EarthGan) != 0 || len(condition.Doors) != 0 || len(condition.Spirits) != 0 {
 			t.Fatalf("六仪击刑 condition %d = %+v, want %s at %s", i, condition, expected.heavenGan, expected.palace)
 		}
@@ -185,7 +185,7 @@ func TestSanQiRuMuUsesPalaceBoundConditions(t *testing.T) {
 	for i, expected := range want {
 		condition := rule.Conditions[i]
 		if len(condition.HeavenGan) != 1 || condition.HeavenGan[0].String() != expected.heavenGan ||
-			len(condition.Palaces) != 1 || condition.Palaces[0].String() != expected.palace ||
+			len(condition.Palaces) != 1 || DecodeGongIndex(condition.Palaces[0]) != expected.palace ||
 			len(condition.EarthGan) != 0 || len(condition.Doors) != 0 || len(condition.Spirits) != 0 {
 			t.Fatalf("三奇入墓 condition %d = %+v, want %s at %s", i, condition, expected.heavenGan, expected.palace)
 		}
@@ -218,8 +218,8 @@ func assertPatternGoldenVector(t *testing.T, vector patternGoldenVector) {
 			t.Fatalf("%s pattern palaces = %+v, want %+v", vector.ID, pattern.GongWei, vector.ExpectedPalaces)
 		}
 		for i, want := range vector.ExpectedPalaces {
-			if pattern.GongWei[i].String() != want {
-				t.Fatalf("%s palace %d = %s, want %s", vector.ID, i, pattern.GongWei[i], want)
+			if DecodeGongIndex(pattern.GongWei[i]) != want {
+				t.Fatalf("%s palace %d = %s, want %s", vector.ID, i, DecodeGongIndex(pattern.GongWei[i]), want)
 			}
 		}
 	}

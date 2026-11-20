@@ -133,7 +133,7 @@ func assertExternalChart(t *testing.T, chart Chart, anchor externalAnchor) {
 	if chart.Method.LeadXunShou.LiuYi != anchor.XunShou {
 		t.Errorf("xun shou = %s, want %s", chart.Method.LeadXunShou.LiuYi, anchor.XunShou)
 	}
-	if got := chart.Board.DutyStar.String(); got != anchor.DutyStar {
+	if got := DecodeStarIndex(chart.Board.DutyStar); got != anchor.DutyStar {
 		t.Errorf("duty star = %s, want %s", got, anchor.DutyStar)
 	}
 	if got := int(chart.Method.LeadXunShouGong); got != anchor.XunShouGong {
@@ -184,7 +184,7 @@ func assertExternalPalaceLayers(
 		if item.Star == wantStar {
 			foundStar = true
 			if got := item.Gan.String(); got != string(runes[0]) {
-				t.Errorf("palace %d %s heaven gan = %s, want %s", palaceNumber, wantStar, got, string(runes[0]))
+				t.Errorf("palace %d %s heaven gan = %s, want %s", palaceNumber, DecodeStarIndex(wantStar), got, string(runes[0]))
 			}
 		}
 		if wantStar == StarTianRui && item.Star == StarTianQin {
@@ -195,7 +195,7 @@ func assertExternalPalaceLayers(
 		}
 	}
 	if !foundStar {
-		t.Errorf("palace %d lacks star %s", palaceNumber, wantStar)
+		t.Errorf("palace %d lacks star %s", palaceNumber, DecodeStarIndex(wantStar))
 	}
 	if wantStar == StarTianRui && !foundQin {
 		t.Errorf("palace %d lacks explicit TianQin fact", palaceNumber)
@@ -205,7 +205,7 @@ func assertExternalPalaceLayers(
 		t.Fatalf("palace %d door: %v", palaceNumber, err)
 	}
 	if palace.Door != wantDoor {
-		t.Errorf("palace %d door = %s, want %s", palaceNumber, palace.Door, wantDoor)
+		t.Errorf("palace %d door = %s, want %s", palaceNumber, DecodeDoorIndex(palace.Door), DecodeDoorIndex(wantDoor))
 	}
 	if palace.Spirit != externalAnchorSpirits[runes[5]] {
 		t.Errorf("palace %d spirit slot = %d, want %d", palaceNumber, palace.Spirit, externalAnchorSpirits[runes[5]])

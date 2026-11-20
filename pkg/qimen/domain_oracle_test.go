@@ -66,7 +66,7 @@ func TestDomainOracle_QimenAll72Ju(t *testing.T) {
 			}
 			for i, want := range tc.Expected {
 				item := got.Candidates[i]
-				if item.Type != want.Type || item.Branch != want.Branch || item.Gong.String() != want.Gong {
+				if item.Type != want.Type || item.Branch != want.Branch || DecodeGongIndex(item.Gong) != want.Gong {
 					t.Fatalf("candidate %d = %+v, want %+v", i, item, want)
 				}
 			}

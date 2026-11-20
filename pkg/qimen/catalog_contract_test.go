@@ -175,22 +175,22 @@ func TestQimenClosedMethodCatalogCombinations(t *testing.T) {
 func TestPublicQimenDomainAxesDoNotContainProjectNames(t *testing.T) {
 	projectNames := regexp.MustCompile(`(?i)horosa|kinqimen|atopx|potuo|mingyu|deminzhang|大师奇门`)
 	for scope, entry := range scopeMethods {
-		if projectNames.MatchString(scope.String()) || projectNames.MatchString(entry.Name) {
+		if projectNames.MatchString(DecodeScope(scope)) || projectNames.MatchString(entry.Name) {
 			t.Fatalf("scope %q contains a project name", scope)
 		}
 		for _, method := range entry.DingjuMethods {
-			if projectNames.MatchString(method.String()) || projectNames.MatchString(dingjuMethodNames[method]) {
+			if projectNames.MatchString(DecodeDingjuMethod(method)) || projectNames.MatchString(dingjuMethodNames[method]) {
 				t.Fatalf("public dingju method %q contains a project name", method)
 			}
 		}
 		for _, rule := range entry.QuarterRules {
-			if projectNames.MatchString(rule.String()) || projectNames.MatchString(quarterRuleNames[rule]) {
+			if projectNames.MatchString(DecodeQuarterRule(rule)) || projectNames.MatchString(quarterRuleNames[rule]) {
 				t.Fatalf("public quarter rule %q contains a project name", rule)
 			}
 		}
 	}
 	for school, entry := range schoolMethods {
-		if projectNames.MatchString(school.String()) || projectNames.MatchString(entry.Name) {
+		if projectNames.MatchString(DecodeSchool(school)) || projectNames.MatchString(entry.Name) {
 			t.Fatalf("school %q contains a project name", school)
 		}
 	}

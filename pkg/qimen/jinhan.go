@@ -117,7 +117,7 @@ func layoutJinhanDoors(plate *JinhanBoard, dayZhu ganzhi.Zhu, yinDun bool) {
 	sequence := rotatePalaces(ring, start)
 	for i, door := range jinhanDoorOrder {
 		palace := sequence[i]
-		plate.GongWei[int(palace)-1].Men = door.String()
+		plate.GongWei[int(palace)-1].Men = DecodeDoorIndex(door)
 		plate.GongWei[int(palace)-1].MenPresent = true
 	}
 }

@@ -12,14 +12,14 @@ func TestPalaceIdentityAndBranchFacts(t *testing.T) {
 	chart := chartForTest()
 	for i, palace := range chart.Board.GongWei {
 		expected := GongIndex(i + 1)
-		if palace.Gong.Name != expected.String() || palace.Gong.Luoshu != int(expected) {
+		if palace.Gong.Name != DecodeGongIndex(expected) || palace.Gong.Luoshu != int(expected) {
 			t.Fatalf("palace[%d] identity = %+v", i, palace.Gong)
 		}
 		if expected == GongZhong && palace.Gong.RingIndex != nil {
 			t.Fatal("central palace must not claim an outer-ring index")
 		}
 		if expected != GongZhong && palace.Gong.RingIndex == nil {
-			t.Fatalf("%s lacks ring index", expected)
+			t.Fatalf("%s lacks ring index", DecodeGongIndex(expected))
 		}
 	}
 	for _, void := range chart.Board.KongWang {
@@ -88,7 +88,7 @@ func TestComputeChartWithYongShenProjectsTiming(t *testing.T) {
 			}
 		}
 		if !found {
-			t.Fatalf("candidate at %s lacks 生门 focus: %+v", palace, candidate)
+			t.Fatalf("candidate at %s lacks 生门 focus: %+v", DecodeGongIndex(palace), candidate)
 		}
 	}
 }
@@ -98,7 +98,7 @@ func TestTableDrivenSpiritNamesAndRelations(t *testing.T) {
 		t.Fatal("slot-5 spirit school names are not table-driven")
 	}
 	if got := xingGongRelation(StarTianRui, GongGen); got != wrSame {
-		t.Fatalf("TianRui/Gen relation = %s, want same", got)
+		t.Fatalf("TianRui/Gen relation = %s, want same", DecodeWuxingRelation(got))
 	}
 	if wuxingRelations[wrSame].TraditionalLabel != "旺" {
 		t.Fatal("same-element traditional label is missing")

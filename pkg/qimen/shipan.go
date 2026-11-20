@@ -160,8 +160,8 @@ func buildChartMethod(ju juShu, bz ganzhi.Bazi) ChartMethod {
 		SpiritMode: school.SpiritMode, Geometry: school.Geometry,
 		StarMode: school.StarMode, DoorMode: school.DoorMode,
 		SpiritFlight: school.SpiritFlight,
-		JieQi:        ju.JieQi.String(), YongJuJieQi: ju.YongJuJieQi, Yuan: ju.Yuan.String(),
-		ZhiRunState:     ju.ZhiRunState.String(),
+		JieQi:        ju.JieQi.String(), YongJuJieQi: ju.YongJuJieQi, Yuan: DecodeYuan(ju.Yuan),
+		ZhiRunState:     DecodeZhiRunState(ju.ZhiRunState),
 		TianQin:         tianQin,
 		LeadPillar:      newPillarInfo(leadZhu),
 		LeadXunShou:     xunShouInfo,
@@ -315,7 +315,7 @@ func analyzeRiShiRelation(dayPalace, hourPalace GongIndex) RiShiRelation {
 	}
 	return RiShiRelation{
 		Zhu: "day_stem_palace", Ke: "hour_stem_palace",
-		Relation: relation.String(), Name: riShiRelations[relation],
+		Relation: DecodeWuxingRelation(relation), Name: riShiRelations[relation],
 	}
 }
 

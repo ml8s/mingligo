@@ -8,7 +8,7 @@ import (
 )
 
 func TestMingFaCatalogAndResolver(t *testing.T) {
-	if SchoolMingFaFeiPan.String() != "mingfa_feipan" {
+	if DecodeSchool(SchoolMingFaFeiPan) != "mingfa_feipan" {
 		t.Fatalf("Ming Fa school = %s", SchoolMingFaFeiPan)
 	}
 	got, err := ResolveMethod("hour", "mingfa_feipan", "", "")
@@ -33,12 +33,12 @@ func TestMingFaCatalogAndResolver(t *testing.T) {
 }
 
 func TestMingFaDoorIndex(t *testing.T) {
-	if DoorZhong.String() != "中门" {
-		t.Fatalf("center door = %s", DoorZhong)
+	if DecodeDoorIndex(DoorZhong) != "中门" {
+		t.Fatalf("center door = %s", DecodeDoorIndex(DoorZhong))
 	}
 	parsed, err := EncodeDoorIndex("中门")
 	if err != nil || parsed != DoorZhong {
-		t.Fatalf("EncodeDoorIndex(中门) = %v, %v; want %v", parsed, err, DoorZhong)
+		t.Fatalf("EncodeDoorIndex(中门) = %v, %v; want %v", parsed, err, DecodeDoorIndex(DoorZhong))
 	}
 }
 
@@ -141,8 +141,8 @@ func TestMingFaReferenceAnchors(t *testing.T) {
 					t.Fatalf("kong wang = %s, want %s", got, *anchor.KongWang)
 				}
 			}
-			if anchor.DutyStar != nil && chart.Board.DutyStar.String() != *anchor.DutyStar {
-				t.Fatalf("duty star = %s, want %s", chart.Board.DutyStar, *anchor.DutyStar)
+			if anchor.DutyStar != nil && DecodeStarIndex(chart.Board.DutyStar) != *anchor.DutyStar {
+				t.Fatalf("duty star = %s, want %s", DecodeStarIndex(chart.Board.DutyStar), *anchor.DutyStar)
 			}
 			if anchor.DutySource != nil && int(chart.Method.LeadXunShouGong) != *anchor.DutySource {
 				t.Fatalf("duty source = %d, want %d", chart.Method.LeadXunShouGong, *anchor.DutySource)
@@ -150,8 +150,8 @@ func TestMingFaReferenceAnchors(t *testing.T) {
 			if anchor.DutyLand != nil && int(chart.Board.DutyStarPalace) != *anchor.DutyLand {
 				t.Fatalf("duty land = %d, want %d", chart.Board.DutyStarPalace, *anchor.DutyLand)
 			}
-			if anchor.DutyDoor != nil && chart.Board.DutyDoor.String() != *anchor.DutyDoor {
-				t.Fatalf("duty door = %s, want %s", chart.Board.DutyDoor, *anchor.DutyDoor)
+			if anchor.DutyDoor != nil && DecodeDoorIndex(chart.Board.DutyDoor) != *anchor.DutyDoor {
+				t.Fatalf("duty door = %s, want %s", DecodeDoorIndex(chart.Board.DutyDoor), *anchor.DutyDoor)
 			}
 			if anchor.DoorLand != nil && int(chart.Board.DutyDoorPalace) != *anchor.DoorLand {
 				t.Fatalf("door land = %d, want %d", chart.Board.DutyDoorPalace, *anchor.DoorLand)
@@ -208,8 +208,8 @@ func TestMingFaCheckedInAnchor(t *testing.T) {
 	if chart.Board.DutyStar != StarTianChong || chart.Method.LeadXunShouGong != GongZhen ||
 		chart.Board.DutyStarPalace != GongZhen || chart.Board.DutyDoor != DoorShang ||
 		chart.Board.DutyDoorPalace != GongZhen {
-		t.Fatalf("duty = %s/%d %s/%d", chart.Board.DutyStar, chart.Board.DutyStarPalace,
-			chart.Board.DutyDoor, chart.Board.DutyDoorPalace)
+		t.Fatalf("duty = %s/%d %s/%d", DecodeStarIndex(chart.Board.DutyStar), chart.Board.DutyStarPalace,
+			DecodeDoorIndex(chart.Board.DutyDoor), chart.Board.DutyDoorPalace)
 	}
 
 	wants := [9]mingfaPalaceWant(anchor.Palaces)
@@ -224,8 +224,8 @@ func TestMingFaCheckedInAnchor(t *testing.T) {
 			spirits++
 		}
 		if len(palace.TianPan) != 1 || palace.TianPan[0].Gan.String() != want.Heaven ||
-			palace.TianPan[0].Star.String() != want.Star || palace.DiPanGan.String() != want.Earth ||
-			palace.Door.String() != want.Door || spiritDisplayName(palace.Spirit, true, SchoolMingFaFeiPan) != want.Spirit ||
+			DecodeStarIndex(palace.TianPan[0].Star) != want.Star || palace.DiPanGan.String() != want.Earth ||
+			DecodeDoorIndex(palace.Door) != want.Door || spiritDisplayName(palace.Spirit, true, SchoolMingFaFeiPan) != want.Spirit ||
 			palace.HiddenPillar != want.HiddenPillar || palace.AnGan.String() != string([]rune(want.HiddenPillar)[0]) {
 			t.Fatalf("palace %d = %+v, want %+v", i+1, palace, want)
 		}

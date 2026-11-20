@@ -638,7 +638,7 @@ func loadCatalog() error {
 		if _, exists := scopeMethods[scope]; exists {
 			return fmt.Errorf("load catalog: duplicate scope %q", entry.Scope)
 		}
-		if entry.Name == "" || entry.LeadPillar != scope.String() {
+		if entry.Name == "" || entry.LeadPillar != DecodeScope(scope) {
 			return fmt.Errorf("load catalog: invalid scope %q", entry.Scope)
 		}
 		switch entry.MethodSource {
@@ -971,7 +971,7 @@ func loadTenMinuteQuarter(entry quarterJSONEntry) error {
 func loadTwelveMinuteQuarter(entry quarterJSONEntry, variant quarterVariant) (quarterVariant, error) {
 	if len(entry.BaseDingjuMethods) != 3 || entry.JuShift == nil ||
 		entry.Minutes != 12 || entry.Count != 10 || entry.LeadPillarMode != "hour" ||
-		entry.BaseScope != ScopeHour.String() || entry.BaseSchool != SchoolZhuanPan.String() ||
+		entry.BaseScope != DecodeScope(ScopeHour) || entry.BaseSchool != DecodeSchool(SchoolZhuanPan) ||
 		len(entry.DunSources) != 2 || len(entry.HourBoundaries) != 2 ||
 		entry.JuShift.Cycle != 9 || entry.JuShift.YangStep != 1 || entry.JuShift.YinStep != -1 {
 		return variant, fmt.Errorf("load quarter: invalid twelve-minute rule")
@@ -1851,7 +1851,7 @@ func loadJinhan() error {
 	if err := json.Unmarshal(jinhanJSON, &table); err != nil {
 		return err
 	}
-	if table.Method != SchoolJinhanYuJing.String() || dingjuMethodNames[DingjuNone] == "" ||
+	if table.Method != DecodeSchool(SchoolJinhanYuJing) || dingjuMethodNames[DingjuNone] == "" ||
 		table.MethodSource == "" || table.DunSource == "" || table.Basis == "" || table.DoorDays != 3 {
 		return fmt.Errorf("load jinhan: invalid rule")
 	}

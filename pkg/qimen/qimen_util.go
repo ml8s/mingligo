@@ -30,7 +30,7 @@ func palaceIdentity(p GongIndex) PalaceIdentity {
 	if p < 1 || p > 9 {
 		return PalaceIdentity{Name: "?", Luoshu: int(p)}
 	}
-	identity := PalaceIdentity{Name: p.String(), Luoshu: int(p)}
+	identity := PalaceIdentity{Name: DecodeGongIndex(p), Luoshu: int(p)}
 	if ringIndex := outerRingIndex(p); ringIndex >= 0 {
 		value := ringIndex
 		identity.RingIndex = &value

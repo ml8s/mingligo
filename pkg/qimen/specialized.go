@@ -80,7 +80,7 @@ func computeGengGeFacts(chart Chart, bz ganzhi.Bazi) []GengGeFact {
 			if int(interaction.Gong) >= 1 && int(interaction.Gong) <= len(chart.Board.GongWei) {
 				palace := chart.Board.GongWei[int(interaction.Gong)-1]
 				if palace.DoorSet && palace.Door != 0 {
-					door = palace.Door.String()
+					door = DecodeDoorIndex(palace.Door)
 				}
 			}
 			result = append(result, GengGeFact{
@@ -125,7 +125,7 @@ func computeLostContextFacts(chart Chart) []LostContextFact {
 	if int(palace) >= 1 && int(palace) <= len(chart.Board.GongWei) {
 		item := chart.Board.GongWei[int(palace)-1]
 		if item.DoorSet && item.Door != 0 {
-			door = item.Door.String()
+			door = DecodeDoorIndex(item.Door)
 		}
 	}
 	return []LostContextFact{{

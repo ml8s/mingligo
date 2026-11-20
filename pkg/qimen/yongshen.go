@@ -119,13 +119,13 @@ func resolveNianGanFacts(chart Chart, nian ganzhi.Zhu) []GanGongFact {
 func symbolName(s YongShenSymbol, chart Chart) string {
 	switch {
 	case s.Door != nil:
-		return s.Door.String()
+		return DecodeDoorIndex(*s.Door)
 	case s.Star != nil:
-		return s.Star.String()
+		return DecodeStarIndex(*s.Star)
 	case s.Spirit != nil:
 		return spiritDisplayName(*s.Spirit, chart.Board.YinDun, chart.Board.School)
 	case s.Gan != nil:
-		return s.Gan.String()
+		return ganzhi.GanName(*s.Gan)
 	}
 	return ""
 }

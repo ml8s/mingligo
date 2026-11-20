@@ -117,7 +117,7 @@ func TestDomainOracle_QimenSpecializedContext(t *testing.T) {
 			}
 			for index, want := range tc.Expected {
 				fact := got[index]
-				if fact.Level.String() != want.Level || fact.Gong.String() != want.Gong || fact.EarthGan.String() != want.EarthGan {
+				if DecodePillarLevel(fact.Level) != want.Level || DecodeGongIndex(fact.Gong) != want.Gong || fact.EarthGan.String() != want.EarthGan {
 					t.Fatalf("row %d = %#v, want %#v", index, fact, want)
 				}
 			}
@@ -132,7 +132,7 @@ func TestDomainOracle_QimenSpecializedContext(t *testing.T) {
 			chart.Board.GongWei[palace-1].DoorSet = true
 			chart.Board.GongWei[palace-1].Door = oracleDoor(t, tc.Door)
 			got := computeSpecializedContext(chart, ganzhi.Bazi{}).LostContext
-			if len(got) != 1 || got[0].Gong.String() != tc.Expected[0].Gong ||
+			if len(got) != 1 || DecodeGongIndex(got[0].Gong) != tc.Expected[0].Gong ||
 				got[0].Door != tc.Expected[0].Door || got[0].WangShuai != tc.Expected[0].WangShuai {
 				t.Fatalf("lost = %#v, want %#v", got, tc.Expected)
 			}
@@ -143,7 +143,7 @@ func TestDomainOracle_QimenSpecializedContext(t *testing.T) {
 		t.Run("thief/"+tc.ID, func(t *testing.T) {
 			gong := oracleGong(t, tc.Gong)
 			chart := Chart{}
-			chart.Board.GongWei[gong-1].Gong = PalaceIdentity{Name: gong.String()}
+			chart.Board.GongWei[gong-1].Gong = PalaceIdentity{Name: DecodeGongIndex(gong)}
 			if tc.Star != nil && *tc.Star == "天蓬" {
 				chart.Board.GongWei[gong-1].TianPan = append(chart.Board.GongWei[gong-1].TianPan, TianPanSymbol{Star: StarTianPeng})
 				chart.XingGongWuXing = append(chart.XingGongWuXing, XingGongWuXing{
@@ -214,7 +214,7 @@ func oracleWangShuai(t *testing.T, name string) ganzhi.WangShuai {
 func oracleDoor(t *testing.T, name string) DoorIndex {
 	t.Helper()
 	for index := DoorXiu; index <= DoorZhong; index++ {
-		if index.String() == name {
+		if DecodeDoorIndex(index) == name {
 			return index
 		}
 	}

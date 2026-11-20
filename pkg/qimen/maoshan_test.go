@@ -6,7 +6,7 @@ import (
 )
 
 func TestMaoShanCatalogAndResolver(t *testing.T) {
-	if DingjuMaoShan.String() != "maoshan" {
+	if DecodeDingjuMethod(DingjuMaoShan) != "maoshan" {
 		t.Fatalf("Mao Shan dingju method = %s", DingjuMaoShan)
 	}
 	got, err := ResolveMethod("hour", "zhuanpan", "maoshan", "")

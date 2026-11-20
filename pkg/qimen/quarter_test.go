@@ -228,8 +228,8 @@ func TestTwelveMinuteTenDivisionDunSourceOptions(t *testing.T) {
 			t.Fatal(err)
 		}
 		if chart.Board.YinDun != want.yin || chart.Board.Jushu != want.ju ||
-			chart.Method.Quarter.DunSource.String() != want.dun ||
-			chart.Method.Quarter.HourBoundary.String() != want.boundary {
+			DecodeDunSource(chart.Method.Quarter.DunSource) != want.dun ||
+			DecodeHourBoundary(chart.Method.Quarter.HourBoundary) != want.boundary {
 			t.Fatalf("options %s/%s = %d/%v/%+v", want.dun, want.boundary,
 				chart.Board.Jushu, chart.Board.YinDun, chart.Method.Quarter)
 		}
@@ -331,10 +331,10 @@ func TestTenMinuteQuarterGoldenVectors(t *testing.T) {
 			if got := chart.Method.LeadXunShou.Name; got != want.XunShou {
 				t.Fatalf("lead xun shou = %s, want %s", got, want.XunShou)
 			}
-			if got := chart.Board.DutyStar.String(); got != want.DutyStar {
+			if got := DecodeStarIndex(chart.Board.DutyStar); got != want.DutyStar {
 				t.Fatalf("duty star = %s, want %s", got, want.DutyStar)
 			}
-			if got := chart.Board.DutyDoor.String(); got != want.DutyDoor {
+			if got := DecodeDoorIndex(chart.Board.DutyDoor); got != want.DutyDoor {
 				t.Fatalf("duty door = %s, want %s", got, want.DutyDoor)
 			}
 		})
@@ -384,8 +384,8 @@ func TestTwelveMinuteTenDivisionQuarterGoldenVectors(t *testing.T) {
 			if chart.Method.Quarter == nil || chart.Method.Quarter.Index != want.QuarterIndex ||
 				chart.Method.Quarter.MinutesPerQuarter != 12 ||
 				chart.Method.Quarter.LeadPillarMode != "hour" ||
-				chart.Method.Quarter.DunSource.String() != want.DunSource ||
-				chart.Method.Quarter.HourBoundary.String() != want.HourBoundary {
+				DecodeDunSource(chart.Method.Quarter.DunSource) != want.DunSource ||
+				DecodeHourBoundary(chart.Method.Quarter.HourBoundary) != want.HourBoundary {
 				t.Fatalf("quarter metadata = %+v, want index %d/12min/hour lead", chart.Method.Quarter, want.QuarterIndex)
 			}
 			if got := chart.Method.LeadPillar.Name; got != want.Hour || got != want.Lead {

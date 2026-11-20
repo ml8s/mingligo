@@ -115,7 +115,7 @@ func TestGanGongFactsPreserveHeavenAndEarthLayers(t *testing.T) {
 		t.Fatalf("gan palace facts = %+v, want heaven@坤 and earth@坎", got)
 	}
 	if primary := findGanPalaceIdx(p, heavenMoving); primary != GongKun {
-		t.Fatalf("primary palace = %s, want heaven-first 坤", primary)
+		t.Fatalf("primary palace = %s, want heaven-first 坤", DecodeGongIndex(primary))
 	}
 }
 
@@ -154,13 +154,13 @@ func TestMenInteractionTableContract(t *testing.T) {
 		if entry.Name == "" || entry.Meaning == "" {
 			t.Fatalf("men interaction %+v lacks name or meaning", key)
 		}
-		if !strings.Contains(entry.Name, GongIndex(key[1]+1).String()) {
+		if !strings.Contains(entry.Name, DecodeGongIndex(GongIndex(key[1]+1))) {
 			t.Fatalf("men interaction %+v name %q lacks gong", key, entry.Name)
 		}
 	}
 	for door, want := range wantCounts {
 		if counts[door] != want {
-			t.Fatalf("door %s interaction count = %d, want %d", door, counts[door], want)
+			t.Fatalf("door %s interaction count = %d, want %d", DecodeDoorIndex(door), counts[door], want)
 		}
 	}
 }
@@ -201,7 +201,7 @@ func TestXingInteractionTableContract(t *testing.T) {
 	}
 	for star, want := range wantCounts {
 		if counts[star] != want {
-			t.Fatalf("star %s interaction count = %d, want %d", star, counts[star], want)
+			t.Fatalf("star %s interaction count = %d, want %d", DecodeStarIndex(star), counts[star], want)
 		}
 	}
 }

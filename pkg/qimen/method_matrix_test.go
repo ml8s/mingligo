@@ -34,7 +34,7 @@ func TestParseMethodMatrix(t *testing.T) {
 	}
 	for _, method := range validMatrix {
 		tc := method
-		got, err := EncodeMethod(tc.Scope.String(), tc.School.String(), tc.Dingju.String(), "")
+		got, err := EncodeMethod(DecodeScope(tc.Scope), DecodeSchool(tc.School), DecodeDingjuMethod(tc.Dingju), "")
 		if err != nil {
 			t.Fatalf("EncodeMethod(%q,%q,%q): %v", tc.Scope, tc.School, tc.Dingju, err)
 		}
@@ -406,7 +406,7 @@ func TestMethodMatrixExternalAnchors(t *testing.T) {
 				t.Fatal(err)
 			}
 			chart := computeMethodChartForTest(t, anchor.When, method)
-			if chart.Method.Scope != method.Scope.String() || chart.Method.School != method.School.String() {
+			if chart.Method.Scope != DecodeScope(method.Scope) || chart.Method.School != DecodeSchool(method.School) {
 				t.Fatalf("method = %s/%s", chart.Method.Scope, chart.Method.School)
 			}
 			if chart.Method.JieQi != anchor.ActualJieQi || chart.Method.YongJuJieQi != anchor.YongJuJieQi ||
@@ -426,7 +426,7 @@ func TestMethodMatrixExternalAnchors(t *testing.T) {
 			if got := ganzhi.ZhiName(chart.Board.KongWang[0].Branch) + ganzhi.ZhiName(chart.Board.KongWang[1].Branch); got != anchor.KongWang {
 				t.Fatalf("kong wang = %s, want %s", got, anchor.KongWang)
 			}
-			if got := chart.Board.DutyStar.String(); got != anchor.DutyStar {
+			if got := DecodeStarIndex(chart.Board.DutyStar); got != anchor.DutyStar {
 				t.Fatalf("duty star = %s, want %s", got, anchor.DutyStar)
 			}
 			if got := int(chart.Method.LeadXunShouGong); got != anchor.DutySource {
@@ -435,7 +435,7 @@ func TestMethodMatrixExternalAnchors(t *testing.T) {
 			if got := int(chart.Board.DutyStarPalace); got != anchor.DutyLand {
 				t.Fatalf("duty landing = %d, want %d", got, anchor.DutyLand)
 			}
-			if got := chart.Board.DutyDoor.String(); got != anchor.DutyDoor {
+			if got := DecodeDoorIndex(chart.Board.DutyDoor); got != anchor.DutyDoor {
 				t.Fatalf("duty door = %s, want %s", got, anchor.DutyDoor)
 			}
 			if got := int(chart.Board.DutyDoorPalace); got != anchor.DoorLand {
@@ -552,7 +552,7 @@ func assertMethodCrossValidation(
 			t.Fatalf("cross core palace %d has no heaven layer", i+1)
 		}
 		got := palace.TianPan[0].Gan.String() + palace.DiPanGan.String() +
-			string([]rune(palace.TianPan[0].Star.String())[1])
+			string([]rune(DecodeStarIndex(palace.TianPan[0].Star))[1])
 		if got != want {
 			t.Fatalf("cross core palace %d = %s, want %s", i+1, got, want)
 		}
@@ -569,7 +569,7 @@ func assertMethodCrossValidation(
 			}
 			want := validation.OuterDoors[doorIndex]
 			doorIndex++
-			if string([]rune(palace.Door.String())[0]) != want {
+			if string([]rune(DecodeDoorIndex(palace.Door))[0]) != want {
 				t.Fatalf("cross outer door %d = %v, want %s", i+1, palace.Door, want)
 			}
 		}
@@ -613,7 +613,7 @@ func TestMethodMatrixCombinationInvariants(t *testing.T) {
 		{Scope: ScopeYear, School: SchoolZhuanPan},
 		{Scope: ScopeYear, School: SchoolLuoShuFeiPan},
 	} {
-		t.Run(method.Scope.String()+"/"+method.School.String()+"/"+method.Dingju.String(), func(t *testing.T) {
+		t.Run(DecodeScope(method.Scope)+"/"+DecodeSchool(method.School)+"/"+DecodeDingjuMethod(method.Dingju), func(t *testing.T) {
 			chart := computeMethodChartForTest(t, "2026-03-02 18:30", method)
 			gt, st := methodTimesForTest(t, "2026-03-02 18:30")
 			bz := tianwen.ComputeBazi(gt, st)
@@ -643,7 +643,7 @@ func TestMethodMatrixCombinationInvariants(t *testing.T) {
 			} else if stars != 9 || doors != 8 || spirits != 8 {
 				t.Fatalf("rotate layer counts = %d/%d/%d, want 9/8/8", stars, doors, spirits)
 			}
-			if chart.Method.Scope != method.Scope.String() || chart.Method.School != method.School.String() {
+			if chart.Method.Scope != DecodeScope(method.Scope) || chart.Method.School != DecodeSchool(method.School) {
 				t.Fatalf("method metadata = %s/%s", chart.Method.Scope, chart.Method.School)
 			}
 		})
@@ -666,10 +666,10 @@ func assertMethodPalaces(t *testing.T, chart Chart, specs [9]string) {
 		}
 		starName := ""
 		if len(palace.TianPan) != 0 {
-			starName = palace.TianPan[0].Star.String()
+			starName = DecodeStarIndex(palace.TianPan[0].Star)
 		}
 		assertMethodLayer(t, i+1, "star", runes[3], len(palace.TianPan) != 0, starName, starRuneNames)
-		assertMethodLayer(t, i+1, "door", runes[4], palace.Door != 0, palace.Door.String(), doorRuneNames)
+		assertMethodLayer(t, i+1, "door", runes[4], palace.Door != 0, DecodeDoorIndex(palace.Door), doorRuneNames)
 		assertMethodLayer(
 			t, i+1, "spirit", runes[5], palace.Spirit != 0,
 			spiritNameForChart(chart, palace.Spirit),

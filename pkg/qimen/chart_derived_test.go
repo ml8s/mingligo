@@ -53,21 +53,21 @@ func TestChartDerived_Anchors(t *testing.T) {
 			if chart.Board.Jushu != c.ju || chart.Board.YinDun != c.yin {
 				t.Fatalf("ju=%d yin=%v, want %d/%v", chart.Board.Jushu, chart.Board.YinDun, c.ju, c.yin)
 			}
-			if chart.DayStemPalace.Palace.String() != c.dayGong || chart.HourStemPalace.Palace.String() != c.hourGong {
+			if DecodeGongIndex(chart.DayStemPalace.Palace) != c.dayGong || DecodeGongIndex(chart.HourStemPalace.Palace) != c.hourGong {
 				t.Fatalf("day/hour palaces = %s/%s, want %s/%s",
-					chart.DayStemPalace.Palace, chart.HourStemPalace.Palace, c.dayGong, c.hourGong)
+					DecodeGongIndex(chart.DayStemPalace.Palace), DecodeGongIndex(chart.HourStemPalace.Palace), c.dayGong, c.hourGong)
 			}
 			if chart.RiShiRelation.Relation != c.riShi {
 				t.Fatalf("ri_shi_relation = %+v, want %s", chart.RiShiRelation, c.riShi)
 			}
 			for i, want := range c.voidBranch {
 				got := chart.Board.KongWang[i]
-				if got.Branch.String() != want || got.Gong.String() != c.voidGong[i] {
-					t.Errorf("void[%d] = %s@%s, want %s@%s", i, got.Branch, got.Gong, want, c.voidGong[i])
+				if got.Branch.String() != want || DecodeGongIndex(got.Gong) != c.voidGong[i] {
+					t.Errorf("void[%d] = %s@%s, want %s@%s", i, got.Branch, DecodeGongIndex(got.Gong), want, c.voidGong[i])
 				}
 			}
-			if chart.Board.MaXing.Branch.String() != c.horse || chart.Board.MaXing.Gong.String() != c.horseGong {
-				t.Errorf("horse = %s@%s, want %s@%s", chart.Board.MaXing.Branch, chart.Board.MaXing.Gong, c.horse, c.horseGong)
+			if chart.Board.MaXing.Branch.String() != c.horse || DecodeGongIndex(chart.Board.MaXing.Gong) != c.horseGong {
+				t.Errorf("horse = %s@%s, want %s@%s", chart.Board.MaXing.Branch, DecodeGongIndex(chart.Board.MaXing.Gong), c.horse, c.horseGong)
 			}
 		})
 	}
@@ -91,7 +91,7 @@ func TestGongWangShuaiUsesMonthBranch(t *testing.T) {
 	}
 	for _, item := range chart.GongWangShuai {
 		if item.WangShuai != want[item.Gong] {
-			t.Fatalf("%s wangshuai = %s, want %s", item.Gong.String(), item.WangShuai.String(), want[item.Gong].String())
+			t.Fatalf("%s wangshuai = %s, want %s", DecodeGongIndex(item.Gong), item.WangShuai.String(), want[item.Gong].String())
 		}
 	}
 	if chart.HourStemPalace.Palace != GongDui || chart.HourStemPalace.WangShuai.WangShuai != ganzhi.WSSi {

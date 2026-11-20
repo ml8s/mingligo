@@ -196,10 +196,10 @@ func EncodeMethodWithOptions(
 // resulting closed combination.
 func ResolveMethod(scope, school, dingjuMethod, quarterRule string) (Method, error) {
 	if scope == "" {
-		scope = defaultScope.String()
+		scope = DecodeScope(defaultScope)
 	}
 	if school == "" {
-		school = defaultSchool.String()
+		school = DecodeSchool(defaultSchool)
 	}
 	parsedScope, err := EncodeScope(scope)
 	if err != nil {
@@ -212,7 +212,7 @@ func ResolveMethod(scope, school, dingjuMethod, quarterRule string) (Method, err
 	entry := scopeMethods[parsedScope]
 	if parsedScope == ScopeQuarter {
 		if quarterRule == "" {
-			quarterRule = entry.DefaultQuarterRule.String()
+			quarterRule = DecodeQuarterRule(entry.DefaultQuarterRule)
 		}
 		return EncodeMethod(scope, school, "", quarterRule)
 	}
@@ -220,7 +220,7 @@ func ResolveMethod(scope, school, dingjuMethod, quarterRule string) (Method, err
 		return EncodeMethod(scope, school, "", "")
 	}
 	if dingjuMethod == "" && entry.DefaultDingju != "" {
-		dingjuMethod = entry.DefaultDingju.String()
+		dingjuMethod = DecodeDingjuMethod(entry.DefaultDingju)
 	}
 	return EncodeMethod(scope, school, dingjuMethod, "")
 }
@@ -232,13 +232,13 @@ func ResolveMethodWithOptions(
 	if err != nil {
 		return Method{}, err
 	}
-	dingju := resolved.Dingju.String()
+	dingju := DecodeDingjuMethod(resolved.Dingju)
 	if resolved.Dingju == DingjuNone {
 		dingju = ""
 	}
 	return EncodeMethodWithOptions(
-		resolved.Scope.String(), resolved.School.String(), dingju,
-		resolved.QuarterRule.String(), baseDingjuMethod, dunSource, hourBoundary,
+		DecodeScope(resolved.Scope), DecodeSchool(resolved.School), dingju,
+		DecodeQuarterRule(resolved.QuarterRule), baseDingjuMethod, dunSource, hourBoundary,
 	)
 }
 
