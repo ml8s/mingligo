@@ -79,6 +79,28 @@ decode : 符号 → 文本   （离开系统；输出边界；查表权威实现
 | 算子写指针参数 / 全局可变状态 | — | 违规，需改为值入值出的纯函数 |
 | 值对象格式化（`Date.String()`、数字→文本） | 否 | 纯 tostring，非符号映射，合规 |
 
+## Implementation Status（落实状态，审计基线）
+
+本 ADR 已在各域落地。当前状态（以各包 `symbols.go` 为准）：
+
+| 域包 | 符号类型（symbols.go） | Encode/Decode/JSON | 算子纯函数化 |
+|---|---|---|---|
+| `ganzhi` | Gan/Zhi/Wuxing/WangShuai/ShiShen/XingKind/YinYang/Gender | 7/6/5 | 是；`IsXing` 用 `XingKind`，无 string 命理判断 |
+| `tianwen` | JieQi/LunarBasis/BoundaryKind/ResolveForm | 2/1/0 | 是；数值算子全符号，memo 缓存豁免 |
+| `bazi` | RelationPosition/SanQiKind/StrengthLevel/RootKind/RelationKind/PillarIndex/NatalRelationKind/GeJuKind/CongGeKind/YongXiJiKind/TargetTag 等 | 9/10/2 | 是；41 神煞 `add*`→命中集+`mergeShenSha`，`apply*`→`with*`，规则表键全符号 |
+| `qimen` | WuxingRelation/Yuan/ZhiRunState/DunSource/HourBoundary/DutyStarPosition/PillarLevel/HourRelation/YingQiRuleType/YingQiMatchKind/LeadPillarKind/MethodSourceKind/FeatureKind/DayBoundaryKind + Scope/School/DingjuMethod/QuarterRule/GongIndex/StarIndex/DoorIndex/SpiritIndex | 15/21/6 | 是；`spiritIsYinXuanWu` 用符号/流派判断，Jinhan `layout*`→`with*` |
+| `liuyao` | YaoType/LiuQin/LiuShou/YongShen/MuKuSource/ShiYing/DayRelationType/FeiFuRelation/guaIndex/DongYaoRelationType/ForceRole/PatternType/CoinFace/CoinScore/TargetRole/LifeStage | 5/10/7 | 是；5 个 builder→`with*`；25 个 `*Chart` 算子只读（无写入副作用） |
+| `ziwei` | ShenSha/FlowStarKind/FlowStar/GongIndex/StarIndex/JuShu/SiHua/Brightness/ChangShengStage/BoShiStage/JiangQianStage/SuiQianStage | 2/10/5 | 是；`ZaYao []string→[]ShenSha`（消除往返），十二神符号化，`applyBrightness` 新建 slice，bond `MajorStars []StarIndex` |
+
+**仍有 string 命理概念的区域（合理边界，非违规）**：
+
+- 输出 DTO 的纯展示字段（`Conflict.Facts`、`BranchRelationFact.Branches`、`YingQiCandidate.Mechanism`、`BondPalaceFacts.MajorStars` 在 MCP wire 侧等）——这些是 decode 后的文本，且 jsonschema 从 wire 推断 integer 与符号 `MarshalJSON` 输出中文冲突时，适配器用独立 wire struct 适配（见 §4）。
+- 数据加载边界的 Encode helper（`brightnessFrom`、`flowStarKindOf`、`parseDoor/Star/Spirit/Gan`）——string→符号的输入解析，位于边界。
+- 名字表/`String()` 薄壳（ganzhi/tianwen 底座）——为兼容 `fmt.Stringer`，逻辑仍只有 `Decode` 一份。
+- `hiddenTenGodSource(source string)`、`detectTriple(typ/suffix string)`——source/日期完全来自输出投影的展示常量，属低优先级可改进项，不影响运算正确性。
+
+**审计结论**：封闭符号系统的核心公理（符号唯一定义、双向映射、算子纯函数、文本只在边界）已在全部六个域包落实；剩余 string 均为输出展示或输入解析边界，不构成空间内的命理运算。
+
 ## Consequences
 
 **正面**
