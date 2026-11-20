@@ -308,7 +308,7 @@ func buildSpouseStarFactFromAnalysis(
 				Pillar: zhuLabels[i],
 				Branch: ganzhi.ZhiName(pillar.Zhi),
 				Stem:   item.Name,
-				Source: item.Source,
+				Source: string(item.Source),
 				IsVoid: isVoid,
 			}
 			switch item.ShiShen {

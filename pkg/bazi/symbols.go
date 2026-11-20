@@ -325,12 +325,12 @@ type CandidateWuxing string
 
 const (
 	NoCandidateWuxing CandidateWuxing = "无候选"
-	candidateNone = NoCandidateWuxing
-	candidateWood  CandidateWuxing = "木"
-	candidateFire  CandidateWuxing = "火"
-	candidateEarth CandidateWuxing = "土"
-	candidateMetal CandidateWuxing = "金"
-	candidateWater CandidateWuxing = "水"
+	candidateNone                     = NoCandidateWuxing
+	candidateWood     CandidateWuxing = "木"
+	candidateFire     CandidateWuxing = "火"
+	candidateEarth    CandidateWuxing = "土"
+	candidateMetal    CandidateWuxing = "金"
+	candidateWater    CandidateWuxing = "水"
 )
 
 func DecodeCandidateWuxing(c CandidateWuxing) string { return string(c) }
@@ -349,5 +349,29 @@ func candidateFromWuxing(w ganzhi.Wuxing) CandidateWuxing {
 		return candidateWater
 	default:
 		return candidateNone
+	}
+}
+
+// TenGodSource is where a ten-god occurrence comes from: 透干/本气/中气/余气.
+// The output-only patternSource (main_qi_not_transparent) stays a plain string.
+type TenGodSource string
+
+// TripleRelationKind is a 三合/三会/半合 relation kind.
+type TripleRelationKind string
+
+const (
+	tripleSanHe     TripleRelationKind = "三合"
+	tripleSanHui    TripleRelationKind = "三会"
+	tripleSanHePart TripleRelationKind = "半合"
+)
+
+func (k TripleRelationKind) suffix() string {
+	switch k {
+	case tripleSanHe:
+		return "局"
+	case tripleSanHui:
+		return "方"
+	default:
+		return "半合局"
 	}
 }

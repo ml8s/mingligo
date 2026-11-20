@@ -149,7 +149,7 @@ func computeTenGodStates(c Chart) ([]TenGodState, map[ganzhi.Wuxing]ElementState
 	return states, elements
 }
 
-func hiddenTenGodSource(source string) bool {
+func hiddenTenGodSource(source TenGodSource) bool {
 	return source == sourceMainQi || source == sourceMidQi || source == sourceMinQi
 }
 

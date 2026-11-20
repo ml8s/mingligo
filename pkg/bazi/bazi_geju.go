@@ -32,7 +32,7 @@ func GeJuAt(
 	patternSource := ""
 
 	// 本气 → 中气 → 余气 遍历
-	for _, source := range []string{sourceMainQi, sourceMidQi, sourceMinQi} {
+	for _, source := range []TenGodSource{sourceMainQi, sourceMidQi, sourceMinQi} {
 		for _, ss := range shiShens[1] {
 			if ss.Source != source {
 				continue
@@ -41,7 +41,7 @@ func GeJuAt(
 				ss.Gan == bz.Ri.Gan || ss.Gan == bz.Shi.Gan {
 				patternGan = ss.Gan
 				patternShiShen = ss.ShiShen
-				patternSource = source
+				patternSource = string(source)
 				found = true
 				break
 			}
@@ -57,7 +57,7 @@ func GeJuAt(
 			if ss.Source == sourceMainQi {
 				patternGan = ss.Gan
 				patternShiShen = ss.ShiShen
-				patternSource = sourceMainQi + "_not_transparent"
+				patternSource = string(sourceMainQi) + "_not_transparent"
 				break
 			}
 		}

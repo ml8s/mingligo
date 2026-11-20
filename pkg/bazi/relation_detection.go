@@ -56,7 +56,7 @@ type ZhiPairDetection struct {
 
 // TripleRelationDetection describes a complete 三合局/三会方 or a 半合局 candidate.
 type TripleRelationDetection struct {
-	Kind     string
+	Kind     TripleRelationKind
 	Name     string
 	Element  ganzhi.Wuxing
 	Branches []ganzhi.Zhi
@@ -69,8 +69,8 @@ func DetectRelations(bz ganzhi.Bazi) RelationDetection {
 		GanHe:        detectGanHe(bz),
 		GanChong:     detectGanChong(bz),
 		ZhiLiuHe:     detectZhiPairs(bz, ganzhi.IsZhiHe, true),
-		SanHe:        detectTriple(bz, ganzhi.TripleHeList, relSanHe, "局"),
-		SanHui:       detectTriple(bz, ganzhi.TripleHuiList, relSanHui, "方"),
+		SanHe:        detectTriple(bz, ganzhi.TripleHeList, tripleSanHe),
+		SanHui:       detectTriple(bz, ganzhi.TripleHuiList, tripleSanHui),
 		LiuChong:     detectZhiPairs(bz, ganzhi.IsLiuChong, false),
 		LiuHai:       detectZhiPairs(bz, ganzhi.IsHai, false),
 		LiuXing:      detectZhiPairs(bz, ganzhi.IsXing, false),
@@ -183,14 +183,14 @@ func detectZhiPairs(bz ganzhi.Bazi, check func(ganzhi.Zhi, ganzhi.Zhi) bool, wit
 	return rels
 }
 
-func detectTriple(bz ganzhi.Bazi, list []ganzhi.SanHeHui, typ, suffix string) []TripleRelationDetection {
+func detectTriple(bz ganzhi.Bazi, list []ganzhi.SanHeHui, kind TripleRelationKind) []TripleRelationDetection {
 	bs := zhiSet(bz)
 	results := []TripleRelationDetection{}
 	for _, tr := range list {
 		if countZhi(bs, tr.Zhi...) == len(tr.Zhi) {
 			results = append(results, TripleRelationDetection{
-				Kind:     typ,
-				Name:     tripleName(tr.Zhi, tr.Element, suffix),
+				Kind:     kind,
+				Name:     tripleName(tr.Zhi, tr.Element, kind.suffix()),
 				Element:  tr.Element,
 				Branches: tr.Zhi,
 				Pillars:  pillarsWithAnyZhi(bz, tr.Zhi...),
@@ -226,8 +226,8 @@ func detectPartialTriple(bz ganzhi.Bazi) []TripleRelationDetection {
 			}
 		}
 		results = append(results, TripleRelationDetection{
-			Kind:     "半合",
-			Name:     tripleName(present, tr.Element, "半合局"),
+			Kind:     tripleSanHePart,
+			Name:     tripleName(present, tr.Element, tripleSanHePart.suffix()),
 			Element:  tr.Element,
 			Branches: present,
 			Pillars:  pillarsWithAnyZhi(bz, present...),

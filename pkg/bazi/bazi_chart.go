@@ -34,16 +34,16 @@ type Pillar struct {
 type TenGodProjection struct {
 	ShiShen ganzhi.ShiShen `json:"shi_shen"`
 	Name    string         `json:"name"`
-	Source  string         `json:"source"`
+	Source  TenGodSource   `json:"source"`
 	Gan     ganzhi.Gan     `json:"gan"`
 }
 
 // Ten god source constants.
 const (
-	sourceGan    = "gan"
-	sourceMainQi = "main_qi"
-	sourceMidQi  = "mid_qi"
-	sourceMinQi  = "minor_qi"
+	sourceGan    TenGodSource = "gan"
+	sourceMainQi TenGodSource = "main_qi"
+	sourceMidQi  TenGodSource = "mid_qi"
+	sourceMinQi  TenGodSource = "minor_qi"
 )
 
 // --- chart ---

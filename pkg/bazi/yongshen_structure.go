@@ -13,7 +13,7 @@ type StemOccurrence struct {
 	Pillar string `json:"zhu"`
 	Branch string `json:"zhi"`
 	Stem   string `json:"gan"`
-	Source string `json:"source"`
+	Source TenGodSource `json:"source"`
 }
 
 // ElementStructure is an atomic element projection used by the FuYi, TiaoHou, and GeJu projections. It never asserts final pattern success or failure.
@@ -168,20 +168,20 @@ func buildTiaoHouAvailability(
 		}
 		hidden := []struct {
 			gan    ganzhi.Gan
-			source string
+			source TenGodSource
 		}{
 			{cangGan[pillar.index].Main, sourceMainQi},
 		}
 		if cangGan[pillar.index].Mid != nil {
 			hidden = append(hidden, struct {
 				gan    ganzhi.Gan
-				source string
+				source TenGodSource
 			}{*cangGan[pillar.index].Mid, sourceMidQi})
 		}
 		if cangGan[pillar.index].Minor != nil {
 			hidden = append(hidden, struct {
 				gan    ganzhi.Gan
-				source string
+				source TenGodSource
 			}{*cangGan[pillar.index].Minor, sourceMinQi})
 		}
 		for _, item := range hidden {
@@ -257,18 +257,18 @@ func hiddenStemOccurrences(bz ganzhi.Bazi, elem ganzhi.Wuxing) []StemOccurrence 
 	for index, hidden := range cangGan {
 		items := []struct {
 			gan    ganzhi.Gan
-			source string
+			source TenGodSource
 		}{{hidden.Main, sourceMainQi}}
 		if hidden.Mid != nil {
 			items = append(items, struct {
 				gan    ganzhi.Gan
-				source string
+				source TenGodSource
 			}{*hidden.Mid, sourceMidQi})
 		}
 		if hidden.Minor != nil {
 			items = append(items, struct {
 				gan    ganzhi.Gan
-				source string
+				source TenGodSource
 			}{*hidden.Minor, sourceMinQi})
 		}
 		for _, item := range items {
