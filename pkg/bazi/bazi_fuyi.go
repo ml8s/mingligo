@@ -16,7 +16,7 @@ func FuYi(
 
 	// Try congGe rules first (qualitative rule chain, not percentages).
 	pat, congYong, congXi, congJi := lookupCongGe(bz)
-	if pat != "" {
+	if pat != congGeUnknown {
 		return FuYiResult{
 			WuxingCount: counts.StringCount(),
 			WangShuai:   seasonStrength,
@@ -24,7 +24,7 @@ func FuYi(
 			Xi:          candidateString(congXi),
 			Ji:          candidateString(congJi),
 			Strength:    DecodeStrengthLevel(strength.Label),
-			Pattern:     pat,
+			Pattern:     string(pat),
 			ModelID:     "support_control_with_day_master_strength",
 			Basis:       basis,
 		}

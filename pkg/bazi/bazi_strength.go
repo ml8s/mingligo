@@ -25,7 +25,7 @@ type strengthRule struct {
 // congGeRule is the symbol-typed 从格 detection rule.
 type congGeRule struct {
 	Rule       int
-	Type       string
+	Type       CongGeKind
 	Conditions congGeConditions
 	Yong       YongXiJiKind
 	Xi         YongXiJiKind
@@ -126,8 +126,11 @@ func loadCongGeRules() error {
 		return fmt.Errorf("unmarshal: %w", err)
 	}
 	for _, r := range raw {
-		rule := congGeRule{Rule: r.Rule, Type: r.Type, Source: r.Source}
-		var ok bool
+		congKind, ok := EncodeCongGeKind(r.Type)
+		if !ok {
+			return fmt.Errorf("invalid congge type %q", r.Type)
+		}
+		rule := congGeRule{Rule: r.Rule, Type: congKind, Source: r.Source}
 		if rule.Conditions.Root, ok = EncodeRootKind(r.Conditions.Root); !ok {
 			return fmt.Errorf("congge rule %d: invalid root %q", r.Rule, r.Conditions.Root)
 		}
@@ -313,7 +316,7 @@ func lookupStrength(rootType RootKind, season ganzhi.WangShuai, yinBiCount int) 
 }
 
 // lookupCongGe checks the day master against 从格 rules in priority order.
-func lookupCongGe(bz ganzhi.Bazi) (string, string, string, string) {
+func lookupCongGe(bz ganzhi.Bazi) (CongGeKind, string, string, string) {
 	riYuan := bz.Ri.Gan
 	dmElem := ganzhi.GanWuxing(riYuan)
 	rootType := classifyRoot(riYuan, bz.Yue.Zhi, HiddenStemFacts(bz))
@@ -333,7 +336,7 @@ func lookupCongGe(bz ganzhi.Bazi) (string, string, string, string) {
 		yong, xi, ji := resolveCongGeYongXiJi(rule, dmElem)
 		return rule.Type, yong, xi, ji
 	}
-	return "", "", "", ""
+	return congGeUnknown, "", "", ""
 }
 
 // ── Helpers ──

@@ -293,29 +293,26 @@ func EncodeGeJuKind(name string) (GeJuKind, bool) {
 	return k, true
 }
 
-// CongGeKind is one of the 从格 variants.
-type CongGeKind uint8
+// CongGeKind is one of the 从格 variants. Its value IS the stable text.
+type CongGeKind string
 
 const (
-	congGeUnknown CongGeKind = iota
-	congGeWang               // 从旺格
-	congGeSha                // 从杀格
-	congGeCai                // 从财格
-	congGeEr                 // 从儿格
-	congGeJiaWang            // 假从旺格
-	congGeJiaSha             // 假从杀格
-	congGeJiaCai             // 假从财格
-	congGeJiaEr              // 假从儿格
+	congGeUnknown CongGeKind = ""
+	congGeWang    CongGeKind = "从旺格"
+	congGeSha     CongGeKind = "从杀格"
+	congGeCai     CongGeKind = "从财格"
+	congGeEr      CongGeKind = "从儿格"
+	congGeJiaWang CongGeKind = "假从旺格"
+	congGeJiaSha  CongGeKind = "假从杀格"
+	congGeJiaCai  CongGeKind = "假从财格"
+	congGeJiaEr   CongGeKind = "假从儿格"
 )
 
-var congGeKindNames = [...]string{"", "从旺格", "从杀格", "从财格", "从儿格", "假从旺格", "假从杀格", "假从财格", "假从儿格"}
-
-func DecodeCongGeKind(c CongGeKind) string { return congGeKindNames[c] }
+func DecodeCongGeKind(c CongGeKind) string { return string(c) }
 func EncodeCongGeKind(name string) (CongGeKind, bool) {
-	for i, n := range congGeKindNames {
-		if n != "" && n == name {
-			return CongGeKind(i), true
-		}
+	k := CongGeKind(name)
+	if k == congGeUnknown {
+		return congGeUnknown, false
 	}
-	return congGeUnknown, false
+	return k, true
 }

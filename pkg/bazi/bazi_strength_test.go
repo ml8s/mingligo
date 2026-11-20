@@ -127,7 +127,7 @@ func TestCongGe_Rules_AllSeasons(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			pat, _, _, _ := lookupCongGe(tt.chart.ToBazi())
 
-			if tt.wantPattern != "" && pat != tt.wantPattern {
+			if tt.wantPattern != "" && string(pat) != tt.wantPattern {
 				t.Errorf("pattern = %q, want %q", pat, tt.wantPattern)
 			}
 			if tt.wantNotEmpty && pat == "" {

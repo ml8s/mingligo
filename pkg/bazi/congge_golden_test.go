@@ -67,7 +67,7 @@ func TestCongGe_AllRules(t *testing.T) {
 				Shi:  ganzhi.Zhu{Gan: ganzhi.Gan(tt.shiGan), Zhi: ganzhi.Zhi(tt.shiZ)},
 			}, ganzhi.Male, 2000)
 			pat, yong, xi, ji := lookupCongGe(c.ToBazi())
-			if pat != tt.wantPattern {
+			if string(pat) != tt.wantPattern {
 				bz := c.ToBazi()
 				t.Errorf("pattern=%q want=%q\n  pillars: %s%s %s%s %s%s %s%s\n  note: %s",
 					pat, tt.wantPattern,
