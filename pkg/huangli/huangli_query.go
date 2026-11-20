@@ -36,7 +36,6 @@ type Day struct {
 	Event       string           `json:"event,omitempty"`
 	EventLabel  string           `json:"event_label,omitempty"`
 	Suitability string           `json:"suitability,omitempty"`
-	EventReason string           `json:"event_reason,omitempty"`
 }
 
 // Month holds monthly huangli data.
@@ -89,7 +88,6 @@ func QueryDate(dateStr string, event ...string) (Day, error) {
 func applyEventRule(entry *Day, event string) error {
 	if event == "" {
 		entry.Suitability = "unspecified"
-		entry.EventReason = "未指定事项，仅列黄历事实。"
 		return nil
 	}
 	rule, ok := jianChuCfg.EventRules[event]
@@ -101,13 +99,10 @@ func applyEventRule(entry *Day, event string) error {
 	switch {
 	case containsJianChu(rule.Suitable, entry.JianChu):
 		entry.Suitability = "recommended"
-		entry.EventReason = "建除「" + entry.JianChu + "」适合" + rule.Label + "。"
 	case containsJianChu(rule.Forbidden, entry.JianChu):
 		entry.Suitability = "unsuitable"
-		entry.EventReason = "建除「" + entry.JianChu + "」忌" + rule.Label + "。"
 	default:
 		entry.Suitability = "possible"
-		entry.EventReason = "建除「" + entry.JianChu + "」无明确适配或冲突。"
 	}
 	return nil
 }
