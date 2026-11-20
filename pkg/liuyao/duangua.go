@@ -1,43 +1,10 @@
 package liuyao
 
 import (
-	"encoding/json"
 	"strings"
 
 	"github.com/ml8s/mingligo/pkg/ganzhi"
 )
-
-// DayRelationType 是日建与爻的单一关系类型（冲/合/生/扶/克/平）。
-type DayRelationType uint8
-
-const (
-	DayChong DayRelationType = iota // 冲
-	DayHe                           // 合
-	DaySheng                        // 生
-	DayFu                           // 扶
-	DayKe                           // 克
-	DayPing                         // 平
-)
-
-var dayRelationNames = [...]string{"冲", "合", "生", "扶", "克", "平"}
-
-func (r DayRelationType) String() string {
-	if int(r) < len(dayRelationNames) {
-		return dayRelationNames[r]
-	}
-	return ""
-}
-
-func (r DayRelationType) MarshalJSON() ([]byte, error) { return json.Marshal(r.String()) }
-
-func ParseDayRelationType(name string) DayRelationType {
-	for i, n := range dayRelationNames {
-		if n == name {
-			return DayRelationType(i)
-		}
-	}
-	return DayRelationType(255)
-}
 
 // DayRelation describes 日建与爻的关系.
 type DayRelation struct {

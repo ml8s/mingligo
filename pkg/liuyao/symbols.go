@@ -1,6 +1,9 @@
 package liuyao
 
-import "fmt"
+import (
+	"encoding/json"
+	"fmt"
+)
 
 // ParseYongShen converts a Chinese yongshen name to a YongShen value.
 func ParseYongShen(s string) (YongShen, error) {
@@ -11,3 +14,300 @@ func ParseYongShen(s string) (YongShen, error) {
 	}
 	return -1, fmt.Errorf("unknown yongshen: %q", s)
 }
+
+// YaoType classifies a single coin-toss result.
+type YaoType int
+
+const (
+	LaoYin   YaoType = 6 // 老阴 ⚋→⚊ (6, 三个2 = 三背)
+	ShaoYang YaoType = 7 // 少阳 ⚊ (7, 两背一面)
+	ShaoYin  YaoType = 8 // 少阴 ⚋ (8, 两面一背)
+	LaoYang  YaoType = 9 // 老阳 ⚊→⚋ (9, 三个3 = 三面)
+)
+
+func (y YaoType) IsYang() bool     { return y == ShaoYang || y == LaoYang }
+func (y YaoType) IsChanging() bool { return y == LaoYang || y == LaoYin }
+
+// LiuQin is the 六亲 classification.
+type LiuQin int
+
+const (
+	QinFumu    LiuQin = iota // 父母
+	QinXiongDi               // 兄弟
+	QinGuanGui               // 官鬼
+	QinQiCai                 // 妻财
+	QinZiSun                 // 子孙
+)
+
+var liuQinNames = [5]string{"父母", "兄弟", "官鬼", "妻财", "子孙"}
+
+func (q LiuQin) String() string {
+	if q >= 0 && q <= 4 {
+		return liuQinNames[q]
+	}
+	return "?"
+}
+
+func (q LiuQin) MarshalJSON() ([]byte, error) { return json.Marshal(q.String()) }
+
+func (q *LiuQin) UnmarshalJSON(data []byte) error {
+	var s string
+	if err := json.Unmarshal(data, &s); err != nil {
+		return fmt.Errorf("liu_qin: expected string, got %s", string(data))
+	}
+	for i, n := range liuQinNames {
+		if n == s {
+			*q = LiuQin(i)
+			return nil
+		}
+	}
+	return fmt.Errorf("liu_qin: unknown %q", s)
+}
+
+// LiuShou is the 六兽.
+type LiuShou int
+
+const (
+	ShouQingLong LiuShou = iota
+	ShouZhuQue
+	ShouGouChen
+	ShouTengShe
+	ShouBaiHu
+	ShouXuanWu
+)
+
+var liuShouNames = [6]string{"青龙", "朱雀", "勾陈", "螣蛇", "白虎", "玄武"}
+
+func (l LiuShou) String() string {
+	if l >= 0 && l <= 5 {
+		return liuShouNames[l]
+	}
+	return "?"
+}
+
+func (l LiuShou) MarshalJSON() ([]byte, error) { return json.Marshal(l.String()) }
+
+func (l *LiuShou) UnmarshalJSON(data []byte) error {
+	var name string
+	if err := json.Unmarshal(data, &name); err != nil {
+		return fmt.Errorf("liu shou must be a string, got %s", string(data))
+	}
+	for i, n := range liuShouNames {
+		if n == name {
+			*l = LiuShou(i)
+			return nil
+		}
+	}
+	return fmt.Errorf("unknown liushou: %q", name)
+}
+
+// MuKuSource 是入墓来源（日墓/动墓/化墓），域内符号双向映射。
+type MuKuSource uint8
+
+const (
+	MuKuDay        MuKuSource = iota // day: 随鬼入日墓
+	MuKuMoving                        // moving: 随鬼入动墓
+	MuKuTransformed                   // transformed: 随鬼化墓
+)
+
+var muKuSourceNames = [...]string{"day", "moving", "transformed"}
+
+func (m MuKuSource) String() string {
+	if int(m) < len(muKuSourceNames) {
+		return muKuSourceNames[m]
+	}
+	return ""
+}
+
+func (m MuKuSource) MarshalJSON() ([]byte, error) { return json.Marshal(m.String()) }
+
+func ParseMuKuSource(name string) MuKuSource {
+	for i, n := range muKuSourceNames {
+		if n == name {
+			return MuKuSource(i)
+		}
+	}
+	return MuKuSource(255)
+}
+
+// ShiYing 是爻的世应标记（世/应/无）。
+type ShiYing uint8
+
+const (
+	ShiYingNone ShiYing = iota
+	ShiYingShi          // 世
+	ShiYingYing         // 应
+)
+
+func (s ShiYing) String() string {
+	switch s {
+	case ShiYingShi:
+		return "世"
+	case ShiYingYing:
+		return "应"
+	default:
+		return ""
+	}
+}
+
+func (s ShiYing) MarshalJSON() ([]byte, error) { return json.Marshal(s.String()) }
+
+func ParseShiYing(name string) ShiYing {
+	switch name {
+	case "世":
+		return ShiYingShi
+	case "应":
+		return ShiYingYing
+	default:
+		return ShiYingNone
+	}
+}
+
+// guaIndex identifies one of the 64 hexagrams.
+type guaIndex int // 0-63, upper trigram 0-7, lower trigram 0-7
+
+func (g guaIndex) Name() string {
+	if int(g) < 0 || int(g) >= len(zhouyiTable) {
+		return ""
+	}
+	return zhouyiTable[g].Name
+}
+
+func (g guaIndex) MarshalJSON() ([]byte, error) {
+	return json.Marshal(g.Name())
+}
+
+func (g *guaIndex) UnmarshalJSON(data []byte) error {
+	var s string
+	if err := json.Unmarshal(data, &s); err != nil {
+		return fmt.Errorf("卦名(ben_gua) must be a string, got %s", string(data))
+	}
+	for i, gc := range zhouyiTable {
+		if gc.Name == s {
+			*g = guaIndex(i)
+			return nil
+		}
+	}
+	return fmt.Errorf("unknown gua: %q", s)
+}
+
+// DayRelationType 是日建与爻的单一关系类型（冲/合/生/扶/克/平）。
+type DayRelationType uint8
+
+const (
+	DayChong DayRelationType = iota // 冲
+	DayHe                           // 合
+	DaySheng                        // 生
+	DayFu                           // 扶
+	DayKe                           // 克
+	DayPing                         // 平
+)
+
+var dayRelationNames = [...]string{"冲", "合", "生", "扶", "克", "平"}
+
+func (r DayRelationType) String() string {
+	if int(r) < len(dayRelationNames) {
+		return dayRelationNames[r]
+	}
+	return ""
+}
+
+func (r DayRelationType) MarshalJSON() ([]byte, error) { return json.Marshal(r.String()) }
+
+func ParseDayRelationType(name string) DayRelationType {
+	for i, n := range dayRelationNames {
+		if n == name {
+			return DayRelationType(i)
+		}
+	}
+	return DayRelationType(255)
+}
+
+// FeiFuRelation 是飞神与伏神的五行关系（飞伏域内符号，双向映射）。
+type FeiFuRelation uint8
+
+const (
+	FeiFuBiHe    FeiFuRelation = iota // 飞伏比和
+	FeiFuShengFu                      // 飞来生伏
+	FeiFuKeFu                         // 飞来克伏
+	FeiFuFuSheng                      // 伏来生飞
+	FeiFuFuKe                         // 伏来克飞
+	FeiFuNone                         // 无
+)
+
+var feiFuNames = [...]string{"飞伏比和", "飞来生伏", "飞来克伏", "伏来生飞", "伏来克飞", ""}
+
+func (r FeiFuRelation) String() string {
+	if int(r) < len(feiFuNames) {
+		return feiFuNames[r]
+	}
+	return ""
+}
+
+func (r FeiFuRelation) MarshalJSON() ([]byte, error) { return json.Marshal(r.String()) }
+
+func ParseFeiFuRelation(name string) FeiFuRelation {
+	for i, n := range feiFuNames {
+		if n == name {
+			return FeiFuRelation(i)
+		}
+	}
+	return FeiFuNone
+}
+
+// DongYaoRelationType 动爻与用神的关系类型（枚举，正交化）。
+type DongYaoRelationType string
+
+const (
+	RelationShengYong DongYaoRelationType = "生用"  // 动爻生用神
+	RelationKeYong    DongYaoRelationType = "克用"  // 动爻克用神
+	RelationBiHe      DongYaoRelationType = "比和"  // 动爻与用神五行相同
+	RelationChongYong DongYaoRelationType = "冲用"  // 动爻地支冲用神
+	RelationShengYuan DongYaoRelationType = "生原神" // 动爻生原神
+	RelationKeYuan    DongYaoRelationType = "克原神" // 动爻克原神
+	RelationShengJi   DongYaoRelationType = "生忌神" // 动爻生忌神
+	RelationKeJi      DongYaoRelationType = "克忌神" // 动爻克忌神
+)
+
+// PatternType 特殊格局类型
+type PatternType string
+
+const (
+	PatternXunKong    PatternType = "旬空"   // 旬空
+	PatternYuePo      PatternType = "月破"   // 月破
+	PatternFeiFu      PatternType = "飞伏"   // 飞伏
+	PatternJinTui     PatternType = "进退"   // 进退神
+	PatternChongHe    PatternType = "冲合"   // 六冲/六合
+	PatternFanYin     PatternType = "反吟"   // 动爻变支六冲
+	PatternFuYin      PatternType = "伏吟"   // 动爻变支相同
+	PatternSuiGuiRuMu PatternType = "随鬼入墓" // 随鬼入墓
+	PatternDuFa       PatternType = "独发"   // 独发
+	PatternDuJing     PatternType = "独静"   // 独静
+	PatternLiangXian  PatternType = "两现"   // 用神两现
+)
+
+type ForceRole string
+
+const (
+	RoleYongShen ForceRole = "用神"
+	RoleYuanShen ForceRole = "原神"
+	RoleJiShen   ForceRole = "忌神"
+	RoleChouShen ForceRole = "仇神"
+)
+
+// YongShen categorizes what the user is asking about.
+type YongShen int
+
+const (
+	YongFumu    YongShen = iota // 父母: 长辈、文书、房屋
+	YongXiongDi                 // 兄弟: 朋友、同事、竞争
+	YongGuanGui                 // 官鬼: 工作、官运、疾病
+	YongQiCai                   // 妻财: 财运、妻子、物品
+	YongZiSun                   // 子孙: 子女、健康、宠物
+	YongShiYao                  // 世爻: 自身、求问人
+	YongYingYao                 // 应爻: 对方、外部环境
+)
+
+var yongShenNames = [7]string{"父母", "兄弟", "官鬼", "妻财", "子孙", "世爻", "应爻"}
+
+func (y YongShen) String() string { return yongShenNames[y] }

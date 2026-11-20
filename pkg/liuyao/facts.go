@@ -81,15 +81,6 @@ type BranchRelationFact struct {
 	Basis         []string `json:"basis,omitempty"`
 }
 
-type ForceRole string
-
-const (
-	RoleYongShen ForceRole = "用神"
-	RoleYuanShen ForceRole = "原神"
-	RoleJiShen   ForceRole = "忌神"
-	RoleChouShen ForceRole = "仇神"
-)
-
 // ForceEntry describes one role in the support/opposition chain.
 type ForceEntry struct {
 	Role      ForceRole `json:"role"`

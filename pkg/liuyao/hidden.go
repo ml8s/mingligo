@@ -1,42 +1,9 @@
 package liuyao
 
 import (
-	"encoding/json"
 
 	"github.com/ml8s/mingligo/pkg/ganzhi"
 )
-
-// FeiFuRelation 是飞神与伏神的五行关系（飞伏域内符号，双向映射）。
-type FeiFuRelation uint8
-
-const (
-	FeiFuBiHe    FeiFuRelation = iota // 飞伏比和
-	FeiFuShengFu                      // 飞来生伏
-	FeiFuKeFu                         // 飞来克伏
-	FeiFuFuSheng                      // 伏来生飞
-	FeiFuFuKe                         // 伏来克飞
-	FeiFuNone                         // 无
-)
-
-var feiFuNames = [...]string{"飞伏比和", "飞来生伏", "飞来克伏", "伏来生飞", "伏来克飞", ""}
-
-func (r FeiFuRelation) String() string {
-	if int(r) < len(feiFuNames) {
-		return feiFuNames[r]
-	}
-	return ""
-}
-
-func (r FeiFuRelation) MarshalJSON() ([]byte, error) { return json.Marshal(r.String()) }
-
-func ParseFeiFuRelation(name string) FeiFuRelation {
-	for i, n := range feiFuNames {
-		if n == name {
-			return FeiFuRelation(i)
-		}
-	}
-	return FeiFuNone
-}
 
 func feiFuRelation(flying, hidden ganzhi.Wuxing) FeiFuRelation {
 	switch {

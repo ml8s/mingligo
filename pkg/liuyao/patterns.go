@@ -2,23 +2,6 @@ package liuyao
 
 import "github.com/ml8s/mingligo/pkg/ganzhi"
 
-// PatternType 特殊格局类型
-type PatternType string
-
-const (
-	PatternXunKong    PatternType = "旬空"   // 旬空
-	PatternYuePo      PatternType = "月破"   // 月破
-	PatternFeiFu      PatternType = "飞伏"   // 飞伏
-	PatternJinTui     PatternType = "进退"   // 进退神
-	PatternChongHe    PatternType = "冲合"   // 六冲/六合
-	PatternFanYin     PatternType = "反吟"   // 动爻变支六冲
-	PatternFuYin      PatternType = "伏吟"   // 动爻变支相同
-	PatternSuiGuiRuMu PatternType = "随鬼入墓" // 随鬼入墓
-	PatternDuFa       PatternType = "独发"   // 独发
-	PatternDuJing     PatternType = "独静"   // 独静
-	PatternLiangXian  PatternType = "两现"   // 用神两现
-)
-
 // Pattern 特殊格局
 type Pattern struct {
 	Type     PatternType `json:"ge_ju_kind"` // 格局类型

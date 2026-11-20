@@ -2,20 +2,6 @@ package liuyao
 
 import "github.com/ml8s/mingligo/pkg/ganzhi"
 
-// DongYaoRelationType 动爻与用神的关系类型（枚举，正交化）。
-type DongYaoRelationType string
-
-const (
-	RelationShengYong DongYaoRelationType = "生用"  // 动爻生用神
-	RelationKeYong    DongYaoRelationType = "克用"  // 动爻克用神
-	RelationBiHe      DongYaoRelationType = "比和"  // 动爻与用神五行相同
-	RelationChongYong DongYaoRelationType = "冲用"  // 动爻地支冲用神
-	RelationShengYuan DongYaoRelationType = "生原神" // 动爻生原神
-	RelationKeYuan    DongYaoRelationType = "克原神" // 动爻克原神
-	RelationShengJi   DongYaoRelationType = "生忌神" // 动爻生忌神
-	RelationKeJi      DongYaoRelationType = "克忌神" // 动爻克忌神
-)
-
 // DongYaoRelation 一个动爻与用神的关系集合。
 // 直接作用与间接作用可以并存；静卦没有记录，不使用伪关系填充。
 type DongYaoRelation struct {

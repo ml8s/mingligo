@@ -2,23 +2,6 @@ package liuyao
 
 import "github.com/ml8s/mingligo/pkg/ganzhi"
 
-// YongShen categorizes what the user is asking about.
-type YongShen int
-
-const (
-	YongFumu    YongShen = iota // 父母: 长辈、文书、房屋
-	YongXiongDi                 // 兄弟: 朋友、同事、竞争
-	YongGuanGui                 // 官鬼: 工作、官运、疾病
-	YongQiCai                   // 妻财: 财运、妻子、物品
-	YongZiSun                   // 子孙: 子女、健康、宠物
-	YongShiYao                  // 世爻: 自身、求问人
-	YongYingYao                 // 应爻: 对方、外部环境
-)
-
-var yongShenNames = [7]string{"父母", "兄弟", "官鬼", "妻财", "子孙", "世爻", "应爻"}
-
-func (y YongShen) String() string { return yongShenNames[y] }
-
 // findYongShen finds the 用神 in the visible ben-gua only. The bian-gua is a
 // transformation layer; it must never become the primary 用神 location. When
 // the target is absent here the caller must use findFuShen.
