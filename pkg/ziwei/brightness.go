@@ -8,7 +8,6 @@ const (
 	zhiXu   Zhi = 11
 )
 
-
 var miaoWangTable [14][12]Brightness
 
 func brightnessFrom(s string) Brightness {

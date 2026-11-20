@@ -220,8 +220,6 @@ type Pattern struct {
 	GongWei     []GongIndex `json:"gong_wei,omitempty"`
 }
 
-
-
 type patternRule struct {
 	Name             string
 	Description      string

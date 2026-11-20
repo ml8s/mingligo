@@ -259,35 +259,35 @@ var (
 	menGongTable        map[[2]int]doorEntry
 	xingGongTable       map[[2]int]XingInteraction
 
-	tianQinRule            TianQinRule
-	tianQinStar            StarIndex
-	tianQinFollows         StarIndex
-	tianQinCarriesGan      bool
-	outerRing              [8]GongIndex
-	earthGanOrder          [9]ganzhi.Gan
-	starOrder8             [8]StarIndex
-	doorOrder              [8]DoorIndex
-	mingfaDoorOrder        [9]DoorIndex
-	spiritOrder            [8]SpiritIndex
-	flySpiritOrder         [9]SpiritIndex
-	flySpiritNames         [10]string
-	mingfaSpiritOrder      [9]SpiritIndex
-	mingfaSpiritNames      [10]string
-	spiritYangNames        [10]string
-	spiritYinNames         [10]string
-	palaceStar             [9]StarIndex
-	palaceDoor             [9]DoorIndex
-	starWuxingTable        [9]ganzhi.Wuxing
-	doorWuxingTable        [9]ganzhi.Wuxing
-	wuxingRelations        map[WuxingRelation]wuxingRelationEntry
-	riShiRelations         map[WuxingRelation]string
-	zhiPalaceTable         [12]GongIndex
-	maXingTable            [12]ganzhi.Zhi
-	liuJiaZhi              [6]ganzhi.Zhi
-	liuJiaLiuYi            [6]ganzhi.Gan
-	xunKongTable           [6][2]ganzhi.Zhi
-	wuBuYuShiTable         map[[2]ganzhi.Gan]bool
-	fuTouYuanTable         map[ganzhi.Zhi]int
+	tianQinRule       TianQinRule
+	tianQinStar       StarIndex
+	tianQinFollows    StarIndex
+	tianQinCarriesGan bool
+	outerRing         [8]GongIndex
+	earthGanOrder     [9]ganzhi.Gan
+	starOrder8        [8]StarIndex
+	doorOrder         [8]DoorIndex
+	mingfaDoorOrder   [9]DoorIndex
+	spiritOrder       [8]SpiritIndex
+	flySpiritOrder    [9]SpiritIndex
+	flySpiritNames    [10]string
+	mingfaSpiritOrder [9]SpiritIndex
+	mingfaSpiritNames [10]string
+	spiritYangNames   [10]string
+	spiritYinNames    [10]string
+	palaceStar        [9]StarIndex
+	palaceDoor        [9]DoorIndex
+	starWuxingTable   [9]ganzhi.Wuxing
+	doorWuxingTable   [9]ganzhi.Wuxing
+	wuxingRelations   map[WuxingRelation]wuxingRelationEntry
+	riShiRelations    map[WuxingRelation]string
+	zhiPalaceTable    [12]GongIndex
+	maXingTable       [12]ganzhi.Zhi
+	liuJiaZhi         [6]ganzhi.Zhi
+	liuJiaLiuYi       [6]ganzhi.Gan
+	xunKongTable      [6][2]ganzhi.Zhi
+	wuBuYuShiTable    map[[2]ganzhi.Gan]bool
+	fuTouYuanTable    map[ganzhi.Zhi]int
 
 	patternRules           []patternRule
 	yingqiRuleTable        map[string]yingqiRuleEntry

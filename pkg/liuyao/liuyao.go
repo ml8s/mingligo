@@ -1,7 +1,6 @@
 package liuyao
 
 import (
-
 	"github.com/ml8s/mingligo/pkg/ganzhi"
 )
 
@@ -16,16 +15,16 @@ type Line struct {
 	ShiYing  ShiYing       `json:"shi_ying"`
 	LiuShou  LiuShou       `json:"liu_shou"`
 	// Deterministic derived states (filled by computeChart):
-	YuePo         bool     `json:"yue_po,omitempty"`          // 月破（月建冲该爻地支）
-	DongSelf      bool     `json:"dong_self,omitempty"`       // 本爻发动（老阴/老阳）
-	DongSheng     bool     `json:"dong_sheng,omitempty"`      // 有动爻生此爻
-	DongKe        bool     `json:"dong_ke,omitempty"`         // 有动爻克此爻
-	XunKong       bool     `json:"xun_kong,omitempty"`        // 该爻地支值日柱旬空
-	MuKu          bool     `json:"mu_ku,omitempty"`           // 入墓（地支为墓库）
-	MuKuBranch    string   `json:"mu_ku_zhi,omitempty"`    // 本五行墓库地支
-	MuKuElement   string   `json:"mu_ku_wuxing,omitempty"`   // 被入库的五行
-	MuKuTypes     []MuKuSource `json:"mu_ku_types,omitempty"` // day/moving/transformed
-	ChangShengYue string   `json:"chang_sheng_yue,omitempty"` // 本爻五行在月支的十二长生
+	YuePo         bool         `json:"yue_po,omitempty"`          // 月破（月建冲该爻地支）
+	DongSelf      bool         `json:"dong_self,omitempty"`       // 本爻发动（老阴/老阳）
+	DongSheng     bool         `json:"dong_sheng,omitempty"`      // 有动爻生此爻
+	DongKe        bool         `json:"dong_ke,omitempty"`         // 有动爻克此爻
+	XunKong       bool         `json:"xun_kong,omitempty"`        // 该爻地支值日柱旬空
+	MuKu          bool         `json:"mu_ku,omitempty"`           // 入墓（地支为墓库）
+	MuKuBranch    string       `json:"mu_ku_zhi,omitempty"`       // 本五行墓库地支
+	MuKuElement   string       `json:"mu_ku_wuxing,omitempty"`    // 被入库的五行
+	MuKuTypes     []MuKuSource `json:"mu_ku_types,omitempty"`     // day/moving/transformed
+	ChangShengYue string       `json:"chang_sheng_yue,omitempty"` // 本爻五行在月支的十二长生
 }
 
 // guaMeta holds static data for a hexagram.

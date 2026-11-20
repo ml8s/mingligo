@@ -20,10 +20,10 @@ type quarterInfo struct {
 // ChartQuarter describes the selected quarter. The lead pillar itself remains
 // method.lead_pillar to avoid a duplicate API fact.
 type ChartQuarter struct {
-	Index             int    `json:"index"`
-	MinutesPerQuarter int    `json:"minutes_per_quarter"`
-	LeadPillarMode    string `json:"lead_pillar_mode"`
-	DunSource         DunSource `json:"dun_source,omitempty"`
+	Index             int          `json:"index"`
+	MinutesPerQuarter int          `json:"minutes_per_quarter"`
+	LeadPillarMode    string       `json:"lead_pillar_mode"`
+	DunSource         DunSource    `json:"dun_source,omitempty"`
 	HourBoundary      HourBoundary `json:"hour_boundary,omitempty"`
 }
 

@@ -20,9 +20,9 @@ package ziwei
 // gongLabels maps GongIndex (0=命宫) to its fixed label.
 // 这不是宫名分布数组，而是 GongIndex 的定义（命宫序标签）。
 const (
-	gongMing  GongIndex = 0 // 命宫
-	gongFuQi  GongIndex = 2 // 夫妻
-	gongZiNv  GongIndex = 3 // 子女
+	gongMing GongIndex = 0 // 命宫
+	gongFuQi GongIndex = 2 // 夫妻
+	gongZiNv GongIndex = 3 // 子女
 )
 
 var gongLabels = [12]string{

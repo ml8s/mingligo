@@ -96,9 +96,9 @@ func (p *Chart) findYingYao() int {
 
 // FuShen holds the 飞伏 information when 用神 is not present.
 type FuShen struct {
-	Position int    `json:"position"` // 爻位 1-6
-	LiuQin   LiuQin `json:"liu_qin"`  // 伏神六亲
-	Zhi      ganzhi.Zhi `json:"zhi"` // 伏神地支
+	Position int        `json:"position"` // 爻位 1-6
+	LiuQin   LiuQin     `json:"liu_qin"`  // 伏神六亲
+	Zhi      ganzhi.Zhi `json:"zhi"`      // 伏神地支
 }
 
 // yongShenToLiuQin maps YongShen → LiuQin for the first 5 types.
@@ -151,4 +151,3 @@ func (p *Chart) findFuShenAll(typ YongShen) []FuShen {
 	}
 	return result
 }
-

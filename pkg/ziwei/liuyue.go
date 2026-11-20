@@ -287,7 +287,6 @@ func ComputeLiuRiWith(ctx FlowContext, target tianwen.LunarDate, p tianwen.Lunar
 	}, nil
 }
 
-
 // ── 流时 ──
 
 // LiuShiChen locates the flow hour: the observer's standard clock and civil
@@ -378,7 +377,6 @@ func ComputeLiuShiWith(ctx FlowContext, target tianwen.LunarDate, shiZhi Zhi, p 
 		GongWei:      buildFlowPalaces(hi, starByAnXingIdx),
 	}, nil
 }
-
 
 func shiGanCalc(riGan Gan, shiZhi Zhi) Gan {
 	// 五鼠遁：甲己→甲子, 乙庚→丙子, 丙辛→戊子, 丁壬→庚子, 戊癸→壬子

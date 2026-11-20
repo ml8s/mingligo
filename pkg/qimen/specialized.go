@@ -17,9 +17,9 @@ type SpecializedContext struct {
 
 type GengGeFact struct {
 	Level    PillarLevel `json:"level"`
-	Gong     GongIndex  `json:"gong"`
-	Door     string     `json:"men,omitempty"`
-	EarthGan ganzhi.Gan `json:"earth_gan"`
+	Gong     GongIndex   `json:"gong"`
+	Door     string      `json:"men,omitempty"`
+	EarthGan ganzhi.Gan  `json:"earth_gan"`
 }
 
 type LostContextFact struct {
