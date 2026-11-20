@@ -375,7 +375,7 @@ func starBrNames(stars []StarInfo, major bool) []string {
 	var r []string
 	for _, s := range stars {
 		if s.IsMajor == major {
-			r = append(r, s.Name+":"+s.Brightness)
+			r = append(r, s.Name+":"+DecodeBrightness(s.Brightness))
 		}
 	}
 	sortS(r)

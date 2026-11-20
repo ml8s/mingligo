@@ -116,6 +116,8 @@ func registerWireEnums(options *jsonschema.ForOptions) {
 	registerWireEnum[YearBranchRelationsName](options, "half_he", "liu_chong", "liu_hai", "liu_he", "san_he", "san_he_gong", "san_hui", "san_hui_gong", "xing")
 	registerWireEnum[YearStemTenGodName](options, "", "七杀", "伤官", "偏印", "偏财", "劫财", "正印", "正官", "正财", "比肩", "食神")
 	registerWireEnum[ZiweiPalaceName](options, "仆役", "兄弟", "命宫", "夫妻", "子女", "官禄", "父母", "田宅", "疾厄", "福德", "财帛", "迁移")
+	registerWireEnum[ZiweiBrightnessGroupName](options, "庙旺", "落陷", "平")
+	registerWireEnum[ZiweiMajorStarStateName](options, "无主星", "唯一主星", "多主星")
 }
 
 type CalendarPeriodHalfName string
@@ -275,5 +277,9 @@ type YearBranchRelationsName string
 type YearStemTenGodName string
 
 type ZiweiPalaceName string
+
+type ZiweiBrightnessGroupName string
+
+type ZiweiMajorStarStateName string
 
 type ZiweiLiupanScopeName string

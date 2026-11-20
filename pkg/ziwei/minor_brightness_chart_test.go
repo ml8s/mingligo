@@ -45,8 +45,8 @@ func TestMinorBrightnessInChart(t *testing.T) {
 					continue
 				}
 				checked++
-				if s.Brightness != want {
-					t.Errorf("%s %s宫: got %s want %s", starName(s.Star), zhi, s.Brightness, want)
+				if DecodeBrightness(s.Brightness) != want {
+					t.Errorf("%s %s宫: got %s want %s", starName(s.Star), zhi, DecodeBrightness(s.Brightness), want)
 					fail++
 				}
 			}

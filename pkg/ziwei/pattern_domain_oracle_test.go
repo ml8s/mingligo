@@ -51,7 +51,7 @@ func buildPatternSemanticChart(t *testing.T, input []patternSemanticPalace) Char
 			}
 			item := newStarInfo(star, int(star) < 14)
 			item.SiHua = SiHua(semantic.SiHua)
-			item.Brightness = semantic.Brightness
+			item.Brightness, _ = EncodeBrightness(semantic.Brightness)
 			stars = append(stars, item)
 		}
 		palaces[index].Zhi = zhi

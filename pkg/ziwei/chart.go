@@ -140,7 +140,9 @@ func applyBrightnessAndSiHua(chart Chart) Chart {
 		stars := make([]StarInfo, 0, len(chart.GongWei[i].Stars))
 		for _, star := range chart.GongWei[i].Stars {
 			if star.IsMajor || star.Star == WenChang || star.Star == WenQu {
-				star.Brightness = DecodeBrightness(miaoWang(star.Star, chart.GongWei[i].Zhi))
+				brightness := miaoWang(star.Star, chart.GongWei[i].Zhi)
+				star.Brightness = brightness
+				star.BrightnessGroup = brightnessGroupOf(brightness)
 			}
 			if transformation, ok := siHua[star.Star]; ok {
 				star.SiHua = transformation
@@ -148,6 +150,20 @@ func applyBrightnessAndSiHua(chart Chart) Chart {
 			stars = append(stars, star)
 		}
 		chart.GongWei[i].Stars = stars
+		majorCount := 0
+		for _, star := range stars {
+			if star.IsMajor {
+				majorCount++
+			}
+		}
+		switch majorCount {
+		case 0:
+			chart.GongWei[i].MajorStarState = majorStarNone
+		case 1:
+			chart.GongWei[i].MajorStarState = majorStarSingle
+		default:
+			chart.GongWei[i].MajorStarState = majorStarMulti
+		}
 	}
 	return chart
 }

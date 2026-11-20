@@ -230,23 +230,25 @@ type ZiweiGeJu struct {
 }
 
 type ZiweiChartGongItem struct {
-	Ming       ZiweiPalaceName      `json:"ming" jsonschema:"宫名。"`
-	Gan        GanName              `json:"gan" jsonschema:"宫干。"`
-	Zhi        ZhiName              `json:"zhi" jsonschema:"宫支。"`
-	ShenGong   *bool                `json:"shen_gong,omitempty" jsonschema:"是否身宫。"`
-	LaiYinGong *bool                `json:"lai_yin_gong,omitempty" jsonschema:"是否来因宫。"`
-	XingYao    []ZiweiStar          `json:"xing_yao" jsonschema:"星曜列表。"`
-	XiaoXian   *[]int               `json:"xiao_xian,omitempty" jsonschema:"小限年龄。"`
-	ChangSheng *ChangShengStageName `json:"chang_sheng,omitempty" jsonschema:"长生十二宫。"`
-	BoShi      *string              `json:"bo_shi,omitempty" jsonschema:"博士十二神。"`
-	JiangQian  *string              `json:"jiang_qian,omitempty" jsonschema:"将前十二神。"`
-	SuiQian    *string              `json:"sui_qian,omitempty" jsonschema:"岁前十二神。"`
-	ZaYao      *[]string            `json:"za_yao,omitempty" jsonschema:"杂曜。"`
+	Ming         ZiweiPalaceName          `json:"ming" jsonschema:"宫名。"`
+	Gan          GanName                  `json:"gan" jsonschema:"宫干。"`
+	Zhi          ZhiName                  `json:"zhi" jsonschema:"宫支。"`
+	ShenGong     *bool                    `json:"shen_gong,omitempty" jsonschema:"是否身宫。"`
+	LaiYinGong   *bool                    `json:"lai_yin_gong,omitempty" jsonschema:"是否来因宫。"`
+	XingYao      []ZiweiStar              `json:"xing_yao" jsonschema:"星曜列表。"`
+	XiaoXian     *[]int                   `json:"xiao_xian,omitempty" jsonschema:"小限年龄。"`
+	ChangSheng   *ChangShengStageName     `json:"chang_sheng,omitempty" jsonschema:"长生十二宫。"`
+	BoShi        *string                  `json:"bo_shi,omitempty" jsonschema:"博士十二神。"`
+	JiangQian    *string                  `json:"jiang_qian,omitempty" jsonschema:"将前十二神。"`
+	SuiQian      *string                  `json:"sui_qian,omitempty" jsonschema:"岁前十二神。"`
+	ZaYao        *[]string                `json:"za_yao,omitempty" jsonschema:"杂曜。"`
+	ZhuXingState *ZiweiMajorStarStateName `json:"zhu_xing_state" jsonschema:"主星配置：无主星/唯一主星/多主星。"`
 }
 
 type ZiweiStar struct {
-	Lei     []string           `json:"lei,omitempty" jsonschema:"星曜类别：zhu_xing/fu_xing/liu_ji/wen_xing/sha_xing。"`
-	LiangDu *string            `json:"liang_du,omitempty" jsonschema:"亮度。"`
-	Ming    *string            `json:"ming" jsonschema:"星曜名。"`
-	SiHua   *SiHuaNameNullable `json:"si_hua,omitempty" jsonschema:"四化。"`
+	Lei          []string                  `json:"lei,omitempty" jsonschema:"星曜类别：zhu_xing/fu_xing/liu_ji/wen_xing/sha_xing。"`
+	LiangDu      *string                   `json:"liang_du,omitempty" jsonschema:"亮度。"`
+	LiangDuGroup *ZiweiBrightnessGroupName `json:"liang_du_group,omitempty" jsonschema:"亮度分组：庙旺/落陷/平。"`
+	Ming         *string                   `json:"ming" jsonschema:"星曜名。"`
+	SiHua        *SiHuaNameNullable        `json:"si_hua,omitempty" jsonschema:"四化。"`
 }

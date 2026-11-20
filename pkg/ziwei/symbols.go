@@ -379,3 +379,49 @@ type ChangShengStage string
 type BoShiStage string
 type JiangQianStage string
 type SuiQianStage string
+
+// BrightnessGroup is the 亮度分组 of a star: a coarse classification of its
+// Brightness used by factor matching. Its value IS the stable display text.
+type BrightnessGroup string
+
+const (
+	brightnessGroupMiaoWang BrightnessGroup = "庙旺"
+	brightnessGroupLuoXian  BrightnessGroup = "落陷"
+	brightnessGroupPing     BrightnessGroup = "平"
+)
+
+// brightnessGroupOf derives the group symbol from a Brightness symbol.
+func brightnessGroupOf(b Brightness) BrightnessGroup {
+	switch b {
+	case Miao, Wang:
+		return brightnessGroupMiaoWang
+	case Xian:
+		return brightnessGroupLuoXian
+	default:
+		return brightnessGroupPing
+	}
+}
+
+// MajorStarState is a palace's 主星配置: whether it has no major star, exactly
+// one, or multiple. Its value IS the stable display text.
+type MajorStarState string
+
+const (
+	majorStarNone   MajorStarState = "无主星"
+	majorStarSingle MajorStarState = "唯一主星"
+	majorStarMulti  MajorStarState = "多主星"
+)
+
+func (b Brightness) MarshalJSON() ([]byte, error) {
+	return json.Marshal(DecodeBrightness(b))
+}
+
+// EncodeBrightness converts a display name to its Brightness symbol (boundary helper).
+func EncodeBrightness(s string) (Brightness, bool) {
+	for i, name := range brightnessNames {
+		if name == s {
+			return Brightness(i), true
+		}
+	}
+	return Miao, false
+}

@@ -35,29 +35,31 @@ func juShuFromWuxing(w Wuxing) JuShu {
 
 // gong holds all computed data for one gong.
 type Gong struct {
-	Index        GongIndex  `json:"-"`
-	Name         string     `json:"ming"`
-	Gan          Gan        `json:"gan"`
-	Zhi          Zhi        `json:"zhi"`
-	IsBodyPalace bool       `json:"shen_gong,omitempty"`
-	IsYuanGong   bool       `json:"lai_yin_gong,omitempty"`
-	Stars        []StarInfo `json:"xing_yao"`
-	Ages         []int      `json:"xiao_xian,omitempty"`
-	ChangSheng   ChangShengStage `json:"chang_sheng,omitempty"`
-	BoShi        BoShiStage `json:"bo_shi,omitempty"`
-	JiangQian    JiangQianStage `json:"jiang_qian,omitempty"`
-	SuiQian      SuiQianStage `json:"sui_qian,omitempty"`
-	ZaYao        []ShenSha  `json:"za_yao,omitempty"`
+	Index          GongIndex       `json:"-"`
+	Name           string          `json:"ming"`
+	Gan            Gan             `json:"gan"`
+	Zhi            Zhi             `json:"zhi"`
+	IsBodyPalace   bool            `json:"shen_gong,omitempty"`
+	IsYuanGong     bool            `json:"lai_yin_gong,omitempty"`
+	Stars          []StarInfo      `json:"xing_yao"`
+	Ages           []int           `json:"xiao_xian,omitempty"`
+	ChangSheng     ChangShengStage `json:"chang_sheng,omitempty"`
+	BoShi          BoShiStage      `json:"bo_shi,omitempty"`
+	JiangQian      JiangQianStage  `json:"jiang_qian,omitempty"`
+	SuiQian        SuiQianStage    `json:"sui_qian,omitempty"`
+	ZaYao          []ShenSha       `json:"za_yao,omitempty"`
+	MajorStarState MajorStarState  `json:"zhu_xing_state"` // 无主星/唯一主星/多主星
 }
 
 // StarInfo is one star entry in a gong.
 type StarInfo struct {
-	Star       StarIndex `json:"-"`
-	Name       string    `json:"ming"`
-	IsMajor    bool      `json:"-"`
-	Lei        []StarLei `json:"lei,omitempty"`
-	SiHua      SiHua     `json:"si_hua,omitempty"`   // 禄/权/科/忌 or empty
-	Brightness string    `json:"liang_du,omitempty"` // "庙"/"旺"/"利"/"平"/"陷"
+	Star            StarIndex       `json:"-"`
+	Name            string          `json:"ming"`
+	IsMajor         bool            `json:"-"`
+	Lei             []StarLei       `json:"lei,omitempty"`
+	SiHua           SiHua           `json:"si_hua,omitempty"`         // 禄/权/科/忌 or empty
+	Brightness      Brightness      `json:"liang_du,omitempty"`       // 亮度符号，边界输出文本
+	BrightnessGroup BrightnessGroup `json:"liang_du_group,omitempty"` // 庙旺/落陷/平
 }
 
 // KongGongInfo 描述一个无主星宫位及其借星（对宫主星）。
