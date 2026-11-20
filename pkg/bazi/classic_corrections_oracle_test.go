@@ -137,7 +137,7 @@ func TestDomainOracle_BaziClassicCorrections(t *testing.T) {
 				t.Fatalf("geju = %+v, want %s/%s", got, tc.Pattern, tc.Usage)
 			}
 			if got.PatternGodSource == "" ||
-				got.Structure.Pattern.Wuxing == "" || len(got.Structure.Pattern.Roots) == 0 {
+				got.Structure.Pattern.Wuxing == 0 || len(got.Structure.Pattern.Roots) == 0 {
 				t.Fatalf("geju structural fields = %+v", got)
 			}
 			if tc.Pattern == "月刃格" && got.PatternGodSource != "month_blade" {
@@ -155,7 +155,7 @@ func TestDomainOracle_BaziClassicCorrections(t *testing.T) {
 			ge := full.GeJu
 			if string(ge.Pattern) != tc.Pattern || ge.PatternGod != tc.PatternGod ||
 				ge.PatternGodSource != tc.PatternGodSource || ge.Usage != tc.Usage ||
-				ge.Structure.Pattern.Wuxing == "" {
+				ge.Structure.Pattern.Wuxing == 0 {
 				t.Fatalf("geju = %+v, want %+v", ge, tc)
 			}
 			if full.FuYi.Strength != tc.Strength {

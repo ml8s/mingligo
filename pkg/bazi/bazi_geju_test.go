@@ -300,7 +300,7 @@ func TestGeJu_StructuralContract(t *testing.T) {
 		if result.Usage != "顺用" && result.Usage != "逆用" {
 			t.Fatalf("%s: invalid usage %q", result.Pattern, result.Usage)
 		}
-		if result.Structure.Pattern.Wuxing == "" || len(result.Structure.Pattern.Roots) == 0 {
+		if result.Structure.Pattern.Wuxing == 0 || len(result.Structure.Pattern.Roots) == 0 {
 			t.Fatalf("%s: structure roots incomplete: %+v", result.Pattern, result.Structure.Pattern)
 		}
 	}

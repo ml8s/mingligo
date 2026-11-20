@@ -18,10 +18,10 @@ type StemOccurrence struct {
 
 // ElementStructure is an atomic element projection used by the FuYi, TiaoHou, and GeJu projections. It never asserts final pattern success or failure.
 type ElementStructure struct {
-	Wuxing             string           `json:"wuxing"`
+	Wuxing             ganzhi.Wuxing    `json:"wuxing"`
 	TransparentPillars []PillarIndex         `json:"transparent_pillars"`
 	Roots              []StemOccurrence `json:"roots"`
-	Season             string           `json:"season"`
+	Season             ganzhi.WangShuai `json:"season"`
 	Timely             bool             `json:"timely"`
 	Strength           string           `json:"strength"`
 }
@@ -214,13 +214,13 @@ func buildTiaoHouAvailability(
 
 func buildElementStructure(bz ganzhi.Bazi, elem ganzhi.Wuxing, exact *ganzhi.Gan) ElementStructure {
 	structure := ElementStructure{
-		Wuxing:             ganzhi.DecodeWuxing(elem),
+		Wuxing:             elem,
 		TransparentPillars: transparentPillars(bz, elem, exact),
 		Roots:              hiddenStemOccurrences(bz, elem),
 	}
 	season := ganzhi.WangShuaiOf(elem, bz.Yue.Zhi)
-	structure.Season = ganzhi.DecodeWangShuai(season)
-	structure.Timely = structure.Season == ganzhi.DecodeWangShuai(ganzhi.WSWang) || structure.Season == ganzhi.DecodeWangShuai(ganzhi.WSXiang)
+	structure.Season = season
+	structure.Timely = season == ganzhi.WSWang || season == ganzhi.WSXiang
 	switch {
 	case structure.Timely:
 		structure.Strength = "strong"
