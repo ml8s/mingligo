@@ -218,14 +218,15 @@ func buildElementStructure(bz ganzhi.Bazi, elem ganzhi.Wuxing, exact *ganzhi.Gan
 		TransparentPillars: transparentPillars(bz, elem, exact),
 		Roots:              hiddenStemOccurrences(bz, elem),
 	}
-	structure.Season = ganzhi.DecodeWangShuai(ganzhi.WangShuaiOf(elem, bz.Yue.Zhi))
+	season := ganzhi.WangShuaiOf(elem, bz.Yue.Zhi)
+	structure.Season = ganzhi.DecodeWangShuai(season)
 	structure.Timely = structure.Season == ganzhi.DecodeWangShuai(ganzhi.WSWang) || structure.Season == ganzhi.DecodeWangShuai(ganzhi.WSXiang)
 	switch {
 	case structure.Timely:
 		structure.Strength = "strong"
 	case len(structure.TransparentPillars) > 0 && len(structure.Roots) > 0:
 		structure.Strength = "strong"
-	case isDeadOrTrappedSeason(structure.Season) && len(structure.TransparentPillars) == 0 && len(structure.Roots) == 0:
+	case isDeadOrTrappedSeason(season) && len(structure.TransparentPillars) == 0 && len(structure.Roots) == 0:
 		structure.Strength = "weak"
 	default:
 		structure.Strength = "neutral"
@@ -529,6 +530,6 @@ func pillarIndexKeys(pillars []PillarIndex) string {
 	return strings.Join(parts, ",")
 }
 
-func isDeadOrTrappedSeason(season string) bool {
-	return season == ganzhi.DecodeWangShuai(ganzhi.WSQiu) || season == ganzhi.DecodeWangShuai(ganzhi.WSSi)
+func isDeadOrTrappedSeason(season ganzhi.WangShuai) bool {
+	return season == ganzhi.WSQiu || season == ganzhi.WSSi
 }

@@ -224,20 +224,6 @@ const (
 	xingZi     = "自刑"
 )
 
-func xingTypeLabel(t string) string {
-	switch t {
-	case "wuli":
-		return xingWuLi
-	case "wuen":
-		return xingWuEn
-	case "shishi":
-		return xingShiShi
-	case "zi":
-		return xingZi
-	}
-	return "刑"
-}
-
 // analyzeZhuWithBazi analyzes one pillar against all 4 bazi chart pillars.
 func analyzeZhuWithBazi(zhu ganzhi.Zhu, bz ganzhi.Bazi) ([]GanRelation, []ZhiRelation) {
 	ganRels := make([]GanRelation, 4)
