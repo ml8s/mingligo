@@ -29,8 +29,8 @@ func lineTargets(p *Chart, left, right int) []TargetRole {
 	return targets
 }
 
-func branchRelations(left, right ganzhi.Zhi) []string {
-	var relations []string
+func branchRelations(left, right ganzhi.Zhi) []BranchRelationType {
+	var relations []BranchRelationType
 	if ganzhi.IsLiuChong(left, right) {
 		relations = append(relations, "六冲")
 	}

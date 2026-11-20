@@ -175,7 +175,7 @@ func (c Chart) View() ChartView {
 	for i, p := range c.Patterns {
 		view.Patterns = append(view.Patterns, PatternView{
 			ID: fmt.Sprintf("pattern-%d", i+1), PatternKind: string(p.Type),
-			SubType: p.SubType, Position: p.Position, IsTrue: p.IsTrue,
+			SubType: string(p.SubType), Position: p.Position, IsTrue: p.IsTrue,
 		})
 	}
 	if c.GuaCi.Name != "" {

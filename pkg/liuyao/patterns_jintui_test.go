@@ -45,7 +45,7 @@ func TestComputeJinTui(t *testing.T) {
 				t.Fatalf("patterns count = %d, want 1", len(patterns))
 			}
 			got := patterns[0]
-			if got.Type != PatternJinTui || got.SubType != tt.subType || !got.IsTrue {
+			if got.Type != PatternJinTui || string(got.SubType) != tt.subType || !got.IsTrue {
 				t.Fatalf("pattern = %+v, want %s with is_true=true", got, tt.subType)
 			}
 		})

@@ -76,7 +76,7 @@ type HiddenLine struct {
 type BranchRelationFact struct {
 	LeftPosition  int      `json:"left_position"`
 	RightPosition int      `json:"right_position"`
-	Relations     []string `json:"relations"`
+	Relations     []BranchRelationType `json:"relations"`
 	Targets       []TargetRole `json:"targets,omitempty"`
 	Basis         []string `json:"basis,omitempty"`
 }

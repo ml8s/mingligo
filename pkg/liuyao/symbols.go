@@ -340,3 +340,10 @@ func DecodeTargetRole(t TargetRole) string { return string(t) }
 type LifeStage string
 
 func DecodeLifeStage(s LifeStage) string { return string(s) }
+
+// PatternSubType is the specific kind of a 格局 pattern. Its value IS the
+// stable display text; the set is closed by the compute* producers.
+type PatternSubType string
+
+// BranchRelationType is a zhi-zhi relation (六冲/六合/六害/自刑/成组刑).
+type BranchRelationType string

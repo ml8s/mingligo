@@ -4,10 +4,10 @@ import "github.com/ml8s/mingligo/pkg/ganzhi"
 
 // Pattern 特殊格局
 type Pattern struct {
-	Type     PatternType `json:"ge_ju_kind"` // 格局类型
-	SubType  string      `json:"sub_type"`   // 子类型（如真空/假空）
-	Position int         `json:"position"`   // 相关爻位（0=全卦）
-	IsTrue   bool        `json:"is_true"`    // 结构是否有实质效力（空破区分真假，其余表示已成立）
+	Type     PatternType    `json:"ge_ju_kind"` // 格局类型
+	SubType  PatternSubType `json:"sub_type"`   // 子类型（如真空/假空）
+	Position int            `json:"position"`   // 相关爻位（0=全卦）
+	IsTrue   bool           `json:"is_true"`    // 结构是否有实质效力（空破区分真假，其余表示已成立）
 }
 
 // jinShenTable 固定进神同五行地支顺行；不用五行生克近似。
@@ -114,7 +114,7 @@ func computeXunKong(p *Chart, yongShen YongShen) []Pattern {
 
 	patterns = append(patterns, Pattern{
 		Type:     PatternXunKong,
-		SubType:  subType,
+		SubType:  PatternSubType(subType),
 		Position: yongPos,
 		IsTrue:   isTrueVacant,
 	})
@@ -155,7 +155,7 @@ func computeYuePo(p *Chart, yongShen YongShen) []Pattern {
 
 	patterns = append(patterns, Pattern{
 		Type:     PatternYuePo,
-		SubType:  subType,
+		SubType:  PatternSubType(subType),
 		Position: yongPos,
 		IsTrue:   isTruePo,
 	})
@@ -184,7 +184,7 @@ func computeFeiFu(p *Chart, yongShen YongShen) []Pattern {
 		relation := feiFuRelation(flying.Wuxing, ganzhi.ZhiWuxing(fuZhi))
 		patterns = append(patterns, Pattern{
 			Type:     PatternFeiFu,
-			SubType:  DecodeFeiFuRelation(relation),
+			SubType:  PatternSubType(DecodeFeiFuRelation(relation)),
 			Position: fuShen.Position,
 			IsTrue:   true,
 		})
@@ -227,7 +227,7 @@ func computeJinTui(p *Chart, yongShen YongShen) []Pattern {
 	if subType != "" {
 		patterns = append(patterns, Pattern{
 			Type:     PatternJinTui,
-			SubType:  subType,
+			SubType:  PatternSubType(subType),
 			Position: yongPos,
 			IsTrue:   true,
 		})
@@ -279,7 +279,7 @@ func computeChongHe(p *Chart, yongShen YongShen) []Pattern {
 		} {
 			if tc.matched {
 				patterns = append(patterns, Pattern{
-					Type: PatternChongHe, SubType: tc.subType, Position: 0, IsTrue: true,
+					Type: PatternChongHe, SubType: PatternSubType(tc.subType), Position: 0, IsTrue: true,
 				})
 			}
 		}
@@ -396,7 +396,7 @@ func computeSuiGuiRuMu(p *Chart, yongShen YongShen) []Pattern {
 	for _, source := range line.MuKuTypes {
 		patterns = append(patterns, Pattern{
 			Type:     PatternSuiGuiRuMu,
-			SubType:  muKuSourceLabel(source),
+			SubType:  PatternSubType(muKuSourceLabel(source)),
 			Position: yongPos,
 			IsTrue:   true,
 		})

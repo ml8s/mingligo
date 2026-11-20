@@ -254,7 +254,7 @@ func TestDomainOracle_LiuyaoPatternSemantics(t *testing.T) {
 					chart.DayRelations[index] = DayRelation{Relations: types}
 				}
 				patterns := computeYuePo(&chart, typ)
-				if len(patterns) != 1 || patterns[0].SubType != tc.ExpectedSubtype || patterns[0].IsTrue != tc.ExpectedIsTrue {
+				if len(patterns) != 1 || string(patterns[0].SubType) != tc.ExpectedSubtype || patterns[0].IsTrue != tc.ExpectedIsTrue {
 					t.Fatalf("patterns = %#v, want %s", patterns, tc.ExpectedSubtype)
 				}
 				return
@@ -282,7 +282,7 @@ func TestDomainOracle_LiuyaoPatternSemantics(t *testing.T) {
 			patterns := computeFanFuYin(&chart, typ)
 			if tc.ExpectedAbsentSubtype != "" {
 				for _, pattern := range patterns {
-					if pattern.SubType == tc.ExpectedAbsentSubtype {
+					if string(pattern.SubType) == tc.ExpectedAbsentSubtype {
 						t.Fatalf("subtype %q must be absent: %#v", tc.ExpectedAbsentSubtype, patterns)
 					}
 				}
@@ -290,7 +290,7 @@ func TestDomainOracle_LiuyaoPatternSemantics(t *testing.T) {
 			}
 			found := false
 			for _, pattern := range patterns {
-				if pattern.Type == PatternType(tc.ExpectedType) && pattern.SubType == tc.ExpectedSubtype && pattern.IsTrue == tc.ExpectedIsTrue {
+				if pattern.Type == PatternType(tc.ExpectedType) && string(pattern.SubType) == tc.ExpectedSubtype && pattern.IsTrue == tc.ExpectedIsTrue {
 					found = true
 					break
 				}
@@ -314,7 +314,7 @@ func TestDomainOracle_LiuyaoPatternSemantics(t *testing.T) {
 			found := false
 			for _, pattern := range chart.Patterns {
 				if string(pattern.Type) == tc.ExpectedPattern.Type &&
-					pattern.SubType == tc.ExpectedPattern.SubType &&
+					string(pattern.SubType) == string(tc.ExpectedPattern.SubType) &&
 					pattern.IsTrue == tc.ExpectedPattern.IsTrue {
 					found = true
 				}
@@ -337,7 +337,7 @@ func TestDomainOracle_LiuyaoPatternSemantics(t *testing.T) {
 			found := []string{}
 			for _, pattern := range chart.Patterns {
 				if pattern.Type == PatternChongHe {
-					found = append(found, pattern.SubType)
+					found = append(found, string(pattern.SubType))
 					if !pattern.IsTrue {
 						t.Fatalf("whole-gua pattern must be true: %+v", pattern)
 					}
