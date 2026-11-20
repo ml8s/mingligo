@@ -98,42 +98,6 @@ func newFlowTransformations(
 	return result
 }
 
-// FlowStarKind is the period-independent kind of a flow star (禄/羊/陀/…),
-// defined once in the ziwei domain with a stable rank for display ordering.
-type FlowStarKind int
-
-const (
-	fskNone FlowStarKind = iota
-	fskLu                 // 禄
-	fskYang               // 羊
-	fskTuo                // 陀
-	fskKui                // 魁
-	fskYue                // 钺
-	fskMa                 // 马
-	fskLuan               // 鸾
-	fskXi                 // 喜
-	fskChang              // 昌
-	fskQu                 // 曲
-)
-
-var flowStarKindNames = [...]string{"", "禄", "羊", "陀", "魁", "钺", "马", "鸾", "喜", "昌", "曲"}
-
-func (k FlowStarKind) String() string {
-	if int(k) >= 0 && int(k) < len(flowStarKindNames) {
-		return flowStarKindNames[k]
-	}
-	return ""
-}
-
-func ParseFlowStarKind(name string) (FlowStarKind, bool) {
-	for i, n := range flowStarKindNames {
-		if n != "" && n == name {
-			return FlowStarKind(i), true
-		}
-	}
-	return fskNone, false
-}
-
 // flowStarKindOf extracts the stable star kind from a prefixed flow-star name
 // (for example 月禄/流禄 → 禄).
 func flowStarKindOf(name string) FlowStarKind {

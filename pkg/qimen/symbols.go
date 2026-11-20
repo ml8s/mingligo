@@ -54,7 +54,7 @@ func ParseSpiritIndex(s string) (SpiritIndex, error) {
 type WuxingRelation uint8
 
 const (
-	wrSame             WuxingRelation = iota // same
+	wrSame              WuxingRelation = iota // same
 	wrGongGeneratesXing                       // gong_generates_xing
 	wrXingGeneratesGong                       // xing_generates_gong
 	wrXingControlsGong                        // xing_controls_gong
@@ -120,11 +120,11 @@ func ParseYuan(name string) (Yuan, bool) {
 type ZhiRunState uint8
 
 const (
-	zsNone ZhiRunState = iota // 无置闰状态（非置闰法）
-	zsExact                   // exact 正授
-	zsAhead                   // ahead 超神
-	zsBehind                  // behind 接气
-	zsRepeat                  // repeat 置闰
+	zsNone   ZhiRunState = iota // 无置闰状态（非置闰法）
+	zsExact                     // exact 正授
+	zsAhead                     // ahead 超神
+	zsBehind                    // behind 接气
+	zsRepeat                    // repeat 置闰
 )
 
 var zhiRunStateNamesByKey = [...]string{"", "exact", "ahead", "behind", "repeat"}
@@ -159,7 +159,7 @@ type DunSource uint8
 
 const (
 	dsHourBranch DunSource = iota // hour_branch
-	dsSolarTerm                    // solar_term
+	dsSolarTerm                   // solar_term
 )
 
 var dunSourceNames = [...]string{"hour_branch", "solar_term"}

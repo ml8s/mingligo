@@ -105,7 +105,7 @@ func (l *LiuShou) UnmarshalJSON(data []byte) error {
 type MuKuSource uint8
 
 const (
-	MuKuDay        MuKuSource = iota // day: 随鬼入日墓
+	MuKuDay         MuKuSource = iota // day: 随鬼入日墓
 	MuKuMoving                        // moving: 随鬼入动墓
 	MuKuTransformed                   // transformed: 随鬼化墓
 )

@@ -1,20 +1,5 @@
 package ziwei
 
-// Brightness level: 0=庙 1=旺 2=利 3=平 4=陷.
-type Brightness int
-
-const (
-	Miao Brightness = iota
-	Wang
-	De
-	Li
-	Ping
-	Xian
-	Bu
-)
-
-var brightnessNames = [7]string{"庙", "旺", "得", "利", "平", "陷", "不"}
-
 // Branch anchors used by textual pattern boundaries.
 const (
 	zhiZi   Zhi = 1
@@ -23,7 +8,6 @@ const (
 	zhiXu   Zhi = 11
 )
 
-func (b Brightness) String() string { return brightnessNames[b] }
 
 var miaoWangTable [14][12]Brightness
 
