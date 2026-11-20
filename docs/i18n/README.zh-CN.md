@@ -47,5 +47,5 @@ chart := bazi.ComputeChartAt(birth, 116.407526, ganzhi.Male)
 
 - [英文 README](../../README.md)
 - [MCP 工具目录](../../examples/mingligo-mcp/contracts/mcp-tools.json)
-- [MCP adapter 决策记录](../decisions/0003-official-mcp-adapter.md)
+- [MCP adapter 决策记录](../ARCHITECTURE.md)
 - [MIT License](../../LICENSE)

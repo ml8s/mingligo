@@ -15,9 +15,7 @@ MingliGo documentation has three layers:
 | [`domain/README.md`](domain/README.md) | Domain-package architecture and contracts |
 | [`domain/README.zh-CN.md`](domain/README.zh-CN.md) | Chinese domain-package overview for wiki writing |
 | [`VALIDATION.md`](VALIDATION.md) | Golden fixtures, reference projects, licenses, known limits |
-| [`decisions/0003-official-mcp-adapter.md`](decisions/0003-official-mcp-adapter.md) | Why MCP is a typed example adapter, not the core |
-| [`decisions/0004-domain-owned-output.md`](decisions/0004-domain-owned-output.md) | Domain owns aggregated output; adapters only transmit and declare schema |
-| [`decisions/0005-closed-domain-symbol-system.md`](decisions/0005-closed-domain-symbol-system.md) | Closed domain symbol system; enums + Encode/Decode boundary; symbols in, symbols out |
+| [`ARCHITECTURE.md`](ARCHITECTURE.md) | Domain symbol space, pure-function operators, Encode/Decode boundary, thin adapters |
 
 ## Domain documents
 

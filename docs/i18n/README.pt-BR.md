@@ -47,5 +47,5 @@ Chame `tables.Load()` primeiro para criar uma barreira fail-closed; depois use a
 
 - [README em inglês](../../README.md)
 - [Catálogo de ferramentas MCP](../../examples/mingligo-mcp/contracts/mcp-tools.json)
-- [Decisão do adapter MCP](../decisions/0003-official-mcp-adapter.md)
+- [Decisão do adapter MCP](../ARCHITECTURE.md)
 - [Licença MIT](../../LICENSE)

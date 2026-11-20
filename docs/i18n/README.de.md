@@ -47,5 +47,5 @@ Rufen Sie zuerst `tables.Load()` auf, um eine fail-closed-Startbarriere zu schaf
 
 - [Englisches README](../../README.md)
 - [MCP-Toolkatalog](../../examples/mingligo-mcp/contracts/mcp-tools.json)
-- [Entscheidung zum MCP-Adapter](../decisions/0003-official-mcp-adapter.md)
+- [Entscheidung zum MCP-Adapter](../ARCHITECTURE.md)
 - [MIT-Lizenz](../../LICENSE)

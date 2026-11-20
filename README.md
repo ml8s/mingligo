@@ -230,7 +230,7 @@ Use `--stdio` for the same tool surface over standard input/output.
 - Domain overview in Chinese: [`docs/domain/README.zh-CN.md`](docs/domain/README.zh-CN.md)
 - Validation sources: [`docs/VALIDATION.md`](docs/VALIDATION.md)
 - MCP transport: [Streamable HTTP](https://modelcontextprotocol.io/specification/2025-06-18/basic/transports)
-- MCP decision: [Official Go MCP SDK example adapter](docs/decisions/0003-official-mcp-adapter.md)
+- Architecture: [Domain symbol space and operators](docs/ARCHITECTURE.md)
 - Geographic attribution: [`pkg/city/ATTRIBUTION.txt`](pkg/city/ATTRIBUTION.txt)
 
 ## Development
