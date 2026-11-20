@@ -10,7 +10,7 @@ func TestQimenCatalogContract(t *testing.T) {
 		ScopeHour: {
 			Scope: "hour", Name: "时家奇门", LeadPillar: "hour",
 			MethodSource: "solar_term", DingjuMethods: []DingjuMethod{DingjuChaiBu, DingjuZhiRun, DingjuMaoShan},
-			DefaultDingju: DingjuChaiBu, Features: []string{"wu_bu_yu_shi"},
+			DefaultDingju: DingjuChaiBu, Features: []FeatureKind{"wu_bu_yu_shi"},
 		},
 		ScopeDay: {
 			Scope: "day", Name: "日家奇门", LeadPillar: "day",

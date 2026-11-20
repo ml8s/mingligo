@@ -157,7 +157,7 @@ func buildChartMethod(ju juShu, bz ganzhi.Bazi) ChartMethod {
 		Scope: scope.Scope, School: school.School,
 		DingjuMethod: string(ju.Method.Dingju), QuarterRule: string(ju.Method.QuarterRule),
 		BaseDingjuMethod: string(ju.Method.BaseDingju),
-		MethodSource:     scope.MethodSource, DayBoundary: qimenDayBoundary,
+		MethodSource:     DecodeMethodSourceKind(scope.MethodSource), DayBoundary: DecodeDayBoundaryKind(qimenDayBoundary),
 		SpiritMode: school.SpiritMode, Geometry: school.Geometry,
 		StarMode: school.StarMode, DoorMode: school.DoorMode,
 		SpiritFlight: school.SpiritFlight,

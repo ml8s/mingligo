@@ -70,14 +70,14 @@ type zhiRunStateEntry struct {
 type scopeEntry struct {
 	Scope              string
 	Name               string
-	LeadPillar         string
-	MethodSource       string
+	LeadPillar         LeadPillarKind
+	MethodSource       MethodSourceKind
 	DingjuMethods      []DingjuMethod
 	DefaultDingju      DingjuMethod
 	NoDingjuSchools    []School
 	QuarterRules       []QuarterRule
 	DefaultQuarterRule QuarterRule
-	Features           []string
+	Features           []FeatureKind
 }
 
 type schoolEntry struct {
@@ -147,7 +147,7 @@ func (e scopeEntry) allowsNoDingjuSchool(school School) bool {
 	return false
 }
 
-func (e scopeEntry) hasFeature(feature string) bool {
+func (e scopeEntry) hasFeature(feature FeatureKind) bool {
 	for _, candidate := range e.Features {
 		if candidate == feature {
 			return true
@@ -255,7 +255,7 @@ var (
 	yearAnchor          int
 	yearCycle           int
 	yearJuByYuan        map[Yuan]int
-	qimenDayBoundary    string
+	qimenDayBoundary    DayBoundaryKind
 	menGongTable        map[[2]int]doorEntry
 	xingGongTable       map[[2]int]XingInteraction
 
@@ -522,14 +522,14 @@ func loadCatalog() error {
 		Scopes []struct {
 			Scope              string   `json:"scope"`
 			Name               string   `json:"name"`
-			LeadPillar         string   `json:"lead_pillar"`
-			MethodSource       string   `json:"method_source"`
+			LeadPillar         LeadPillarKind   `json:"lead_pillar"`
+			MethodSource       MethodSourceKind   `json:"method_source"`
 			DingjuMethods      []string `json:"dingju_methods"`
 			DefaultDingju      string   `json:"default_dingju_method"`
 			NoDingjuSchools    []string `json:"no_dingju_schools"`
 			QuarterRules       []string `json:"quarter_rules"`
 			DefaultQuarterRule string   `json:"default_quarter_rule"`
-			Features           []string `json:"features"`
+			Features           []FeatureKind `json:"features"`
 		} `json:"scopes"`
 		Schools []struct {
 			School               string   `json:"school"`
@@ -577,7 +577,7 @@ func loadCatalog() error {
 	if table.DayBoundary != "late_zi_rolls_day_pillar" {
 		return fmt.Errorf("load catalog: unsupported day boundary")
 	}
-	qimenDayBoundary = table.DayBoundary
+	qimenDayBoundary = DayBoundaryKind(table.DayBoundary)
 	parsedDefaultScope, err := EncodeScope(table.Default.Scope)
 	if err != nil {
 		return fmt.Errorf("load catalog: default scope: %w", err)
@@ -638,7 +638,7 @@ func loadCatalog() error {
 		if _, exists := scopeMethods[scope]; exists {
 			return fmt.Errorf("load catalog: duplicate scope %q", entry.Scope)
 		}
-		if entry.Name == "" || entry.LeadPillar != DecodeScope(scope) {
+		if entry.Name == "" || entry.LeadPillar != LeadPillarKind(DecodeScope(scope)) {
 			return fmt.Errorf("load catalog: invalid scope %q", entry.Scope)
 		}
 		switch entry.MethodSource {
@@ -647,8 +647,8 @@ func loadCatalog() error {
 			return fmt.Errorf("load catalog: scope %q has invalid method source", entry.Scope)
 		}
 		loaded := scopeEntry{
-			Scope: entry.Scope, Name: entry.Name, LeadPillar: entry.LeadPillar,
-			MethodSource: entry.MethodSource,
+			Scope: entry.Scope, Name: entry.Name, LeadPillar: LeadPillarKind(entry.LeadPillar),
+			MethodSource: MethodSourceKind(entry.MethodSource),
 		}
 		for _, name := range entry.DingjuMethods {
 			method, err := EncodeDingjuMethod(name)
@@ -689,10 +689,10 @@ func loadCatalog() error {
 			return fmt.Errorf("load catalog: scope %q lacks a default quarter rule", entry.Scope)
 		}
 		for _, feature := range entry.Features {
-			if feature != "wu_bu_yu_shi" || loaded.hasFeature(feature) {
+			if FeatureKind(feature) != featureWuBuYuShi || loaded.hasFeature(FeatureKind(feature)) {
 				return fmt.Errorf("load catalog: scope %q has invalid feature %q", entry.Scope, feature)
 			}
-			loaded.Features = append(loaded.Features, feature)
+			loaded.Features = append(loaded.Features, FeatureKind(feature))
 		}
 		for _, name := range entry.NoDingjuSchools {
 			school, err := EncodeSchool(name)
@@ -836,7 +836,7 @@ func loadQuarter() error {
 	if err := json.Unmarshal(quarterJSON, &table); err != nil {
 		return fmt.Errorf("load quarter: %w", err)
 	}
-	if table.HourBoundary != qimenDayBoundary || len(table.Methods) != 2 ||
+	if table.HourBoundary != string(qimenDayBoundary) || len(table.Methods) != 2 ||
 		len(table.YangBranches) != 6 || len(table.YinBranches) != 6 {
 		return fmt.Errorf("load quarter: unsupported rule")
 	}

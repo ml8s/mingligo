@@ -80,7 +80,7 @@ func buildJinhanMethod(term solarTermInfo) JinhanChartMethod {
 	return JinhanChartMethod{
 		Scope: ScopeDay, School: SchoolJinhanYuJing,
 		DingjuMethod: DingjuNone,
-		MethodSource: jinhanMethodSource, DayBoundary: qimenDayBoundary,
+		MethodSource: jinhanMethodSource, DayBoundary: string(qimenDayBoundary),
 		Geometry: school.Geometry, StarMode: school.StarMode,
 		DoorMode: school.DoorMode, SpiritMode: school.SpiritMode,
 		SpiritFlight: school.SpiritFlight, DunSource: jinhanDunSource,

@@ -574,3 +574,37 @@ const (
 )
 
 func DecodeHourRelation(h HourRelation) string { return string(h) }
+
+// LeadPillarKind selects which pillar leads a chart.
+type LeadPillarKind string
+
+// MethodSourceKind selects how the ju (局) is determined.
+type MethodSourceKind string
+
+// FeatureKind is an optional catalog feature.
+type FeatureKind string
+
+// DayBoundaryKind selects the day-boundary convention.
+type DayBoundaryKind string
+
+const (
+	leadPillarDay     LeadPillarKind = "day"
+	leadPillarHour    LeadPillarKind = "hour"
+	leadPillarMonth   LeadPillarKind = "month"
+	leadPillarQuarter LeadPillarKind = "quarter"
+	leadPillarYear    LeadPillarKind = "year"
+
+	methodSourceMonthCycle  MethodSourceKind = "month_cycle"
+	methodSourceQuarterRule MethodSourceKind = "quarter_rule"
+	methodSourceSolarTerm   MethodSourceKind = "solar_term"
+	methodSourceYearCycle   MethodSourceKind = "year_cycle"
+
+	featureWuBuYuShi FeatureKind = "wu_bu_yu_shi"
+
+	dayBoundaryLateZi DayBoundaryKind = "late_zi_rolls_day_pillar"
+)
+
+func DecodeLeadPillarKind(l LeadPillarKind) string     { return string(l) }
+func DecodeMethodSourceKind(m MethodSourceKind) string { return string(m) }
+func DecodeFeatureKind(f FeatureKind) string           { return string(f) }
+func DecodeDayBoundaryKind(d DayBoundaryKind) string   { return string(d) }
