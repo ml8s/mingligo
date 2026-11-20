@@ -232,13 +232,39 @@ func ResolveMethodWithOptions(
 	if err != nil {
 		return Method{}, err
 	}
-	dingju := DecodeDingjuMethod(resolved.Dingju)
-	if resolved.Dingju == DingjuNone {
+	// resolved already carries typed Scope/School/QuarterRule/Dingju; keep them
+	// symbolic instead of Decode→Encode roundtripping. DingjuNone means "omitted"
+	// at this validation boundary, so pass it as the zero value.
+	dingju := resolved.Dingju
+	if dingju == DingjuNone {
 		dingju = ""
 	}
-	return EncodeMethodWithOptions(
-		DecodeScope(resolved.Scope), DecodeSchool(resolved.School), dingju,
-		DecodeQuarterRule(resolved.QuarterRule), baseDingjuMethod, dunSource, hourBoundary,
+	var base DingjuMethod
+	if baseDingjuMethod != "" {
+		var err error
+		base, err = EncodeDingjuMethod(baseDingjuMethod)
+		if err != nil {
+			return Method{}, err
+		}
+	}
+	var dun DunSource
+	if dunSource != "" {
+		var ok bool
+		dun, ok = EncodeDunSource(dunSource)
+		if !ok {
+			return Method{}, fmt.Errorf("unknown dun source %q", dunSource)
+		}
+	}
+	var boundary HourBoundary
+	if hourBoundary != "" {
+		var ok bool
+		boundary, ok = EncodeHourBoundary(hourBoundary)
+		if !ok {
+			return Method{}, fmt.Errorf("unknown hour boundary %q", hourBoundary)
+		}
+	}
+	return validateMethodFields(
+		resolved.Scope, resolved.School, dingju, resolved.QuarterRule, base, dun, boundary,
 	)
 }
 
