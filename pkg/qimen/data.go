@@ -375,7 +375,6 @@ func loadGanInteractions() error {
 		Earth      string `json:"di_pan_gan"`
 		Heaven     string `json:"tian_pan_gan"`
 		Pattern    string `json:"ge_ju"`
-		Meaning    string `json:"meaning"`
 		Auspicious bool   `json:"auspicious"`
 	}
 	document, err := decodeInteractionTable[entry](ganInteractionJSON)
@@ -395,7 +394,6 @@ func loadGanInteractions() error {
 		}
 		ganInteractionTable[[2]ganzhi.Gan{earth, heaven}] = ganEntry{
 			PatternName: entry.Pattern,
-			Meaning:     entry.Meaning,
 			Auspicious:  entry.Auspicious,
 		}
 	}
@@ -454,10 +452,9 @@ func loadJushu() error {
 
 func loadMenInteractions() error {
 	type entry struct {
-		Door    string `json:"men"`
-		Gong    string `json:"gong"`
-		Name    string `json:"name"`
-		Meaning string `json:"meaning"`
+		Door string `json:"men"`
+		Gong string `json:"gong"`
+		Name string `json:"name"`
 	}
 	document, err := decodeInteractionTable[entry](menInteractionJSON)
 	if err != nil {
@@ -475,7 +472,7 @@ func loadMenInteractions() error {
 			return err
 		}
 		menGongTable[[2]int{int(door), int(palace) - 1}] = doorEntry{
-			Name: entry.Name, Meaning: entry.Meaning,
+			Name: entry.Name,
 		}
 	}
 	return nil
@@ -485,7 +482,6 @@ func loadXingInteractions() error {
 	type entry struct {
 		Star       string `json:"xing"`
 		Gong       string `json:"gong"`
-		Meaning    string `json:"meaning"`
 		Auspicious bool   `json:"auspicious"`
 	}
 	document, err := decodeInteractionTable[entry](xingInteractionJSON)
@@ -505,7 +501,7 @@ func loadXingInteractions() error {
 		}
 		xingGongTable[[2]int{int(s), int(p) - 1}] = XingInteraction{
 			Star: e.Star, Gong: e.Gong,
-			Meaning: e.Meaning, Auspicious: e.Auspicious,
+			Auspicious: e.Auspicious,
 		}
 	}
 	return nil
@@ -520,16 +516,16 @@ func loadCatalog() error {
 			DingjuMethod string `json:"dingju_method"`
 		} `json:"default"`
 		Scopes []struct {
-			Scope              string   `json:"scope"`
-			Name               string   `json:"name"`
+			Scope              string           `json:"scope"`
+			Name               string           `json:"name"`
 			LeadPillar         LeadPillarKind   `json:"lead_pillar"`
-			MethodSource       MethodSourceKind   `json:"method_source"`
-			DingjuMethods      []string `json:"dingju_methods"`
-			DefaultDingju      string   `json:"default_dingju_method"`
-			NoDingjuSchools    []string `json:"no_dingju_schools"`
-			QuarterRules       []string `json:"quarter_rules"`
-			DefaultQuarterRule string   `json:"default_quarter_rule"`
-			Features           []FeatureKind `json:"features"`
+			MethodSource       MethodSourceKind `json:"method_source"`
+			DingjuMethods      []string         `json:"dingju_methods"`
+			DefaultDingju      string           `json:"default_dingju_method"`
+			NoDingjuSchools    []string         `json:"no_dingju_schools"`
+			QuarterRules       []string         `json:"quarter_rules"`
+			DefaultQuarterRule string           `json:"default_quarter_rule"`
+			Features           []FeatureKind    `json:"features"`
 		} `json:"scopes"`
 		Schools []struct {
 			School               string   `json:"school"`
@@ -1546,7 +1542,6 @@ func loadPatterns() error {
 func decodePatternTable(raw []byte) ([]patternRule, error) {
 	var rules []struct {
 		Name             string `json:"name"`
-		Description      string `json:"description"`
 		YiJu             string `json:"basis"`
 		Auspicious       bool   `json:"auspicious"`
 		GanInteraction   string `json:"gan_interaction"`
@@ -1566,7 +1561,7 @@ func decodePatternTable(raw []byte) ([]patternRule, error) {
 	rulesOut := make([]patternRule, 0, len(rules))
 	seen := map[string]bool{}
 	for _, rule := range rules {
-		if rule.Name == "" || rule.Description == "" || rule.YiJu == "" || seen[rule.Name] {
+		if rule.Name == "" || rule.YiJu == "" || seen[rule.Name] {
 			return nil, fmt.Errorf("load patterns: invalid or duplicate rule %q", rule.Name)
 		}
 		seen[rule.Name] = true
@@ -1585,7 +1580,7 @@ func decodePatternTable(raw []byte) ([]patternRule, error) {
 			return nil, fmt.Errorf("load patterns: %q requires conditions", rule.Name)
 		}
 		loadedRule := patternRule{
-			Name: rule.Name, Description: rule.Description, YiJu: rule.YiJu,
+			Name: rule.Name, YiJu: rule.YiJu,
 			Auspicious: rule.Auspicious, RequiresDutyDoor: rule.RequiresDutyDoor,
 			DutyStarPosition: dsp,
 		}

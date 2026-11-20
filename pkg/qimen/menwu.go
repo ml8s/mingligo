@@ -4,8 +4,7 @@ import "github.com/ml8s/mingligo/pkg/ganzhi"
 
 // doorEntry holds named door-gong data (door/gong set at runtime).
 type doorEntry struct {
-	Name    string
-	Meaning string
+	Name string
 }
 
 // computeMenInteractions returns door interactions for each gong.
@@ -19,10 +18,9 @@ func computeMenInteractions(board Board) []MenInteraction {
 		key := [2]int{int(p.Door), i}
 		if entry, ok := menGongTable[key]; ok {
 			result = append(result, MenInteraction{
-				Door:    p.Door,
-				Gong:    GongIndex(i + 1),
-				Name:    entry.Name,
-				Meaning: entry.Meaning,
+				Door: p.Door,
+				Gong: GongIndex(i + 1),
+				Name: entry.Name,
 			})
 		}
 	}

@@ -56,7 +56,7 @@ func TestGanInteractionTableContract(t *testing.T) {
 		if key[0] == ganzhi.GanJia || key[1] == ganzhi.GanJia {
 			t.Fatalf("gan interaction contains visible Jia %+v", key)
 		}
-		if entry.PatternName == "" || entry.Meaning == "" {
+		if entry.PatternName == "" {
 			t.Fatalf("gan interaction %+v lacks pattern or meaning", key)
 		}
 	}
@@ -151,7 +151,7 @@ func TestMenInteractionTableContract(t *testing.T) {
 			t.Fatalf("men interaction places a door in the center: %+v", key)
 		}
 		counts[DoorIndex(key[0])]++
-		if entry.Name == "" || entry.Meaning == "" {
+		if entry.Name == "" {
 			t.Fatalf("men interaction %+v lacks name or meaning", key)
 		}
 		if !strings.Contains(entry.Name, DecodeGongIndex(GongIndex(key[1]+1))) {
@@ -193,11 +193,8 @@ func TestXingInteractionTableContract(t *testing.T) {
 		StarTianQin: 3, StarTianXin: 3, StarTianZhu: 3, StarTianRen: 3, StarTianYing: 3,
 	}
 	counts := map[StarIndex]int{}
-	for key, entry := range xingGongTable {
+	for key := range xingGongTable {
 		counts[StarIndex(key[0])]++
-		if entry.Meaning == "" {
-			t.Fatalf("xing interaction %+v lacks meaning", key)
-		}
 	}
 	for star, want := range wantCounts {
 		if counts[star] != want {

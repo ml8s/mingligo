@@ -128,30 +128,26 @@ type GanInteraction struct {
 	DiPanGan   ganzhi.Gan `json:"di_pan_gan"`
 	TianPanGan ganzhi.Gan `json:"tian_pan_gan"`
 	Name       string     `json:"name"`
-	Meaning    string     `json:"meaning"`
 	Auspicious bool       `json:"auspicious"`
 }
 
 // MenInteraction represents an 八门克应 for a door in a specific gong.
 type MenInteraction struct {
-	Door    DoorIndex `json:"men,omitempty"`
-	Gong    GongIndex `json:"gong,omitempty"`
-	Name    string    `json:"name"`
-	Meaning string    `json:"meaning"`
+	Door DoorIndex `json:"men,omitempty"`
+	Gong GongIndex `json:"gong,omitempty"`
+	Name string    `json:"name"`
 }
 
 // Pattern represents a detected 格局 in the board.
 type Pattern struct {
-	Name        string      `json:"name"`
-	Description string      `json:"description"`
-	YiJu        string      `json:"basis,omitempty"`
-	Auspicious  bool        `json:"auspicious"`
-	GongWei     []GongIndex `json:"gong_wei,omitempty"`
+	Name       string      `json:"name"`
+	YiJu       string      `json:"basis,omitempty"`
+	Auspicious bool        `json:"auspicious"`
+	GongWei    []GongIndex `json:"gong_wei,omitempty"`
 }
 
 type patternRule struct {
 	Name             string
-	Description      string
 	YiJu             string
 	Auspicious       bool
 	RequiresDutyDoor bool

@@ -35,7 +35,7 @@ func findPatterns(chart Board) []Pattern {
 
 func newPattern(rule patternRule, palaces []GongIndex) Pattern {
 	return Pattern{
-		Name: rule.Name, Description: rule.Description, YiJu: rule.YiJu,
+		Name: rule.Name, YiJu: rule.YiJu,
 		Auspicious: rule.Auspicious, GongWei: palaces,
 	}
 }
