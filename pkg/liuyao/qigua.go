@@ -155,14 +155,14 @@ func zhuangGua(gua guaIndex, riGan ganzhi.Gan, isBian bool, palaceElem ganzhi.Wu
 		z := naZhiTable[pi][i%3+3*(i/3)] // 经卦 6 支：内三爻取前 3，外三爻取后 3
 		zwx := ganzhi.ZhiWuxing(z)
 		qin := computeLiuQin(zwx, palaceElem)
-		shiYing := ""
+		shiYing := ShiYingNone
 		if !isBian {
 			shi := meta.ShiPos - 1
 			switch i {
 			case shi:
-				shiYing = "世"
+				shiYing = ShiYingShi
 			case (shi + 3) % 6:
-				shiYing = "应"
+				shiYing = ShiYingYing
 			}
 		}
 		lines[i] = Line{Gan: gan, Zhi: z, Wuxing: zwx, LiuQin: qin, ShiYing: shiYing, LiuShou: shouOrder[i]}
@@ -231,20 +231,20 @@ func computeLineDerived(p *Chart) {
 
 	for i := range p.Lines {
 		tomb := tombOf(p.Lines[i].Wuxing)
-		types := []string{}
+		types := []MuKuSource{}
 		if tomb != 0 && p.RiZhi == tomb {
-			types = append(types, "day")
+			types = append(types, MuKuDay)
 		}
 		if tomb != 0 {
 			for _, position := range p.DongYao {
 				if position >= 1 && position <= 6 && p.Lines[position-1].Zhi == tomb {
-					types = append(types, "moving")
+					types = append(types, MuKuMoving)
 					break
 				}
 			}
 		}
 		if tomb != 0 && p.Lines[i].DongSelf && len(p.BianLines) == 6 && p.BianLines[i].Zhi == tomb {
-			types = append(types, "transformed")
+			types = append(types, MuKuTransformed)
 		}
 		if len(types) > 0 {
 			p.Lines[i].MuKu = true

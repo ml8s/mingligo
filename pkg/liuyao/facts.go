@@ -395,9 +395,9 @@ func computeSanHeCandidates(chart *Chart) []SanHeCandidate {
 					continue
 				}
 				switch line.ShiYing {
-				case "世":
+				case ShiYingShi:
 					targets = append(targets, "world")
-				case "应":
+				case ShiYingYing:
 					targets = append(targets, "other")
 				}
 			}

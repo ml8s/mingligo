@@ -278,6 +278,12 @@ func NayinWuxing(nayin string) Wuxing {
 	return wx
 }
 
+// NayinWuxingOf returns the nayin five-element directly from a gan-zhi pair,
+// keeping callers on the typed Wuxing symbol without a name roundtrip.
+func NayinWuxingOf(s Gan, b Zhi) Wuxing {
+	return NayinWuxing(NayinLabel(s, b))
+}
+
 // -- hidden gan --
 
 func loadCangGan() error {

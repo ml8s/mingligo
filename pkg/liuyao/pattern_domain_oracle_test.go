@@ -186,7 +186,7 @@ func TestDomainOracle_LiuyaoPatternSemantics(t *testing.T) {
 				t.Fatalf("mu_ku_types = %#v, want %#v", chart.Lines[0].MuKuTypes, tc.ExpectedTypes)
 			}
 			for index := range tc.ExpectedTypes {
-				if chart.Lines[0].MuKuTypes[index] != tc.ExpectedTypes[index] {
+				if chart.Lines[0].MuKuTypes[index].String() != tc.ExpectedTypes[index] {
 					t.Fatalf("mu_ku_types = %#v, want %#v", chart.Lines[0].MuKuTypes, tc.ExpectedTypes)
 				}
 			}
@@ -214,7 +214,7 @@ func TestDomainOracle_LiuyaoPatternSemantics(t *testing.T) {
 				chart.Lines[item.Position-1] = Line{
 					Position: item.Position, Zhi: zhi, LiuQin: parseOracleLiuQin(t, item.LiuQin),
 					XunKong: item.XunKong, YuePo: item.YuePo, MuKu: item.MuKu,
-					DongSelf: item.DongSelf, ShiYing: item.ShiYing,
+					DongSelf: item.DongSelf, ShiYing: ParseShiYing(item.ShiYing),
 				}
 				chart.WangShuai[item.Position-1] = ws
 			}
@@ -247,7 +247,11 @@ func TestDomainOracle_LiuyaoPatternSemantics(t *testing.T) {
 					chart.WangShuai[item.Position-1] = ws
 				}
 				for index, relation := range tc.DayRelations {
-					chart.DayRelations[index] = DayRelation{Relations: relation.Relations}
+					types := make([]DayRelationType, 0, len(relation.Relations))
+					for _, name := range relation.Relations {
+						types = append(types, ParseDayRelationType(name))
+					}
+					chart.DayRelations[index] = DayRelation{Relations: types}
 				}
 				patterns := computeYuePo(&chart, typ)
 				if len(patterns) != 1 || patterns[0].SubType != tc.ExpectedSubtype || patterns[0].IsTrue != tc.ExpectedIsTrue {

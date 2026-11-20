@@ -1,33 +1,69 @@
 package liuyao
 
-import "github.com/ml8s/mingligo/pkg/ganzhi"
+import (
+	"encoding/json"
 
-func feiFuRelation(flying, hidden ganzhi.Wuxing) string {
+	"github.com/ml8s/mingligo/pkg/ganzhi"
+)
+
+// FeiFuRelation 是飞神与伏神的五行关系（飞伏域内符号，双向映射）。
+type FeiFuRelation uint8
+
+const (
+	FeiFuBiHe    FeiFuRelation = iota // 飞伏比和
+	FeiFuShengFu                      // 飞来生伏
+	FeiFuKeFu                         // 飞来克伏
+	FeiFuFuSheng                      // 伏来生飞
+	FeiFuFuKe                         // 伏来克飞
+	FeiFuNone                         // 无
+)
+
+var feiFuNames = [...]string{"飞伏比和", "飞来生伏", "飞来克伏", "伏来生飞", "伏来克飞", ""}
+
+func (r FeiFuRelation) String() string {
+	if int(r) < len(feiFuNames) {
+		return feiFuNames[r]
+	}
+	return ""
+}
+
+func (r FeiFuRelation) MarshalJSON() ([]byte, error) { return json.Marshal(r.String()) }
+
+func ParseFeiFuRelation(name string) FeiFuRelation {
+	for i, n := range feiFuNames {
+		if n == name {
+			return FeiFuRelation(i)
+		}
+	}
+	return FeiFuNone
+}
+
+func feiFuRelation(flying, hidden ganzhi.Wuxing) FeiFuRelation {
 	switch {
 	case flying == hidden:
-		return "飞伏比和"
+		return FeiFuBiHe
 	case ganzhi.Sheng(flying, hidden):
-		return "飞来生伏"
+		return FeiFuShengFu
 	case ganzhi.Ke(flying, hidden):
-		return "飞来克伏"
+		return FeiFuKeFu
 	case ganzhi.Sheng(hidden, flying):
-		return "伏来生飞"
+		return FeiFuFuSheng
 	case ganzhi.Ke(hidden, flying):
-		return "伏来克飞"
+		return FeiFuFuKe
 	default:
-		return ""
+		return FeiFuNone
 	}
 }
 
-func hiddenExitCondition(relation string) string {
+func hiddenExitCondition(relation FeiFuRelation) string {
 	switch relation {
-	case "飞来克伏":
+	case FeiFuKeFu:
 		return "待飞神受冲或合化，伏神旺相方可出伏"
-	case "飞来生伏":
+	case FeiFuShengFu:
 		return "飞神生扶，待值日或引拔而出"
-	case "伏来克飞":
+	case FeiFuFuKe:
 		return "伏神有力克飞，待冲开飞神"
-	case "伏来生飞":
+	case FeiFuFuSheng:
 		return "伏气外泄，待生扶值日"
 	default:
 		return "待值日或冲引而出"
@@ -65,7 +101,7 @@ func computeHiddenLines(p *Chart) []HiddenLine {
 			FlyingGan:      ganzhi.GanName(flying.Gan),
 			FlyingZhi:      ganzhi.ZhiName(flying.Zhi),
 			FlyingWuxing:   flying.Wuxing.String(),
-			FeiFuRelation:  relation,
+			FeiFuRelation:  relation.String(),
 			XunKong:        base.Zhi == p.XunKong[0] || base.Zhi == p.XunKong[1],
 			YuePo:          ganzhi.IsLiuChong(base.Zhi, p.YueZhi),
 			MuKu:           len(tombTypes) > 0,
@@ -75,18 +111,18 @@ func computeHiddenLines(p *Chart) []HiddenLine {
 	return facts
 }
 
-func fuTombSources(p *Chart, element ganzhi.Wuxing) []string {
+func fuTombSources(p *Chart, element ganzhi.Wuxing) []MuKuSource {
 	tomb := tombOf(element)
 	if tomb == 0 {
 		return nil
 	}
-	var types []string
+	var types []MuKuSource
 	if p.RiZhi == tomb {
-		types = append(types, "day")
+		types = append(types, MuKuDay)
 	}
 	for _, position := range p.DongYao {
 		if position >= 1 && position <= 6 && p.Lines[position-1].Zhi == tomb {
-			types = append(types, "moving")
+			types = append(types, MuKuMoving)
 			break
 		}
 	}

@@ -120,7 +120,7 @@ func computeXunKong(p *Chart, yongShen YongShen) []Pattern {
 	if line.DongSheng {
 		support = append(support, "动爻生扶")
 	}
-	if p.dayRelationHas(yongPos, "生", "扶") {
+	if p.dayRelationHas(yongPos, DaySheng, DayFu) {
 		support = append(support, "日建生扶")
 	}
 	isTrueVacant := len(support) == 0
@@ -157,7 +157,7 @@ func computeYuePo(p *Chart, yongShen YongShen) []Pattern {
 	line := p.Lines[yongPos-1]
 	isDong := line.DongSelf
 	isWang := p.WangShuai[yongPos-1] == ganzhi.WSWang || p.WangShuai[yongPos-1] == ganzhi.WSXiang
-	deSheng := line.DongSheng || p.dayRelationHas(yongPos, "生", "扶", "合")
+	deSheng := line.DongSheng || p.dayRelationHas(yongPos, DaySheng, DayFu, DayHe)
 	if line.DongSelf && len(p.BianLines) == 6 && ganzhi.Sheng(p.BianLines[yongPos-1].Wuxing, line.Wuxing) {
 		deSheng = true
 	}
@@ -201,7 +201,7 @@ func computeFeiFu(p *Chart, yongShen YongShen) []Pattern {
 		relation := feiFuRelation(flying.Wuxing, ganzhi.ZhiWuxing(fuZhi))
 		patterns = append(patterns, Pattern{
 			Type:     PatternFeiFu,
-			SubType:  relation,
+			SubType:  relation.String(),
 			Position: fuShen.Position,
 			IsTrue:   true,
 		})
@@ -413,7 +413,7 @@ func computeSuiGuiRuMu(p *Chart, yongShen YongShen) []Pattern {
 	for _, source := range line.MuKuTypes {
 		patterns = append(patterns, Pattern{
 			Type:     PatternSuiGuiRuMu,
-			SubType:  map[string]string{"day": "随鬼入日墓", "moving": "随鬼入动墓", "transformed": "随鬼化墓"}[source],
+			SubType:  muKuSourceLabel(source),
 			Position: yongPos,
 			IsTrue:   true,
 		})
@@ -503,5 +503,18 @@ func yongShenToLiuQinInternal(ys YongShen) LiuQin {
 		return QinZiSun
 	default:
 		return QinFumu
+	}
+}
+
+func muKuSourceLabel(source MuKuSource) string {
+	switch source {
+	case MuKuDay:
+		return "随鬼入日墓"
+	case MuKuMoving:
+		return "随鬼入动墓"
+	case MuKuTransformed:
+		return "随鬼化墓"
+	default:
+		return ""
 	}
 }

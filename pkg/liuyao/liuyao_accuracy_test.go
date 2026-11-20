@@ -353,7 +353,7 @@ func TestFindShiYao_Found(t *testing.T) {
 	p := &Chart{
 		Lines: [6]Line{
 			{Position: 1}, {Position: 2}, {Position: 3},
-			{Position: 4, ShiYing: "世"}, {Position: 5}, {Position: 6},
+			{Position: 4, ShiYing: ShiYingShi}, {Position: 5}, {Position: 6},
 		},
 	}
 	if got := p.findShiYao(); got != 4 {

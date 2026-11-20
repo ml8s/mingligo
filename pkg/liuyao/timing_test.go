@@ -75,7 +75,7 @@ func staticHarmonyChart(day, month ganzhi.Zhi, movingPosition int, movingBranch 
 		Position: 1,
 		Type:     ShaoYin,
 		Zhi:      ganzhi.ZhiZi,
-		ShiYing:  "世",
+		ShiYing:  ShiYingShi,
 	}
 	for position := range chart.Lines {
 		chart.Lines[position].Position = position + 1

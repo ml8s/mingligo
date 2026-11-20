@@ -1,15 +1,15 @@
 package ziwei
 
-type adjStarResult map[string]int
+type adjStarResult map[shenSha]int
 
 func computeAdjectiveStars(nianZhi, shiZhi Zhi, lunarMonth, lunarDay int, nianGan Gan) adjStarResult {
 	r := make(adjStarResult)
-	add := func(name string, zhiIdx int) { r[name] = zhiIdx }
+	add := func(name shenSha, zhiIdx int) { r[name] = zhiIdx }
 
 	// A 年支系
 	hl := (4 - int(nianZhi) + 12) % 12
-	add("红鸾", hl)
-	add("天喜", (hl+6)%12)
+	add(ssHongLuan, hl)
+	add(ssTianXi, (hl+6)%12)
 	for name, table := range nianStars {
 		add(name, table[nianZhi-1])
 	}
@@ -29,10 +29,10 @@ func computeAdjectiveStars(nianZhi, shiZhi Zhi, lunarMonth, lunarDay int, nianGa
 	yf := (11 - lunarMonth + 12) % 12
 	wc := (11 - int(shiZhi) + 12) % 12
 	wq := (int(shiZhi) + 3) % 12
-	add("三台", (zf+lunarDay-1)%12)
-	add("八座", ((yf-lunarDay+1)%12+12)%12)
-	add("恩光", (wc+lunarDay-2+12)%12)
-	add("天贵", (wq+lunarDay-2+12)%12)
+	add(ssSanTai, (zf+lunarDay-1)%12)
+	add(ssBaZuo, ((yf-lunarDay+1)%12+12)%12)
+	add(ssEnGuang, (wc+lunarDay-2+12)%12)
+	add(ssTianGui, (wq+lunarDay-2+12)%12)
 
 	// E 年干系
 	for name, table := range ganStars {
@@ -44,13 +44,13 @@ func computeAdjectiveStars(nianZhi, shiZhi Zhi, lunarMonth, lunarDay int, nianGa
 	bodyIdx := (lunarMonth - 1 + earthlyIdxTable[shiZhi-1] + 12) % 12
 
 	// F 复合系 — 年系旬空 (iztro公式)
-	add("旬空", xunKongNianXi(nianZhi, nianGan))
-	add("年解", nianJiePos(nianZhi))
+	add(ssXunKong, xunKongNianXi(nianZhi, nianGan))
+	add(ssNianJie, nianJiePos(nianZhi))
 
-	add("天才", anXingIdxToZhiIdx((soulIdx+earthlyIdxTable[nianZhi-1])%12))
-	add("天寿", anXingIdxToZhiIdx((bodyIdx+earthlyIdxTable[nianZhi-1])%12))
-	add("天伤", anXingIdxToZhiIdx((5+soulIdx)%12))
-	add("天使", anXingIdxToZhiIdx((7+soulIdx)%12))
+	add(ssTianCai, anXingIdxToZhiIdx((soulIdx+earthlyIdxTable[nianZhi-1])%12))
+	add(ssTianShou, anXingIdxToZhiIdx((bodyIdx+earthlyIdxTable[nianZhi-1])%12))
+	add(ssTianShang, anXingIdxToZhiIdx((5+soulIdx)%12))
+	add(ssTianShi, anXingIdxToZhiIdx((7+soulIdx)%12))
 
 	return r
 }

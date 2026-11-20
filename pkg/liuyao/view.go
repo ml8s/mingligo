@@ -112,12 +112,16 @@ func (c Chart) lineView(line Line, rel DayRelation, wangShuai ganzhi.WangShuai) 
 		Position: line.Position, YaoValue: int(line.Type),
 		GanZhi: ganzhi.GanName(line.Gan) + ganzhi.ZhiName(line.Zhi),
 		Wuxing: line.Wuxing.String(), LiuQin: line.LiuQin.String(),
-		ShiYing: line.ShiYing, LiuShou: line.LiuShou.String(),
+		ShiYing: line.ShiYing.String(), LiuShou: line.LiuShou.String(),
 		WangShuai: wangShuai.String(), ChangShengYue: line.ChangShengYue,
 		Flags: flags,
 	}
 	if len(rel.Relations) > 0 {
-		v.RiChenRelations = map[string][]string{"relations": append([]string(nil), rel.Relations...)}
+		names := make([]string, 0, len(rel.Relations))
+		for _, item := range rel.Relations {
+			names = append(names, item.String())
+		}
+		v.RiChenRelations = map[string][]string{"relations": names}
 	}
 	return v
 }

@@ -158,10 +158,10 @@ func TestShiYing_All64Hexagrams(t *testing.T) {
 		lines := zhuangGua(g, ganzhi.GanJia, false, ganzhi.WxJin)
 		shi, ying := 0, 0
 		for i := 0; i < 6; i++ {
-			if lines[i].ShiYing == "世" {
+			if lines[i].ShiYing == ShiYingShi {
 				shi = i + 1
 			}
-			if lines[i].ShiYing == "应" {
+			if lines[i].ShiYing == ShiYingYing {
 				ying = i + 1
 			}
 		}

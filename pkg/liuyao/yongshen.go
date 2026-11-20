@@ -54,7 +54,7 @@ func (p *Chart) findYongShen(typ YongShen) int {
 		void := boolInt(l.XunKong)
 		injured := boolInt(p.lineInjured(l))
 		proximity := 1
-		if l.ShiYing != "" {
+		if l.ShiYing != ShiYingNone {
 			proximity = 0
 		}
 		rank := [6]int{weak, moving, broken, void, injured, proximity}
@@ -74,7 +74,7 @@ func boolInt(v bool) int {
 }
 
 func (p *Chart) lineInjured(line Line) bool {
-	if line.DongKe || p.dayRelationHas(line.Position, "克", "冲") {
+	if line.DongKe || p.dayRelationHas(line.Position, DayKe, DayChong) {
 		return true
 	}
 	if !line.DongSelf || len(p.BianLines) != 6 {
@@ -95,7 +95,7 @@ func lessRank(left, right [6]int) bool {
 
 func (p *Chart) findShiYao() int {
 	for _, l := range p.Lines {
-		if l.ShiYing == "世" {
+		if l.ShiYing == ShiYingShi {
 			return l.Position
 		}
 	}
@@ -104,7 +104,7 @@ func (p *Chart) findShiYao() int {
 
 func (p *Chart) findYingYao() int {
 	for _, l := range p.Lines {
-		if l.ShiYing == "应" {
+		if l.ShiYing == ShiYingYing {
 			return l.Position
 		}
 	}

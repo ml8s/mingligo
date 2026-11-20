@@ -87,13 +87,13 @@ func TestExternalDiffFixtures_HardFacts(t *testing.T) {
 	}
 }
 
-func shiYingAt(position, world, other int) string {
+func shiYingAt(position, world, other int) ShiYing {
 	switch position {
 	case world:
-		return "世"
+		return ShiYingShi
 	case other:
-		return "应"
+		return ShiYingYing
 	default:
-		return ""
+		return ShiYingNone
 	}
 }

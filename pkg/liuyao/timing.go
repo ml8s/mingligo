@@ -8,7 +8,14 @@ import (
 
 // TimingCandidate is one auditable trigger hypothesis. It is never a promise
 // that an event must happen on a particular date.
+type candidateKey struct {
+	prefix   string
+	position int
+	branch   ganzhi.Zhi
+}
+
 type TimingCandidate struct {
+	dedup         candidateKey
 	ID            string   `json:"id"`
 	Mechanism     string   `json:"mechanism"`
 	Position      int      `json:"position,omitempty"`
@@ -32,7 +39,7 @@ func candidateID(prefix string, position int, branch ganzhi.Zhi) string {
 
 func appendCandidate(candidates []TimingCandidate, candidate TimingCandidate) []TimingCandidate {
 	for _, existing := range candidates {
-		if existing.ID == candidate.ID && existing.Mechanism == candidate.Mechanism {
+		if existing.dedup == candidate.dedup && existing.Mechanism == candidate.Mechanism {
 			return candidates
 		}
 	}
@@ -47,6 +54,7 @@ func appendBranchTrigger(
 		return candidates
 	}
 	return appendCandidate(candidates, TimingCandidate{
+		dedup:         candidateKey{prefix: idPrefix, position: position, branch: branch},
 		ID:            candidateID(idPrefix, position, branch),
 		Mechanism:     mechanism,
 		Position:      position,

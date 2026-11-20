@@ -42,17 +42,17 @@ func TestComputeChart_All4096YaoCombinations(t *testing.T) {
 									t.Fatalf("yaos %v has invalid six relative/spirit: %+v", yaos, line)
 								}
 								switch line.ShiYing {
-								case "世":
+								case ShiYingShi:
 									if seenWorld {
 										t.Fatalf("yaos %v has duplicate world line", yaos)
 									}
 									seenWorld = true
-								case "应":
+								case ShiYingYing:
 									if seenOther {
 										t.Fatalf("yaos %v has duplicate other line", yaos)
 									}
 									seenOther = true
-								case "":
+								case ShiYingNone:
 								default:
 									t.Fatalf("yaos %v invalid shi_ying %q", yaos, line.ShiYing)
 								}

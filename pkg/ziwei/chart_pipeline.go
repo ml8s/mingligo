@@ -47,9 +47,9 @@ func fillZaYao(chart Chart) Chart {
 	for i := range chart.GongWei {
 		palaceZhi := chart.GongWei[i].Zhi
 		var names []string
-		for name, zhiIdx := range stars {
+		for st, zhiIdx := range stars {
 			if zhiIdx == int(palaceZhi)-1 {
-				names = append(names, name)
+				names = append(names, st.String())
 			}
 		}
 		// map iteration is unordered; the published ZaYao order is canonical.

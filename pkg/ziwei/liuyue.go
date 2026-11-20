@@ -76,7 +76,7 @@ func computeLiuYueWithPeriod(ctx FlowContext, target tianwen.LunarDate, period F
 	// 流月干支 = 目标月干支（五虎遁：年干 + 农历月）——真相源，与命主无关
 	yueZhi := zhiIdxToZhi((flowMonth + 1) % 12) // 正月寅起：农历1月→zhiIdx 2(寅)
 	monthGan := yueGanByWuHuDun(flowYearGan, yueZhi)
-	stars := liuYueStars(monthGan, yueZhi)
+	stars := liuMinorStars(monthGan, yueZhi)
 
 	// 盘起点 = monthlyIndex（iztro 公式，命主相关）
 	mi := computeMonthlyIndex(ctx, flowTarget{
@@ -85,10 +85,15 @@ func computeLiuYueWithPeriod(ctx FlowContext, target tianwen.LunarDate, period F
 		LunarDay:    target.Day,
 		IsLeapMonth: target.Leap,
 	})
+	short := liuMinorShort("月")
 	starByAnXingIdx := make(map[int][]string)
-	for k, z := range stars {
+	for sid, z := range stars {
 		anXingIdx := zhiIdxToAnXingIdx(zhiToZhiIdx(z))
-		starByAnXingIdx[anXingIdx] = append(starByAnXingIdx[anXingIdx], k)
+		name, ok := short[sid]
+		if !ok {
+			name = starName(sid)
+		}
+		starByAnXingIdx[anXingIdx] = append(starByAnXingIdx[anXingIdx], name)
 	}
 	return LiuYue{
 		MingGong:     0,
@@ -168,22 +173,33 @@ func resolveLiuYuePeriodWith(p tianwen.LunarProjector, target tianwen.LunarDate)
 	return FlowMonthPeriod{CalendarPeriod: calendar, FlowMonth: flowMonth}, nil
 }
 
-func liuYueStars(gan Gan, zhi Zhi) map[string]Zhi {
+// liuMinorStars returns the ten flow minor stars as typed star symbols. The
+// period-specific display name (月禄/日羊/...) is added only at the output edge.
+func liuMinorStars(gan Gan, zhi Zhi) map[starIndex]Zhi {
 	chg, qu := liuChangQuByGan(gan)
 	toZhi := func(zhiIdx int) Zhi { return Zhi(zhiIdx + 1) }
-	m := map[string]Zhi{
-		"月禄": toZhi(luCunPos(gan)),
-		"月羊": toZhi(qingYangPos(gan)),
-		"月陀": toZhi(tuoLuoPos(gan)),
-		"月魁": toZhi(tianKuiPos(gan)),
-		"月钺": toZhi(tianYuePos(gan)),
-		"月马": toZhi(tianMaPos(zhi)),
-		"月鸾": toZhi(hongLuanPos(zhi)),
-		"月喜": toZhi((hongLuanPos(zhi) + 6) % 12),
-		"月昌": toZhi(chg),
-		"月曲": toZhi(qu),
+	return map[starIndex]Zhi{
+		LuCun:    toZhi(luCunPos(gan)),
+		QingYang: toZhi(qingYangPos(gan)),
+		TuoLuo:   toZhi(tuoLuoPos(gan)),
+		TianKui:  toZhi(tianKuiPos(gan)),
+		TianYue:  toZhi(tianYuePos(gan)),
+		TianMa:   toZhi(tianMaPos(zhi)),
+		HongLuan: toZhi(hongLuanPos(zhi)),
+		TianXi:   toZhi((hongLuanPos(zhi) + 6) % 12),
+		WenChang: toZhi(chg),
+		WenQu:    toZhi(qu),
 	}
-	return m
+}
+
+// liuMinorShort maps a flow star symbol to its period-prefixed display name.
+func liuMinorShort(prefix string) map[starIndex]string {
+	return map[starIndex]string{
+		LuCun: prefix + "禄", QingYang: prefix + "羊", TuoLuo: prefix + "陀",
+		TianKui: prefix + "魁", TianYue: prefix + "钺", TianMa: prefix + "马",
+		HongLuan: prefix + "鸾", TianXi: prefix + "喜",
+		WenChang: prefix + "昌", WenQu: prefix + "曲",
+	}
 }
 
 // ── 流日 ──
@@ -251,11 +267,16 @@ func ComputeLiuRiWith(ctx FlowContext, target tianwen.LunarDate, p tianwen.Lunar
 	}
 	zhu := tianwen.RiZhu(date.Time())
 	riGan, riZhi := Gan(zhu.Gan), Zhi(zhu.Zhi)
-	stars := liuRiStars(riGan, riZhi)
+	stars := liuMinorStars(riGan, riZhi)
+	short := liuMinorShort("日")
 	starByAnXingIdx := make(map[int][]string)
-	for k, z := range stars {
+	for sid, z := range stars {
 		anXingIdx := zhiIdxToAnXingIdx(zhiToZhiIdx(z))
-		starByAnXingIdx[anXingIdx] = append(starByAnXingIdx[anXingIdx], k)
+		name, ok := short[sid]
+		if !ok {
+			name = starName(sid)
+		}
+		starByAnXingIdx[anXingIdx] = append(starByAnXingIdx[anXingIdx], name)
 	}
 	return LiuRi{
 		MingGong:     0,
@@ -266,23 +287,6 @@ func ComputeLiuRiWith(ctx FlowContext, target tianwen.LunarDate, p tianwen.Lunar
 	}, nil
 }
 
-func liuRiStars(gan Gan, zhi Zhi) map[string]Zhi {
-	chg, qu := liuChangQuByGan(gan)
-	toZhi := func(zhiIdx int) Zhi { return Zhi(zhiIdx + 1) }
-	m := map[string]Zhi{
-		"日禄": toZhi(luCunPos(gan)),
-		"日羊": toZhi(qingYangPos(gan)),
-		"日陀": toZhi(tuoLuoPos(gan)),
-		"日魁": toZhi(tianKuiPos(gan)),
-		"日钺": toZhi(tianYuePos(gan)),
-		"日马": toZhi(tianMaPos(zhi)),
-		"日鸾": toZhi(hongLuanPos(zhi)),
-		"日喜": toZhi((hongLuanPos(zhi) + 6) % 12),
-		"日昌": toZhi(chg),
-		"日曲": toZhi(qu),
-	}
-	return m
-}
 
 // ── 流时 ──
 
@@ -355,11 +359,16 @@ func ComputeLiuShiWith(ctx FlowContext, target tianwen.LunarDate, shiZhi Zhi, p 
 	zhu := tianwen.RiZhu(date.Time())
 	riGan := Gan(zhu.Gan)
 	shiGan := shiGanCalc(riGan, shiZhi)
-	stars := liuShiStars(shiGan, shiZhi)
+	stars := liuMinorStars(shiGan, shiZhi)
+	short := liuMinorShort("时")
 	starByAnXingIdx := make(map[int][]string)
-	for k, z := range stars {
+	for sid, z := range stars {
 		anXingIdx := zhiIdxToAnXingIdx(zhiToZhiIdx(z))
-		starByAnXingIdx[anXingIdx] = append(starByAnXingIdx[anXingIdx], k)
+		name, ok := short[sid]
+		if !ok {
+			name = starName(sid)
+		}
+		starByAnXingIdx[anXingIdx] = append(starByAnXingIdx[anXingIdx], name)
 	}
 	return LiuShi{
 		MingGong:     0,
@@ -370,23 +379,6 @@ func ComputeLiuShiWith(ctx FlowContext, target tianwen.LunarDate, shiZhi Zhi, p 
 	}, nil
 }
 
-func liuShiStars(gan Gan, zhi Zhi) map[string]Zhi {
-	chg, qu := liuChangQuByGan(gan)
-	toZhi := func(zhiIdx int) Zhi { return Zhi(zhiIdx + 1) }
-	m := map[string]Zhi{
-		"时禄": toZhi(luCunPos(gan)),
-		"时羊": toZhi(qingYangPos(gan)),
-		"时陀": toZhi(tuoLuoPos(gan)),
-		"时魁": toZhi(tianKuiPos(gan)),
-		"时钺": toZhi(tianYuePos(gan)),
-		"时马": toZhi(tianMaPos(zhi)),
-		"时鸾": toZhi(hongLuanPos(zhi)),
-		"时喜": toZhi((hongLuanPos(zhi) + 6) % 12),
-		"时昌": toZhi(chg),
-		"时曲": toZhi(qu),
-	}
-	return m
-}
 
 func shiGanCalc(riGan Gan, shiZhi Zhi) Gan {
 	// 五鼠遁：甲己→甲子, 乙庚→丙子, 丙辛→戊子, 丁壬→庚子, 戊癸→壬子

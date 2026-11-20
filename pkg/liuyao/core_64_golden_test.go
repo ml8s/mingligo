@@ -95,11 +95,11 @@ func TestCore64Golden_JingFangEightPalaces(t *testing.T) {
 				if line.Position != golden.ShiPos && line.Position != wantYing {
 					continue
 				}
-				want := ""
+				want := ShiYingNone
 				if line.Position == golden.ShiPos {
-					want = "世"
+					want = ShiYingShi
 				} else {
-					want = "应"
+					want = ShiYingYing
 				}
 				if line.ShiYing != want {
 					t.Fatalf("%s position %d shi_ying = %q, want %q", golden.Name, line.Position, line.ShiYing, want)

@@ -1,48 +1,83 @@
 package liuyao
 
-import "strings"
+import (
+	"encoding/json"
+	"strings"
 
-import "github.com/ml8s/mingligo/pkg/ganzhi"
+	"github.com/ml8s/mingligo/pkg/ganzhi"
+)
+
+// DayRelationType 是日建与爻的单一关系类型（冲/合/生/扶/克/平）。
+type DayRelationType uint8
+
+const (
+	DayChong DayRelationType = iota // 冲
+	DayHe                           // 合
+	DaySheng                        // 生
+	DayFu                           // 扶
+	DayKe                           // 克
+	DayPing                         // 平
+)
+
+var dayRelationNames = [...]string{"冲", "合", "生", "扶", "克", "平"}
+
+func (r DayRelationType) String() string {
+	if int(r) < len(dayRelationNames) {
+		return dayRelationNames[r]
+	}
+	return ""
+}
+
+func (r DayRelationType) MarshalJSON() ([]byte, error) { return json.Marshal(r.String()) }
+
+func ParseDayRelationType(name string) DayRelationType {
+	for i, n := range dayRelationNames {
+		if n == name {
+			return DayRelationType(i)
+		}
+	}
+	return DayRelationType(255)
+}
 
 // DayRelation describes 日建与爻的关系.
 type DayRelation struct {
-	Relations []string `json:"relations"` // 冲/合/生/扶/克/平；冲合可与其他关系并存
+	Relations []DayRelationType `json:"relations"` // 冲/合/生/扶/克/平；冲合可与其他关系并存
 }
 
 func dayInteraction(lineZhi ganzhi.Zhi, riZhi ganzhi.Zhi) DayRelation {
 	le := ganzhi.ZhiWuxing(lineZhi)
 	de := ganzhi.ZhiWuxing(riZhi)
 
-	rel := DayRelation{Relations: []string{}}
+	rel := DayRelation{Relations: []DayRelationType{}}
 
 	if ganzhi.IsLiuChong(lineZhi, riZhi) {
-		rel.Relations = append(rel.Relations, "冲")
+		rel.Relations = append(rel.Relations, DayChong)
 	}
 	if ganzhi.IsZhiHe(lineZhi, riZhi) {
-		rel.Relations = append(rel.Relations, "合")
+		rel.Relations = append(rel.Relations, DayHe)
 	}
 	if ganzhi.Sheng(de, le) {
-		rel.Relations = append(rel.Relations, "生")
+		rel.Relations = append(rel.Relations, DaySheng)
 	}
 	if le == de {
-		rel.Relations = append(rel.Relations, "扶")
+		rel.Relations = append(rel.Relations, DayFu)
 	}
 	if ganzhi.Ke(de, le) {
-		rel.Relations = append(rel.Relations, "克")
+		rel.Relations = append(rel.Relations, DayKe)
 	}
 	if len(rel.Relations) == 0 {
-		rel.Relations = append(rel.Relations, "平")
+		rel.Relations = append(rel.Relations, DayPing)
 	}
 	return rel
 }
 
-func (p *Chart) dayRelationHas(position int, names ...string) bool {
+func (p *Chart) dayRelationHas(position int, types ...DayRelationType) bool {
 	if position < 1 || position > 6 {
 		return false
 	}
 	for _, relation := range p.DayRelations[position-1].Relations {
-		for _, name := range names {
-			if relation == name {
+		for _, typ := range types {
+			if relation == typ {
 				return true
 			}
 		}
@@ -51,7 +86,11 @@ func (p *Chart) dayRelationHas(position int, names ...string) bool {
 }
 
 func (r DayRelation) String() string {
-	return strings.Join(r.Relations, "兼")
+	parts := make([]string, 0, len(r.Relations))
+	for _, item := range r.Relations {
+		parts = append(parts, item.String())
+	}
+	return strings.Join(parts, "兼")
 }
 
 func chongZhi(z ganzhi.Zhi) ganzhi.Zhi {

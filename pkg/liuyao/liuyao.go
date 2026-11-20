@@ -93,6 +93,68 @@ func (l *LiuShou) UnmarshalJSON(data []byte) error {
 	return fmt.Errorf("unknown liushou: %q", name)
 }
 
+// MuKuSource 是入墓来源（日墓/动墓/化墓），域内符号双向映射。
+type MuKuSource uint8
+
+const (
+	MuKuDay        MuKuSource = iota // day: 随鬼入日墓
+	MuKuMoving                        // moving: 随鬼入动墓
+	MuKuTransformed                   // transformed: 随鬼化墓
+)
+
+var muKuSourceNames = [...]string{"day", "moving", "transformed"}
+
+func (m MuKuSource) String() string {
+	if int(m) < len(muKuSourceNames) {
+		return muKuSourceNames[m]
+	}
+	return ""
+}
+
+func (m MuKuSource) MarshalJSON() ([]byte, error) { return json.Marshal(m.String()) }
+
+func ParseMuKuSource(name string) MuKuSource {
+	for i, n := range muKuSourceNames {
+		if n == name {
+			return MuKuSource(i)
+		}
+	}
+	return MuKuSource(255)
+}
+
+// ShiYing 是爻的世应标记（世/应/无）。
+type ShiYing uint8
+
+const (
+	ShiYingNone ShiYing = iota
+	ShiYingShi          // 世
+	ShiYingYing         // 应
+)
+
+func (s ShiYing) String() string {
+	switch s {
+	case ShiYingShi:
+		return "世"
+	case ShiYingYing:
+		return "应"
+	default:
+		return ""
+	}
+}
+
+func (s ShiYing) MarshalJSON() ([]byte, error) { return json.Marshal(s.String()) }
+
+func ParseShiYing(name string) ShiYing {
+	switch name {
+	case "世":
+		return ShiYingShi
+	case "应":
+		return ShiYingYing
+	default:
+		return ShiYingNone
+	}
+}
+
 // Line is a single爻 in a hexagram.
 type Line struct {
 	Position int           `json:"position"` // 1-6, bottom to top
@@ -101,7 +163,7 @@ type Line struct {
 	Zhi      ganzhi.Zhi    `json:"zhi"`
 	Wuxing   ganzhi.Wuxing `json:"wuxing"`
 	LiuQin   LiuQin        `json:"liu_qin"`
-	ShiYing  string        `json:"shi_ying"` // "世"/"应"/"""
+	ShiYing  ShiYing       `json:"shi_ying"`
 	LiuShou  LiuShou       `json:"liu_shou"`
 	// Deterministic derived states (filled by computeChart):
 	YuePo         bool     `json:"yue_po,omitempty"`          // 月破（月建冲该爻地支）
@@ -112,7 +174,7 @@ type Line struct {
 	MuKu          bool     `json:"mu_ku,omitempty"`           // 入墓（地支为墓库）
 	MuKuBranch    string   `json:"mu_ku_zhi,omitempty"`    // 本五行墓库地支
 	MuKuElement   string   `json:"mu_ku_wuxing,omitempty"`   // 被入库的五行
-	MuKuTypes     []string `json:"mu_ku_types,omitempty"`     // day/moving/transformed
+	MuKuTypes     []MuKuSource `json:"mu_ku_types,omitempty"` // day/moving/transformed
 	ChangShengYue string   `json:"chang_sheng_yue,omitempty"` // 本爻五行在月支的十二长生
 }
 

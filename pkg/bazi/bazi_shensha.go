@@ -238,13 +238,13 @@ func addCiGuan(out *[4][]ShenShaProjection, bz ganzhi.Bazi) {
 
 func addNayinStageShenSha(out *[4][]ShenShaProjection, bz ganzhi.Bazi, name, desc string, changSheng bool) {
 	zhus := bz.Slice()
-	yearElement := ganzhi.NayinWuxing(ganzhi.NayinLabel(zhus[0].Gan, zhus[0].Zhi))
+	yearElement := ganzhi.NayinWuxingOf(zhus[0].Gan, zhus[0].Zhi)
 	if yearElement == 0 {
 		return
 	}
 	targets := nayinStageBranches(changSheng)
 	for pi, p := range zhus {
-		if ganzhi.NayinWuxing(ganzhi.NayinLabel(p.Gan, p.Zhi)) != yearElement {
+		if ganzhi.NayinWuxingOf(p.Gan, p.Zhi) != yearElement {
 			continue
 		}
 		if p.Zhi == targets[yearElement] {
@@ -335,7 +335,7 @@ func addTongZi(out *[4][]ShenShaProjection, bz ganzhi.Bazi, seasonIdx int) {
 		addTongZiEntry(out, 2)
 		return
 	}
-	yearElement := ganzhi.NayinWuxing(ganzhi.NayinLabel(zhus[0].Gan, zhus[0].Zhi))
+	yearElement := ganzhi.NayinWuxingOf(zhus[0].Gan, zhus[0].Zhi)
 	if checkBranches(tongZiNayin[yearElement]) {
 		addTongZiEntry(out, 2)
 	}
@@ -526,7 +526,7 @@ func addTianShe(out *[4][]ShenShaProjection, bz ganzhi.Bazi, yueZhi ganzhi.Zhi) 
 
 func addTianLuoDiWang(out *[4][]ShenShaProjection, bz ganzhi.Bazi) {
 	zhus := bz.Slice()
-	yearElement := ganzhi.NayinWuxing(ganzhi.NayinLabel(zhus[0].Gan, zhus[0].Zhi))
+	yearElement := ganzhi.NayinWuxingOf(zhus[0].Gan, zhus[0].Zhi)
 	for pi, p := range zhus {
 		label, ok := tianLuoDiWang[p.Zhi]
 		if ok && ((label == "天罗" && yearElement == ganzhi.WxHuo) ||
