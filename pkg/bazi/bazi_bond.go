@@ -200,11 +200,11 @@ func computeBondChartFacts(core Core) bondChartFacts {
 }
 
 func bondGanRelationOf(r GanRelation) bondGanRelation {
-	return bondGanRelation{Kind: r.Kind, Relation: r.Relation}
+	return bondGanRelation{Kind: string(r.Kind), Relation: r.Relation}
 }
 
 func bondZhiRelationOf(r ZhiRelation) bondZhiRelation {
-	return bondZhiRelation{Kind: r.Kind, Explanation: r.Detail}
+	return bondZhiRelation{Kind: string(r.Kind), Explanation: r.Detail}
 }
 
 func computeDayMasterCross(a, b Core) dayMasterCross {

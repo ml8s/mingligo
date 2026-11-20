@@ -390,3 +390,7 @@ func (k TripleRelationKind) suffix() string {
 		return "半合局"
 	}
 }
+
+// GanZhiRelationKind is the kind of a 干/支 interaction (相同/相生/相克/...).
+// Its value IS the display text.
+type GanZhiRelationKind string

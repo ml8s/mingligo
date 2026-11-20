@@ -18,8 +18,8 @@ func TestDetectTripleRelations_SanHeWater(t *testing.T) {
 	if len(got) != 1 {
 		t.Fatalf("len = %d, want 1", len(got))
 	}
-	if got[0].Kind != relSanHe {
-		t.Errorf("Type = %q, want %q", got[0].Kind, relSanHe)
+	if got[0].Kind != tripleSanHe {
+		t.Errorf("Type = %q, want %q", got[0].Kind, tripleSanHe)
 	}
 	if got[0].Element != ganzhi.WxShui {
 		t.Errorf("Element = %q, want 水", got[0].Element)
@@ -39,8 +39,8 @@ func TestDetectTripleRelations_SanHeFire(t *testing.T) {
 	if len(got) != 1 {
 		t.Fatalf("len = %d, want 1", len(got))
 	}
-	if got[0].Kind != relSanHe {
-		t.Errorf("Type = %q, want %q", got[0].Kind, relSanHe)
+	if got[0].Kind != tripleSanHe {
+		t.Errorf("Type = %q, want %q", got[0].Kind, tripleSanHe)
 	}
 	if got[0].Element != ganzhi.WxHuo {
 		t.Errorf("Element = %q, want 火", got[0].Element)
@@ -59,8 +59,8 @@ func TestDetectTripleRelations_SanHeWood(t *testing.T) {
 	if len(got) != 1 {
 		t.Fatalf("len = %d, want 1", len(got))
 	}
-	if got[0].Kind != relSanHe {
-		t.Errorf("Type = %q, want %q", got[0].Kind, relSanHe)
+	if got[0].Kind != tripleSanHe {
+		t.Errorf("Type = %q, want %q", got[0].Kind, tripleSanHe)
 	}
 	if got[0].Element != ganzhi.WxMu {
 		t.Errorf("Element = %q, want 木", got[0].Element)
@@ -79,8 +79,8 @@ func TestDetectTripleRelations_SanHeMetal(t *testing.T) {
 	if len(got) != 1 {
 		t.Fatalf("len = %d, want 1", len(got))
 	}
-	if got[0].Kind != relSanHe {
-		t.Errorf("Type = %q, want %q", got[0].Kind, relSanHe)
+	if got[0].Kind != tripleSanHe {
+		t.Errorf("Type = %q, want %q", got[0].Kind, tripleSanHe)
 	}
 	if got[0].Element != ganzhi.WxJin {
 		t.Errorf("Element = %q, want 金", got[0].Element)
@@ -99,8 +99,8 @@ func TestDetectTripleRelations_SanHuiWood(t *testing.T) {
 	if len(got) != 1 {
 		t.Fatalf("len = %d, want 1", len(got))
 	}
-	if got[0].Kind != relSanHui {
-		t.Errorf("Type = %q, want %q", got[0].Kind, relSanHui)
+	if got[0].Kind != tripleSanHui {
+		t.Errorf("Type = %q, want %q", got[0].Kind, tripleSanHui)
 	}
 	if got[0].Element != ganzhi.WxMu {
 		t.Errorf("Element = %q, want 木", got[0].Element)
@@ -119,8 +119,8 @@ func TestDetectTripleRelations_SanHuiWater(t *testing.T) {
 	if len(got) != 1 {
 		t.Fatalf("len = %d, want 1", len(got))
 	}
-	if got[0].Kind != relSanHui {
-		t.Errorf("Type = %q, want %q", got[0].Kind, relSanHui)
+	if got[0].Kind != tripleSanHui {
+		t.Errorf("Type = %q, want %q", got[0].Kind, tripleSanHui)
 	}
 	if got[0].Element != ganzhi.WxShui {
 		t.Errorf("Element = %q, want 水", got[0].Element)
@@ -325,7 +325,7 @@ func TestZhiRelation_Xing_Authoritative(t *testing.T) {
 	// 多关系并存：六合/六冲优先于刑（巳申合水、寅申冲、丑未冲）
 	notXing := []struct {
 		a, b ganzhi.Zhi
-		want string
+		want GanZhiRelationKind
 	}{
 		{ganzhi.ZhiSi, ganzhi.ZhiShen, relLiuHe},     // 巳申合水
 		{ganzhi.ZhiYin, ganzhi.ZhiShen, relLiuChong}, // 寅申冲

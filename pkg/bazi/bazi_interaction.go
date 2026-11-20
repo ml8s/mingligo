@@ -8,38 +8,38 @@ import (
 
 // GanRelation describes a single gan-to-gan relationship.
 type GanRelation struct {
-	GanA     ganzhi.Gan `json:"gan_a"`
-	GanB     ganzhi.Gan `json:"gan_b"`
-	Kind     string     `json:"relation_kind"`
-	Relation string     `json:"relation"`
+	GanA     ganzhi.Gan         `json:"gan_a"`
+	GanB     ganzhi.Gan         `json:"gan_b"`
+	Kind     GanZhiRelationKind `json:"relation_kind"`
+	Relation string             `json:"relation"`
 }
 
 // ZhiRelation describes a single zhi-to-zhi relationship.
 type ZhiRelation struct {
-	ZhiA   ganzhi.Zhi `json:"zhi_a"`
-	ZhiB   ganzhi.Zhi `json:"zhi_b"`
-	Kind   string     `json:"relation_kind"`
-	Detail string     `json:"relation_explanation"`
+	ZhiA   ganzhi.Zhi         `json:"zhi_a"`
+	ZhiB   ganzhi.Zhi         `json:"zhi_b"`
+	Kind   GanZhiRelationKind `json:"relation_kind"`
+	Detail string             `json:"relation_explanation"`
 }
 
 // Relation type constants for gan and zhi interactions.
 const (
-	relSame         = "相同"
-	relSheng        = "相生"
-	relKe           = "相克"
-	relGanHe        = "天干五合"
-	relNone         = "无"
-	relLiuHe        = "六合"
-	relSanHe        = "三合"
-	relSanHePartial = "半合"
-	relSanHeGong    = "三合拱"
-	relSanHui       = "三会"
-	relSanHuiGong   = "三会拱"
-	relLiuChong     = "六冲"
-	relXing         = "相刑"
-	relLiuHai       = "六害"
-	relAnHe         = "暗合"
-	relPo           = "破"
+	relSame         GanZhiRelationKind = "相同"
+	relSheng        GanZhiRelationKind = "相生"
+	relKe           GanZhiRelationKind = "相克"
+	relGanHe        GanZhiRelationKind = "天干五合"
+	relNone         GanZhiRelationKind = "无"
+	relLiuHe        GanZhiRelationKind = "六合"
+	relSanHe        GanZhiRelationKind = "三合"
+	relSanHePartial GanZhiRelationKind = "半合"
+	relSanHeGong    GanZhiRelationKind = "三合拱"
+	relSanHui       GanZhiRelationKind = "三会"
+	relSanHuiGong   GanZhiRelationKind = "三会拱"
+	relLiuChong     GanZhiRelationKind = "六冲"
+	relXing         GanZhiRelationKind = "相刑"
+	relLiuHai       GanZhiRelationKind = "六害"
+	relAnHe         GanZhiRelationKind = "暗合"
+	relPo           GanZhiRelationKind = "破"
 )
 
 // zhuInteraction holds gan and zhi relations for one pillar against the bazi chart.
