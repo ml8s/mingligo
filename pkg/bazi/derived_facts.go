@@ -153,23 +153,34 @@ func hiddenTenGodSource(source string) bool {
 	return source == sourceMainQi || source == sourceMidQi || source == sourceMinQi
 }
 
+// fuYiWangShuaiAt reads the published string-keyed WangShuai map through a
+// single string↔symbol boundary; callers stay on the symbol.
+func fuYiWangShuaiAt(fuYi FuYiResult, elem ganzhi.Wuxing) ganzhi.WangShuai {
+	ws, err := ganzhi.EncodeWangShuai(fuYi.WangShuai[ganzhi.DecodeWuxing(elem)])
+	if err != nil {
+		return ganzhi.WSNone
+	}
+	return ws
+}
+
 func computeElementStates(c Chart, transparent, rooted map[ganzhi.Wuxing]bool) map[ganzhi.Wuxing]ElementState {
 	all := []ganzhi.Wuxing{ganzhi.WxMu, ganzhi.WxHuo, ganzhi.WxTu, ganzhi.WxJin, ganzhi.WxShui}
 	result := make(map[ganzhi.Wuxing]ElementState, len(all))
 	for _, element := range all {
+		season := fuYiWangShuaiAt(c.FuYi, element)
 		state := ElementState{
 			Wuxing:       ganzhi.DecodeWuxing(element),
-			Season:       c.FuYi.WangShuai[ganzhi.DecodeWuxing(element)],
+			Season:       ganzhi.DecodeWangShuai(season),
 			Transparent:  transparent[element],
 			Rooted:       rooted[element],
 			Controls:     ganzhi.DecodeWuxing(elementControlledBy(element)),
 			ControlledBy: ganzhi.DecodeWuxing(elementThatControls(element)),
 			Reasons:      []string{},
 		}
-		switch c.FuYi.WangShuai[ganzhi.DecodeWuxing(element)] {
-		case ganzhi.DecodeWangShuai(ganzhi.WSWang), ganzhi.DecodeWangShuai(ganzhi.WSXiang):
+		switch season {
+		case ganzhi.WSWang, ganzhi.WSXiang:
 			state.SeasonStrength = "strong"
-		case ganzhi.DecodeWangShuai(ganzhi.WSXiu), ganzhi.DecodeWangShuai(ganzhi.WSQiu), ganzhi.DecodeWangShuai(ganzhi.WSSi):
+		case ganzhi.WSXiu, ganzhi.WSQiu, ganzhi.WSSi:
 			state.SeasonStrength = "weak"
 		}
 		switch {
