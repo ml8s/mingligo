@@ -1091,8 +1091,8 @@ func TestSanQi_Order(t *testing.T) {
 				Ri:   ganzhi.Zhu{Gan: tt.gans[2], Zhi: ganzhi.ZhiChen},
 				Shi:  ganzhi.Zhu{Gan: tt.gans[3], Zhi: ganzhi.ZhiWu},
 			}
-			if got := sanQiType(bz); got != tt.want {
-				t.Errorf("sanQiType = %q, want %q", got, tt.want)
+			if got := sanQiType(bz); got.Code() != tt.want {
+				t.Errorf("sanQiType = %q, want %q", got.Code(), tt.want)
 			}
 		})
 	}

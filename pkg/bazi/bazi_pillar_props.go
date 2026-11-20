@@ -68,7 +68,7 @@ func isKuiGang(p ganzhi.Zhu) bool {
 // 三奇要求三干在年-月-日-时（或时-日-月-年）中顺次/逆次连续排列：
 // 天上三奇（甲戊庚）、地下三奇（乙丙丁）、人中三奇（壬癸辛）。
 // 仅"集齐"而不连续（如甲年庚月戊日）不构成三奇。
-func sanQiType(bz ganzhi.Bazi) string {
+func sanQiType(bz ganzhi.Bazi) SanQiKind {
 	zhus := bz.Slice()
 	gan := [4]int{}
 	for i, p := range zhus {
@@ -77,34 +77,24 @@ func sanQiType(bz ganzhi.Bazi) string {
 		}
 	}
 	patterns := []struct {
-		name    string
+		kind    SanQiKind
 		a, b, c int
 	}{
-		{"天上", 1, 5, 7},  // 甲戊庚
-		{"地下", 2, 3, 4},  // 乙丙丁
-		{"人中", 9, 10, 8}, // 壬癸辛
+		{sanQiTianShang, 1, 5, 7},  // 甲戊庚
+		{sanQiDiXia, 2, 3, 4},      // 乙丙丁
+		{sanQiRenZhong, 9, 10, 8},  // 壬癸辛
 	}
 	for _, pat := range patterns {
 		for start := 0; start <= 1; start++ { // 年-月-日 或 月-日-时 两个三元组
 			s0, s1, s2 := gan[start], gan[start+1], gan[start+2]
 			if (s0 == pat.a && s1 == pat.b && s2 == pat.c) || // 顺次
 				(s0 == pat.c && s1 == pat.b && s2 == pat.a) { // 逆次
-				return pat.name
+				return pat.kind
 			}
 		}
 	}
-	return ""
+	return sanQiNone
 }
 
-// sanQiName returns the full name for a sanqi type code.
-func sanQiName(typ string) string {
-	switch typ {
-	case "天上":
-		return "天上三奇（甲戊庚）"
-	case "地下":
-		return "地下三奇（乙丙丁）"
-	case "人中":
-		return "人中三奇（壬癸辛）"
-	}
-	return ""
-}
+// sanQiName returns the full name for a sanqi type.
+func sanQiName(k SanQiKind) string { return DecodeSanQiKind(k) }
