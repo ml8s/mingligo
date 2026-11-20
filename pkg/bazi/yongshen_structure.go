@@ -19,7 +19,7 @@ type StemOccurrence struct {
 // ElementStructure is an atomic element projection used by the FuYi, TiaoHou, and GeJu projections. It never asserts final pattern success or failure.
 type ElementStructure struct {
 	Wuxing             string           `json:"wuxing"`
-	TransparentPillars []string         `json:"transparent_pillars"`
+	TransparentPillars []PillarIndex         `json:"transparent_pillars"`
 	Roots              []StemOccurrence `json:"roots"`
 	Season             string           `json:"season"`
 	Timely             bool             `json:"timely"`
@@ -39,7 +39,7 @@ type RelationLink struct {
 type TargetedRelationEvidence struct {
 	Kind     string
 	Group    string
-	Pillars  []string
+	Pillars  []PillarIndex
 	Branches []string
 	Stems    []string
 	Targets  []string
@@ -84,15 +84,15 @@ func buildGeJuStructure(
 		Controller: buildElementStructure(bz, controller, nil),
 		Generator:  buildElementStructure(bz, generator, nil),
 		GuanXiLinks: relationLinks(buildTargetedRelationEvidence(relations,
-			func(pillar string, gan ganzhi.Gan) []string {
+			func(pillar PillarIndex, gan ganzhi.Gan) []string {
 				return elementTargets(ganzhi.GanWuxing(gan), map[string]string{
 					ganzhi.DecodeWuxing(patternElem): "pattern",
 					ganzhi.DecodeWuxing(controller):  "controller",
 					ganzhi.DecodeWuxing(generator):   "generator",
 				})
 			},
-			func(pillar string) []string {
-				return branchElementTargets(bz, pillarIndex(pillar), map[string]string{
+			func(pillar PillarIndex) []string {
+				return branchElementTargets(bz, int(pillar), map[string]string{
 					ganzhi.DecodeWuxing(patternElem): "pattern",
 					ganzhi.DecodeWuxing(controller):  "controller",
 					ganzhi.DecodeWuxing(generator):   "generator",
@@ -112,23 +112,23 @@ func buildFuYiBasis(
 		YinBiShuLiang: yinBi,
 		RiGanTongGen:  hiddenStemOccurrences(bz, dayMaster),
 		GuanXiLinks: relationLinks(buildTargetedRelationEvidence(relations,
-			func(pillar string, stem ganzhi.Gan) []string {
+			func(pillar PillarIndex, stem ganzhi.Gan) []string {
 				targets := make([]string, 0, 2)
-				if pillar == zhuLabels[zhuRi] {
+				if pillar == pillarRi {
 					targets = append(targets, "day_master")
 				}
 				elem := ganzhi.GanWuxing(stem)
-				if pillar != zhuLabels[zhuRi] && (elem == dayMaster || elem == support) {
+				if pillar != pillarRi && (elem == dayMaster || elem == support) {
 					targets = append(targets, "yin_bi")
 				}
 				return targets
 			},
-			func(pillar string) []string {
+			func(pillar PillarIndex) []string {
 				targets := make([]string, 0, 2)
-				if pillar == zhuLabels[zhuRi] {
+				if pillar == pillarRi {
 					targets = append(targets, "day_branch")
 				}
-				if len(branchElementTargets(bz, pillarIndex(pillar), map[string]string{ganzhi.DecodeWuxing(dayMaster): "day_master_root"})) > 0 {
+				if len(branchElementTargets(bz, int(pillar), map[string]string{ganzhi.DecodeWuxing(dayMaster): "day_master_root"})) > 0 {
 					targets = append(targets, "day_master_root")
 				}
 				return targets
@@ -196,14 +196,14 @@ func buildTiaoHouAvailability(
 		}
 	}
 	availability.GuanXiLinks = relationLinks(buildTargetedRelationEvidence(relations,
-		func(pillar string, relationStem ganzhi.Gan) []string {
-			if targetPillars[pillarIndex(pillar)] && relationStem == stem {
+		func(pillar PillarIndex, relationStem ganzhi.Gan) []string {
+			if targetPillars[int(pillar)] && relationStem == stem {
 				return []string{target}
 			}
 			return nil
 		},
-		func(pillar string) []string {
-			if targetPillars[pillarIndex(pillar)] {
+		func(pillar PillarIndex) []string {
+			if targetPillars[int(pillar)] {
 				return []string{target}
 			}
 			return nil
@@ -233,17 +233,17 @@ func buildElementStructure(bz ganzhi.Bazi, elem ganzhi.Wuxing, exact *ganzhi.Gan
 	return structure
 }
 
-func transparentPillars(bz ganzhi.Bazi, elem ganzhi.Wuxing, exact *ganzhi.Gan) []string {
-	result := make([]string, 0, 4)
+func transparentPillars(bz ganzhi.Bazi, elem ganzhi.Wuxing, exact *ganzhi.Gan) []PillarIndex {
+	result := make([]PillarIndex, 0, 4)
 	for index, gan := range []ganzhi.Gan{bz.Nian.Gan, bz.Yue.Gan, bz.Ri.Gan, bz.Shi.Gan} {
 		if exact != nil {
 			if gan == *exact {
-				result = append(result, zhuLabels[index])
+				result = append(result, PillarIndex(index))
 			}
 			continue
 		}
 		if ganzhi.GanWuxing(gan) == elem {
-			result = append(result, zhuLabels[index])
+			result = append(result, PillarIndex(index))
 		}
 	}
 	return result
@@ -284,11 +284,11 @@ func hiddenStemOccurrences(bz ganzhi.Bazi, elem ganzhi.Wuxing) []StemOccurrence 
 
 func buildTargetedRelationEvidence(
 	relations []NatalRelationFact,
-	stemTargets func(pillar string, stem ganzhi.Gan) []string,
-	branchTargets func(pillar string) []string,
+	stemTargets func(pillar PillarIndex, stem ganzhi.Gan) []string,
+	branchTargets func(pillar PillarIndex) []string,
 ) []TargetedRelationEvidence {
-	branchMemo := map[string][]string{}
-	memoBranchTargets := func(pillar string) []string {
+	branchMemo := map[PillarIndex][]string{}
+	memoBranchTargets := func(pillar PillarIndex) []string {
 		if branchTargets == nil {
 			return nil
 		}
@@ -305,7 +305,7 @@ func buildTargetedRelationEvidence(
 		targets := make([]string, 0, 4)
 		stems := make([]string, 0, len(relation.Members))
 		branches := make([]string, 0, len(relation.Members))
-		pillars := make([]string, 0, len(relation.Members))
+		pillars := make([]PillarIndex, 0, len(relation.Members))
 		for _, member := range relation.Members {
 			pillars = append(pillars, member.Pillar)
 			if member.Gan != "" {
@@ -397,7 +397,7 @@ func dedupeTargetedRelationEvidence(values []TargetedRelationEvidence) []Targete
 	result := make([]TargetedRelationEvidence, 0, len(values))
 	seen := map[string]bool{}
 	for _, value := range values {
-		key := strings.Join([]string{value.Kind, value.Group, strings.Join(value.Pillars, ","), strings.Join(value.Branches, ","), strings.Join(value.Targets, ",")}, "\x00")
+		key := strings.Join([]string{value.Kind, value.Group, pillarIndexKeys(value.Pillars), strings.Join(value.Branches, ","), strings.Join(value.Targets, ",")}, "\x00")
 		if seen[key] {
 			continue
 		}
@@ -498,7 +498,7 @@ func canonicalRelationReference(value TargetedRelationEvidence) (NatalRelationFa
 	return fact, true
 }
 
-func zhiMembers(pillars, branches []string) []NatalRelationMember {
+func zhiMembers(pillars []PillarIndex, branches []string) []NatalRelationMember {
 	if len(pillars) != len(branches) {
 		return nil
 	}
@@ -509,16 +509,8 @@ func zhiMembers(pillars, branches []string) []NatalRelationMember {
 	return members
 }
 
-func pillarDistance(first, second string) int {
-	a, b := -1, -1
-	for index, pillar := range zhuLabels {
-		if pillar == first {
-			a = index
-		}
-		if pillar == second {
-			b = index
-		}
-	}
+func pillarDistance(first, second PillarIndex) int {
+	a, b := int(first), int(second)
 	if a < 0 || b < 0 {
 		return 0
 	}
@@ -527,6 +519,14 @@ func pillarDistance(first, second string) int {
 		distance = -distance
 	}
 	return distance
+}
+
+func pillarIndexKeys(pillars []PillarIndex) string {
+	parts := make([]string, 0, len(pillars))
+	for _, p := range pillars {
+		parts = append(parts, DecodePillarIndex(p))
+	}
+	return strings.Join(parts, ",")
 }
 
 func isDeadOrTrappedSeason(season string) bool {

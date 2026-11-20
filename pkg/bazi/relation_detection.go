@@ -60,7 +60,7 @@ type TripleRelationDetection struct {
 	Name     string
 	Element  ganzhi.Wuxing
 	Branches []ganzhi.Zhi
-	Pillars  []string
+	Pillars  []PillarIndex
 }
 
 // DetectRelations detects all published relation candidates from four pillars.
@@ -236,12 +236,12 @@ func detectPartialTriple(bz ganzhi.Bazi) []TripleRelationDetection {
 	return results
 }
 
-func pillarsWithAnyZhi(bz ganzhi.Bazi, targets ...ganzhi.Zhi) []string {
-	pillars := make([]string, 0, 4)
+func pillarsWithAnyZhi(bz ganzhi.Bazi, targets ...ganzhi.Zhi) []PillarIndex {
+	pillars := make([]PillarIndex, 0, 4)
 	for index, pillar := range bz.Slice() {
 		for _, target := range targets {
 			if pillar.Zhi == target {
-				pillars = append(pillars, zhuLabels[index])
+				pillars = append(pillars, PillarIndex(index))
 				break
 			}
 		}

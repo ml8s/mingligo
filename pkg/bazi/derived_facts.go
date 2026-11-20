@@ -17,7 +17,7 @@ type LuRoot struct {
 
 // NatalRelationMember locates one stem or branch participant in its palace.
 type NatalRelationMember struct {
-	Pillar string `json:"zhu"`
+	Pillar PillarIndex `json:"zhu"`
 	Gan    string `json:"gan,omitempty"`
 	Zhi    string `json:"zhi,omitempty"`
 }
@@ -302,7 +302,7 @@ func computeChartConclusions(c Chart) ChartConclusions {
 			continue
 		}
 		for _, member := range relation.Members {
-			index := pillarIndex(member.Pillar)
+			index := int(member.Pillar)
 			if index >= 0 && killingPillars[index] {
 				conclusions.OfficerKillingCleaned = hasOfficer && hasKilling
 			}
@@ -342,8 +342,8 @@ func buildNatalRelationsFromDetection(bz ganzhi.Bazi, detection RelationDetectio
 			Kind:  kind,
 			Group: ganHeGroupLabel(relation.GanA, relation.GanB),
 			Members: []NatalRelationMember{
-				{Pillar: zhuLabels[relation.PillarA], Gan: ganzhi.GanName(relation.GanA)},
-				{Pillar: zhuLabels[relation.PillarB], Gan: ganzhi.GanName(relation.GanB)},
+				{Pillar: PillarIndex(relation.PillarA), Gan: ganzhi.GanName(relation.GanA)},
+				{Pillar: PillarIndex(relation.PillarB), Gan: ganzhi.GanName(relation.GanB)},
 			},
 			Wuxing:    wuxingOutput(relation.HeElement),
 			Position:  DecodeRelationPosition(relation.Position),
@@ -361,8 +361,8 @@ func buildNatalRelationsFromDetection(bz ganzhi.Bazi, detection RelationDetectio
 			Kind:  kind,
 			Group: group,
 			Members: []NatalRelationMember{
-				{Pillar: zhuLabels[relation.PillarA], Gan: ganzhi.GanName(relation.GanA)},
-				{Pillar: zhuLabels[relation.PillarB], Gan: ganzhi.GanName(relation.GanB)},
+				{Pillar: PillarIndex(relation.PillarA), Gan: ganzhi.GanName(relation.GanA)},
+				{Pillar: PillarIndex(relation.PillarB), Gan: ganzhi.GanName(relation.GanB)},
 			},
 			Position: DecodeRelationPosition(relation.Position),
 		})
@@ -442,7 +442,7 @@ func natalRelationFactID(fact NatalRelationFact) string {
 		if value == "" {
 			value = member.Zhi
 		}
-		keys = append(keys, member.Pillar+":"+value)
+		keys = append(keys, DecodePillarIndex(member.Pillar)+":"+value)
 	}
 	return fact.Kind + ":" + fact.Group + "@" + strings.Join(keys, "|")
 }
@@ -460,8 +460,8 @@ func newZhiPairFact(kind, group string, zhiA ganzhi.Zhi, pillarA int, zhiB ganzh
 		Kind:  kind,
 		Group: group,
 		Members: []NatalRelationMember{
-			{Pillar: zhuLabels[pillarA], Zhi: ganzhi.ZhiName(zhiA)},
-			{Pillar: zhuLabels[pillarB], Zhi: ganzhi.ZhiName(zhiB)},
+			{Pillar: PillarIndex(pillarA), Zhi: ganzhi.ZhiName(zhiA)},
+			{Pillar: PillarIndex(pillarB), Zhi: ganzhi.ZhiName(zhiB)},
 		},
 		Wuxing: wuxingOutput(wuxing),
 	}
@@ -554,13 +554,13 @@ func parseZhiNames(names []string) []ganzhi.Zhi {
 	return values
 }
 
-func pillarWithZhi(bz ganzhi.Bazi, target ganzhi.Zhi) string {
+func pillarWithZhi(bz ganzhi.Bazi, target ganzhi.Zhi) PillarIndex {
 	for index, pillar := range bz.Slice() {
 		if pillar.Zhi == target {
-			return zhuLabels[index]
+			return PillarIndex(index)
 		}
 	}
-	return ""
+	return 0
 }
 
 // ganHeGroupLabel canonicalizes an observed adjacent stem pair to the table's

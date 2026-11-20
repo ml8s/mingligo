@@ -173,7 +173,7 @@ func assertTripleLocation(t *testing.T, got TripleRelationDetection, branches []
 		t.Fatalf("pillars = %v, want %v", got.Pillars, pillars)
 	}
 	for index := range pillars {
-		if got.Pillars[index] != pillars[index] {
+		if DecodePillarIndex(got.Pillars[index]) != pillars[index] {
 			t.Fatalf("pillars = %v, want %v", got.Pillars, pillars)
 		}
 	}

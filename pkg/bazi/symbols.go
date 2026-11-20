@@ -214,6 +214,9 @@ const (
 var pillarCodes = [...]string{"nian", "yue", "ri", "shi"}
 
 func DecodePillarIndex(p PillarIndex) string { return pillarCodes[p] }
+func (p PillarIndex) MarshalJSON() ([]byte, error) {
+	return []byte(`"` + DecodePillarIndex(p) + `"`), nil
+}
 func EncodePillarIndex(code string) (PillarIndex, bool) {
 	for i, c := range pillarCodes {
 		if c == code {

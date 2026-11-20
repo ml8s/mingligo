@@ -56,8 +56,8 @@ func TestNatalRelationsCoverLegacyRelationArrays(t *testing.T) {
 				requireRelation(NatalRelationFact{
 					ID: kind + ":" + group, Kind: kind, Group: group,
 					Members: []NatalRelationMember{
-						{Pillar: zhuLabels[relation.PillarA], Gan: ganzhi.GanName(relation.GanA)},
-						{Pillar: zhuLabels[relation.PillarB], Gan: ganzhi.GanName(relation.GanB)},
+						{Pillar: PillarIndex(relation.PillarA), Gan: ganzhi.GanName(relation.GanA)},
+						{Pillar: PillarIndex(relation.PillarB), Gan: ganzhi.GanName(relation.GanB)},
 					},
 					Wuxing: relation.HeElement.String(), Position: DecodeRelationPosition(relation.Position), Contested: relation.Contested,
 				})
@@ -71,8 +71,8 @@ func TestNatalRelationsCoverLegacyRelationArrays(t *testing.T) {
 				requireRelation(NatalRelationFact{
 					ID: kind + ":" + group, Kind: kind, Group: group,
 					Members: []NatalRelationMember{
-						{Pillar: zhuLabels[relation.PillarA], Gan: ganzhi.GanName(relation.GanA)},
-						{Pillar: zhuLabels[relation.PillarB], Gan: ganzhi.GanName(relation.GanB)},
+						{Pillar: PillarIndex(relation.PillarA), Gan: ganzhi.GanName(relation.GanA)},
+						{Pillar: PillarIndex(relation.PillarB), Gan: ganzhi.GanName(relation.GanB)},
 					},
 					Position: DecodeRelationPosition(relation.Position),
 				})
@@ -89,8 +89,8 @@ func TestNatalRelationsCoverLegacyRelationArrays(t *testing.T) {
 				requireRelation(NatalRelationFact{
 					ID: kind + ":" + group, Kind: kind, Group: group,
 					Members: []NatalRelationMember{
-						{Pillar: zhuLabels[pillarA], Zhi: ganzhi.ZhiName(zhiA)},
-						{Pillar: zhuLabels[pillarB], Zhi: ganzhi.ZhiName(zhiB)},
+						{Pillar: PillarIndex(pillarA), Zhi: ganzhi.ZhiName(zhiA)},
+						{Pillar: PillarIndex(pillarB), Zhi: ganzhi.ZhiName(zhiB)},
 					},
 					Wuxing: wuxing,
 				})

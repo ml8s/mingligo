@@ -53,7 +53,7 @@ func TestDomainOracle_BaziYongShenStructure(t *testing.T) {
 			if got.Pattern != tc.ExpectedPattern || got.PatternGod != tc.ExpectedPatternGod {
 				t.Fatalf("pattern = %s/%s, want %s/%s", got.Pattern, got.PatternGod, tc.ExpectedPattern, tc.ExpectedPatternGod)
 			}
-			assertStrings(t, got.Structure.Pattern.TransparentPillars, tc.ExpectedTransparentPillars)
+			assertStrings(t, decodePillars(got.Structure.Pattern.TransparentPillars), tc.ExpectedTransparentPillars)
 			if got.Structure.Pattern.Timely != tc.ExpectedPatternTimely {
 				t.Fatalf("pattern timely = %v, want %v", got.Structure.Pattern.Timely, tc.ExpectedPatternTimely)
 			}
@@ -61,7 +61,7 @@ func TestDomainOracle_BaziYongShenStructure(t *testing.T) {
 				t.Fatalf("pattern roots = %#v, want %#v", got.Structure.Pattern.Roots, tc.ExpectedPatternRoots)
 			}
 			if tc.ExpectedControllerTransparent != nil {
-				assertStrings(t, got.Structure.Controller.TransparentPillars, tc.ExpectedControllerTransparent)
+				assertStrings(t, decodePillars(got.Structure.Controller.TransparentPillars), tc.ExpectedControllerTransparent)
 			}
 			assertRelationLinks(t, got.Structure.GuanXiLinks, tc.ExpectedRelationLinks)
 		})
@@ -165,4 +165,10 @@ func assertTiaoHouGod(t *testing.T, got TiaoHouAvailability, want expectedTiaoHo
 	if !reflect.DeepEqual(got.Occurrences, want.Occurrences) {
 		t.Fatalf("occurrences = %#v, want %#v", got.Occurrences, want.Occurrences)
 	}
+}
+
+func decodePillars(p []PillarIndex) []string {
+	out := make([]string, 0, len(p))
+	for _, v := range p { out = append(out, DecodePillarIndex(v)) }
+	return out
 }
