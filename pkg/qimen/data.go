@@ -765,7 +765,7 @@ func loadCatalog() error {
 	}
 
 	defaultMethod := Method{Scope: defaultScope, School: defaultSchool, Dingju: defaultDingju}
-	if _, err := ParseMethod(defaultMethod.Scope.String(), defaultMethod.School.String(), defaultMethod.Dingju.String(), ""); err != nil {
+	if _, err := validateMethodFields(defaultMethod.Scope, defaultMethod.School, defaultMethod.Dingju, "", "", 0, 0); err != nil {
 		return fmt.Errorf("load catalog: invalid default method: %w", err)
 	}
 	if table.MonthDingju.Direction != "retreat" || !table.MonthDingju.YinDun || !table.YearDingju.YinDun {

@@ -89,7 +89,7 @@ func applyYongshenEvidence(chart *Chart, core Core, analysis PillarAnalysis) {
 
 // applyDerivedFacts derives the read-only facts consumed by judgment layers.
 func applyDerivedFacts(chart *Chart) {
-	var elementStates map[string]ElementState
+	var elementStates map[ganzhi.Wuxing]ElementState
 	chart.TenGodStates, elementStates = computeTenGodStates(*chart)
 	chart.ElementStates = elementStateList(elementStates)
 	chart.LuRoots = computeLuRoots(*chart)

@@ -72,7 +72,7 @@ type tenGodAccumulator struct {
 	count       int
 }
 
-func computeTenGodStates(c Chart) ([]TenGodState, map[string]ElementState) {
+func computeTenGodStates(c Chart) ([]TenGodState, map[ganzhi.Wuxing]ElementState) {
 	pillars := [4]Pillar{c.Nian, c.Yue, c.Ri, c.Shi}
 	transparent := map[ganzhi.Wuxing]bool{}
 	rooted := map[ganzhi.Wuxing]bool{}
@@ -117,7 +117,7 @@ func computeTenGodStates(c Chart) ([]TenGodState, map[string]ElementState) {
 		if accumulator == nil {
 			continue
 		}
-		element := elements[accumulator.wuxing.String()]
+		element := elements[accumulator.wuxing]
 		// 十神强度按 ten_god_strength_rules 表判定（《子平真诠》旺衰强弱：
 		// 得令且透/根为强，失令且不透不根为弱；旺而不强判 neutral）。
 		strength := "neutral"
@@ -153,9 +153,9 @@ func hiddenTenGodSource(source string) bool {
 	return source == sourceMainQi || source == sourceMidQi || source == sourceMinQi
 }
 
-func computeElementStates(c Chart, transparent, rooted map[ganzhi.Wuxing]bool) map[string]ElementState {
+func computeElementStates(c Chart, transparent, rooted map[ganzhi.Wuxing]bool) map[ganzhi.Wuxing]ElementState {
 	all := []ganzhi.Wuxing{ganzhi.WxMu, ganzhi.WxHuo, ganzhi.WxTu, ganzhi.WxJin, ganzhi.WxShui}
-	result := make(map[string]ElementState, len(all))
+	result := make(map[ganzhi.Wuxing]ElementState, len(all))
 	for _, element := range all {
 		state := ElementState{
 			Wuxing:       element.String(),
@@ -185,20 +185,21 @@ func computeElementStates(c Chart, transparent, rooted map[ganzhi.Wuxing]bool) m
 		default:
 			state.Strength = "neutral"
 		}
-		result[state.Wuxing] = state
+		result[element] = state
 	}
 	for _, element := range all {
-		state := result[element.String()]
-		state.ControllerStrength = result[state.ControlledBy].SeasonStrength
-		result[state.Wuxing] = state
+		state := result[element]
+		controller := elementThatControls(element)
+		state.ControllerStrength = result[controller].SeasonStrength
+		result[element] = state
 	}
 	return result
 }
 
-func elementStateList(states map[string]ElementState) []ElementState {
+func elementStateList(states map[ganzhi.Wuxing]ElementState) []ElementState {
 	result := make([]ElementState, 0, len(states))
 	for _, element := range []ganzhi.Wuxing{ganzhi.WxMu, ganzhi.WxHuo, ganzhi.WxTu, ganzhi.WxJin, ganzhi.WxShui} {
-		result = append(result, states[element.String()])
+		result = append(result, states[element])
 	}
 	return result
 }
