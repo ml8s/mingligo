@@ -36,7 +36,7 @@ func TestShouShanChuSha_LiQi_Anchors(t *testing.T) {
 			st := tianwen.ApparentSolarFromCivil(
 				time.Date(c.year, 6, 1, 12, 0, 0, 0, time.FixedZone("CST", 8*3600)),
 				116.4, 8)
-			chart, err := ComputeChartAtStandard(st, c.sit, c.face)
+			chart, err := ComputeChartAt(st, c.sit, c.face)
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -61,7 +61,7 @@ func TestXingJiaHuiUnknownCombinationIsUnlisted(t *testing.T) {
 		time.Date(2026, 6, 28, 12, 0, 0, 0, time.FixedZone("CST", 8*3600)),
 		116.4, 8,
 	)
-	chart, err := ComputeChartAtStandard(st, 1, 13)
+	chart, err := ComputeChartAt(st, 1, 13)
 	if err != nil {
 		t.Fatal(err)
 	}

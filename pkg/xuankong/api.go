@@ -16,9 +16,9 @@ import (
 	"github.com/ml8s/mingligo/pkg/tianwen"
 )
 
-// ComputeChartAtStandard derives the 立春 year from a standard time and
+// ComputeChartAt derives the 立春 year from a standard time and
 // computes the 玄空 chart.
-func ComputeChartAtStandard(standard time.Time, sitMountain, faceMountain int) (Chart, error) {
+func ComputeChartAt(standard time.Time, sitMountain, faceMountain int) (Chart, error) {
 	ly, err := tianwen.LichunYearAt(standard)
 	if err != nil {
 		return Chart{}, err

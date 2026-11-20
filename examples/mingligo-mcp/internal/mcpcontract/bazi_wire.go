@@ -677,27 +677,15 @@ type BaziXiaoYunItemZhusItem struct {
 // output schema keeps the current single-root wire face while allowing one
 // typed handler to serve the five scope forms.
 type BaziLiupanOutput struct {
-	LiuNian []bazi.LiuNian     `json:"liu_nian,omitempty" jsonschema:"流年数组，长度 = count。"`
-	LiuYue  []bazi.LiuYue      `json:"liu_yue,omitempty" jsonschema:"流月数组，长度 = count。"`
-	LiuRi   []bazi.LiuRi       `json:"liu_ri,omitempty" jsonschema:"流日数组，长度 = count。"`
-	LiuShi  []bazi.LiuShi      `json:"liu_shi,omitempty" jsonschema:"流时数组，长度 = count。"`
-	XiaoYun []bazi.XiaoYunSet   `json:"xiao_yun,omitempty" jsonschema:"各学派小运列表；长度 = count。"`
+	LiuNian []bazi.LiuNian    `json:"liu_nian,omitempty" jsonschema:"流年数组，长度 = count。"`
+	LiuYue  []bazi.LiuYue     `json:"liu_yue,omitempty" jsonschema:"流月数组，长度 = count。"`
+	LiuRi   []bazi.LiuRi      `json:"liu_ri,omitempty" jsonschema:"流日数组，长度 = count。"`
+	LiuShi  []bazi.LiuShi     `json:"liu_shi,omitempty" jsonschema:"流时数组，长度 = count。"`
+	XiaoYun []bazi.XiaoYunSet `json:"xiao_yun,omitempty" jsonschema:"各学派小运列表；长度 = count。"`
 }
 
 // ── named natal series roots ──
 
 type BaziLiuNianSeries struct {
 	LiuNian []BaziLiuNianOutput `json:"liu_nian" jsonschema:"流年数组，长度 = count。"`
-}
-
-type BaziLiuYueSeries struct {
-	LiuYue []BaziLiuYueOutput `json:"liu_yue" jsonschema:"流月数组，长度 = count。"`
-}
-
-type BaziLiuRiSeries struct {
-	LiuRi []BaziLiuRiOutput `json:"liu_ri" jsonschema:"流日数组，长度 = count。"`
-}
-
-type BaziLiuShiSeries struct {
-	LiuShi []BaziLiuShiOutput `json:"liu_shi" jsonschema:"流时数组，长度 = count。"`
 }

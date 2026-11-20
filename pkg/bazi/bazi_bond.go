@@ -117,9 +117,6 @@ type spouseStarFact struct {
 	Secondary spouseStarGroup `json:"secondary"`
 }
 
-type SpouseStarFact = spouseStarFact
-type SpouseStarGroup = spouseStarGroup
-
 type spouseStarCross struct {
 	A spouseStarFact `json:"a"`
 	B spouseStarFact `json:"b"`

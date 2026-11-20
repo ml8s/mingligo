@@ -179,6 +179,6 @@ func xuankongComputeChart(at time.Time, zuoShan MountainIndex, xiangShan Mountai
 			zuoShan, xiangShan,
 		)
 	}
-	return xuankong.ComputeChartAtStandard(at, int(zuoShan), int(xiangShan))
+	return xuankong.ComputeChartAt(at, int(zuoShan), int(xiangShan))
 }
 

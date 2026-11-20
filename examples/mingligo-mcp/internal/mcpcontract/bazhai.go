@@ -99,7 +99,7 @@ func BazhaiChart(_ context.Context, input BazhaiChartInput) (bazhai.Chart, error
 	if err != nil {
 		return bazhai.Chart{}, fmt.Errorf("bazhai.chart: %w", err)
 	}
-	chart, err := bazhai.ComputeChartAtStandard(gender, standard)
+	chart, err := bazhai.ComputeChartAt(gender, standard)
 	if err != nil {
 		return bazhai.Chart{}, fmt.Errorf("bazhai.chart: %w", err)
 	}

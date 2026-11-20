@@ -330,7 +330,6 @@ var xingKindCodes = [...]string{"", "wuli", "wuen", "shishi", "zi"}
 var xingKindNames = [...]string{"", "无礼之刑", "无恩之刑", "恃势之刑", "自刑"}
 
 func DecodeXingKind(x XingKind) string { return xingKindNames[x] }
-func XingKindCode(x XingKind) string   { return xingKindCodes[x] }
 
 func EncodeXingKind(code string) (XingKind, bool) {
 	for i, c := range xingKindCodes {
