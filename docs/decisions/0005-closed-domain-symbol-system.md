@@ -63,6 +63,7 @@ decode : 符号 → 文本   （离开系统；输出边界；查表权威实现
 
 - domain 只输出结构化 object（string/int/符号的 JSON 投影），MCP 层从 wire DTO 生成 schema 并透传 domain 结果。
 - JSON Schema 与 enum 约束属于协议层，不进入 `pkg/**`；本项目不维护 wire 契约作为产品——输出字节由 golden/schema 测试守护即可。
+- **适配器不得约束 domain 的符号化**：若 domain 字段改为符号类型后与适配器的 schema 推断冲突（如符号的 `MarshalJSON` 输出文本但 jsonschema 从整数底层推断 integer），应在适配器侧用独立 wire struct / 注册 schema 适配，**绝不为此回退 domain 的符号化**。domain 是权威，适配器跟随。
 - 领域"输出可读事实"与"符号空间闭环"不冲突：可读性是 decode 的产物，运算始终是符号。
 
 ### 5. 判定标准（如何审计）
