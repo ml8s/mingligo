@@ -135,7 +135,7 @@ func analyzeZhiRelation(a, b ganzhi.Zhi) ZhiRelation {
 		xType := "刑"
 		for _, x := range ganzhi.XingGroups {
 			if containsPair(x.Zhi, a, b) {
-				xType = xingTypeLabel(x.Type)
+				xType = ganzhi.DecodeXingKind(x.Type)
 				break
 			}
 		}

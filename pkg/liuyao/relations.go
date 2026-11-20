@@ -41,7 +41,7 @@ func branchRelations(left, right ganzhi.Zhi) []string {
 		relations = append(relations, "六害")
 	}
 	for _, group := range ganzhi.XingGroups {
-		if len(group.Zhi) == 2 && group.Type == "zi" &&
+		if len(group.Zhi) == 2 && group.Type == ganzhi.XingKindZi &&
 			left == right && containsZhi(group.Zhi, left) {
 			relations = append(relations, "自刑")
 			break

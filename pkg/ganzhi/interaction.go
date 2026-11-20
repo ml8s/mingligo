@@ -85,7 +85,7 @@ func IsLiuChong(a, b Zhi) bool {
 // IsXing returns true if the two zhi are in a 相刑 relation.
 func IsXing(a, b Zhi) bool {
 	for _, x := range XingGroups {
-		if x.Type == "zi" {
+		if x.Type == XingKindZi {
 			if a == b && inZhiList(x.Zhi, a) {
 				return true
 			}

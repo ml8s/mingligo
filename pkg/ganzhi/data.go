@@ -102,7 +102,7 @@ type SanHeHui struct {
 
 // Xing describes a 相刑 group.
 type Xing struct {
-	Type string
+	Type XingKind
 	Zhi  []Zhi
 }
 
@@ -230,7 +230,11 @@ func loadChongXingHai() error {
 		for i, s := range x.Zhi {
 			zhi[i] = parseZhi(s)
 		}
-		XingGroups = append(XingGroups, Xing{Type: x.Type, Zhi: zhi})
+		xingKind, ok := EncodeXingKind(x.Type)
+		if !ok {
+			return fmt.Errorf("load: unknown xing type %q", x.Type)
+		}
+		XingGroups = append(XingGroups, Xing{Type: xingKind, Zhi: zhi})
 	}
 	HaiPairs = make([]ZhiPair, len(cfg.Hai.Pairs))
 	for i, p := range cfg.Hai.Pairs {

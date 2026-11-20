@@ -313,3 +313,30 @@ func EncodeShiShen(s string) (ShiShen, error) {
 	}
 	return -1, fmt.Errorf("unknown shi_shen: %q", s)
 }
+
+// XingKind is the 相刑 group type: 无礼/无恩/恃势/自刑.
+// Defined in ganzhi (the domain that owns 地支 relations).
+type XingKind uint8
+
+const (
+	xingUnknown XingKind = iota
+	xingWuLi             // wuli 无礼之刑
+	xingWuEn             // wuen 无恩之刑
+	xingShiShi           // shishi 恃势之刑
+	XingKindZi           // zi 自刑
+)
+
+var xingKindCodes = [...]string{"", "wuli", "wuen", "shishi", "zi"}
+var xingKindNames = [...]string{"", "无礼之刑", "无恩之刑", "恃势之刑", "自刑"}
+
+func DecodeXingKind(x XingKind) string { return xingKindNames[x] }
+func XingKindCode(x XingKind) string   { return xingKindCodes[x] }
+
+func EncodeXingKind(code string) (XingKind, bool) {
+	for i, c := range xingKindCodes {
+		if c != "" && c == code {
+			return XingKind(i), true
+		}
+	}
+	return xingUnknown, false
+}

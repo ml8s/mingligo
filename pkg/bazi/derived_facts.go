@@ -400,7 +400,7 @@ func buildNatalRelationsFromDetection(bz ganzhi.Bazi, detection RelationDetectio
 		zhiCounts[pillar.Zhi]++
 	}
 	for _, group := range ganzhi.XingGroups {
-		if group.Type == "zi" || !allBranchesPresent(zhiCounts, group.Zhi) {
+		if group.Type == ganzhi.XingKindZi || !allBranchesPresent(zhiCounts, group.Zhi) {
 			continue
 		}
 		groupLabel := xingGroupLabel(group.Zhi)
@@ -526,7 +526,7 @@ func canonicalXingGroup(a, b ganzhi.Zhi) string {
 		return ganzhi.ZhiName(a) + ganzhi.ZhiName(b)
 	}
 	for _, group := range ganzhi.XingGroups {
-		if group.Type == "zi" {
+		if group.Type == ganzhi.XingKindZi {
 			continue
 		}
 		present := make([]ganzhi.Zhi, 0, len(group.Zhi))

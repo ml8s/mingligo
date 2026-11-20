@@ -738,7 +738,7 @@ func TestXingGroups_NotEmpty(t *testing.T) {
 		t.Error("XingGroups is empty")
 	}
 	for _, x := range XingGroups {
-		if x.Type == "" {
+		if x.Type == xingUnknown {
 			t.Error("XingGroup has empty type")
 		}
 		if len(x.Zhi) == 0 {
