@@ -11,6 +11,7 @@ import (
 	"sync"
 
 	"github.com/google/jsonschema-go/jsonschema"
+	"github.com/ml8s/mingligo/pkg/ganzhi"
 	"github.com/ml8s/mingligo/pkg/liuyao"
 )
 
@@ -137,6 +138,12 @@ func buildStaticSchemaOptions() map[reflect.Type]*jsonschema.Schema {
 		},
 		reflect.TypeFor[LiuyaoYaoLabel](): {
 			Type: "string", Enum: []any{"老阴", "少阳", "少阴", "老阳"},
+		},
+		reflect.TypeFor[ganzhi.Gan](): {
+			Type: "string", Enum: []any{"甲", "乙", "丙", "丁", "戊", "己", "庚", "辛", "壬", "癸"},
+		},
+		reflect.TypeFor[ganzhi.Zhi](): {
+			Type: "string", Enum: []any{"子", "丑", "寅", "卯", "辰", "巳", "午", "未", "申", "酉", "戌", "亥"},
 		},
 		reflect.TypeFor[GanName](): {
 			Type: "string", Enum: []any{"甲", "乙", "丙", "丁", "戊", "己", "庚", "辛", "壬", "癸"},

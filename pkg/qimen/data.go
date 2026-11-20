@@ -321,7 +321,7 @@ var (
 	jinhanDoorRing         []GongIndex
 	jinhanDoorOrder        []DoorIndex
 	jinhanDoorDays         int
-	jinhanDaySpirits       map[ganzhi.Gan][12]string
+	jinhanDaySpirits       map[ganzhi.Gan][12]JinhanSpirit
 	quarterRules           map[QuarterRule]quarterVariant
 	quarterRuleNames       map[QuarterRule]string
 	quarterFuTouUnits      int
@@ -1903,7 +1903,7 @@ func loadJinhan() error {
 	if len(table.DaySpirits) != 10 {
 		return fmt.Errorf("load jinhan: day spirits must cover ten stems")
 	}
-	spiritsByGan := make(map[ganzhi.Gan][12]string, len(table.DaySpirits))
+	spiritsByGan := make(map[ganzhi.Gan][12]JinhanSpirit, len(table.DaySpirits))
 	for ganName, branches := range table.DaySpirits {
 		gan, err := ganzhi.EncodeGan(ganName)
 		if err != nil {
@@ -1912,16 +1912,20 @@ func loadJinhan() error {
 		if len(branches) != 12 {
 			return fmt.Errorf("load jinhan: day spirits for %s must cover twelve branches", ganName)
 		}
-		var row [12]string
-		for branchName, spirit := range branches {
+		var row [12]JinhanSpirit
+		for branchName, spiritName := range branches {
 			branch, err := ganzhi.EncodeZhi(branchName)
-			if err != nil || spirit == "" {
+			if err != nil {
 				return fmt.Errorf("load jinhan: invalid day spirit %s/%s", ganName, branchName)
+			}
+			spirit, err := EncodeJinhanSpirit(spiritName)
+			if err != nil {
+				return fmt.Errorf("load jinhan: %w", err)
 			}
 			row[int(branch)-1] = spirit
 		}
 		for _, spirit := range row {
-			if spirit == "" {
+			if spirit == 0 {
 				return fmt.Errorf("load jinhan: incomplete day spirits for %s", ganName)
 			}
 		}
