@@ -159,13 +159,6 @@ const (
 
 var relationKindNames = [...]string{"", "克我者", "生我者", "同我者", "生克我者"}
 
-func DecodeRelationKind(r RelationKind) string {
-	if int(r) < len(relationKindNames) {
-		return relationKindNames[r]
-	}
-	return ""
-}
-
 func EncodeRelationKind(name string) (RelationKind, bool) {
 	for i, n := range relationKindNames {
 		if n != "" && n == name {
@@ -191,13 +184,6 @@ const (
 )
 
 var yongXiJiKindNames = [...]string{"", "dm_elem", "ke_dm", "xi_from_dm", "guansha", "cai", "yin", "bijie", "shishang"}
-
-func DecodeYongXiJiKind(y YongXiJiKind) string {
-	if int(y) < len(yongXiJiKindNames) {
-		return yongXiJiKindNames[y]
-	}
-	return ""
-}
 
 func EncodeYongXiJiKind(name string) (YongXiJiKind, bool) {
 	for i, n := range yongXiJiKindNames {

@@ -104,14 +104,6 @@ const (
 
 var flowStarKindNames = [...]string{"", "禄", "羊", "陀", "魁", "钺", "马", "鸾", "喜", "昌", "曲"}
 
-// DecodeFlowStarKind decodes a FlowStarKind symbol into its display text (authoritative mapping).
-func DecodeFlowStarKind(v FlowStarKind) string {
-	if int(v) >= 0 && int(v) < len(flowStarKindNames) {
-		return flowStarKindNames[v]
-	}
-	return ""
-}
-
 func EncodeFlowStarKind(name string) (FlowStarKind, bool) {
 	for i, n := range flowStarKindNames {
 		if n != "" && n == name {

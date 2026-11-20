@@ -514,18 +514,6 @@ func EncodeDutyStarPosition(name string) (DutyStarPosition, bool) {
 	}
 }
 
-// DecodeDutyStarPosition decodes a DutyStarPosition symbol into its display text (authoritative mapping).
-func DecodeDutyStarPosition(v DutyStarPosition) string {
-	switch v {
-	case dspHome:
-		return "home"
-	case dspOpposite:
-		return "opposite"
-	default:
-		return ""
-	}
-}
-
 // PillarLevel is the qimen-domain symbol for a four-pillar level.
 type PillarLevel uint8
 
