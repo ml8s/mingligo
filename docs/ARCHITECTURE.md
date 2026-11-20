@@ -81,6 +81,8 @@ MingliGo 只做**确定性排盘计算**：领域输出是符号空间上的**�
 
 **命理逻辑落表**：客观命理知识（固定取象、属性、取用规则）以数据表承载，**由 MingliGo 权威持有**，不放分析层。例如奇门宫位人物/高低/内外、门星吉凶宜事落 `pkg/qimen/data/gong_facts.json`，以现有符号（GongIndex/DoorIndex/StarIndex）为 key、loader 经 `Encode*` 转符号、输出边界 decode 为文本；方位复用 `luoshu` 共享权威表。分析层（counsel）只读 chart 输出，不再自带镜像表。
 
+**神盘建模：跨派共用符号 + 门派命名 decode + 独立符号集**。转盘/飞盘/鸣法的神是**同一批传统神**（槽位 1-9），仅命名约定不同（阴阳遁异名、飞盘/鸣法固定名）；因此共用一个 `SpiritIndex`，输出**稳定槽位 key**（`shen_symbol`，如 `gouchen`，恒不随门派/阴阳遁变）与**门派显示名**（`shen`，如白虎/勾陈）两个字段，由消费端取用。金函十二神（地钥/六贼/…）是真正不同的神，用独立符号集 `JinhanSpirit`。按门派归属落在数据/命名层（`plate.json` 三张表 + `jinhan.json`），符号层不按门派拆分——否则会把"转盘白虎"和"飞盘白虎"（同一神）误建成不同符号，违反领域事实。
+
 ## 8. 验证
 
 - 每个工具保留 domain 输出与 wire 的等价测试，`json.Marshal` 输出字节由 golden/schema 守护。
