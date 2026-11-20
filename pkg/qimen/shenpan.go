@@ -35,10 +35,22 @@ func spiritDisplayName(spirit SpiritIndex, yinDun bool, school School) string {
 }
 
 // spiritIsYinXuanWu reports whether the slot is the 玄武 (朱雀 under 阴遁)
-// in the given school's naming convention.
+// in the given school's naming convention. Only schools that keep the default
+// 阴遁 naming map 朱雀→玄武 qualify; schools with their own spirit-name table
+// override the slot name and are excluded.
 func spiritIsYinXuanWu(spirit SpiritIndex, yinDun bool, school School) bool {
 	if !yinDun || spirit != SpiritZhuQue {
 		return false
 	}
-	return spiritDisplayName(spirit, yinDun, school) == SpiritZhuQue.YinName()
+	if school == SchoolMingFaFeiPan && spiritSlotOverridden(mingfaSpiritNames, spirit) {
+		return false
+	}
+	if school == SchoolLuoShuFeiPan && spiritSlotOverridden(flySpiritNames, spirit) {
+		return false
+	}
+	return true
+}
+
+func spiritSlotOverridden(names [10]string, spirit SpiritIndex) bool {
+	return int(spirit) >= 0 && int(spirit) < len(names) && names[spirit] != ""
 }
