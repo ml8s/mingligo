@@ -25,15 +25,15 @@ func TestBanHe_19810826(t *testing.T) {
 	for _, ph := range detection.SanHePartial {
 		branches := ph.Branches
 		if len(branches) == 2 {
-			if (branches[0] == "酉" && branches[1] == "丑") || (branches[0] == "丑" && branches[1] == "酉") {
+			if (branches[0] == ganzhi.ZhiYou && branches[1] == ganzhi.ZhiChou) || (branches[0] == ganzhi.ZhiChou && branches[1] == ganzhi.ZhiYou) {
 				foundYouChou = true
-				if ph.Element != "金" {
+				if ph.Element != ganzhi.WxJin {
 					t.Errorf("酉丑半合 element = %s, want 金", ph.Element)
 				}
 			}
-			if (branches[0] == "申" && branches[1] == "子") || (branches[0] == "子" && branches[1] == "申") {
+			if (branches[0] == ganzhi.ZhiShen && branches[1] == ganzhi.ZhiZi) || (branches[0] == ganzhi.ZhiZi && branches[1] == ganzhi.ZhiShen) {
 				foundShenZi = true
-				if ph.Element != "水" {
+				if ph.Element != ganzhi.WxShui {
 					t.Errorf("申子半合 element = %s, want 水", ph.Element)
 				}
 			}
@@ -61,8 +61,20 @@ func TestBanHe_RequiresMiddleBranch(t *testing.T) {
 	}
 	detection := DetectRelations(canonicalChart(bz, ganzhi.Male, 2000).ToBazi())
 	for _, partial := range detection.SanHePartial {
-		if equalStrings(partial.Branches, []string{"巳", "丑"}) || equalStrings(partial.Branches, []string{"子", "辰"}) {
+		if zhiSliceEqual(partial.Branches, []ganzhi.Zhi{ganzhi.ZhiSi, ganzhi.ZhiChou}) || zhiSliceEqual(partial.Branches, []ganzhi.Zhi{ganzhi.ZhiZi, ganzhi.ZhiChen}) {
 			t.Fatalf("missing-middle pair %v must not be 半合; got %#v", partial.Branches, detection.SanHePartial)
 		}
 	}
+}
+
+func zhiSliceEqual(a, b []ganzhi.Zhi) bool {
+	if len(a) != len(b) {
+		return false
+	}
+	for i := range a {
+		if a[i] != b[i] {
+			return false
+		}
+	}
+	return true
 }

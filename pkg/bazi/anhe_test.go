@@ -10,14 +10,14 @@ func TestAnHe(t *testing.T) {
 	tests := []struct {
 		name  string
 		zhi   [4]ganzhi.Zhi
-		wantA string
-		wantB string
+		wantA ganzhi.Zhi
+		wantB ganzhi.Zhi
 	}{
-		{"子戌暗合", [4]ganzhi.Zhi{ganzhi.ZhiZi, ganzhi.ZhiChou, ganzhi.ZhiXu, ganzhi.ZhiChen}, "子", "戌"},
-		{"寅丑暗合", [4]ganzhi.Zhi{ganzhi.ZhiYin, ganzhi.ZhiChou, ganzhi.ZhiZi, ganzhi.ZhiWu}, "寅", "丑"},
-		{"卯申暗合", [4]ganzhi.Zhi{ganzhi.ZhiZi, ganzhi.ZhiShen, ganzhi.ZhiMao, ganzhi.ZhiWu}, "卯", "申"},
-		{"午亥暗合", [4]ganzhi.Zhi{ganzhi.ZhiZi, ganzhi.ZhiChou, ganzhi.ZhiWu, ganzhi.ZhiHai}, "午", "亥"},
-		{"无暗合", [4]ganzhi.Zhi{ganzhi.ZhiZi, ganzhi.ZhiChou, ganzhi.ZhiChen, ganzhi.ZhiSi}, "", ""},
+		{"子戌暗合", [4]ganzhi.Zhi{ganzhi.ZhiZi, ganzhi.ZhiChou, ganzhi.ZhiXu, ganzhi.ZhiChen}, ganzhi.ZhiZi, ganzhi.ZhiXu},
+		{"寅丑暗合", [4]ganzhi.Zhi{ganzhi.ZhiYin, ganzhi.ZhiChou, ganzhi.ZhiZi, ganzhi.ZhiWu}, ganzhi.ZhiYin, ganzhi.ZhiChou},
+		{"卯申暗合", [4]ganzhi.Zhi{ganzhi.ZhiZi, ganzhi.ZhiShen, ganzhi.ZhiMao, ganzhi.ZhiWu}, ganzhi.ZhiMao, ganzhi.ZhiShen},
+		{"午亥暗合", [4]ganzhi.Zhi{ganzhi.ZhiZi, ganzhi.ZhiChou, ganzhi.ZhiWu, ganzhi.ZhiHai}, ganzhi.ZhiWu, ganzhi.ZhiHai},
+		{"无暗合", [4]ganzhi.Zhi{ganzhi.ZhiZi, ganzhi.ZhiChou, ganzhi.ZhiChen, ganzhi.ZhiSi}, 0, 0},
 	}
 
 	for _, tt := range tests {
@@ -30,7 +30,7 @@ func TestAnHe(t *testing.T) {
 			}
 			detection := DetectRelations(canonicalChart(bz, ganzhi.Male, 2000).ToBazi())
 
-			if tt.wantA == "" {
+			if tt.wantA == 0 {
 				if len(detection.AnHe) > 0 {
 					t.Errorf("expected no an_he, got %d", len(detection.AnHe))
 				}

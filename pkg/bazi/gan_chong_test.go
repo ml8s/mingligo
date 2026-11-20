@@ -16,23 +16,23 @@ func TestGanChong_ClassicPairsAndPositions(t *testing.T) {
 			name:    "adjacent",
 			pillars: []string{"甲子", "庚午", "丙寅", "壬申"},
 			want: []GanChongDetection{
-				{GanA: "甲", GanB: "庚", PillarA: 0, PillarB: 1, Position: "adjacent"},
-				{GanA: "丙", GanB: "壬", PillarA: 2, PillarB: 3, Position: "adjacent"},
+				{GanA: ganzhi.GanJia, GanB: ganzhi.GanGeng, PillarA: 0, PillarB: 1, Position: positionAdjacent},
+				{GanA: ganzhi.GanBing, GanB: ganzhi.GanRen, PillarA: 2, PillarB: 3, Position: positionAdjacent},
 			},
 		},
 		{
 			name:    "separated",
 			pillars: []string{"甲子", "丙寅", "庚午", "壬申"},
 			want: []GanChongDetection{
-				{GanA: "甲", GanB: "庚", PillarA: 0, PillarB: 2, Position: "separated"},
-				{GanA: "丙", GanB: "壬", PillarA: 1, PillarB: 3, Position: "separated"},
+				{GanA: ganzhi.GanJia, GanB: ganzhi.GanGeng, PillarA: 0, PillarB: 2, Position: positionSeparated},
+				{GanA: ganzhi.GanBing, GanB: ganzhi.GanRen, PillarA: 1, PillarB: 3, Position: positionSeparated},
 			},
 		},
 		{
 			name:    "remote",
 			pillars: []string{"甲子", "丙寅", "戊辰", "庚午"},
 			want: []GanChongDetection{
-				{GanA: "甲", GanB: "庚", PillarA: 0, PillarB: 3, Position: "remote"},
+				{GanA: ganzhi.GanJia, GanB: ganzhi.GanGeng, PillarA: 0, PillarB: 3, Position: positionRemote},
 			},
 		},
 		{

@@ -2,6 +2,8 @@ package bazi
 
 import (
 	"reflect"
+
+	"github.com/ml8s/mingligo/pkg/ganzhi"
 	"testing"
 )
 
@@ -47,36 +49,36 @@ func TestNatalRelationsCoverLegacyRelationArrays(t *testing.T) {
 
 			for _, relation := range detection.GanHe {
 				kind := "gan_he_candidate"
-				if relation.Position == "adjacent" {
+				if relation.Position == positionAdjacent {
 					kind = "gan_he"
 				}
 				group := ganHeGroupLabel(relation.GanA, relation.GanB)
 				requireRelation(NatalRelationFact{
 					ID: kind + ":" + group, Kind: kind, Group: group,
 					Members: []NatalRelationMember{
-						{Pillar: zhuLabels[relation.PillarA], Gan: relation.GanA},
-						{Pillar: zhuLabels[relation.PillarB], Gan: relation.GanB},
+						{Pillar: zhuLabels[relation.PillarA], Gan: ganzhi.GanName(relation.GanA)},
+						{Pillar: zhuLabels[relation.PillarB], Gan: ganzhi.GanName(relation.GanB)},
 					},
-					Wuxing: relation.HeElement, Position: relation.Position, Contested: relation.Contested,
+					Wuxing: relation.HeElement.String(), Position: relation.Position.String(), Contested: relation.Contested,
 				})
 			}
 			for _, relation := range detection.GanChong {
 				kind := "gan_chong_candidate"
-				if relation.Position == "adjacent" {
+				if relation.Position == positionAdjacent {
 					kind = "gan_chong"
 				}
 				group := ganChongGroupLabel(relation.GanA, relation.GanB)
 				requireRelation(NatalRelationFact{
 					ID: kind + ":" + group, Kind: kind, Group: group,
 					Members: []NatalRelationMember{
-						{Pillar: zhuLabels[relation.PillarA], Gan: relation.GanA},
-						{Pillar: zhuLabels[relation.PillarB], Gan: relation.GanB},
+						{Pillar: zhuLabels[relation.PillarA], Gan: ganzhi.GanName(relation.GanA)},
+						{Pillar: zhuLabels[relation.PillarB], Gan: ganzhi.GanName(relation.GanB)},
 					},
-					Position: relation.Position,
+					Position: relation.Position.String(),
 				})
 			}
 
-			pair := func(kind, zhiA string, pillarA int, zhiB string, pillarB int, wuxing string) {
+			pair := func(kind string, zhiA ganzhi.Zhi, pillarA int, zhiB ganzhi.Zhi, pillarB int, wuxing string) {
 				t.Helper()
 				var group string
 				if kind == "liu_xing" {
@@ -87,44 +89,44 @@ func TestNatalRelationsCoverLegacyRelationArrays(t *testing.T) {
 				requireRelation(NatalRelationFact{
 					ID: kind + ":" + group, Kind: kind, Group: group,
 					Members: []NatalRelationMember{
-						{Pillar: zhuLabels[pillarA], Zhi: zhiA},
-						{Pillar: zhuLabels[pillarB], Zhi: zhiB},
+						{Pillar: zhuLabels[pillarA], Zhi: ganzhi.ZhiName(zhiA)},
+						{Pillar: zhuLabels[pillarB], Zhi: ganzhi.ZhiName(zhiB)},
 					},
 					Wuxing: wuxing,
 				})
 			}
 			for _, relation := range detection.ZhiLiuHe {
-				pair("zhi_liu_he", relation.ZhiA, relation.PillarA, relation.ZhiB, relation.PillarB, relation.Element)
+				pair("zhi_liu_he", relation.ZhiA, relation.PillarA, relation.ZhiB, relation.PillarB, wuxingOutput(relation.Element))
 			}
 			for _, relation := range detection.LiuChong {
-				pair("liu_chong", relation.ZhiA, relation.PillarA, relation.ZhiB, relation.PillarB, "")
+				pair("liu_chong", relation.ZhiA, relation.PillarA, relation.ZhiB, relation.PillarB, wuxingOutput(relation.Element))
 			}
 			for _, relation := range detection.LiuHai {
-				pair("liu_hai", relation.ZhiA, relation.PillarA, relation.ZhiB, relation.PillarB, "")
+				pair("liu_hai", relation.ZhiA, relation.PillarA, relation.ZhiB, relation.PillarB, wuxingOutput(relation.Element))
 			}
 			for _, relation := range detection.LiuXing {
-				pair("liu_xing", relation.ZhiA, relation.PillarA, relation.ZhiB, relation.PillarB, "")
+				pair("liu_xing", relation.ZhiA, relation.PillarA, relation.ZhiB, relation.PillarB, wuxingOutput(relation.Element))
 			}
 			for _, relation := range detection.LiuPo {
-				pair("liu_po", relation.ZhiA, relation.PillarA, relation.ZhiB, relation.PillarB, "")
+				pair("liu_po", relation.ZhiA, relation.PillarA, relation.ZhiB, relation.PillarB, wuxingOutput(relation.Element))
 			}
 			for _, relation := range detection.AnHe {
-				pair("an_he", relation.ZhiA, relation.PillarA, relation.ZhiB, relation.PillarB, "")
+				pair("an_he", relation.ZhiA, relation.PillarA, relation.ZhiB, relation.PillarB, wuxingOutput(relation.Element))
 			}
 
 			triple := func(kind string, relations []TripleRelationDetection) {
 				t.Helper()
 				for _, relation := range relations {
-					group := branchGroupLabel(parseZhiNames(relation.Branches))
+					group := branchGroupLabel(relation.Branches)
 					members := make([]NatalRelationMember, 0, len(relation.Branches))
 					for _, branch := range relation.Branches {
 						members = append(members, NatalRelationMember{
-							Pillar: pillarWithZhi(chart.ToBazi(), branch), Zhi: branch,
+							Pillar: pillarWithZhi(chart.ToBazi(), branch), Zhi: ganzhi.ZhiName(branch),
 						})
 					}
 					requireRelation(NatalRelationFact{
 						ID: kind + ":" + group, Kind: kind, Group: group,
-						Members: members, Wuxing: relation.Element,
+						Members: members, Wuxing: relation.Element.String(),
 					})
 				}
 			}

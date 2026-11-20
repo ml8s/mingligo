@@ -446,13 +446,18 @@ func canonicalRelationReference(value TargetedRelationEvidence) (NatalRelationFa
 		if len(value.Stems) != 2 || len(value.Pillars) != 2 {
 			return NatalRelationFact{}, false
 		}
+		ganA, errA := ganzhi.ParseGan(value.Stems[0])
+		ganB, errB := ganzhi.ParseGan(value.Stems[1])
+		if errA != nil || errB != nil {
+			return NatalRelationFact{}, false
+		}
 		if value.Kind == "gan_he" || value.Kind == "gan_he_candidate" {
-			fact.Group = ganHeGroupLabel(value.Stems[0], value.Stems[1])
+			fact.Group = ganHeGroupLabel(ganA, ganB)
 			if pillarDistance(value.Pillars[0], value.Pillars[1]) != 1 {
 				fact.Kind = "gan_he_candidate"
 			}
 		} else {
-			fact.Group = ganChongGroupLabel(value.Stems[0], value.Stems[1])
+			fact.Group = ganChongGroupLabel(ganA, ganB)
 		}
 		fact.Members = []NatalRelationMember{
 			{Pillar: value.Pillars[0], Gan: value.Stems[0]},
@@ -462,13 +467,23 @@ func canonicalRelationReference(value TargetedRelationEvidence) (NatalRelationFa
 		if len(value.Branches) != 2 || len(value.Pillars) != 2 {
 			return NatalRelationFact{}, false
 		}
-		fact.Group = canonicalZhiPairGroup(value.Kind, value.Branches[0], value.Branches[1])
+		zhiA, errA := ganzhi.ParseZhi(value.Branches[0])
+		zhiB, errB := ganzhi.ParseZhi(value.Branches[1])
+		if errA != nil || errB != nil {
+			return NatalRelationFact{}, false
+		}
+		fact.Group = canonicalZhiPairGroup(value.Kind, zhiA, zhiB)
 		fact.Members = zhiMembers(value.Pillars, value.Branches)
 	case "liu_xing":
 		if len(value.Branches) != 2 || len(value.Pillars) != 2 {
 			return NatalRelationFact{}, false
 		}
-		fact.Group = canonicalXingGroup(value.Branches[0], value.Branches[1])
+		zhiA, errA := ganzhi.ParseZhi(value.Branches[0])
+		zhiB, errB := ganzhi.ParseZhi(value.Branches[1])
+		if errA != nil || errB != nil {
+			return NatalRelationFact{}, false
+		}
+		fact.Group = canonicalXingGroup(zhiA, zhiB)
 		fact.Members = zhiMembers(value.Pillars, value.Branches)
 	case "san_he", "san_he_partial", "san_hui":
 		fact.Group = branchGroupLabel(parseZhiNames(value.Branches))

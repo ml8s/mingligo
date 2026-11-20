@@ -52,7 +52,7 @@ func TestFullWalkthrough_19810826(t *testing.T) {
 	t.Run("LiuPo_ZiYou", func(t *testing.T) {
 		found := false
 		for _, po := range detection.LiuPo {
-			if (po.ZhiA == "子" && po.ZhiB == "酉") || (po.ZhiA == "酉" && po.ZhiB == "子") {
+			if (po.ZhiA == ganzhi.ZhiZi && po.ZhiB == ganzhi.ZhiYou) || (po.ZhiA == ganzhi.ZhiYou && po.ZhiB == ganzhi.ZhiZi) {
 				found = true
 			}
 		}
@@ -65,9 +65,9 @@ func TestFullWalkthrough_19810826(t *testing.T) {
 		// Oracle: 子丑合化土
 		found := false
 		for _, he := range detection.ZhiLiuHe {
-			if (he.ZhiA == "子" && he.ZhiB == "丑") || (he.ZhiA == "丑" && he.ZhiB == "子") {
+			if (he.ZhiA == ganzhi.ZhiZi && he.ZhiB == ganzhi.ZhiChou) || (he.ZhiA == ganzhi.ZhiChou && he.ZhiB == ganzhi.ZhiZi) {
 				found = true
-				if he.Element != "土" {
+				if he.Element != ganzhi.WxTu {
 					t.Errorf("子丑合 element = %s, want 土", he.Element)
 				}
 			}

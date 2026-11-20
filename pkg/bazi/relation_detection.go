@@ -25,42 +25,63 @@ type RelationDetection struct {
 // GanHeDetection describes a 天干五合 pair. Adjacency is an engine-owned fact;
 // non-adjacent pairs remain candidates and must not be promoted to tight combinations.
 type GanHeDetection struct {
-	GanA      string
-	GanB      string
+	GanA      ganzhi.Gan
+	GanB      ganzhi.Gan
 	PillarA   int
 	PillarB   int
-	Position  string
+	Position  relationPosition
 	Contested bool
-	HeElement string
+	HeElement ganzhi.Wuxing
 }
 
 // GanChongDetection describes a paired gan relationship (天干相冲). Position is an
 // engine-owned strength hint: tight pairs are adjacent, others are candidates.
 type GanChongDetection struct {
-	GanA     string
-	GanB     string
+	GanA     ganzhi.Gan
+	GanB     ganzhi.Gan
 	PillarA  int
 	PillarB  int
-	Position string
+	Position relationPosition
 }
 
 // ZhiPairDetection describes a paired zhi relationship (六合/六冲/六害/相刑/六破/暗合)
 // between two pillars.
 type ZhiPairDetection struct {
-	ZhiA    string
-	ZhiB    string
+	ZhiA    ganzhi.Zhi
+	ZhiB    ganzhi.Zhi
 	PillarA int
 	PillarB int
-	Element string
+	Element ganzhi.Wuxing
 }
 
 // TripleRelationDetection describes a complete 三合局/三会方 or a 半合局 candidate.
 type TripleRelationDetection struct {
 	Kind     string
 	Name     string
-	Element  string
-	Branches []string
+	Element  ganzhi.Wuxing
+	Branches []ganzhi.Zhi
 	Pillars  []string
+}
+
+// relationPosition is the engine-owned strength hint for a paired relation:
+// adjacent pairs are tight combinations, others are candidates.
+type relationPosition uint8
+
+const (
+	positionSeparated relationPosition = iota
+	positionAdjacent
+	positionRemote
+)
+
+func (p relationPosition) String() string {
+	switch p {
+	case positionAdjacent:
+		return "adjacent"
+	case positionRemote:
+		return "remote"
+	default:
+		return "separated"
+	}
 }
 
 // DetectRelations detects all published relation candidates from four pillars.
@@ -96,17 +117,17 @@ func detectGanHe(bz ganzhi.Bazi) []GanHeDetection {
 			if !ganzhi.IsGanHe(a, b) {
 				continue
 			}
-			position := "separated"
+			position := positionSeparated
 			switch j - i {
 			case 1:
-				position = "adjacent"
+				position = positionAdjacent
 			case 3:
-				position = "remote"
+				position = positionRemote
 			}
 			pairs = append(pairs, GanHeDetection{
-				GanA: ganzhi.GanName(a), GanB: ganzhi.GanName(b),
+				GanA: a, GanB: b,
 				PillarA: i, PillarB: j, Position: position,
-				HeElement: ganHeResult(a, b).String(),
+				HeElement: ganHeResult(a, b),
 			})
 		}
 	}
@@ -132,15 +153,15 @@ func detectGanChong(bz ganzhi.Bazi) []GanChongDetection {
 			if !ganzhi.IsGanChong(a, b) {
 				continue
 			}
-			position := "separated"
+			position := positionSeparated
 			switch j - i {
 			case 1:
-				position = "adjacent"
+				position = positionAdjacent
 			case 3:
-				position = "remote"
+				position = positionRemote
 			}
 			pairs = append(pairs, GanChongDetection{
-				GanA: ganzhi.GanName(a), GanB: ganzhi.GanName(b),
+				GanA: a, GanB: b,
 				PillarA: i, PillarB: j, Position: position,
 			})
 		}
@@ -166,13 +187,13 @@ func detectZhiPairs(bz ganzhi.Bazi, check func(ganzhi.Zhi, ganzhi.Zhi) bool, wit
 		for j := i + 1; j < 4; j++ {
 			za, zb := zhus[i].Zhi, zhus[j].Zhi
 			if check(za, zb) {
-				var elem string
+				var elem ganzhi.Wuxing
 				if withElem {
 					elem = zhiHeElement(za, zb)
 				}
 				rels = append(rels, ZhiPairDetection{
-					ZhiA:    ganzhi.ZhiName(za),
-					ZhiB:    ganzhi.ZhiName(zb),
+					ZhiA:    za,
+					ZhiB:    zb,
 					PillarA: i,
 					PillarB: j,
 					Element: elem,
@@ -191,8 +212,8 @@ func detectTriple(bz ganzhi.Bazi, list []ganzhi.SanHeHui, typ, suffix string) []
 			results = append(results, TripleRelationDetection{
 				Kind:     typ,
 				Name:     tripleName(tr.Zhi, tr.Element, suffix),
-				Element:  tr.Element.String(),
-				Branches: zhiNames(tr.Zhi),
+				Element:  tr.Element,
+				Branches: tr.Zhi,
 				Pillars:  pillarsWithAnyZhi(bz, tr.Zhi...),
 			})
 		}
@@ -228,20 +249,12 @@ func detectPartialTriple(bz ganzhi.Bazi) []TripleRelationDetection {
 		results = append(results, TripleRelationDetection{
 			Kind:     "半合",
 			Name:     tripleName(present, tr.Element, "半合局"),
-			Element:  tr.Element.String(),
-			Branches: zhiNames(present),
+			Element:  tr.Element,
+			Branches: present,
 			Pillars:  pillarsWithAnyZhi(bz, present...),
 		})
 	}
 	return results
-}
-
-func zhiNames(items []ganzhi.Zhi) []string {
-	names := make([]string, 0, len(items))
-	for _, item := range items {
-		names = append(names, ganzhi.ZhiName(item))
-	}
-	return names
 }
 
 func pillarsWithAnyZhi(bz ganzhi.Bazi, targets ...ganzhi.Zhi) []string {
@@ -257,13 +270,13 @@ func pillarsWithAnyZhi(bz ganzhi.Bazi, targets ...ganzhi.Zhi) []string {
 	return pillars
 }
 
-func zhiHeElement(a, b ganzhi.Zhi) string {
+func zhiHeElement(a, b ganzhi.Zhi) ganzhi.Wuxing {
 	for _, p := range ganzhi.ZhiHes {
 		if (a == p.A && b == p.B) || (a == p.B && b == p.A) {
-			return p.Result.String()
+			return p.Result
 		}
 	}
-	return ""
+	return 0
 }
 
 func zhiSet(bz ganzhi.Bazi) [13]bool {

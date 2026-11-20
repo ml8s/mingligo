@@ -107,7 +107,7 @@ func TestOracleComparison_19810826(t *testing.T) {
 	// 10. Six Po (子酉破)
 	foundPo := false
 	for _, po := range detection.LiuPo {
-		if po.ZhiA == "子" && po.ZhiB == "酉" || po.ZhiA == "酉" && po.ZhiB == "子" {
+		if po.ZhiA == ganzhi.ZhiZi && po.ZhiB == ganzhi.ZhiYou || po.ZhiA == ganzhi.ZhiYou && po.ZhiB == ganzhi.ZhiZi {
 			foundPo = true
 		}
 	}

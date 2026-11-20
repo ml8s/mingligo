@@ -333,7 +333,7 @@ func buildNatalRelationsFromDetection(bz ganzhi.Bazi, detection RelationDetectio
 
 	for _, relation := range detection.GanHe {
 		kind := "gan_he_candidate"
-		if relation.Position == "adjacent" {
+		if relation.Position == positionAdjacent {
 			kind = "gan_he"
 		}
 		add(NatalRelationFact{
@@ -341,17 +341,17 @@ func buildNatalRelationsFromDetection(bz ganzhi.Bazi, detection RelationDetectio
 			Kind:  kind,
 			Group: ganHeGroupLabel(relation.GanA, relation.GanB),
 			Members: []NatalRelationMember{
-				{Pillar: zhuLabels[relation.PillarA], Gan: relation.GanA},
-				{Pillar: zhuLabels[relation.PillarB], Gan: relation.GanB},
+				{Pillar: zhuLabels[relation.PillarA], Gan: ganzhi.GanName(relation.GanA)},
+				{Pillar: zhuLabels[relation.PillarB], Gan: ganzhi.GanName(relation.GanB)},
 			},
-			Wuxing:    relation.HeElement,
-			Position:  relation.Position,
+			Wuxing:    wuxingOutput(relation.HeElement),
+			Position:  relation.Position.String(),
 			Contested: relation.Contested,
 		})
 	}
 	for _, relation := range detection.GanChong {
 		kind := "gan_chong_candidate"
-		if relation.Position == "adjacent" {
+		if relation.Position == positionAdjacent {
 			kind = "gan_chong"
 		}
 		group := ganChongGroupLabel(relation.GanA, relation.GanB)
@@ -360,10 +360,10 @@ func buildNatalRelationsFromDetection(bz ganzhi.Bazi, detection RelationDetectio
 			Kind:  kind,
 			Group: group,
 			Members: []NatalRelationMember{
-				{Pillar: zhuLabels[relation.PillarA], Gan: relation.GanA},
-				{Pillar: zhuLabels[relation.PillarB], Gan: relation.GanB},
+				{Pillar: zhuLabels[relation.PillarA], Gan: ganzhi.GanName(relation.GanA)},
+				{Pillar: zhuLabels[relation.PillarB], Gan: ganzhi.GanName(relation.GanB)},
 			},
-			Position: relation.Position,
+			Position: relation.Position.String(),
 		})
 	}
 	for _, relation := range detection.ZhiLiuHe {
@@ -406,7 +406,7 @@ func buildNatalRelationsFromDetection(bz ganzhi.Bazi, detection RelationDetectio
 		members := make([]NatalRelationMember, 0, len(group.Zhi))
 		for _, branch := range group.Zhi {
 			members = append(members, NatalRelationMember{
-				Pillar: pillarWithZhi(bz, ganzhi.ZhiName(branch)),
+				Pillar: pillarWithZhi(bz, branch),
 				Zhi:    ganzhi.ZhiName(branch),
 			})
 		}
@@ -446,26 +446,33 @@ func natalRelationFactID(fact NatalRelationFact) string {
 	return fact.Kind + ":" + fact.Group + "@" + strings.Join(keys, "|")
 }
 
-func newZhiPairFact(kind, group, zhiA string, pillarA int, zhiB string, pillarB int, wuxing string) NatalRelationFact {
+func wuxingOutput(w ganzhi.Wuxing) string {
+	if w == 0 {
+		return ""
+	}
+	return w.String()
+}
+
+func newZhiPairFact(kind, group string, zhiA ganzhi.Zhi, pillarA int, zhiB ganzhi.Zhi, pillarB int, wuxing ganzhi.Wuxing) NatalRelationFact {
 	return NatalRelationFact{
 		ID:    kind + ":" + group,
 		Kind:  kind,
 		Group: group,
 		Members: []NatalRelationMember{
-			{Pillar: zhuLabels[pillarA], Zhi: zhiA},
-			{Pillar: zhuLabels[pillarB], Zhi: zhiB},
+			{Pillar: zhuLabels[pillarA], Zhi: ganzhi.ZhiName(zhiA)},
+			{Pillar: zhuLabels[pillarB], Zhi: ganzhi.ZhiName(zhiB)},
 		},
-		Wuxing: wuxing,
+		Wuxing: wuxingOutput(wuxing),
 	}
 }
 
 func newTripleRelationFact(kind string, bz ganzhi.Bazi, relation TripleRelationDetection) NatalRelationFact {
-	group := branchGroupLabel(parseZhiNames(relation.Branches))
+	group := branchGroupLabel(relation.Branches)
 	members := make([]NatalRelationMember, 0, len(relation.Branches))
 	for _, branch := range relation.Branches {
 		members = append(members, NatalRelationMember{
 			Pillar: pillarWithZhi(bz, branch),
-			Zhi:    branch,
+			Zhi:    ganzhi.ZhiName(branch),
 		})
 	}
 	return NatalRelationFact{
@@ -473,16 +480,11 @@ func newTripleRelationFact(kind string, bz ganzhi.Bazi, relation TripleRelationD
 		Kind:    kind,
 		Group:   group,
 		Members: members,
-		Wuxing:  relation.Element,
+		Wuxing:  wuxingOutput(relation.Element),
 	}
 }
 
-func canonicalZhiPairGroup(kind, zhiA, zhiB string) string {
-	a, errA := ganzhi.ParseZhi(zhiA)
-	b, errB := ganzhi.ParseZhi(zhiB)
-	if errA != nil || errB != nil {
-		return ""
-	}
+func canonicalZhiPairGroup(kind string, a, b ganzhi.Zhi) string {
 	switch kind {
 	case "zhi_liu_he":
 		for _, relation := range ganzhi.ZhiHes {
@@ -518,12 +520,7 @@ func canonicalZhiPairGroup(kind, zhiA, zhiB string) string {
 	return ""
 }
 
-func canonicalXingGroup(zhiA, zhiB string) string {
-	a, errA := ganzhi.ParseZhi(zhiA)
-	b, errB := ganzhi.ParseZhi(zhiB)
-	if errA != nil || errB != nil {
-		return ""
-	}
+func canonicalXingGroup(a, b ganzhi.Zhi) string {
 	if a == b {
 		return ganzhi.ZhiName(a) + ganzhi.ZhiName(b)
 	}
@@ -556,11 +553,7 @@ func parseZhiNames(names []string) []ganzhi.Zhi {
 	return values
 }
 
-func pillarWithZhi(bz ganzhi.Bazi, zhiName string) string {
-	target, err := ganzhi.ParseZhi(zhiName)
-	if err != nil {
-		return ""
-	}
+func pillarWithZhi(bz ganzhi.Bazi, target ganzhi.Zhi) string {
 	for index, pillar := range bz.Slice() {
 		if pillar.Zhi == target {
 			return zhuLabels[index]
@@ -571,12 +564,7 @@ func pillarWithZhi(bz ganzhi.Bazi, zhiName string) string {
 
 // ganHeGroupLabel canonicalizes an observed adjacent stem pair to the table's
 // stable group order. Non-adjacent stems never enter this function.
-func ganHeGroupLabel(first, second string) string {
-	a, errA := ganzhi.ParseGan(first)
-	b, errB := ganzhi.ParseGan(second)
-	if errA != nil || errB != nil {
-		return ""
-	}
+func ganHeGroupLabel(a, b ganzhi.Gan) string {
 	for _, relation := range ganzhi.GanHes {
 		if (relation.A == a && relation.B == b) || (relation.A == b && relation.B == a) {
 			return ganzhi.GanName(relation.A) + ganzhi.GanName(relation.B)
@@ -585,12 +573,7 @@ func ganHeGroupLabel(first, second string) string {
 	return ""
 }
 
-func ganChongGroupLabel(first, second string) string {
-	a, errA := ganzhi.ParseGan(first)
-	b, errB := ganzhi.ParseGan(second)
-	if errA != nil || errB != nil {
-		return ""
-	}
+func ganChongGroupLabel(a, b ganzhi.Gan) string {
 	for _, relation := range ganzhi.GanChongPairs {
 		if (relation.A == a && relation.B == b) || (relation.A == b && relation.B == a) {
 			return ganzhi.GanName(relation.A) + ganzhi.GanName(relation.B)

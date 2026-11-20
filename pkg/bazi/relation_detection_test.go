@@ -21,10 +21,10 @@ func TestDetectTripleRelations_SanHeWater(t *testing.T) {
 	if got[0].Kind != relSanHe {
 		t.Errorf("Type = %q, want %q", got[0].Kind, relSanHe)
 	}
-	if got[0].Element != "水" {
+	if got[0].Element != ganzhi.WxShui {
 		t.Errorf("Element = %q, want 水", got[0].Element)
 	}
-	assertTripleLocation(t, got[0], []string{"申", "子", "辰"}, []string{"nian", "yue", "ri"})
+	assertTripleLocation(t, got[0], []ganzhi.Zhi{ganzhi.ZhiShen, ganzhi.ZhiZi, ganzhi.ZhiChen}, []string{"nian", "yue", "ri"})
 }
 
 func TestDetectTripleRelations_SanHeFire(t *testing.T) {
@@ -42,7 +42,7 @@ func TestDetectTripleRelations_SanHeFire(t *testing.T) {
 	if got[0].Kind != relSanHe {
 		t.Errorf("Type = %q, want %q", got[0].Kind, relSanHe)
 	}
-	if got[0].Element != "火" {
+	if got[0].Element != ganzhi.WxHuo {
 		t.Errorf("Element = %q, want 火", got[0].Element)
 	}
 }
@@ -62,7 +62,7 @@ func TestDetectTripleRelations_SanHeWood(t *testing.T) {
 	if got[0].Kind != relSanHe {
 		t.Errorf("Type = %q, want %q", got[0].Kind, relSanHe)
 	}
-	if got[0].Element != "木" {
+	if got[0].Element != ganzhi.WxMu {
 		t.Errorf("Element = %q, want 木", got[0].Element)
 	}
 }
@@ -82,7 +82,7 @@ func TestDetectTripleRelations_SanHeMetal(t *testing.T) {
 	if got[0].Kind != relSanHe {
 		t.Errorf("Type = %q, want %q", got[0].Kind, relSanHe)
 	}
-	if got[0].Element != "金" {
+	if got[0].Element != ganzhi.WxJin {
 		t.Errorf("Element = %q, want 金", got[0].Element)
 	}
 }
@@ -102,7 +102,7 @@ func TestDetectTripleRelations_SanHuiWood(t *testing.T) {
 	if got[0].Kind != relSanHui {
 		t.Errorf("Type = %q, want %q", got[0].Kind, relSanHui)
 	}
-	if got[0].Element != "木" {
+	if got[0].Element != ganzhi.WxMu {
 		t.Errorf("Element = %q, want 木", got[0].Element)
 	}
 }
@@ -122,10 +122,10 @@ func TestDetectTripleRelations_SanHuiWater(t *testing.T) {
 	if got[0].Kind != relSanHui {
 		t.Errorf("Type = %q, want %q", got[0].Kind, relSanHui)
 	}
-	if got[0].Element != "水" {
+	if got[0].Element != ganzhi.WxShui {
 		t.Errorf("Element = %q, want 水", got[0].Element)
 	}
-	assertTripleLocation(t, got[0], []string{"亥", "子", "丑"}, []string{"nian", "yue", "ri"})
+	assertTripleLocation(t, got[0], []ganzhi.Zhi{ganzhi.ZhiHai, ganzhi.ZhiZi, ganzhi.ZhiChou}, []string{"nian", "yue", "ri"})
 }
 
 func TestDetectTripleRelations_NoMatch(t *testing.T) {
@@ -159,7 +159,7 @@ func combinedTriple(bz ganzhi.Bazi) []TripleRelationDetection {
 	return append(append([]TripleRelationDetection{}, r.SanHe...), r.SanHui...)
 }
 
-func assertTripleLocation(t *testing.T, got TripleRelationDetection, branches, pillars []string) {
+func assertTripleLocation(t *testing.T, got TripleRelationDetection, branches []ganzhi.Zhi, pillars []string) {
 	t.Helper()
 	if len(got.Branches) != len(branches) {
 		t.Fatalf("branches = %v, want %v", got.Branches, branches)
@@ -193,14 +193,14 @@ func TestDetectRelations_GanHe(t *testing.T) {
 	if len(r.GanHe) != 4 {
 		t.Fatalf("got %d gan he pairs, want all 4 cross-pillar pairs", len(r.GanHe))
 	}
-	positions := map[string]int{}
+	positions := map[relationPosition]int{}
 	for _, pair := range r.GanHe {
 		positions[pair.Position]++
 		if !pair.Contested {
 			t.Fatalf("pair [%d,%d] participates in multiple combinations and must be contested", pair.PillarA, pair.PillarB)
 		}
 	}
-	if positions["adjacent"] != 3 || positions["separated"] != 0 || positions["remote"] != 1 {
+	if positions[positionAdjacent] != 3 || positions[positionSeparated] != 0 || positions[positionRemote] != 1 {
 		t.Fatalf("positions = %v, want adjacent=3 separated=0 remote=1", positions)
 	}
 }
