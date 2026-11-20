@@ -2,12 +2,15 @@ package ziwei
 
 // Star categories are stable domain classifications. They replace the former
 // factor-only palace_facts projection.
+// StarLei is a stable star-category symbol.
+type StarLei string
+
 const (
-	StarLeiZhuXing = "zhu_xing"
-	StarLeiFuXing  = "fu_xing"
-	StarLeiLiuJi   = "liu_ji"
-	StarLeiWenXing = "wen_xing"
-	StarLeiShaXing = "sha_xing"
+	StarLeiZhuXing StarLei = "zhu_xing"
+	StarLeiFuXing          = "fu_xing"
+	StarLeiLiuJi           = "liu_ji"
+	StarLeiWenXing StarLei = "wen_xing"
+	StarLeiShaXing StarLei = "sha_xing"
 )
 
 var (
@@ -28,8 +31,8 @@ var (
 	}
 )
 
-func starLei(star StarIndex, isMajor bool) []string {
-	values := make([]string, 0, 4)
+func starLei(star StarIndex, isMajor bool) []StarLei {
+	values := make([]StarLei, 0, 4)
 	if isMajor {
 		values = append(values, StarLeiZhuXing)
 	}

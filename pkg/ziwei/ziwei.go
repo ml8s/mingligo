@@ -55,7 +55,7 @@ type StarInfo struct {
 	Star       StarIndex `json:"-"`
 	Name       string    `json:"ming"`
 	IsMajor    bool      `json:"-"`
-	Lei        []string  `json:"lei,omitempty"`
+	Lei        []StarLei `json:"lei,omitempty"`
 	SiHua      SiHua     `json:"si_hua,omitempty"`   // 禄/权/科/忌 or empty
 	Brightness string    `json:"liang_du,omitempty"` // "庙"/"旺"/"利"/"平"/"陷"
 }
