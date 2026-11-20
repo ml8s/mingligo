@@ -200,3 +200,115 @@ func EncodeYongXiJiKind(name string) (YongXiJiKind, bool) {
 	}
 	return yxjUnknown, false
 }
+
+// PillarIndex identifies one of the four pillars (年/月/日/时).
+type PillarIndex uint8
+
+const (
+	pillarNian PillarIndex = iota
+	pillarYue
+	pillarRi
+	pillarShi
+)
+
+var pillarCodes = [...]string{"nian", "yue", "ri", "shi"}
+
+func DecodePillarIndex(p PillarIndex) string { return pillarCodes[p] }
+func EncodePillarIndex(code string) (PillarIndex, bool) {
+	for i, c := range pillarCodes {
+		if c == code {
+			return PillarIndex(i), true
+		}
+	}
+	return 0, false
+}
+
+// RelationKind is a relation fact kind (六合/六冲/三合/...).
+type NatalRelationKind uint8
+
+const (
+	natalRelationUnknown          NatalRelationKind = iota
+	relationKindZhiLiuHe                            // zhi_liu_he
+	relationKindLiuChong                            // liu_chong
+	relationKindLiuHai                              // liu_hai
+	relationKindLiuPo                               // liu_po
+	relationKindAnHe                                // an_he
+	relationKindLiuXing                             // liu_xing
+	relationKindGanHe                               // gan_he
+	relationKindGanHeCandidate                      // gan_he_candidate
+	relationKindGanChong                            // gan_chong
+	relationKindGanChongCandidate                   // gan_chong_candidate
+	relationKindSanHe                               // san_he
+	relationKindSanHePartial                        // san_he_partial
+	relationKindSanHui                              // san_hui
+)
+
+var relationKindCodes = [...]string{
+	"", "zhi_liu_he", "liu_chong", "liu_hai", "liu_po", "an_he", "liu_xing",
+	"gan_he", "gan_he_candidate", "gan_chong", "gan_chong_candidate",
+	"san_he", "san_he_partial", "san_hui",
+}
+
+func DecodeNatalRelationKind(r NatalRelationKind) string { return relationKindCodes[r] }
+func EncodeNatalRelationKind(code string) (NatalRelationKind, bool) {
+	for i, c := range relationKindCodes {
+		if c != "" && c == code {
+			return NatalRelationKind(i), true
+		}
+	}
+	return natalRelationUnknown, false
+}
+
+// GeJuKind is one of the eight 格 (正官格/七杀格/...).
+type GeJuKind uint8
+
+const (
+	geJuUnknown   GeJuKind = iota
+	geJuZhengGuan          // 正官格
+	geJuQiSha              // 七杀格
+	geJuZhengCai           // 正财格
+	geJuPianCai            // 偏财格
+	geJuZhengYin           // 正印格
+	geJuPianYin            // 偏印格
+	geJuShiShen            // 食神格
+	geJuShangGuan          // 伤官格
+)
+
+var geJuKindNames = [...]string{"", "正官格", "七杀格", "正财格", "偏财格", "正印格", "偏印格", "食神格", "伤官格"}
+
+func DecodeGeJuKind(g GeJuKind) string { return geJuKindNames[g] }
+func EncodeGeJuKind(name string) (GeJuKind, bool) {
+	for i, n := range geJuKindNames {
+		if n != "" && n == name {
+			return GeJuKind(i), true
+		}
+	}
+	return geJuUnknown, false
+}
+
+// CongGeKind is one of the 从格 variants.
+type CongGeKind uint8
+
+const (
+	congGeUnknown CongGeKind = iota
+	congGeWang               // 从旺格
+	congGeSha                // 从杀格
+	congGeCai                // 从财格
+	congGeEr                 // 从儿格
+	congGeJiaWang            // 假从旺格
+	congGeJiaSha             // 假从杀格
+	congGeJiaCai             // 假从财格
+	congGeJiaEr              // 假从儿格
+)
+
+var congGeKindNames = [...]string{"", "从旺格", "从杀格", "从财格", "从儿格", "假从旺格", "假从杀格", "假从财格", "假从儿格"}
+
+func DecodeCongGeKind(c CongGeKind) string { return congGeKindNames[c] }
+func EncodeCongGeKind(name string) (CongGeKind, bool) {
+	for i, n := range congGeKindNames {
+		if n != "" && n == name {
+			return CongGeKind(i), true
+		}
+	}
+	return congGeUnknown, false
+}
