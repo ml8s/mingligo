@@ -20,7 +20,7 @@ var xiaoxianRulesJSON []byte
 
 var (
 	earthlyIdxTable = [12]int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11}
-	nianStars       = map[shenSha][12]int{
+	nianStars       = map[ShenSha][12]int{
 		ssHuaGai: {4, 1, 10, 7, 4, 1, 10, 7, 4, 1, 10, 7},
 		ssXianChi: {9, 6, 3, 0, 9, 6, 3, 0, 9, 6, 3, 0},
 		ssGuChen: {2, 2, 5, 5, 5, 8, 8, 8, 11, 11, 11, 2},
@@ -35,7 +35,7 @@ var (
 		ssTianDe: {9, 10, 11, 0, 1, 2, 3, 4, 5, 6, 7, 8},
 		ssYueDe: {5, 6, 7, 8, 9, 10, 11, 0, 1, 2, 3, 4},
 	}
-	yueStars = map[shenSha][12]int{
+	yueStars = map[ShenSha][12]int{
 		ssTianYao: {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 0},
 		ssTianXing: {9, 10, 11, 0, 1, 2, 3, 4, 5, 6, 7, 8},
 		ssYinSha: {2, 0, 10, 8, 6, 4, 2, 0, 10, 8, 6, 4},
@@ -43,19 +43,19 @@ var (
 		ssTianYue: {10, 5, 4, 2, 7, 3, 11, 7, 2, 6, 10, 2},
 		ssTianWu: {5, 8, 2, 11, 5, 8, 2, 11, 5, 8, 2, 11},
 	}
-	shiStars = map[shenSha][12]int{
+	shiStars = map[ShenSha][12]int{
 		ssTaiFu: {6, 7, 8, 9, 10, 11, 0, 1, 2, 3, 4, 5},
 		ssFengGao: {2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 0, 1},
 	}
-	ganStars = map[shenSha][10]int{
+	ganStars = map[ShenSha][10]int{
 		ssTianChu: {5, 6, 0, 5, 6, 8, 2, 6, 9, 11},
 		ssTianGuan: {7, 4, 5, 2, 3, 9, 11, 9, 10, 6},
 		ssTianFu: {9, 8, 0, 11, 3, 2, 6, 5, 6, 5},
 		ssJieLu: {8, 6, 4, 2, 0, 8, 6, 4, 2, 0},
 		ssKongWang: {9, 7, 5, 3, 1, 9, 7, 5, 3, 1},
 	}
-	siHuaTable    map[Gan][4]starIndex
-	ziweiStartPos map[juShu]int
+	siHuaTable    map[Gan][4]StarIndex
+	ziweiStartPos map[JuShu]int
 	luCunTable    [10]int
 	tianKuiTable  [10]int
 	tianYueTable  [10]int
@@ -135,13 +135,13 @@ func loadTables() error {
 	}
 
 	// siHuaTable
-	siHuaTable = make(map[Gan][4]starIndex, 10)
+	siHuaTable = make(map[Gan][4]StarIndex, 10)
 	for ganName, h := range data.SiHua {
 		gan, err := ganzhi.ParseGan(ganName)
 		if err != nil {
 			return err
 		}
-		stars := [4]starIndex{
+		stars := [4]StarIndex{
 			nameToStar(h["hua_lu"]), nameToStar(h["hua_quan"]),
 			nameToStar(h["hua_ke"]), nameToStar(h["hua_ji"]),
 		}
@@ -149,15 +149,15 @@ func loadTables() error {
 	}
 
 	// ziweiStartPos
-	juNameToJuShu := map[string]juShu{
+	juNameToJuShu := map[string]JuShu{
 		"水二局": JuWater, "木三局": JuWood, "金四局": JuMetal,
 		"土五局": JuEarth, "火六局": JuFire,
 	}
-	ziweiStartPos = make(map[juShu]int, 5)
+	ziweiStartPos = make(map[JuShu]int, 5)
 	for name, pos := range data.ZiweiStart {
 		js, ok := juNameToJuShu[name]
 		if !ok {
-			return fmt.Errorf("ziwei: unknown juShu name %q", name)
+			return fmt.Errorf("ziwei: unknown JuShu name %q", name)
 		}
 		ziweiStartPos[js] = pos
 	}
@@ -217,7 +217,7 @@ func loadTables() error {
 	return nil
 }
 
-func nameToStar(s string) starIndex {
+func nameToStar(s string) StarIndex {
 	for si, name := range starNames {
 		if name == s {
 			return si

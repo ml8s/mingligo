@@ -193,7 +193,7 @@ func TestDetectRelations_GanHe(t *testing.T) {
 	if len(r.GanHe) != 4 {
 		t.Fatalf("got %d gan he pairs, want all 4 cross-pillar pairs", len(r.GanHe))
 	}
-	positions := map[relationPosition]int{}
+	positions := map[RelationPosition]int{}
 	for _, pair := range r.GanHe {
 		positions[pair.Position]++
 		if !pair.Contested {

@@ -8,7 +8,7 @@ var boShiCycle = []string{
 }
 
 // computeBoShi 博士十二神。iztro算法：从禄存起，年支阴阳=性别→顺行，≠→逆行。
-func computeBoShi(ju juShu, mingZhi Zhi, nianGan Gan, gender ganzhi.Gender, nianZhi Zhi) [12]string {
+func computeBoShi(ju JuShu, mingZhi Zhi, nianGan Gan, gender ganzhi.Gender, nianZhi Zhi) [12]string {
 	// 禄存在zhiIdx
 	luCunZhiM1 := luCunTable[int(nianGan)-1]
 	// zhiIdx → gong index via zhi matching

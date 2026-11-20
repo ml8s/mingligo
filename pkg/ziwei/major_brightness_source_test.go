@@ -6,12 +6,12 @@ import (
 	"github.com/ml8s/mingligo/pkg/ganzhi"
 )
 
-// iztro v2.6.1 corrected the brightness of three major stars in You.
+// iztro v2.6.1 corrected the Brightness of three major stars in You.
 // This test locks the upstream fix into the engine's data contract.
 func TestMajorBrightnessIztroV261YouFixes(t *testing.T) {
 	tests := []struct {
-		star starIndex
-		want brightness
+		star StarIndex
+		want Brightness
 	}{
 		{star: TaiYang, want: Ping},
 		{star: TaiYin, want: Wang},

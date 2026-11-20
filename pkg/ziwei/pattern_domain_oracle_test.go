@@ -18,7 +18,7 @@ type patternSemanticPalace struct {
 type patternSemanticStar struct {
 	Name       string `json:"name"`
 	SiHua      string `json:"si_hua"`
-	Brightness string `json:"brightness"`
+	Brightness string `json:"Brightness"`
 }
 
 func buildPatternSemanticChart(t *testing.T, input []patternSemanticPalace) Chart {
@@ -45,12 +45,12 @@ func buildPatternSemanticChart(t *testing.T, input []patternSemanticPalace) Char
 		}
 		stars := make([]StarInfo, 0, len(item.Stars))
 		for _, semantic := range item.Stars {
-			var star starIndex
+			var star StarIndex
 			if err := star.fromName(semantic.Name); err != nil {
 				t.Fatalf("parse star %q: %v", semantic.Name, err)
 			}
 			item := newStarInfo(star, int(star) < 14)
-			item.SiHua = siHuaType(semantic.SiHua)
+			item.SiHua = SiHua(semantic.SiHua)
 			item.Brightness = semantic.Brightness
 			stars = append(stars, item)
 		}

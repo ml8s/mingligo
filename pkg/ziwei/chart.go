@@ -5,7 +5,7 @@ import (
 	"github.com/ml8s/mingligo/pkg/tianwen"
 )
 
-// computeChart builds the core ziwei chart (palaces + stars, no brightness/patterns).
+// computeChart builds the core ziwei chart (palaces + stars, no Brightness/patterns).
 func computeChart(bz ganzhi.Bazi, lt tianwen.LunarTime) Chart {
 	lunarMonth := publishedLunarMonth(lt)
 	lunarDay := lt.Day
@@ -56,10 +56,10 @@ func publishedLunarMonth(lt tianwen.LunarTime) int {
 }
 
 type coreCalendarFacts struct {
-	JuShu           juShu
+	JuShu           JuShu
 	JuShuName       string
-	ZiweiPos        gongIndex
-	ShenGong        gongIndex
+	ZiweiPos        GongIndex
+	ShenGong        GongIndex
 	NianGan         Gan
 	NianZhi         Zhi
 	ShiZhi          Zhi
@@ -72,9 +72,9 @@ type coreCalendarFacts struct {
 func assemblePalaces(
 	palaceZhis [12]Zhi,
 	palaceGans [12]Gan,
-	shenGong gongIndex,
-	mainByPalace map[int][]starIndex,
-	minorByPalace map[int][]starIndex,
+	shenGong GongIndex,
+	mainByPalace map[int][]StarIndex,
+	minorByPalace map[int][]StarIndex,
 ) [12]Gong {
 	var palaces [12]Gong
 	for i := 0; i < 12; i++ {
@@ -89,11 +89,11 @@ func assemblePalaces(
 			starInfos = append(starInfos, newStarInfo(star, false))
 		}
 		palaces[i] = Gong{
-			Index:        gongIndex(i),
+			Index:        GongIndex(i),
 			Name:         gongLabels[i],
 			Gan:          palaceGans[i],
 			Zhi:          palaceZhis[i],
-			IsBodyPalace: gongIndex(i) == shenGong,
+			IsBodyPalace: GongIndex(i) == shenGong,
 			Stars:        starInfos,
 		}
 	}
@@ -120,11 +120,11 @@ func assembleCoreChart(palaces [12]Gong, facts coreCalendarFacts) Chart {
 
 // sanFangSiZheng returns the palace relation only. Star facts remain owned by
 // each palace in ShiErGong.
-func sanFangSiZheng(palaces [4]gongIndex) SanFangSiZheng {
+func sanFangSiZheng(palaces [4]GongIndex) SanFangSiZheng {
 	return SanFangSiZheng{MingGong: palaces[:]}
 }
 
-// buildChartDetail enriches a core chart with siHua, brightness, and patterns.
+// buildChartDetail enriches a core chart with siHua, Brightness, and patterns.
 func buildChartDetail(chart Chart) Chart {
 	chart = applyBrightnessAndSiHua(chart)
 	chart.SiHua = computeSiHua(chart.NianGan)
@@ -163,7 +163,7 @@ func computeKongGong(gongWei [12]Gong) []KongGongInfo {
 			continue
 		}
 		dui := (i + 6) % 12
-		out = append(out, KongGongInfo{KongGong: gongIndex(i), JieGong: gongIndex(dui)})
+		out = append(out, KongGongInfo{KongGong: GongIndex(i), JieGong: GongIndex(dui)})
 	}
 	return out
 }

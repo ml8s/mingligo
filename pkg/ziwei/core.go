@@ -8,7 +8,7 @@ import "github.com/ml8s/mingligo/pkg/ganzhi"
 type Core struct {
 	Gender    ganzhi.Gender
 	NianGan   Gan
-	JuShu     juShu
+	JuShu     JuShu
 	BirthYear int
 }
 
@@ -33,12 +33,12 @@ type FlowContext struct {
 	ShiZhi          Zhi
 	MingGongZhi     Zhi
 	MingGongName    string
-	SiHuaPalaces    map[starIndex]gongIndex
+	SiHuaPalaces    map[StarIndex]GongIndex
 }
 
 // FlowContext extracts the narrow facts used by flow methods.
 func (c Chart) FlowContext() FlowContext {
-	siHuaPalaces := make(map[starIndex]gongIndex)
+	siHuaPalaces := make(map[StarIndex]GongIndex)
 	for _, palace := range c.GongWei {
 		for _, star := range palace.Stars {
 			if _, exists := siHuaPalaces[star.Star]; !exists {

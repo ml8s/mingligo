@@ -19,40 +19,40 @@ const (
 	Female = ganzhi.Female
 )
 
-// gongIndex identifies one of 12 palaces (0=命宫 … 11=父母).
-type gongIndex int
+// GongIndex identifies one of 12 palaces (0=命宫 … 11=父母).
+type GongIndex int
 
-func (p gongIndex) String() string {
+func (p GongIndex) String() string {
 	if int(p) < 0 || int(p) >= len(gongLabels) {
 		return ""
 	}
 	return gongLabels[p]
 }
 
-func (p gongIndex) MarshalJSON() ([]byte, error) {
+func (p GongIndex) MarshalJSON() ([]byte, error) {
 	return json.Marshal(p.String())
 }
 
-func (p *gongIndex) UnmarshalJSON(data []byte) error {
+func (p *GongIndex) UnmarshalJSON(data []byte) error {
 	var s string
 	if err := json.Unmarshal(data, &s); err != nil {
 		return fmt.Errorf("宫名(gong_wei[].name) must be a string (e.g. \"命宫\"), got %s", string(data))
 	}
 	for i, name := range gongLabels {
 		if name == s {
-			*p = gongIndex(i)
+			*p = GongIndex(i)
 			return nil
 		}
 	}
 	return fmt.Errorf("unknown gong name: %q", s)
 }
 
-// starIndex enumerates all stars (main + minor).
-type starIndex int
+// StarIndex enumerates all stars (main + minor).
+type StarIndex int
 
 // 14 main stars.
 const (
-	ZiWei     starIndex = iota // 0  紫微
+	ZiWei     StarIndex = iota // 0  紫微
 	TianJi                     // 1  天机
 	TaiYang                    // 2  太阳
 	WuQu                       // 3  武曲
@@ -70,7 +70,7 @@ const (
 
 // Minor stars (0.6).
 const (
-	LuCun starIndex = iota + 14
+	LuCun StarIndex = iota + 14
 	TianKui
 	TianYue
 	ZuoFu
@@ -88,7 +88,7 @@ const (
 	TianXi
 )
 
-var starNames = map[starIndex]string{
+var starNames = map[StarIndex]string{
 	ZiWei: "紫微", TianJi: "天机", TaiYang: "太阳", WuQu: "武曲",
 	TianTong: "天同", LianZhen: "廉贞", TianFu: "天府", TaiYin: "太阴",
 	TanLang: "贪狼", JuMen: "巨门", TianXiang: "天相", TianLiang: "天梁",
@@ -101,17 +101,17 @@ var starNames = map[starIndex]string{
 }
 
 // starName returns the Chinese name of a star.
-func starName(s starIndex) string { return starNames[s] }
+func starName(s StarIndex) string { return starNames[s] }
 
-func (s starIndex) String() string {
+func (s StarIndex) String() string {
 	return starNames[s]
 }
 
-func (s starIndex) MarshalJSON() ([]byte, error) {
+func (s StarIndex) MarshalJSON() ([]byte, error) {
 	return json.Marshal(s.String())
 }
 
-func (s *starIndex) UnmarshalJSON(data []byte) error {
+func (s *StarIndex) UnmarshalJSON(data []byte) error {
 	var name string
 	if err := json.Unmarshal(data, &name); err != nil {
 		return fmt.Errorf("星名(xing_yao) must be a string, got %s", string(data))
@@ -119,8 +119,8 @@ func (s *starIndex) UnmarshalJSON(data []byte) error {
 	return s.fromName(name)
 }
 
-// MarshalText 使 starIndex 作为 map key 时序列化为星名（Go json 的 map key 只认 TextMarshaler）。
-func (s starIndex) MarshalText() ([]byte, error) {
+// MarshalText 使 StarIndex 作为 map key 时序列化为星名（Go json 的 map key 只认 TextMarshaler）。
+func (s StarIndex) MarshalText() ([]byte, error) {
 	name, ok := starNames[s]
 	if !ok {
 		return []byte(""), nil
@@ -128,12 +128,12 @@ func (s starIndex) MarshalText() ([]byte, error) {
 	return []byte(name), nil
 }
 
-// UnmarshalText 使 starIndex 作为 map key 时可从星名反序列化。
-func (s *starIndex) UnmarshalText(b []byte) error {
+// UnmarshalText 使 StarIndex 作为 map key 时可从星名反序列化。
+func (s *StarIndex) UnmarshalText(b []byte) error {
 	return s.fromName(string(b))
 }
 
-func (s *starIndex) fromName(name string) error {
+func (s *StarIndex) fromName(name string) error {
 	for k, n := range starNames {
 		if n == name {
 			*s = k
@@ -143,19 +143,19 @@ func (s *starIndex) fromName(name string) error {
 	return fmt.Errorf("unknown star: %q", name)
 }
 
-// juShu is the five-element bureau number (2/3/4/5/6).
-type juShu int
+// JuShu is the five-element bureau number (2/3/4/5/6).
+type JuShu int
 
 const (
-	JuWater juShu = 2 // 水二局
-	JuWood  juShu = 3
-	JuMetal juShu = 4 // 金四局
-	JuEarth juShu = 5 // 土五局
-	JuFire  juShu = 6
+	JuWater JuShu = 2 // 水二局
+	JuWood  JuShu = 3
+	JuMetal JuShu = 4 // 金四局
+	JuEarth JuShu = 5 // 土五局
+	JuFire  JuShu = 6
 )
 
 // juShuFromWuxing converts a five-element to its bureau number.
-func juShuFromWuxing(w Wuxing) juShu {
+func juShuFromWuxing(w Wuxing) JuShu {
 	switch w {
 	case ganzhi.WxShui:
 		return JuWater
@@ -171,7 +171,7 @@ func juShuFromWuxing(w Wuxing) juShu {
 	return 0
 }
 
-var juShuCodes = map[juShu]string{
+var juShuCodes = map[JuShu]string{
 	JuWater: "water_2",
 	JuWood:  "wood_3",
 	JuMetal: "metal_4",
@@ -179,15 +179,15 @@ var juShuCodes = map[juShu]string{
 	JuFire:  "fire_6",
 }
 
-func (j juShu) String() string {
+func (j JuShu) String() string {
 	return juShuCodes[j]
 }
 
-func (j juShu) MarshalJSON() ([]byte, error) {
+func (j JuShu) MarshalJSON() ([]byte, error) {
 	return json.Marshal(j.String())
 }
 
-func (j *juShu) UnmarshalJSON(data []byte) error {
+func (j *JuShu) UnmarshalJSON(data []byte) error {
 	var s string
 	if err := json.Unmarshal(data, &s); err != nil {
 		return fmt.Errorf("ju_shu must be a string (e.g. \"水二局\"), got %s", string(data))
@@ -211,7 +211,7 @@ func (j *juShu) UnmarshalJSON(data []byte) error {
 	return fmt.Errorf("unknown ju: %q", s)
 }
 
-var juShuNames = map[juShu]string{
+var juShuNames = map[JuShu]string{
 	JuWater: "水二局",
 	JuWood:  "木三局",
 	JuMetal: "金四局",
@@ -220,11 +220,11 @@ var juShuNames = map[juShu]string{
 }
 
 // juShuName returns the Chinese name of a bureau.
-func juShuName(j juShu) string { return juShuNames[j] }
+func juShuName(j JuShu) string { return juShuNames[j] }
 
 // gong holds all computed data for one gong.
 type Gong struct {
-	Index        gongIndex  `json:"-"`
+	Index        GongIndex  `json:"-"`
 	Name         string     `json:"ming"`
 	Gan          Gan        `json:"gan"`
 	Zhi          Zhi        `json:"zhi"`
@@ -241,40 +241,40 @@ type Gong struct {
 
 // StarInfo is one star entry in a gong.
 type StarInfo struct {
-	Star       starIndex `json:"-"`
+	Star       StarIndex `json:"-"`
 	Name       string    `json:"ming"`
 	IsMajor    bool      `json:"-"`
 	Lei        []string  `json:"lei,omitempty"`
-	SiHua      siHuaType `json:"si_hua,omitempty"`   // 禄/权/科/忌 or empty
+	SiHua      SiHua `json:"si_hua,omitempty"`   // 禄/权/科/忌 or empty
 	Brightness string    `json:"liang_du,omitempty"` // "庙"/"旺"/"利"/"平"/"陷"
 }
 
 // KongGongInfo 描述一个无主星宫位及其借星（对宫主星）。
 type KongGongInfo struct {
-	KongGong gongIndex `json:"kong_gong"`
-	JieGong  gongIndex `json:"jie_gong"`
+	KongGong GongIndex `json:"kong_gong"`
+	JieGong  GongIndex `json:"jie_gong"`
 }
 
-// siHuaType is one of the four transformations.
-type siHuaType string
+// SiHua is one of the four transformations.
+type SiHua string
 
 const (
-	HuaLu   siHuaType = "禄"
-	HuaQuan siHuaType = "权"
-	HuaKe   siHuaType = "科"
-	HuaJi   siHuaType = "忌"
+	HuaLu   SiHua = "禄"
+	HuaQuan SiHua = "权"
+	HuaKe   SiHua = "科"
+	HuaJi   SiHua = "忌"
 )
 
 // Chart holds the complete ziwei chart.
 type Chart struct {
 	KouJing  ChartSchool `json:"kou_jing"`
 	GongWei  [12]Gong    `json:"shi_er_gong"`
-	MingGong gongIndex   `json:"-"`
-	ShenGong gongIndex   `json:"-"`
-	JuShu    juShu       `json:"ju_shu"`
+	MingGong GongIndex   `json:"-"`
+	ShenGong GongIndex   `json:"-"`
+	JuShu    JuShu       `json:"ju_shu"`
 	// JuShuName is the human-readable bureau name; JuShu.code is machine-facing.
 	JuShuName string      `json:"ju_shu_name,omitempty"`
-	ZiweiPos  gongIndex   `json:"-"`
+	ZiweiPos  GongIndex   `json:"-"`
 	SiHua     siHuaResult `json:"-"`
 
 	// 空宫借星：只记录无主星宫和借星来源宫；星曜仍由来源宫唯一承载。
@@ -298,7 +298,7 @@ type Chart struct {
 // SanFangSiZheng is the palace relation, not a copied star view. Consumers
 // read star facts from the referenced palaces in ShiErGong.
 type SanFangSiZheng struct {
-	MingGong []gongIndex `json:"ming_gong"`
+	MingGong []GongIndex `json:"ming_gong"`
 }
 
 // ChartSchool makes the leap-month convention explicit. The engine currently
@@ -310,7 +310,7 @@ type ChartSchool struct {
 }
 
 // siHuaResult maps star → transformation.
-type siHuaResult map[starIndex]siHuaType
+type siHuaResult map[StarIndex]SiHua
 
 // DaXianStep records one 10-year da-xian segment.
 type DaXianStep struct {
@@ -318,7 +318,7 @@ type DaXianStep struct {
 	ZhiSui    int       `json:"zhi_sui"`
 	StartYear int       `json:"start_year"` // 本限起始公历年（birthYear + QiSui − 1）
 	EndYear   int       `json:"end_year"`   // 本限结束公历年（StartYear + 9）
-	MingGong  gongIndex `json:"ming_gong"`
+	MingGong  GongIndex `json:"ming_gong"`
 }
 
 // LiuNianJie locates the flow lunar year: the observer's standard clock and
@@ -334,7 +334,7 @@ type LiuNianJie struct {
 
 // LiuNian is the annual fate analysis.
 type LiuNian struct {
-	MingGong     gongIndex            `json:"ming_gong"`
+	MingGong     GongIndex            `json:"ming_gong"`
 	MingGongName string               `json:"ming_gong_name"` // 流年命宫名
 	Zhi          Zhi                  `json:"zhi"`            // 流年地支
 	SiHua        []FlowTransformation `json:"si_hua"`

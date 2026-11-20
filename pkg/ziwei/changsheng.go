@@ -9,7 +9,7 @@ var changShengCycle = []string{
 }
 
 // juChangShengZhi returns the earthly zhi (1-12) where "长生" starts for a given bureau.
-func juChangShengZhi(ju juShu) Zhi {
+func juChangShengZhi(ju JuShu) Zhi {
 	switch ju {
 	case JuWater:
 		return 9 // 申
@@ -26,9 +26,9 @@ func juChangShengZhi(ju juShu) Zhi {
 }
 
 // computeChangSheng computes the 长生12神 for all 12 palaces.
-// Returns an array indexed by gongIndex (0=命宫..11=父母).
+// Returns an array indexed by GongIndex (0=命宫..11=父母).
 // Direction: 阳男阴女→顺行, 阴男阳女→逆行 (opposite of xiaoXian).
-func computeChangSheng(ju juShu, mingZhi Zhi, nianGan Gan, gender ganzhi.Gender) [12]string {
+func computeChangSheng(ju JuShu, mingZhi Zhi, nianGan Gan, gender ganzhi.Gender) [12]string {
 	startZhi := juChangShengZhi(ju)
 	startPalace := int((int(mingZhi) - int(startZhi) + 12) % 12)
 

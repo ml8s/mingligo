@@ -29,7 +29,7 @@ type GanHeDetection struct {
 	GanB      ganzhi.Gan
 	PillarA   int
 	PillarB   int
-	Position  relationPosition
+	Position  RelationPosition
 	Contested bool
 	HeElement ganzhi.Wuxing
 }
@@ -41,7 +41,7 @@ type GanChongDetection struct {
 	GanB     ganzhi.Gan
 	PillarA  int
 	PillarB  int
-	Position relationPosition
+	Position RelationPosition
 }
 
 // ZhiPairDetection describes a paired zhi relationship (六合/六冲/六害/相刑/六破/暗合)
@@ -63,17 +63,17 @@ type TripleRelationDetection struct {
 	Pillars  []string
 }
 
-// relationPosition is the engine-owned strength hint for a paired relation:
+// RelationPosition is the engine-owned strength hint for a paired relation:
 // adjacent pairs are tight combinations, others are candidates.
-type relationPosition uint8
+type RelationPosition uint8
 
 const (
-	positionSeparated relationPosition = iota
+	positionSeparated RelationPosition = iota
 	positionAdjacent
 	positionRemote
 )
 
-func (p relationPosition) String() string {
+func (p RelationPosition) String() string {
 	switch p {
 	case positionAdjacent:
 		return "adjacent"
@@ -81,6 +81,19 @@ func (p relationPosition) String() string {
 		return "remote"
 	default:
 		return "separated"
+	}
+}
+
+func ParseRelationPosition(name string) (RelationPosition, bool) {
+	switch name {
+	case "adjacent":
+		return positionAdjacent, true
+	case "remote":
+		return positionRemote, true
+	case "separated":
+		return positionSeparated, true
+	default:
+		return 0, false
 	}
 }
 

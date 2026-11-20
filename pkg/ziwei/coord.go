@@ -8,14 +8,14 @@ import (
 // 内部坐标约定（全部领域根表达）：
 //   zhiIdx (int)      : 地支索引，0=子 1=丑 ... 11=亥 —— 地支历法根，安星最终落在此
 //   anXingIdx (int)   : 安星索引，0=寅 1=卯 ... 11=丑 —— 紫微「定寅首」安星坐标系
-//   gongIndex       : 命宫序，0=命宫 ... 11=父母 —— 仅用于输出层
-// 安星/流盘内部计算统一用 zhiIdx；gongIndex 只在 Chart.GongWei 输出时生成。
+//   GongIndex       : 命宫序，0=命宫 ... 11=父母 —— 仅用于输出层
+// 安星/流盘内部计算统一用 zhiIdx；GongIndex 只在 Chart.GongWei 输出时生成。
 // 转换关系：
 //   zhiIdx → Zhi        : +1
 //   Zhi → zhiIdx        : -1
 //   anXingIdx → zhiIdx  : (anXingIdx + 2) % 12   （寅=0 → 子=2）
 //   zhiIdx → anXingIdx  : (zhiIdx - 2 + 12) % 12
-//   zhiIdx → gongIndex（命宫支锚定）: 见 palace_map.go zhiIdxToPalaceIndex
+//   zhiIdx → GongIndex（命宫支锚定）: 见 palace_map.go zhiIdxToPalaceIndex
 
 // zhiIdxToZhi converts earth zhi index (0=子) to Zhi (1-12).
 func zhiIdxToZhi(zhiIdx int) Zhi {
@@ -47,7 +47,7 @@ type FlowPalace struct {
 }
 
 // buildFlowPalaces builds a 12-gong flow chart in 安星序 (寅=0 ... 丑=11).
-// 真相源：宫名 = 地支 → gongIndex → 标签，顺逆由公式表达，不存宫名顺序数组。
+// 真相源：宫名 = 地支 → GongIndex → 标签，顺逆由公式表达，不存宫名顺序数组。
 // liuPanIdx 是流盘索引（流年/月/日/时），用于确定流盘命宫（IsMing 标记）。
 // liuPanIdx 是流盘起点（安星索引），用于宫名推导。
 func buildFlowPalaces(liuPanIdx int, starByAnXingIdx map[int][]string) [12]FlowPalace {
@@ -76,15 +76,15 @@ func buildFlowPalaces(liuPanIdx int, starByAnXingIdx map[int][]string) [12]FlowP
 // FlowTransformation is one complete flow-period transformation: the
 // transformed natal star, its Hua, and the natal palace where it lands.
 type FlowTransformation struct {
-	Star   starIndex `json:"xing"`
-	Hua    siHuaType `json:"hua"`
-	Palace gongIndex `json:"gong"`
+	Star   StarIndex `json:"xing"`
+	Hua    SiHua `json:"hua"`
+	Palace GongIndex `json:"gong"`
 }
 
 // newFlowTransformations projects the transformation map into a stable,
 // palace-resolved fact list. It never emits two maps for one fact.
 func newFlowTransformations(
-	transformations siHuaResult, palaces map[starIndex]gongIndex,
+	transformations siHuaResult, palaces map[StarIndex]GongIndex,
 ) []FlowTransformation {
 	result := make([]FlowTransformation, 0, len(transformations))
 	for star, hua := range transformations {
@@ -98,12 +98,12 @@ func newFlowTransformations(
 	return result
 }
 
-// flowStarKind is the period-independent kind of a flow star (禄/羊/陀/…),
+// FlowStarKind is the period-independent kind of a flow star (禄/羊/陀/…),
 // defined once in the ziwei domain with a stable rank for display ordering.
-type flowStarKind int
+type FlowStarKind int
 
 const (
-	fskNone flowStarKind = iota
+	fskNone FlowStarKind = iota
 	fskLu                 // 禄
 	fskYang               // 羊
 	fskTuo                // 陀
@@ -116,9 +116,27 @@ const (
 	fskQu                 // 曲
 )
 
+var flowStarKindNames = [...]string{"", "禄", "羊", "陀", "魁", "钺", "马", "鸾", "喜", "昌", "曲"}
+
+func (k FlowStarKind) String() string {
+	if int(k) >= 0 && int(k) < len(flowStarKindNames) {
+		return flowStarKindNames[k]
+	}
+	return ""
+}
+
+func ParseFlowStarKind(name string) (FlowStarKind, bool) {
+	for i, n := range flowStarKindNames {
+		if n != "" && n == name {
+			return FlowStarKind(i), true
+		}
+	}
+	return fskNone, false
+}
+
 // flowStarKindOf extracts the stable star kind from a prefixed flow-star name
 // (for example 月禄/流禄 → 禄).
-func flowStarKindOf(name string) flowStarKind {
+func flowStarKindOf(name string) FlowStarKind {
 	runes := []rune(name)
 	var k rune
 	if len(runes) < 2 {
@@ -129,30 +147,8 @@ func flowStarKindOf(name string) flowStarKind {
 	} else {
 		k = runes[1]
 	}
-	switch k {
-	case '禄':
-		return fskLu
-	case '羊':
-		return fskYang
-	case '陀':
-		return fskTuo
-	case '魁':
-		return fskKui
-	case '钺':
-		return fskYue
-	case '马':
-		return fskMa
-	case '鸾':
-		return fskLuan
-	case '喜':
-		return fskXi
-	case '昌':
-		return fskChang
-	case '曲':
-		return fskQu
-	default:
-		return fskNone
-	}
+	parsed, _ := ParseFlowStarKind(string(k))
+	return parsed
 }
 
 // sortFlowStars gives the JSON contract a deterministic array order. The order
@@ -179,7 +175,7 @@ func sortFlowStars(stars []string) []string {
 	return ordered
 }
 
-var flowStarDisplayRank = map[flowStarKind]int{
+var flowStarDisplayRank = map[FlowStarKind]int{
 	fskLu: 0, fskYang: 1, fskTuo: 2, fskKui: 3, fskYue: 4,
 	fskMa: 5, fskLuan: 6, fskXi: 7, fskChang: 8, fskQu: 9,
 }

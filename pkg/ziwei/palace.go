@@ -17,10 +17,10 @@ func arrangePalaceZhis(mingZhi Zhi) [12]Zhi {
 	return zhis
 }
 
-func findShenGongIndex(palaceZhis [12]Zhi, shenZhi Zhi) gongIndex {
+func findShenGongIndex(palaceZhis [12]Zhi, shenZhi Zhi) GongIndex {
 	for i, z := range palaceZhis {
 		if z == shenZhi {
-			return gongIndex(i)
+			return GongIndex(i)
 		}
 	}
 	return 0

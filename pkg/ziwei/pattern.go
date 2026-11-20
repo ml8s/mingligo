@@ -151,8 +151,8 @@ func (p *patterns) add(name, desc string) {
 
 // ------ helpers ------
 
-func starAt(pa Gong, star starIndex) bool { return starWith(pa, star) }
-func starWith(pa Gong, star starIndex) bool {
+func starAt(pa Gong, star StarIndex) bool { return starWith(pa, star) }
+func starWith(pa Gong, star StarIndex) bool {
 	for _, s := range pa.Stars {
 		if s.Star == star {
 			return true
@@ -181,7 +181,7 @@ func noSixMalefic(pa Gong) bool {
 	return true
 }
 
-func sfLuCount(bz [12]Gong, sf [4]gongIndex) int {
+func sfLuCount(bz [12]Gong, sf [4]GongIndex) int {
 	count := 0
 	for _, pi := range sf {
 		for _, s := range bz[pi].Stars {
@@ -210,8 +210,8 @@ func hasCaiYinJiaYin(palaces [12]Gong) bool {
 		(starWith(prev, TianLiang) && hasLuCai(next))
 }
 
-func isMiao(z Zhi, star starIndex) bool { return miaoWang(star, z) <= Wang }
-func isXian(z Zhi, star starIndex) bool { return miaoWang(star, z) == Xian }
+func isMiao(z Zhi, star StarIndex) bool { return miaoWang(star, z) <= Wang }
+func isXian(z Zhi, star StarIndex) bool { return miaoWang(star, z) == Xian }
 
 func qingYangMiao(z Zhi) bool {
 	switch z {
@@ -224,7 +224,7 @@ func qingYangMiao(z Zhi) bool {
 func sunMoonBright(palaces [12]Gong) bool {
 	sunBright := false
 	moonBright := false
-	brightPalaces := []gongIndex{0, 4, 6, 8} // 命财官迁（三方四正）
+	brightPalaces := []GongIndex{0, 4, 6, 8} // 命财官迁（三方四正）
 	for _, bp := range brightPalaces {
 		for _, s := range palaces[bp].Stars {
 			if s.Star == TaiYang && miaoWang(TaiYang, palaces[bp].Zhi) <= Wang {
@@ -242,7 +242,7 @@ func sunMoonDark(palaces [12]Gong) bool {
 	// 《紫微斗数全书·卷三》：“日月最嫌反背……若反背日戌月辰，子月午。”
 	// 这里只取原文明确结构，不把命宫三方四正任意双落陷泛化为反背。
 	var sunZhis, moonZhis []Zhi
-	for _, cp := range []gongIndex{0, 4, 6, 8} { // 命财官迁（三方四正）
+	for _, cp := range []GongIndex{0, 4, 6, 8} { // 命财官迁（三方四正）
 		for _, s := range palaces[cp].Stars {
 			if s.Star == TaiYang {
 				sunZhis = append(sunZhis, palaces[cp].Zhi)
@@ -262,11 +262,11 @@ func sunMoonDark(palaces [12]Gong) bool {
 	return false
 }
 
-func sanFang(ming gongIndex) [4]gongIndex {
-	return [4]gongIndex{ming, (ming + 4) % 12, (ming + 8) % 12, (ming + 6) % 12}
+func sanFang(ming GongIndex) [4]GongIndex {
+	return [4]GongIndex{ming, (ming + 4) % 12, (ming + 8) % 12, (ming + 6) % 12}
 }
 
-func anyInSF(bz [12]Gong, sf [4]gongIndex, star starIndex) bool {
+func anyInSF(bz [12]Gong, sf [4]GongIndex, star StarIndex) bool {
 	for _, pi := range sf {
 		if starAt(bz[pi], star) {
 			return true
@@ -275,7 +275,7 @@ func anyInSF(bz [12]Gong, sf [4]gongIndex, star starIndex) bool {
 	return false
 }
 
-func sfCount(bz [12]Gong, sf [4]gongIndex, stars ...starIndex) int {
+func sfCount(bz [12]Gong, sf [4]GongIndex, stars ...StarIndex) int {
 	count := 0
 	for _, pi := range sf {
 		for _, s := range stars {
@@ -287,7 +287,7 @@ func sfCount(bz [12]Gong, sf [4]gongIndex, stars ...starIndex) int {
 	return count
 }
 
-func sfDistinctCount(bz [12]Gong, sf [4]gongIndex, stars ...starIndex) int {
+func sfDistinctCount(bz [12]Gong, sf [4]GongIndex, stars ...StarIndex) int {
 	count := 0
 	for _, star := range stars {
 		if anyInSF(bz, sf, star) {
@@ -297,7 +297,7 @@ func sfDistinctCount(bz [12]Gong, sf [4]gongIndex, stars ...starIndex) int {
 	return count
 }
 
-func sfSiHuaCount(bz [12]Gong, sf [4]gongIndex, h siHuaType) int {
+func sfSiHuaCount(bz [12]Gong, sf [4]GongIndex, h SiHua) int {
 	count := 0
 	for _, pi := range sf {
 		for _, s := range bz[pi].Stars {

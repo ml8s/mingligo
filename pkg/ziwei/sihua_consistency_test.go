@@ -40,7 +40,7 @@ func TestSiHua_Consistency_StarLevel(t *testing.T) {
 			if want == "" {
 				continue
 			}
-			if s.SiHua != siHuaType(want) {
+			if s.SiHua != SiHua(want) {
 				t.Errorf("宫%d %s 四化 = %q, want %q（与汇总一致）", i+1, s.Name, s.SiHua, want)
 			}
 		}

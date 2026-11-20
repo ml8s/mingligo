@@ -21,7 +21,7 @@ func TestMinorBrightnessGolden(t *testing.T) {
 		t.Fatalf("解析 golden: %v", err)
 	}
 	zhiNames := []string{"子", "丑", "寅", "卯", "辰", "巳", "午", "未", "申", "酉", "戌", "亥"}
-	check := func(star starIndex, want map[string]string, label string) {
+	check := func(star StarIndex, want map[string]string, label string) {
 		for i, zhiName := range zhiNames {
 			got := miaoWang(star, Zhi(i+1)).String()
 			if got != want[zhiName] {

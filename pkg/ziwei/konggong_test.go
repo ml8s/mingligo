@@ -30,7 +30,7 @@ func TestKongGong_BorrowFromDuiGong(t *testing.T) {
 		}
 		found = true
 		dui := (int(mg) + 6) % 12
-		if kg.JieGong != gongIndex(dui) {
+		if kg.JieGong != GongIndex(dui) {
 			t.Fatalf("借星宫 = %s, want %s", gongLabels[kg.JieGong], gongLabels[dui])
 		}
 		if !hasMajorStar(chart.GongWei[kg.JieGong]) {

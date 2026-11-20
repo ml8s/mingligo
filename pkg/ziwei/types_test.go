@@ -7,7 +7,7 @@ import (
 
 func TestPalaceIndex_MarshalJSON(t *testing.T) {
 	tests := []struct {
-		input gongIndex
+		input GongIndex
 		want  string // expected JSON output
 	}{
 		{0, `"命宫"`},
@@ -29,7 +29,7 @@ func TestPalaceIndex_MarshalJSON(t *testing.T) {
 func TestPalaceIndex_UnmarshalJSON_StringOnly(t *testing.T) {
 	tests := []struct {
 		input string
-		want  gongIndex
+		want  GongIndex
 		err   bool
 	}{
 		{`"命宫"`, 0, false},
@@ -41,7 +41,7 @@ func TestPalaceIndex_UnmarshalJSON_StringOnly(t *testing.T) {
 		{`""`, 0, true},
 	}
 	for _, tt := range tests {
-		var p gongIndex
+		var p GongIndex
 		err := json.Unmarshal([]byte(tt.input), &p)
 		if tt.err {
 			if err == nil {
@@ -59,7 +59,7 @@ func TestPalaceIndex_UnmarshalJSON_StringOnly(t *testing.T) {
 
 func TestJuShu_MarshalJSON(t *testing.T) {
 	tests := []struct {
-		input juShu
+		input JuShu
 		want  string
 	}{
 		{0, `""`}, // unknown→empty
@@ -84,7 +84,7 @@ func TestJuShu_MarshalJSON(t *testing.T) {
 func TestJuShu_UnmarshalJSON_StringOnly(t *testing.T) {
 	tests := []struct {
 		input string
-		want  juShu
+		want  JuShu
 		err   bool
 	}{
 		{`"water_2"`, 2, false},
@@ -95,7 +95,7 @@ func TestJuShu_UnmarshalJSON_StringOnly(t *testing.T) {
 		{`2`, 0, true},     // 整数拒绝
 	}
 	for _, tt := range tests {
-		var j juShu
+		var j JuShu
 		err := json.Unmarshal([]byte(tt.input), &j)
 		if tt.err {
 			if err == nil {
@@ -113,7 +113,7 @@ func TestJuShu_UnmarshalJSON_StringOnly(t *testing.T) {
 
 func TestStarIndex_MarshalJSON(t *testing.T) {
 	tests := []struct {
-		input starIndex
+		input StarIndex
 		want  string
 	}{
 		{ZiWei, `"紫微"`},
@@ -121,7 +121,7 @@ func TestStarIndex_MarshalJSON(t *testing.T) {
 		{PoJun, `"破军"`},
 		{LuCun, `"禄存"`},
 		{DiJie, `"地劫"`},
-		{starIndex(99), `""`},
+		{StarIndex(99), `""`},
 	}
 	for _, tt := range tests {
 		b, err := json.Marshal(tt.input)
@@ -138,7 +138,7 @@ func TestStarIndex_MarshalJSON(t *testing.T) {
 func TestStarIndex_UnmarshalJSON_StringOnly(t *testing.T) {
 	tests := []struct {
 		input string
-		want  starIndex
+		want  StarIndex
 		err   bool
 	}{
 		{`"紫微"`, ZiWei, false},
@@ -149,7 +149,7 @@ func TestStarIndex_UnmarshalJSON_StringOnly(t *testing.T) {
 		{`""`, 0, true},
 	}
 	for _, tt := range tests {
-		var s starIndex
+		var s StarIndex
 		err := json.Unmarshal([]byte(tt.input), &s)
 		if tt.err {
 			if err == nil {

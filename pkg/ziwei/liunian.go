@@ -48,12 +48,12 @@ func liuNianSiHua(liuNian int) siHuaResult {
 
 // liuNianMinors computes the annual minor stars (流耀) as Zhi (earth zhi).
 // 10 颗流耀：流魁/流钺/流昌/流曲/流禄/流羊/流陀/流马/流鸾/流喜（iztro yearly 流耀）。
-func liuNianMinors(yearZhu ganzhi.Zhu, _ Zhi) map[starIndex]Zhi {
+func liuNianMinors(yearZhu ganzhi.Zhu, _ Zhi) map[StarIndex]Zhi {
 	// zhiIdx(0-11) → Zhi(1-12)，输出地支名
 	toZhi := func(zhiIdx int) Zhi { return Zhi((zhiIdx%12+12)%12 + 1) }
 	changZhiIdx, quZhiIdx := liuChangQuByGan(yearZhu.Gan)
 	hongLuanZhiIdx := hongLuanPos(yearZhu.Zhi)
-	return map[starIndex]Zhi{
+	return map[StarIndex]Zhi{
 		TianKui:  toZhi(tianKuiPos(yearZhu.Gan)),   // 流魁
 		TianYue:  toZhi(tianYuePos(yearZhu.Gan)),   // 流钺
 		WenChang: toZhi(changZhiIdx),               // 流昌
@@ -80,7 +80,7 @@ func ComputeLiuNian(ctx FlowContext, liuNian int) LiuNian {
 	flowMing := zhiIdxToPalaceIndex(zhiToZhiIdx(mingZhi), flowMingZhiIdx)
 
 	// 流年盘：流耀地支 → 安星索引（iztro 简称：流魁/流钺/流昌/流曲/流禄/流羊/流陀/流马/流鸾/流喜）
-	flowShort := map[starIndex]string{
+	flowShort := map[StarIndex]string{
 		TianKui: "流魁", TianYue: "流钺", WenChang: "流昌", WenQu: "流曲",
 		LuCun: "流禄", QingYang: "流羊", TuoLuo: "流陀", TianMa: "流马",
 		HongLuan: "流鸾", TianXi: "流喜",

@@ -5,7 +5,7 @@ import "github.com/ml8s/mingligo/pkg/ganzhi"
 // --- 紫微定位 (iztro 六五四三二) ---
 
 // findZiwei computes紫微 IZTRO index (0=寅). Caller converts to Mingli gong.
-func findZiwei(ju juShu, lunarDay int) int {
+func findZiwei(ju JuShu, lunarDay int) int {
 	lunarDay4 := lunarDay
 	added := 0
 	for (lunarDay4+added)%int(ju) != 0 {
@@ -24,7 +24,7 @@ func findZiwei(ju juShu, lunarDay int) int {
 }
 
 // anXingIdxToPalace converts iztro 寅=0 index to Mingli gong index.
-func anXingIdxToPalace(anXingIdx int, mingZhi Zhi) gongIndex {
+func anXingIdxToPalace(anXingIdx int, mingZhi Zhi) GongIndex {
 	anXingIdx = anXingIdx % 12
 	if anXingIdx < 0 {
 		anXingIdx += 12
@@ -36,23 +36,23 @@ func anXingIdxToPalace(anXingIdx int, mingZhi Zhi) gongIndex {
 // --- 主星安星 (0.5) ---
 
 var ziweiOffsets = []struct {
-	star   starIndex
+	star   StarIndex
 	offset int
 }{
 	{ZiWei, 0}, {TianJi, 1}, {TaiYang, 3}, {WuQu, 4}, {TianTong, 5}, {LianZhen, 8},
 }
 
 var tianfuOffsets = []struct {
-	star   starIndex
+	star   StarIndex
 	offset int
 }{
 	{TianFu, 0}, {TaiYin, 1}, {TanLang, 2}, {JuMen, 3},
 	{TianXiang, 4}, {TianLiang, 5}, {QiSha, 6}, {PoJun, 10},
 }
 
-func placeMainStars(ziweiAnXingIdx, tianfuAnXingIdx int, _ Zhi) map[int][]starIndex {
+func placeMainStars(ziweiAnXingIdx, tianfuAnXingIdx int, _ Zhi) map[int][]StarIndex {
 	// 返回 zhiIdx 坐标（0=子..11=亥）：安星序(寅=0)(寅=0 安星序) → zhiIdx 固定映射
-	m := make(map[int][]starIndex)
+	m := make(map[int][]StarIndex)
 	for _, e := range ziweiOffsets {
 		anXingIdx := (ziweiAnXingIdx - e.offset + 12) % 12
 		zm1 := anXingIdxToZhiIdx(anXingIdx)
@@ -147,9 +147,9 @@ func inGroup(zhi, a, b, c Zhi) bool { return zhi == a || zhi == b || zhi == c }
 
 // placeMinorStars collects all 14 minor star placements.
 // 返回 zhiIdx 坐标（0=子..11=亥）。
-func placeMinorStars(yearZhu ganzhi.Zhu, lunarMonth int, shiZhi, _ Zhi) map[int][]starIndex {
-	m := make(map[int][]starIndex)
-	add := func(zm1 int, s starIndex) {
+func placeMinorStars(yearZhu ganzhi.Zhu, lunarMonth int, shiZhi, _ Zhi) map[int][]StarIndex {
+	m := make(map[int][]StarIndex)
+	add := func(zm1 int, s StarIndex) {
 		m[zm1] = append(m[zm1], s)
 	}
 	tk := tianKuiPos(yearZhu.Gan)

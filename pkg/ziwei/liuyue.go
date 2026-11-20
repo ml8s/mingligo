@@ -29,7 +29,7 @@ type LiuYueJie struct {
 }
 
 type LiuYue struct {
-	MingGong     gongIndex            `json:"ming_gong"`
+	MingGong     GongIndex            `json:"ming_gong"`
 	MingGongName string               `json:"ming_gong_name"`
 	Zhi          Zhi                  `json:"zhi"`
 	SiHua        []FlowTransformation `json:"si_hua"`
@@ -175,10 +175,10 @@ func resolveLiuYuePeriodWith(p tianwen.LunarProjector, target tianwen.LunarDate)
 
 // liuMinorStars returns the ten flow minor stars as typed star symbols. The
 // period-specific display name (月禄/日羊/...) is added only at the output edge.
-func liuMinorStars(gan Gan, zhi Zhi) map[starIndex]Zhi {
+func liuMinorStars(gan Gan, zhi Zhi) map[StarIndex]Zhi {
 	chg, qu := liuChangQuByGan(gan)
 	toZhi := func(zhiIdx int) Zhi { return Zhi(zhiIdx + 1) }
-	return map[starIndex]Zhi{
+	return map[StarIndex]Zhi{
 		LuCun:    toZhi(luCunPos(gan)),
 		QingYang: toZhi(qingYangPos(gan)),
 		TuoLuo:   toZhi(tuoLuoPos(gan)),
@@ -193,8 +193,8 @@ func liuMinorStars(gan Gan, zhi Zhi) map[starIndex]Zhi {
 }
 
 // liuMinorShort maps a flow star symbol to its period-prefixed display name.
-func liuMinorShort(prefix string) map[starIndex]string {
-	return map[starIndex]string{
+func liuMinorShort(prefix string) map[StarIndex]string {
+	return map[StarIndex]string{
 		LuCun: prefix + "禄", QingYang: prefix + "羊", TuoLuo: prefix + "陀",
 		TianKui: prefix + "魁", TianYue: prefix + "钺", TianMa: prefix + "马",
 		HongLuan: prefix + "鸾", TianXi: prefix + "喜",
@@ -213,7 +213,7 @@ type LiuRiJie struct {
 }
 
 type LiuRi struct {
-	MingGong     gongIndex            `json:"ming_gong"`
+	MingGong     GongIndex            `json:"ming_gong"`
 	MingGongName string               `json:"ming_gong_name"`
 	Zhi          Zhi                  `json:"zhi"`
 	SiHua        []FlowTransformation `json:"si_hua"`
@@ -300,7 +300,7 @@ type LiuShiChen struct {
 }
 
 type LiuShi struct {
-	MingGong     gongIndex            `json:"ming_gong"`
+	MingGong     GongIndex            `json:"ming_gong"`
 	MingGongName string               `json:"ming_gong_name"`
 	Zhi          Zhi                  `json:"zhi"`
 	SiHua        []FlowTransformation `json:"si_hua"`

@@ -23,7 +23,7 @@ func ComputeBond(a, b BondSideFacts) Bond {
 	}
 }
 
-func bondPalacePair(aPalace, bPalace BondPalaceFacts, kind gongIndex) BondPalacePair {
+func bondPalacePair(aPalace, bPalace BondPalaceFacts, kind GongIndex) BondPalacePair {
 	return BondPalacePair{
 		A:      aPalace,
 		B:      bPalace,
@@ -31,7 +31,7 @@ func bondPalacePair(aPalace, bPalace BondPalaceFacts, kind gongIndex) BondPalace
 	}
 }
 
-func pairStatus(palace gongIndex, aStars, bStars []string) string {
+func pairStatus(palace GongIndex, aStars, bStars []string) string {
 	switch palace {
 	case gongFuQi:
 		return spouseStatus(aStars, bStars)

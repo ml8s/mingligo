@@ -4,7 +4,7 @@ import (
 	"testing"
 )
 
-func makeGong(idx gongIndex, stars []StarInfo, zaYao []string) Gong {
+func makeGong(idx GongIndex, stars []StarInfo, zaYao []string) Gong {
 	return Gong{
 		Index: idx,
 		Name:  gongLabels[idx],
@@ -13,8 +13,8 @@ func makeGong(idx gongIndex, stars []StarInfo, zaYao []string) Gong {
 	}
 }
 
-func makeStar(star starIndex, name string, siHua string) StarInfo {
-	return StarInfo{Star: star, Name: name, IsMajor: star < 14, SiHua: siHuaType(siHua)}
+func makeStar(star StarIndex, name string, siHua string) StarInfo {
+	return StarInfo{Star: star, Name: name, IsMajor: star < 14, SiHua: SiHua(siHua)}
 }
 
 func hasPattern(patterns []Pattern, name string) bool {
@@ -29,7 +29,7 @@ func hasPattern(patterns []Pattern, name string) bool {
 func TestJuoHuoYang(t *testing.T) {
 	var palaces [12]Gong
 	for i := range palaces {
-		palaces[i] = makeGong(gongIndex(i), nil, nil)
+		palaces[i] = makeGong(GongIndex(i), nil, nil)
 	}
 	palaces[0].Stars = []StarInfo{
 		makeStar(JuMen, "巨门", ""),
@@ -45,7 +45,7 @@ func TestJuoHuoYang(t *testing.T) {
 func TestJuoHuoYangNegative(t *testing.T) {
 	var palaces [12]Gong
 	for i := range palaces {
-		palaces[i] = makeGong(gongIndex(i), nil, nil)
+		palaces[i] = makeGong(GongIndex(i), nil, nil)
 	}
 	palaces[0].Stars = []StarInfo{
 		makeStar(JuMen, "巨门", ""),
@@ -60,7 +60,7 @@ func TestJuoHuoYangNegative(t *testing.T) {
 func TestXingJiJiaYin(t *testing.T) {
 	var palaces [12]Gong
 	for i := range palaces {
-		palaces[i] = makeGong(gongIndex(i), nil, nil)
+		palaces[i] = makeGong(GongIndex(i), nil, nil)
 	}
 	palaces[0].Stars = []StarInfo{makeStar(TianXiang, "天相", "")}
 	palaces[11].Stars = []StarInfo{makeStar(TianLiang, "天梁", "忌")}
@@ -74,7 +74,7 @@ func TestXingJiJiaYin(t *testing.T) {
 func TestXingJiJiaYinReverse(t *testing.T) {
 	var palaces [12]Gong
 	for i := range palaces {
-		palaces[i] = makeGong(gongIndex(i), nil, nil)
+		palaces[i] = makeGong(GongIndex(i), nil, nil)
 	}
 	palaces[0].Stars = []StarInfo{makeStar(TianXiang, "天相", "")}
 	palaces[11].ZaYao = []string{"天刑"}
@@ -88,7 +88,7 @@ func TestXingJiJiaYinReverse(t *testing.T) {
 func TestXingJiJiaYinNegative(t *testing.T) {
 	var palaces [12]Gong
 	for i := range palaces {
-		palaces[i] = makeGong(gongIndex(i), nil, nil)
+		palaces[i] = makeGong(GongIndex(i), nil, nil)
 	}
 	palaces[0].Stars = []StarInfo{makeStar(TianXiang, "天相", "")}
 	palaces[11].Stars = []StarInfo{makeStar(TianLiang, "天梁", "")}
@@ -102,7 +102,7 @@ func TestXingJiJiaYinNegative(t *testing.T) {
 func TestXingJiJiaYinNoTianXing(t *testing.T) {
 	var palaces [12]Gong
 	for i := range palaces {
-		palaces[i] = makeGong(gongIndex(i), nil, nil)
+		palaces[i] = makeGong(GongIndex(i), nil, nil)
 	}
 	palaces[0].Stars = []StarInfo{makeStar(TianXiang, "天相", "")}
 	palaces[11].Stars = []StarInfo{makeStar(TianLiang, "天梁", "忌")}

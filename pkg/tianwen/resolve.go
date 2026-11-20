@@ -69,10 +69,10 @@ type ResolveResult struct {
 	Candidates []ResolveCandidate
 }
 
-type resolveForm int
+type ResolveForm int
 
 const (
-	formTime resolveForm = iota
+	formTime ResolveForm = iota
 	formShichen
 	formRange
 )
@@ -180,7 +180,7 @@ func resolveCandidates(in ResolveInput) (ResolveResult, error) {
 	return result, nil
 }
 
-func resolveFormOf(in ResolveInput) (resolveForm, error) {
+func resolveFormOf(in ResolveInput) (ResolveForm, error) {
 	forms := 0
 	form := formTime
 	if strings.TrimSpace(in.Time) != "" {
@@ -229,7 +229,7 @@ func resolveLocation(name string) (*time.Location, error) {
 	return loc, nil
 }
 
-func resolveBaseDate(in ResolveInput, form resolveForm) (int, time.Month, int, error) {
+func resolveBaseDate(in ResolveInput, form ResolveForm) (int, time.Month, int, error) {
 	calendar := strings.TrimSpace(in.Calendar)
 	if calendar == "" {
 		return 0, 0, 0, fmt.Errorf("calendar is required for wall-clock forms")
@@ -297,7 +297,7 @@ func absInt(value int) int {
 // buildPrecisionWindow returns the civil window implied by the input precision:
 // HH:MM -> one minute; HH:MM:SS -> one second;
 // shichen/range -> their civil windows.
-func buildPrecisionWindow(in ResolveInput, form resolveForm, year int, month time.Month, day int, zone *time.Location) (Window, error) {
+func buildPrecisionWindow(in ResolveInput, form ResolveForm, year int, month time.Month, day int, zone *time.Location) (Window, error) {
 	date := time.Date(year, month, day, 0, 0, 0, 0, zone)
 
 	switch form {
@@ -338,7 +338,7 @@ func buildPrecisionWindow(in ResolveInput, form resolveForm, year int, month tim
 	}
 }
 
-func resolveAnchor(in ResolveInput, form resolveForm, base Window) time.Time {
+func resolveAnchor(in ResolveInput, form ResolveForm, base Window) time.Time {
 	if form == formTime {
 		return base.Start
 	}

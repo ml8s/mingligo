@@ -109,7 +109,7 @@ func TestComplete(t *testing.T) {
 			for sidStr, stype := range tc.SiHua {
 				var sid int
 				_, _ = fmt.Sscanf(sidStr, "%d", &sid)
-				got, ok := fc.SiHua[starIndex(sid)]
+				got, ok := fc.SiHua[StarIndex(sid)]
 				if !ok {
 					t.Errorf("四化%d应%s但无", sid, stype)
 					continue
@@ -165,7 +165,7 @@ func TestComplete(t *testing.T) {
 				t.Errorf("流年zhi: got %s want %s", lnZhi, tc.Yzhi)
 			}
 			for sidStr, stype := range tc.Ysihua {
-				if !hasFlowTransformation(ln.SiHua, starIndex(atoi(sidStr)), siHuaType(stype)) {
+				if !hasFlowTransformation(ln.SiHua, StarIndex(atoi(sidStr)), SiHua(stype)) {
 					t.Errorf("流年四化%s: missing %s", sidStr, stype)
 				}
 			}
@@ -179,7 +179,7 @@ func TestComplete(t *testing.T) {
 				t.Errorf("流月zhi: got %s want %s", lyZhi, tc.Mzhi)
 			}
 			for sidStr, stype := range tc.Msihua {
-				if !hasFlowTransformation(ly.SiHua, starIndex(atoi(sidStr)), siHuaType(stype)) {
+				if !hasFlowTransformation(ly.SiHua, StarIndex(atoi(sidStr)), SiHua(stype)) {
 					t.Errorf("流月四化%s: missing %s", sidStr, stype)
 				}
 			}
@@ -193,7 +193,7 @@ func TestComplete(t *testing.T) {
 				t.Errorf("流日zhi: got %s want %s", lrZhi, tc.Dzhi)
 			}
 			for sidStr, stype := range tc.Dsihua {
-				if !hasFlowTransformation(lr.SiHua, starIndex(atoi(sidStr)), siHuaType(stype)) {
+				if !hasFlowTransformation(lr.SiHua, StarIndex(atoi(sidStr)), SiHua(stype)) {
 					t.Errorf("流日四化%s: missing %s", sidStr, stype)
 				}
 			}
@@ -207,7 +207,7 @@ func TestComplete(t *testing.T) {
 				t.Errorf("流时zhi: got %s want %s", lsZhi, tc.Hzhi)
 			}
 			for sidStr, stype := range tc.Hsihua {
-				if !hasFlowTransformation(ls.SiHua, starIndex(atoi(sidStr)), siHuaType(stype)) {
+				if !hasFlowTransformation(ls.SiHua, StarIndex(atoi(sidStr)), SiHua(stype)) {
 					t.Errorf("流时四化%s: missing %s", sidStr, stype)
 				}
 			}
@@ -354,7 +354,7 @@ func assertFlowPalaces(t *testing.T, label string, got [12]FlowPalace, ref []flo
 	}
 }
 
-func hasFlowTransformation(value []FlowTransformation, star starIndex, hua siHuaType) bool {
+func hasFlowTransformation(value []FlowTransformation, star StarIndex, hua SiHua) bool {
 	for _, item := range value {
 		if item.Star == star && item.Hua == hua {
 			return true

@@ -5,12 +5,12 @@ import "testing"
 func blankPalaces() [12]Gong {
 	var palaces [12]Gong
 	for i := range palaces {
-		palaces[i] = Gong{Index: gongIndex(i), Name: gongLabels[i]}
+		palaces[i] = Gong{Index: GongIndex(i), Name: gongLabels[i]}
 	}
 	return palaces
 }
 
-func firstBrightZhi(star starIndex) Zhi {
+func firstBrightZhi(star StarIndex) Zhi {
 	for zhi := Zhi(1); zhi <= 12; zhi++ {
 		if miaoWang(star, zhi) <= Wang {
 			return zhi

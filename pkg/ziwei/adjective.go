@@ -1,10 +1,10 @@
 package ziwei
 
-type adjStarResult map[shenSha]int
+type adjStarResult map[ShenSha]int
 
 func computeAdjectiveStars(nianZhi, shiZhi Zhi, lunarMonth, lunarDay int, nianGan Gan) adjStarResult {
 	r := make(adjStarResult)
-	add := func(name shenSha, zhiIdx int) { r[name] = zhiIdx }
+	add := func(name ShenSha, zhiIdx int) { r[name] = zhiIdx }
 
 	// A 年支系
 	hl := (4 - int(nianZhi) + 12) % 12

@@ -1,12 +1,12 @@
 package ziwei
 
-// shenSha is a ziwei-domain symbol for an adjective star (杂曜/神煞).
+// ShenSha is a ziwei-domain symbol for an adjective star (杂曜/神煞).
 // Every value has a stable display name and a reverse mapping.
-type shenSha int
+type ShenSha int
 
 const (
 	// 年支系
-	ssHuaGai shenSha = iota // 华盖
+	ssHuaGai ShenSha = iota // 华盖
 	ssXianChi               // 咸池
 	ssGuChen                // 孤辰
 	ssGuaSu                 // 寡宿
@@ -60,17 +60,17 @@ var shenShaNames = [...]string{
 	"旬空", "年解", "天才", "天寿", "天伤", "天使",
 }
 
-func (s shenSha) String() string {
+func (s ShenSha) String() string {
 	if int(s) >= 0 && int(s) < len(shenShaNames) {
 		return shenShaNames[s]
 	}
 	return ""
 }
 
-func ParseShenSha(name string) (shenSha, bool) {
+func ParseShenSha(name string) (ShenSha, bool) {
 	for i, n := range shenShaNames {
 		if n == name {
-			return shenSha(i), true
+			return ShenSha(i), true
 		}
 	}
 	return 0, false

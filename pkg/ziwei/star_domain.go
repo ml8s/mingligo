@@ -11,24 +11,24 @@ const (
 )
 
 var (
-	mainStars = map[starIndex]bool{
+	mainStars = map[StarIndex]bool{
 		ZiWei: true, TianJi: true, TaiYang: true, WuQu: true,
 		TianTong: true, LianZhen: true, TianFu: true, TaiYin: true,
 		TanLang: true, JuMen: true, TianXiang: true, TianLiang: true,
 		QiSha: true, PoJun: true,
 	}
-	auspiciousStars = map[starIndex]bool{
+	auspiciousStars = map[StarIndex]bool{
 		TianKui: true, TianYue: true, ZuoFu: true,
 		YouBi: true, WenChang: true, WenQu: true,
 	}
-	literaryStars      = map[starIndex]bool{WenChang: true, WenQu: true}
-	palaceMaleficStars = map[starIndex]bool{
+	literaryStars      = map[StarIndex]bool{WenChang: true, WenQu: true}
+	palaceMaleficStars = map[StarIndex]bool{
 		QingYang: true, TuoLuo: true, HuoXing: true,
 		LingXing: true, DiKong: true, DiJie: true,
 	}
 )
 
-func starLei(star starIndex, isMajor bool) []string {
+func starLei(star StarIndex, isMajor bool) []string {
 	values := make([]string, 0, 4)
 	if isMajor {
 		values = append(values, StarLeiZhuXing)
@@ -48,6 +48,6 @@ func starLei(star starIndex, isMajor bool) []string {
 	return values
 }
 
-func newStarInfo(star starIndex, isMajor bool) StarInfo {
+func newStarInfo(star StarIndex, isMajor bool) StarInfo {
 	return StarInfo{Star: star, Name: starName(star), IsMajor: isMajor, Lei: starLei(star, isMajor)}
 }

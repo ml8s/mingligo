@@ -37,6 +37,15 @@ func (l PillarLevel) String() string {
 
 func (l PillarLevel) MarshalJSON() ([]byte, error) { return json.Marshal(l.String()) }
 
+func ParsePillarLevel(name string) (PillarLevel, bool) {
+	for i, n := range pillarLevelNames {
+		if n == name {
+			return PillarLevel(i), true
+		}
+	}
+	return 0, false
+}
+
 type GengGeFact struct {
 	Level    PillarLevel `json:"level"`
 	Gong     GongIndex  `json:"gong"`
