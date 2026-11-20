@@ -52,6 +52,7 @@
         "men": "景门",
         "men_present": true,
         "shen": "太阴",
+        "shen_symbol": "taiyin",
         "shen_present": true,
         "tian_pan": [
           {
@@ -71,6 +72,7 @@
         "men": "生门",
         "men_present": true,
         "shen": "玄武",
+        "shen_symbol": "zhuque",
         "shen_present": true,
         "tian_pan": [
           {
@@ -90,6 +92,7 @@
         "men": "惊门",
         "men_present": true,
         "shen": "值符",
+        "shen_symbol": "zhifu",
         "shen_present": true,
         "tian_pan": [
           {
@@ -109,6 +112,7 @@
         "men": "开门",
         "men_present": true,
         "shen": "九天",
+        "shen_symbol": "jiutian",
         "shen_present": true,
         "tian_pan": [
           {
@@ -139,6 +143,7 @@
         "men": "杜门",
         "men_present": true,
         "shen": "六合",
+        "shen_symbol": "liuhe",
         "shen_present": true,
         "tian_pan": [
           {
@@ -158,6 +163,7 @@
         "men": "伤门",
         "men_present": true,
         "shen": "白虎",
+        "shen_symbol": "gouchen",
         "shen_present": true,
         "tian_pan": [
           {
@@ -177,6 +183,7 @@
         "men": "死门",
         "men_present": true,
         "shen": "螣蛇",
+        "shen_symbol": "tengshe",
         "shen_present": true,
         "tian_pan": [
           {
@@ -200,6 +207,7 @@
         "men": "休门",
         "men_present": true,
         "shen": "九地",
+        "shen_symbol": "jiudi",
         "shen_present": true,
         "tian_pan": [
           {

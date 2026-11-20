@@ -72,6 +72,7 @@ func ArrangePan(ju juShu, bz ganzhi.Bazi) Board {
 		}
 		if shenSpirits[i] != 0 {
 			result.GongWei[i].Shen = spiritDisplayName(shenSpirits[i], ju.YinDun, ju.Method.School)
+			result.GongWei[i].ShenSymbol = DecodeSpiritKey(shenSpirits[i])
 		}
 		result.GongWei[i].HiddenPillar = hiddenPillars[i]
 	}

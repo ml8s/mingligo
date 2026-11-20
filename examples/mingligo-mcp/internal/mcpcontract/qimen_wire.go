@@ -406,6 +406,7 @@ type QimenChartPanGongWeiItem struct {
 	Men         *QimenDoorName                         `json:"men,omitempty" jsonschema:"八门。"`
 	MenPresent  bool                                   `json:"men_present" jsonschema:"门存在集合。"`
 	Shen        *QimenSpiritName                       `json:"shen,omitempty" jsonschema:"八神。"`
+	ShenSymbol  *QimenSpiritKeyName                    `json:"shen_symbol,omitempty" jsonschema:"八神稳定符号 key（跨流派/阴阳遁恒定）。"`
 	ShenPresent *bool                                  `json:"shen_present,omitempty" jsonschema:"神存在集合。"`
 	AnGanZhi    *string                                `json:"an_gan_zhi,omitempty" jsonschema:"鸣法暗干支；仅鸣法飞盘输出，其他方法省略"`
 	Xing        *XingName                              `json:"xing,omitempty" jsonschema:"太乙九星。"`

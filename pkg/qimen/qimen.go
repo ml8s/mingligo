@@ -31,6 +31,7 @@ type Gong struct {
 	Door         DoorIndex       `json:"men,omitempty"`
 	DoorSet      bool            `json:"men_present"`
 	Shen         string          `json:"shen,omitempty"`
+	ShenSymbol   string          `json:"shen_symbol,omitempty"`
 	SpiritSet    bool            `json:"shen_present"`
 	TianPan      []TianPanSymbol `json:"tian_pan,omitempty"`
 	TianPanGan   *ganzhi.Gan     `json:"tian_pan_gan,omitempty"`

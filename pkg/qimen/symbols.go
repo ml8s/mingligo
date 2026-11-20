@@ -453,6 +453,21 @@ const (
 	SpiritTaiChang
 )
 
+// spiritKeys are stable cross-school identifiers for the shared spirit slots.
+// A key denotes the slot's identity (e.g. gouchen), never its school/yin-dun
+// dependent display name (e.g. baihu), so it stays constant across schools.
+var spiritKeys = [10]string{
+	"", "zhifu", "tengshe", "taiyin", "liuhe", "gouchen", "zhuque", "jiudi", "jiutian", "taichang",
+}
+
+// DecodeSpiritKey returns the stable cross-school key for a spirit slot.
+func DecodeSpiritKey(s SpiritIndex) string {
+	if s >= 1 && s <= 9 {
+		return spiritKeys[s]
+	}
+	return ""
+}
+
 // YangSpiritNames returns the spirit name for 阳遁.
 func (s SpiritIndex) YangName() string {
 	if s >= 1 && int(s) < len(spiritYangNames) {
