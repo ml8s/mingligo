@@ -43,12 +43,15 @@ var jieQiNamesFromDongZhi = [24]string{
 	"处暑", "白露", "秋分", "寒露", "霜降", "立冬", "小雪", "大雪",
 }
 
-func (j JieQi) String() string {
+// DecodeJieQi decodes a JieQi symbol into its display text.
+func DecodeJieQi(j JieQi) string {
 	if int(j) >= 0 && int(j) < len(jieQiNamesFromDongZhi) {
 		return jieQiNamesFromDongZhi[j]
 	}
 	return ""
 }
+
+func (j JieQi) String() string { return DecodeJieQi(j) }
 
 func (j JieQi) Longitude() float64 {
 	return JieQiLongitudes[(int(j)+21)%24]
