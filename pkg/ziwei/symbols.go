@@ -73,7 +73,6 @@ func DecodeShenSha(v ShenSha) string {
 	return ""
 }
 
-func (s ShenSha) String() string { return DecodeShenSha(s) }
 
 func EncodeShenSha(name string) (ShenSha, bool) {
 	for i, n := range shenShaNames {
@@ -112,7 +111,6 @@ func DecodeFlowStarKind(v FlowStarKind) string {
 	return ""
 }
 
-func (k FlowStarKind) String() string { return DecodeFlowStarKind(k) }
 
 func EncodeFlowStarKind(name string) (FlowStarKind, bool) {
 	for i, n := range flowStarKindNames {
@@ -152,12 +150,10 @@ func DecodeGongIndex(v GongIndex) string {
 	return gongLabels[v]
 }
 
-func (p GongIndex) String() string { return DecodeGongIndex(p) }
 
-func (b Brightness) String() string { return DecodeBrightness(b) }
 
 func (p GongIndex) MarshalJSON() ([]byte, error) {
-	return json.Marshal(p.String())
+	return json.Marshal(DecodeGongIndex(p))
 }
 
 func (p *GongIndex) UnmarshalJSON(data []byte) error {
@@ -235,10 +231,9 @@ func DecodeStarIndex(v StarIndex) string {
 	return starNames[v]
 }
 
-func (s StarIndex) String() string { return DecodeStarIndex(s) }
 
 func (s StarIndex) MarshalJSON() ([]byte, error) {
-	return json.Marshal(s.String())
+	return json.Marshal(DecodeStarIndex(s))
 }
 
 func (s *StarIndex) UnmarshalJSON(data []byte) error {
@@ -297,10 +292,9 @@ func DecodeJuShu(v JuShu) string {
 	return juShuCodes[v]
 }
 
-func (j JuShu) String() string { return DecodeJuShu(j) }
 
 func (j JuShu) MarshalJSON() ([]byte, error) {
-	return json.Marshal(j.String())
+	return json.Marshal(DecodeJuShu(j))
 }
 
 func (j *JuShu) UnmarshalJSON(data []byte) error {

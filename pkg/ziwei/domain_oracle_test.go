@@ -84,7 +84,7 @@ func TestDomainOracle_CoreTables(t *testing.T) {
 			t.Fatal(err)
 		}
 		if got := soulStar(z); starName(got) != tc.Expected {
-			t.Errorf("soul %s = %s, want %s", tc.Branch, got, tc.Expected)
+			t.Errorf("soul %s = %s, want %s", tc.Branch, DecodeStarIndex(got), tc.Expected)
 		}
 	}
 	for _, tc := range doc.Body {
@@ -93,7 +93,7 @@ func TestDomainOracle_CoreTables(t *testing.T) {
 			t.Fatal(err)
 		}
 		if got := bodyStar(z); starName(got) != tc.Expected {
-			t.Errorf("body %s = %s, want %s", tc.Branch, got, tc.Expected)
+			t.Errorf("body %s = %s, want %s", tc.Branch, DecodeStarIndex(got), tc.Expected)
 		}
 	}
 	if len(doc.TianKui) != 10 || len(doc.TianYue) != 10 {

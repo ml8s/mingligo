@@ -20,7 +20,7 @@ func TestMajorBrightnessIztroV261YouFixes(t *testing.T) {
 
 	for _, tt := range tests {
 		if got := miaoWang(tt.star, ganzhi.ZhiYou); got != tt.want {
-			t.Errorf("miaoWang(%s, 酉) = %s, want %s", starName(tt.star), got, tt.want)
+			t.Errorf("miaoWang(%s, 酉) = %s, want %s", starName(tt.star), DecodeBrightness(got), DecodeBrightness(tt.want))
 		}
 	}
 }

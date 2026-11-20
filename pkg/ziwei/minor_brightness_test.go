@@ -23,7 +23,7 @@ func TestMinorBrightnessGolden(t *testing.T) {
 	zhiNames := []string{"子", "丑", "寅", "卯", "辰", "巳", "午", "未", "申", "酉", "戌", "亥"}
 	check := func(star StarIndex, want map[string]string, label string) {
 		for i, zhiName := range zhiNames {
-			got := miaoWang(star, Zhi(i+1)).String()
+			got := DecodeBrightness(miaoWang(star, Zhi(i+1)))
 			if got != want[zhiName] {
 				t.Errorf("%s %s: got %s want %s", label, zhiName, got, want[zhiName])
 			}
