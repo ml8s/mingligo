@@ -25,7 +25,7 @@ func TestNormalYongJi_StrongUsesController(t *testing.T) {
 	}
 	for _, tc := range cases {
 		yong, xi, ji := computeNormalYongJi(tc.gan, strengthStrong)
-		if yong != tc.wantYong || xi != tc.wantXi || ji != tc.wantJi {
+		if string(yong) != tc.wantYong || string(xi) != tc.wantXi || string(ji) != tc.wantJi {
 			t.Errorf("干 %d 身强: yong=%s xi=%s ji=%s, want %s/%s/%s",
 				tc.gan, yong, xi, ji, tc.wantYong, tc.wantXi, tc.wantJi)
 		}
@@ -46,7 +46,7 @@ func TestNormalYongJi_WeakUsesGenerator(t *testing.T) {
 	}
 	for _, tc := range cases {
 		yong, xi, ji := computeNormalYongJi(tc.gan, strengthWeak)
-		if yong != tc.wantYong || xi != tc.wantXi || ji != tc.wantJi {
+		if string(yong) != tc.wantYong || string(xi) != tc.wantXi || string(ji) != tc.wantJi {
 			t.Errorf("干 %d 身弱: yong=%s xi=%s ji=%s, want %s/%s/%s",
 				tc.gan, yong, xi, ji, tc.wantYong, tc.wantXi, tc.wantJi)
 		}

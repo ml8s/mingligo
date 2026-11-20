@@ -140,14 +140,14 @@ func TestComputeBond_ElementYongShenAndSpouseStar(t *testing.T) {
 
 	assertFit := func(label string, got yongShenFitEntry, fc Chart, other map[string]int) {
 		want := fc.FuYi
-		if got.Yong != want.Yong ||
-			got.Xi != want.Xi ||
-			got.Ji != want.Ji {
+		if string(got.Yong) != string(want.Yong) ||
+			string(got.Xi) != string(want.Xi) ||
+			string(got.Ji) != string(want.Ji) {
 			t.Fatalf("%s fit = %+v, want yong/xi/ji %s/%s/%s", label, got,
 				want.Yong, want.Xi, want.Ji)
 		}
 		inOther := func(value string) int {
-			if value == NoCandidateWuxing {
+			if value == string(NoCandidateWuxing) {
 				return 0
 			}
 			return other[value]

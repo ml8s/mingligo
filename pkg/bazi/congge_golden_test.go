@@ -78,13 +78,13 @@ func TestCongGe_AllRules(t *testing.T) {
 					tt.note)
 			}
 			if tt.wantPattern != "" {
-				if yong != tt.wantYong {
+				if string(yong) != tt.wantYong {
 					t.Errorf("yong=%q want=%q (%s)", yong, tt.wantYong, tt.note)
 				}
-				if xi != tt.wantXi {
+				if string(xi) != tt.wantXi {
 					t.Errorf("xi=%q want=%q (%s)", xi, tt.wantXi, tt.note)
 				}
-				if ji != tt.wantJi {
+				if string(ji) != tt.wantJi {
 					t.Errorf("ji=%q want=%q (%s)", ji, tt.wantJi, tt.note)
 				}
 			}

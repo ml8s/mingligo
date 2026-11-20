@@ -316,7 +316,7 @@ func lookupStrength(rootType RootKind, season ganzhi.WangShuai, yinBiCount int) 
 }
 
 // lookupCongGe checks the day master against 从格 rules in priority order.
-func lookupCongGe(bz ganzhi.Bazi) (CongGeKind, string, string, string) {
+func lookupCongGe(bz ganzhi.Bazi) (CongGeKind, CandidateWuxing, CandidateWuxing, CandidateWuxing) {
 	riYuan := bz.Ri.Gan
 	dmElem := ganzhi.GanWuxing(riYuan)
 	rootType := classifyRoot(riYuan, bz.Yue.Zhi, HiddenStemFacts(bz))
@@ -336,7 +336,7 @@ func lookupCongGe(bz ganzhi.Bazi) (CongGeKind, string, string, string) {
 		yong, xi, ji := resolveCongGeYongXiJi(rule, dmElem)
 		return rule.Type, yong, xi, ji
 	}
-	return congGeUnknown, "", "", ""
+	return congGeUnknown, candidateNone, candidateNone, candidateNone
 }
 
 // ── Helpers ──
@@ -421,27 +421,27 @@ func matchGanConditions(cond ganConditions, sc ganCounts) bool {
 	return true
 }
 
-func resolveCongGeYongXiJi(rule congGeRule, dmElem ganzhi.Wuxing) (yong, xi, ji string) {
-	resolve := func(symbol YongXiJiKind) string {
+func resolveCongGeYongXiJi(rule congGeRule, dmElem ganzhi.Wuxing) (yong, xi, ji CandidateWuxing) {
+	resolve := func(symbol YongXiJiKind) CandidateWuxing {
 		switch symbol {
 		case yxjDmElem:
-			return ganzhi.DecodeWuxing(dmElem)
+			return candidateFromWuxing(dmElem)
 		case yxjKeDm:
-			return ganzhi.DecodeWuxing(elementThatControls(dmElem))
+			return candidateFromWuxing(elementThatControls(dmElem))
 		case yxjXiFromDm:
-			return ganzhi.DecodeWuxing(elementThatDrains(dmElem))
+			return candidateFromWuxing(elementThatDrains(dmElem))
 		case yxjGuansha:
-			return ganzhi.DecodeWuxing(elementThatControls(dmElem))
+			return candidateFromWuxing(elementThatControls(dmElem))
 		case yxjCai:
-			return ganzhi.DecodeWuxing(elementControlledBy(dmElem))
+			return candidateFromWuxing(elementControlledBy(dmElem))
 		case yxjYin:
-			return ganzhi.DecodeWuxing(elementThatGenerates(dmElem))
+			return candidateFromWuxing(elementThatGenerates(dmElem))
 		case yxjBiJie:
-			return ganzhi.DecodeWuxing(dmElem)
+			return candidateFromWuxing(dmElem)
 		case yxjShiShang:
-			return ganzhi.DecodeWuxing(elementThatDrains(dmElem))
+			return candidateFromWuxing(elementThatDrains(dmElem))
 		default:
-			return ""
+			return candidateNone
 		}
 	}
 	return resolve(rule.Yong), resolve(rule.Xi), resolve(rule.Ji)

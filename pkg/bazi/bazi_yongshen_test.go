@@ -33,11 +33,11 @@ func TestComputeYongshenEvidence_PresentsCandidatesAndStructure(t *testing.T) {
 			name string
 			val  string
 		}{
-			{"FuYi.Yong", fuYi.Yong},
-			{"FuYi.Xi", fuYi.Xi},
-			{"FuYi.Ji", fuYi.Ji},
+			{"FuYi.Yong", string(fuYi.Yong)},
+			{"FuYi.Xi", string(fuYi.Xi)},
+			{"FuYi.Ji", string(fuYi.Ji)},
 		} {
-			if field.val == "" || field.val == NoCandidateWuxing {
+			if field.val == "" || field.val == string(NoCandidateWuxing) {
 				t.Errorf("%s is empty: %q", field.name, field.val)
 			}
 		}

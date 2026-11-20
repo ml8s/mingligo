@@ -258,14 +258,14 @@ func convertWuxingCount(src map[ganzhi.Wuxing]int) map[string]int {
 }
 
 func yongShenFit(f FuYiResult, other map[string]int) yongShenFitEntry {
-	inOther := func(value string) int {
-		if value == NoCandidateWuxing {
+	inOther := func(value CandidateWuxing) int {
+		if value == candidateNone {
 			return 0
 		}
-		return other[value]
+		return other[string(value)]
 	}
 	return yongShenFitEntry{
-		ModelID: f.ModelID, Yong: f.Yong, Xi: f.Xi, Ji: f.Ji,
+		ModelID: f.ModelID, Yong: string(f.Yong), Xi: string(f.Xi), Ji: string(f.Ji),
 		YongInOther: inOther(f.Yong), XiInOther: inOther(f.Xi), JiInOther: inOther(f.Ji),
 	}
 }

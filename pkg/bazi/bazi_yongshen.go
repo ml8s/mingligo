@@ -8,7 +8,6 @@ import (
 
 // Candidate closures replace nullable domain facts with explicit states.
 const (
-	NoCandidateWuxing = "无候选"
 	NoSecondaryWuxing = "无辅调候"
 	NoSelfHeName      = "无自合"
 )
@@ -18,9 +17,9 @@ const (
 type FuYiResult struct {
 	WuxingCount map[string]int    `json:"wuxing_count"`
 	WangShuai   map[string]string `json:"wang_shuai"`
-	Yong        string            `json:"yong"`
-	Xi          string            `json:"xi"`
-	Ji          string            `json:"ji"`
+	Yong        CandidateWuxing   `json:"yong"`
+	Xi          CandidateWuxing   `json:"xi"`
+	Ji          CandidateWuxing   `json:"ji"`
 	Strength    string            `json:"qiang_ruo"`
 	Pattern     string            `json:"ge_ju,omitempty"`
 	ModelID     string            `json:"fu_yi_model_id"`
@@ -97,14 +96,6 @@ func computeYongShenEvidenceFromAnalysis(
 	return FuYi(bz, counts, seasonStrength, strength, relations),
 		TiaoHouAt(bz, relations),
 		GeJuAt(bz, analysis, relations)
-}
-
-// candidateString models an absent domain candidate as an explicit closure value.
-func candidateString(value string) string {
-	if value == "" {
-		return NoCandidateWuxing
-	}
-	return value
 }
 
 // computeWangShuaiMap returns the 旺相休囚死 for all five elements.

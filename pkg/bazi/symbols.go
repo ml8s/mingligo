@@ -1,5 +1,7 @@
 package bazi
 
+import "github.com/ml8s/mingligo/pkg/ganzhi"
+
 // RelationPosition is the engine-owned strength hint for a paired relation:
 // adjacent pairs are tight combinations, others are candidates.
 type RelationPosition uint8
@@ -315,4 +317,37 @@ func EncodeCongGeKind(name string) (CongGeKind, bool) {
 		return congGeUnknown, false
 	}
 	return k, true
+}
+
+// CandidateWuxing is a 扶抑候选五行 symbol. Its value IS the output text;
+// the closed set is 木/火/土/金/水 plus the explicit absence marker 无候选.
+type CandidateWuxing string
+
+const (
+	NoCandidateWuxing CandidateWuxing = "无候选"
+	candidateNone = NoCandidateWuxing
+	candidateWood  CandidateWuxing = "木"
+	candidateFire  CandidateWuxing = "火"
+	candidateEarth CandidateWuxing = "土"
+	candidateMetal CandidateWuxing = "金"
+	candidateWater CandidateWuxing = "水"
+)
+
+func DecodeCandidateWuxing(c CandidateWuxing) string { return string(c) }
+
+func candidateFromWuxing(w ganzhi.Wuxing) CandidateWuxing {
+	switch w {
+	case ganzhi.WxMu:
+		return candidateWood
+	case ganzhi.WxHuo:
+		return candidateFire
+	case ganzhi.WxTu:
+		return candidateEarth
+	case ganzhi.WxJin:
+		return candidateMetal
+	case ganzhi.WxShui:
+		return candidateWater
+	default:
+		return candidateNone
+	}
 }
