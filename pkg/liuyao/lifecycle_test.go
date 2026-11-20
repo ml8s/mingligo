@@ -44,7 +44,7 @@ func TestLifeStageOfUsesElementAtBranch(t *testing.T) {
 		{ganzhi.WxShui, ganzhi.ZhiShen, "长生"},
 	}
 	for _, tt := range tests {
-		if got := lifeStageOf(tt.element, tt.branch); got != tt.want {
+		if got := lifeStageOf(tt.element, tt.branch); string(got) != tt.want {
 			t.Fatalf("lifeStageOf(%v,%v)=%q, want %q", tt.element, tt.branch, got, tt.want)
 		}
 	}

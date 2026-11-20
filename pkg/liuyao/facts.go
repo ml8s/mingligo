@@ -49,7 +49,7 @@ type SanHeCandidate struct {
 	VoidCount       int      `json:"void_count"`
 	BreakCount      int      `json:"break_count"`
 	Activated       bool     `json:"activated"`
-	Targets         []string `json:"targets,omitempty"`
+	Targets         []TargetRole `json:"targets,omitempty"`
 	ConclusionScope string   `json:"conclusion_scope"`
 }
 
@@ -77,7 +77,7 @@ type BranchRelationFact struct {
 	LeftPosition  int      `json:"left_position"`
 	RightPosition int      `json:"right_position"`
 	Relations     []string `json:"relations"`
-	Targets       []string `json:"targets,omitempty"`
+	Targets       []TargetRole `json:"targets,omitempty"`
 	Basis         []string `json:"basis,omitempty"`
 }
 
@@ -370,12 +370,12 @@ func computeSanHeCandidates(chart *Chart) []SanHeCandidate {
 		}
 		lineComplete := len(linePositions) == len(group.Zhi)
 		complete := len(availableBranches) >= len(group.Zhi)
-		targets := make([]string, 0, 3)
+		targets := make([]TargetRole, 0, 3)
 		yongPos := chart.YongShen.Position
 		if yongPos > 0 {
 			for _, pos := range linePositions {
 				if pos == yongPos {
-					targets = append(targets, "yong_shen")
+					targets = append(targets, targetYongShen)
 					break
 				}
 			}
@@ -387,9 +387,9 @@ func computeSanHeCandidates(chart *Chart) []SanHeCandidate {
 				}
 				switch line.ShiYing {
 				case ShiYingShi:
-					targets = append(targets, "world")
+					targets = append(targets, targetWorld)
 				case ShiYingYing:
-					targets = append(targets, "other")
+					targets = append(targets, targetOther)
 				}
 			}
 		}

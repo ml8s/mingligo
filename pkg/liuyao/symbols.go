@@ -49,7 +49,6 @@ func DecodeLiuQin(v LiuQin) string {
 	return "?"
 }
 
-
 func (q LiuQin) MarshalJSON() ([]byte, error) { return json.Marshal(DecodeLiuQin(q)) }
 
 func (q *LiuQin) UnmarshalJSON(data []byte) error {
@@ -88,7 +87,6 @@ func DecodeLiuShou(v LiuShou) string {
 	return "?"
 }
 
-
 func (l LiuShou) MarshalJSON() ([]byte, error) { return json.Marshal(DecodeLiuShou(l)) }
 
 func (l *LiuShou) UnmarshalJSON(data []byte) error {
@@ -124,7 +122,6 @@ func DecodeMuKuSource(v MuKuSource) string {
 	return ""
 }
 
-
 func (m MuKuSource) MarshalJSON() ([]byte, error) { return json.Marshal(DecodeMuKuSource(m)) }
 
 func EncodeMuKuSource(name string) MuKuSource {
@@ -156,7 +153,6 @@ func DecodeShiYing(v ShiYing) string {
 		return ""
 	}
 }
-
 
 func (s ShiYing) MarshalJSON() ([]byte, error) { return json.Marshal(DecodeShiYing(s)) }
 
@@ -224,7 +220,6 @@ func DecodeDayRelationType(v DayRelationType) string {
 	return ""
 }
 
-
 func (r DayRelationType) MarshalJSON() ([]byte, error) { return json.Marshal(DecodeDayRelationType(r)) }
 
 func EncodeDayRelationType(name string) DayRelationType {
@@ -257,7 +252,6 @@ func DecodeFeiFuRelation(v FeiFuRelation) string {
 	}
 	return ""
 }
-
 
 func (r FeiFuRelation) MarshalJSON() ([]byte, error) { return json.Marshal(DecodeFeiFuRelation(r)) }
 
@@ -328,3 +322,21 @@ var yongShenNames = [7]string{"父母", "兄弟", "官鬼", "妻财", "子孙", 
 // DecodeYongShen decodes a YongShen symbol into its display text.
 func DecodeYongShen(v YongShen) string { return yongShenNames[v] }
 
+// TargetRole is the role a line plays for a branch-relation fact.
+// Its value is the stable code used in output.
+type TargetRole string
+
+const (
+	targetYongShen TargetRole = "yong_shen"
+	targetWorld    TargetRole = "world"
+	targetOther    TargetRole = "other"
+	targetMoving   TargetRole = "moving"
+)
+
+func DecodeTargetRole(t TargetRole) string { return string(t) }
+
+// LifeStage is one of the twelve life-cycle stages (长生十二宫).
+// Backed by ganzhi's ChangShengTable index; value is the display name.
+type LifeStage string
+
+func DecodeLifeStage(s LifeStage) string { return string(s) }

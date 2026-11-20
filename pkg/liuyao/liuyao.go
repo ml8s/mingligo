@@ -24,7 +24,7 @@ type Line struct {
 	MuKuBranch    string       `json:"mu_ku_zhi,omitempty"`       // 本五行墓库地支
 	MuKuElement   string       `json:"mu_ku_wuxing,omitempty"`    // 被入库的五行
 	MuKuTypes     []MuKuSource `json:"mu_ku_types,omitempty"`     // day/moving/transformed
-	ChangShengYue string       `json:"chang_sheng_yue,omitempty"` // 本爻五行在月支的十二长生
+	ChangShengYue LifeStage    `json:"chang_sheng_yue,omitempty"` // 本爻五行在月支的十二长生
 }
 
 // guaMeta holds static data for a hexagram.

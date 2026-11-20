@@ -42,7 +42,7 @@ func yangStemOfElement(element ganzhi.Wuxing) ganzhi.Gan {
 }
 
 // lifeStageOf returns the twelve-life-cycle stage of element at branch.
-func lifeStageOf(element ganzhi.Wuxing, branch ganzhi.Zhi) string {
+func lifeStageOf(element ganzhi.Wuxing, branch ganzhi.Zhi) LifeStage {
 	stem := yangStemOfElement(element)
 	stages, ok := ganzhi.ChangShengTable[stem]
 	if !ok {
@@ -50,7 +50,7 @@ func lifeStageOf(element ganzhi.Wuxing, branch ganzhi.Zhi) string {
 	}
 	for i, zhi := range stages {
 		if zhi == branch && i < len(ganzhi.StageNamesZH) {
-			return ganzhi.StageNamesZH[i]
+			return LifeStage(ganzhi.StageNamesZH[i])
 		}
 	}
 	return ""

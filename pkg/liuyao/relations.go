@@ -6,11 +6,11 @@ import (
 	"github.com/ml8s/mingligo/pkg/ganzhi"
 )
 
-func lineTargets(p *Chart, left, right int) []string {
-	var targets []string
+func lineTargets(p *Chart, left, right int) []TargetRole {
+	var targets []TargetRole
 	yongPos := p.YongShen.Position
 	if yongPos > 0 && (left == yongPos || right == yongPos) {
-		targets = append(targets, "yong_shen")
+		targets = append(targets, targetYongShen)
 	}
 	for _, line := range p.Lines {
 		if line.Position != left && line.Position != right {
@@ -18,12 +18,12 @@ func lineTargets(p *Chart, left, right int) []string {
 		}
 		switch line.ShiYing {
 		case ShiYingShi:
-			targets = append(targets, "world")
+			targets = append(targets, targetWorld)
 		case ShiYingYing:
-			targets = append(targets, "other")
+			targets = append(targets, targetOther)
 		}
 		if line.DongSelf {
-			targets = append(targets, "moving")
+			targets = append(targets, targetMoving)
 		}
 	}
 	return targets

@@ -196,7 +196,7 @@ type YongShenResult struct {
 	XunKong          bool             `json:"xun_kong,omitempty"`    // 用神旬空
 	MuKu             bool             `json:"mu_ku,omitempty"`       // 用神入墓
 	LiuShou          LiuShou          `json:"liu_shou,omitempty"`    // 用神临的六神；伏神不继承飞神六神
-	ChangSheng       string           `json:"chang_sheng,omitempty"` // 用神五行在月支的十二长生
+	ChangSheng       LifeStage        `json:"chang_sheng,omitempty"` // 用神五行在月支的十二长生
 	FuShen           *FuShen          `json:"fu_shen,omitempty"`
 	FuShenCandidates []FuShen         `json:"fu_shen_candidates,omitempty"`
 }

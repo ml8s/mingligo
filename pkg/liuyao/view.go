@@ -113,7 +113,7 @@ func (c Chart) lineView(line Line, rel DayRelation, wangShuai ganzhi.WangShuai) 
 		GanZhi: ganzhi.GanName(line.Gan) + ganzhi.ZhiName(line.Zhi),
 		Wuxing: ganzhi.DecodeWuxing(line.Wuxing), LiuQin: DecodeLiuQin(line.LiuQin),
 		ShiYing: DecodeShiYing(line.ShiYing), LiuShou: DecodeLiuShou(line.LiuShou),
-		WangShuai: ganzhi.DecodeWangShuai(wangShuai), ChangShengYue: line.ChangShengYue,
+		WangShuai: ganzhi.DecodeWangShuai(wangShuai), ChangShengYue: string(line.ChangShengYue),
 		Flags: flags,
 	}
 	if len(rel.Relations) > 0 {
@@ -137,7 +137,7 @@ func yongShenView(v YongShenResult) YongShenView {
 	view := YongShenView{
 		Name: v.Name, Position: v.Position, IsHidden: v.IsHidden,
 		WangShuai: ganzhi.DecodeWangShuai(v.WangShuai), YuePo: v.YuePo, XunKong: v.XunKong,
-		MuKu: v.MuKu, LiuShou: DecodeLiuShou(v.LiuShou), ChangSheng: v.ChangSheng,
+		MuKu: v.MuKu, LiuShou: DecodeLiuShou(v.LiuShou), ChangSheng: string(v.ChangSheng),
 		FuShen: fuShenView(v.FuShen),
 	}
 	for _, cand := range v.FuShenCandidates {
