@@ -51,7 +51,7 @@ func computeXingGongWuXing(board Board) []XingGongWuXing {
 			relation := xingGongRelation(item.Star, GongIndex(i+1))
 			result = append(result, XingGongWuXing{
 				Star: item.Star, Gong: GongIndex(i + 1),
-				Relation: relation, RelationName: wuxingRelations[relation].Name,
+				Relation: relation.String(), RelationName: wuxingRelations[relation].Name,
 				TraditionalLabel: wuxingRelations[relation].TraditionalLabel,
 			})
 		}
@@ -67,20 +67,20 @@ func starWuxing(s StarIndex) ganzhi.Wuxing {
 	return 0
 }
 
-func xingGongRelation(star StarIndex, palace GongIndex) string {
+func xingGongRelation(star StarIndex, palace GongIndex) WuxingRelation {
 	starElem := starWuxing(star)
 	palElem := palaceWuxing(palace)
 	if starElem == palElem {
-		return "same"
+		return wrSame
 	}
 	switch {
 	case ganzhi.Sheng(palElem, starElem):
-		return "gong_generates_xing"
+		return wrGongGeneratesXing
 	case ganzhi.Sheng(starElem, palElem):
-		return "xing_generates_gong"
+		return wrXingGeneratesGong
 	case ganzhi.Ke(starElem, palElem):
-		return "xing_controls_gong"
+		return wrXingControlsGong
 	default:
-		return "gong_controls_xing"
+		return wrGongControlsXing
 	}
 }

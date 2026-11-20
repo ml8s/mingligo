@@ -83,7 +83,7 @@ func TestDomainOracle_CoreTables(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		if got := soulStar(z); got != tc.Expected {
+		if got := soulStar(z); starName(got) != tc.Expected {
 			t.Errorf("soul %s = %s, want %s", tc.Branch, got, tc.Expected)
 		}
 	}
@@ -92,7 +92,7 @@ func TestDomainOracle_CoreTables(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		if got := bodyStar(z); got != tc.Expected {
+		if got := bodyStar(z); starName(got) != tc.Expected {
 			t.Errorf("body %s = %s, want %s", tc.Branch, got, tc.Expected)
 		}
 	}

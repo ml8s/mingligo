@@ -280,8 +280,8 @@ var (
 	palaceDoor             [9]DoorIndex
 	starWuxingTable        [9]ganzhi.Wuxing
 	doorWuxingTable        [9]ganzhi.Wuxing
-	wuxingRelations        map[string]wuxingRelationEntry
-	riShiRelations         map[string]string
+	wuxingRelations        map[WuxingRelation]wuxingRelationEntry
+	riShiRelations         map[WuxingRelation]string
 	zhiPalaceTable         [12]GongIndex
 	maXingTable            [12]ganzhi.Zhi
 	liuJiaZhi              [6]ganzhi.Zhi
@@ -1215,21 +1215,29 @@ func loadPlate() error {
 		}
 		doorWuxingTable[int(door)-1] = element
 	}
-	wuxingRelations = make(map[string]wuxingRelationEntry, len(table.WuxingRelations))
+	wuxingRelations = make(map[WuxingRelation]wuxingRelationEntry, len(table.WuxingRelations))
 	for _, entry := range table.WuxingRelations {
-		if _, exists := wuxingRelations[entry.Relation]; exists {
+		rel, ok := ParseWuxingRelation(entry.Relation)
+		if !ok {
+			return fmt.Errorf("load plate: unknown wuxing relation %q", entry.Relation)
+		}
+		if _, exists := wuxingRelations[rel]; exists {
 			return fmt.Errorf("load plate: duplicate wuxing relation %q", entry.Relation)
 		}
-		wuxingRelations[entry.Relation] = wuxingRelationEntry{
+		wuxingRelations[rel] = wuxingRelationEntry{
 			Name: entry.Name, TraditionalLabel: entry.TraditionalLabel,
 		}
 	}
-	riShiRelations = make(map[string]string, len(table.RiShiRelations))
+	riShiRelations = make(map[WuxingRelation]string, len(table.RiShiRelations))
 	for _, entry := range table.RiShiRelations {
-		if _, exists := riShiRelations[entry.Relation]; exists {
+		rel, ok := ParseWuxingRelation(entry.Relation)
+		if !ok {
+			return fmt.Errorf("load plate: unknown ri-shi relation %q", entry.Relation)
+		}
+		if _, exists := riShiRelations[rel]; exists {
 			return fmt.Errorf("load plate: duplicate ri-shi relation %q", entry.Relation)
 		}
-		riShiRelations[entry.Relation] = entry.Name
+		riShiRelations[rel] = entry.Name
 	}
 	for branch, palaceName := range table.ZhiGong {
 		zhi, err := ganzhi.ParseZhi(branch)
@@ -1486,17 +1494,15 @@ func validatePlateTables() error {
 			return fmt.Errorf("load plate: palace %d home door is invalid", palace+1)
 		}
 	}
-	for _, relation := range []string{
-		"same", "gong_generates_xing", "xing_generates_gong",
-		"xing_controls_gong", "gong_controls_xing",
+	for _, relation := range []WuxingRelation{
+		wrSame, wrGongGeneratesXing, wrXingGeneratesGong, wrXingControlsGong, wrGongControlsXing,
 	} {
 		if _, ok := wuxingRelations[relation]; !ok {
 			return fmt.Errorf("load plate: missing wuxing relation %q", relation)
 		}
 	}
-	for _, relation := range []string{
-		"same", "ri_generates_shi", "shi_generates_ri",
-		"ri_controls_shi", "shi_controls_ri",
+	for _, relation := range []WuxingRelation{
+		wrSame, wrRiGeneratesShi, wrShiGeneratesRi, wrRiControlsShi, wrShiControlsRi,
 	} {
 		if _, ok := riShiRelations[relation]; !ok {
 			return fmt.Errorf("load plate: missing ri-shi relation %q", relation)

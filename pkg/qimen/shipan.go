@@ -297,25 +297,25 @@ func findStarPalace(p Board, star StarIndex) GongIndex {
 }
 
 func analyzeRiShiRelation(dayPalace, hourPalace GongIndex) RiShiRelation {
-	relation := "same"
+	relation := wrSame
 	if dayPalace > 0 && hourPalace > 0 {
 		dayElement := palaceWuxing(dayPalace)
 		hourElement := palaceWuxing(hourPalace)
 		if dayElement == hourElement {
-			relation = "same"
+			relation = wrSame
 		} else if ganzhi.Sheng(dayElement, hourElement) {
-			relation = "ri_generates_shi"
+			relation = wrRiGeneratesShi
 		} else if ganzhi.Sheng(hourElement, dayElement) {
-			relation = "shi_generates_ri"
+			relation = wrShiGeneratesRi
 		} else if ganzhi.Ke(dayElement, hourElement) {
-			relation = "ri_controls_shi"
+			relation = wrRiControlsShi
 		} else {
-			relation = "shi_controls_ri"
+			relation = wrShiControlsRi
 		}
 	}
 	return RiShiRelation{
 		Zhu: "day_stem_palace", Ke: "hour_stem_palace",
-		Relation: relation, Name: riShiRelations[relation],
+		Relation: relation.String(), Name: riShiRelations[relation],
 	}
 }
 

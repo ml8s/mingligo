@@ -97,13 +97,13 @@ func TestTableDrivenSpiritNamesAndRelations(t *testing.T) {
 	if SpiritGouChen.YangName() != "勾陈" || SpiritGouChen.YinName() != "白虎" {
 		t.Fatal("slot-5 spirit school names are not table-driven")
 	}
-	if got := xingGongRelation(StarTianRui, GongGen); got != "same" {
+	if got := xingGongRelation(StarTianRui, GongGen); got != wrSame {
 		t.Fatalf("TianRui/Gen relation = %s, want same", got)
 	}
-	if wuxingRelations["same"].TraditionalLabel != "旺" {
+	if wuxingRelations[wrSame].TraditionalLabel != "旺" {
 		t.Fatal("same-element traditional label is missing")
 	}
-	if riShiRelations["ri_controls_shi"] == "" {
+	if riShiRelations[wrRiControlsShi] == "" {
 		t.Fatal("ri-shi relation label is missing")
 	}
 }

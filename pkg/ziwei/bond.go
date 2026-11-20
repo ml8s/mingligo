@@ -17,13 +17,13 @@ type BondPalacePair struct {
 // placement is not treated here as a stable classical Ziwei rule.
 func ComputeBond(a, b BondSideFacts) Bond {
 	return Bond{
-		MingGong: bondPalacePair(a.MingGong, b.MingGong, "命宫"),
-		FuQiGong: bondPalacePair(a.FuQiGong, b.FuQiGong, "夫妻"),
-		ZiNvGong: bondPalacePair(a.ZiNvGong, b.ZiNvGong, "子女"),
+		MingGong: bondPalacePair(a.MingGong, b.MingGong, gongMing),
+		FuQiGong: bondPalacePair(a.FuQiGong, b.FuQiGong, gongFuQi),
+		ZiNvGong: bondPalacePair(a.ZiNvGong, b.ZiNvGong, gongZiNv),
 	}
 }
 
-func bondPalacePair(aPalace, bPalace BondPalaceFacts, kind string) BondPalacePair {
+func bondPalacePair(aPalace, bPalace BondPalaceFacts, kind gongIndex) BondPalacePair {
 	return BondPalacePair{
 		A:      aPalace,
 		B:      bPalace,
@@ -31,11 +31,11 @@ func bondPalacePair(aPalace, bPalace BondPalaceFacts, kind string) BondPalacePai
 	}
 }
 
-func pairStatus(label string, aStars, bStars []string) string {
-	switch label {
-	case "夫妻":
+func pairStatus(palace gongIndex, aStars, bStars []string) string {
+	switch palace {
+	case gongFuQi:
 		return spouseStatus(aStars, bStars)
-	case "子女":
+	case gongZiNv:
 		return childStatus(aStars, bStars)
 	}
 	return ""

@@ -1,53 +1,53 @@
 package ziwei
 
 // soulStar returns the 命主 (soul star) name for a given ming gong zhi.
-func soulStar(mingZhi Zhi) string {
+func soulStar(mingZhi Zhi) starIndex {
 	switch mingZhi {
 	case 1:
-		return "贪狼"
+		return TanLang
 	case 2:
-		return "巨门"
+		return JuMen
 	case 3:
-		return "禄存"
+		return LuCun
 	case 4:
-		return "文曲"
+		return WenQu
 	case 5:
-		return "廉贞"
+		return LianZhen
 	case 6:
-		return "武曲"
+		return WuQu
 	case 7:
-		return "破军"
+		return PoJun
 	case 8:
-		return "武曲"
+		return WuQu
 	case 9:
-		return "廉贞"
+		return LianZhen
 	case 10:
-		return "文曲"
+		return WenQu
 	case 11:
-		return "禄存"
+		return LuCun
 	case 12:
-		return "巨门"
+		return JuMen
 	}
-	return ""
+	return -1
 }
 
 // bodyStar returns the 身主 (body star) name for a given birth year zhi.
-func bodyStar(nianZhi Zhi) string {
+func bodyStar(nianZhi Zhi) starIndex {
 	switch nianZhi {
 	case 1, 7:
-		return "火星"
+		return HuoXing
 	case 2, 8:
-		return "天相"
+		return TianXiang
 	case 3, 9:
-		return "天梁"
+		return TianLiang
 	case 4, 10:
-		return "天同"
+		return TianTong
 	case 5, 11:
-		return "文昌"
+		return WenChang
 	case 6, 12:
-		return "天机"
+		return TianJi
 	}
-	return ""
+	return -1
 }
 
 // yuanGongPalace returns the gong index of 来因宫 (original gong).

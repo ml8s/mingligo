@@ -67,7 +67,7 @@ func buildFlowPalaces(liuPanIdx int, starByAnXingIdx map[int][]string) [12]FlowP
 			Zhi:    zhiIdxToZhi(zhiIdx),
 			Name:   name,
 			Stars:  stars,
-			IsMing: name == "命宫",
+			IsMing: palIdx == int(gongMing),
 		}
 	}
 	return out
@@ -98,18 +98,61 @@ func newFlowTransformations(
 	return result
 }
 
-// flowStarKind extracts the stable star kind from a prefixed flow-star name
-// (for example 月禄/流禄 → 禄). The kind controls display order only; it does
-// not imply importance, strength, or a new interpretation order.
-func flowStarKind(name string) rune {
+// flowStarKind is the period-independent kind of a flow star (禄/羊/陀/…),
+// defined once in the ziwei domain with a stable rank for display ordering.
+type flowStarKind int
+
+const (
+	fskNone flowStarKind = iota
+	fskLu                 // 禄
+	fskYang               // 羊
+	fskTuo                // 陀
+	fskKui                // 魁
+	fskYue                // 钺
+	fskMa                 // 马
+	fskLuan               // 鸾
+	fskXi                 // 喜
+	fskChang              // 昌
+	fskQu                 // 曲
+)
+
+// flowStarKindOf extracts the stable star kind from a prefixed flow-star name
+// (for example 月禄/流禄 → 禄).
+func flowStarKindOf(name string) flowStarKind {
 	runes := []rune(name)
+	var k rune
 	if len(runes) < 2 {
 		if len(runes) == 0 {
-			return 0
+			return fskNone
 		}
-		return runes[0]
+		k = runes[0]
+	} else {
+		k = runes[1]
 	}
-	return runes[1]
+	switch k {
+	case '禄':
+		return fskLu
+	case '羊':
+		return fskYang
+	case '陀':
+		return fskTuo
+	case '魁':
+		return fskKui
+	case '钺':
+		return fskYue
+	case '马':
+		return fskMa
+	case '鸾':
+		return fskLuan
+	case '喜':
+		return fskXi
+	case '昌':
+		return fskChang
+	case '曲':
+		return fskQu
+	default:
+		return fskNone
+	}
 }
 
 // sortFlowStars gives the JSON contract a deterministic array order. The order
@@ -119,7 +162,7 @@ func sortFlowStars(stars []string) []string {
 	ordered := make([]string, 0, len(stars))
 	ordered = append(ordered, stars...)
 	rank := func(name string) (int, string) {
-		kind := flowStarKind(name)
+		kind := flowStarKindOf(name)
 		if rank, ok := flowStarDisplayRank[kind]; ok {
 			return rank, name
 		}
@@ -136,15 +179,7 @@ func sortFlowStars(stars []string) []string {
 	return ordered
 }
 
-var flowStarDisplayRank = map[rune]int{
-	'禄': 0,
-	'羊': 1,
-	'陀': 2,
-	'魁': 3,
-	'钺': 4,
-	'马': 5,
-	'鸾': 6,
-	'喜': 7,
-	'昌': 8,
-	'曲': 9,
+var flowStarDisplayRank = map[flowStarKind]int{
+	fskLu: 0, fskYang: 1, fskTuo: 2, fskKui: 3, fskYue: 4,
+	fskMa: 5, fskLuan: 6, fskXi: 7, fskChang: 8, fskQu: 9,
 }
