@@ -35,9 +35,9 @@ type JinhanPalace struct {
 // JinhanDaySpirit maps one branch to the twelve-spirit table selected by the
 // current day stem.
 type JinhanDaySpirit struct {
-	Zhi        ganzhi.Zhi `json:"zhi"`
-	Shen       string     `json:"shen"`
-	ShenSymbol string     `json:"shen_symbol"`
+	Zhi        ganzhi.Zhi   `json:"zhi"`
+	Shen       string       `json:"shen"`
+	ShenSymbol JinhanSpirit `json:"shen_symbol"`
 }
 
 // JinhanBoard is the complete Golden Mirror daily plate.
@@ -130,7 +130,7 @@ func withJinhanDaySpirits(plate JinhanBoard, dayZhu ganzhi.Zhu) JinhanBoard {
 	for branch := ganzhi.ZhiZi; branch <= ganzhi.ZhiHai; branch++ {
 		symbol := spirits[int(branch)-1]
 		plate.DaySpirits[int(branch)-1] = JinhanDaySpirit{
-			Zhi: branch, Shen: DecodeJinhanSpirit(symbol), ShenSymbol: DecodeJinhanSpiritKey(symbol),
+			Zhi: branch, Shen: DecodeJinhanSpirit(symbol), ShenSymbol: symbol,
 		}
 	}
 	return plate

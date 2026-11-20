@@ -32,12 +32,12 @@ func TestJinhanDaySpiritsCarrySymbol(t *testing.T) {
 	}
 	chart := ComputeJinhanChartAt(time.Date(2024, 6, 29, 12, 0, 0, 0, time.UTC), 116.4)
 	for i, day := range chart.Board.DaySpirits {
-		if day.ShenSymbol == "" {
+		if day.ShenSymbol == 0 {
 			t.Errorf("day spirit %d lacks shen_symbol", i)
 		}
 		parsed, err := EncodeJinhanSpirit(day.Shen)
-		if err != nil || DecodeJinhanSpiritKey(parsed) != day.ShenSymbol {
-			t.Errorf("day spirit %d: shen=%q symbol=%q mismatch (%v)", i, day.Shen, day.ShenSymbol, err)
+		if err != nil || parsed != day.ShenSymbol {
+			t.Errorf("day spirit %d: shen=%q symbol=%v mismatch (%v)", i, day.Shen, day.ShenSymbol, err)
 		}
 	}
 }

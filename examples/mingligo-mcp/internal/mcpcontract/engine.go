@@ -13,6 +13,7 @@ import (
 	"github.com/google/jsonschema-go/jsonschema"
 	"github.com/ml8s/mingligo/pkg/ganzhi"
 	"github.com/ml8s/mingligo/pkg/liuyao"
+	"github.com/ml8s/mingligo/pkg/qimen"
 )
 
 // buildStaticSchemaOptions builds wire-level constraints that Go struct tags
@@ -144,6 +145,9 @@ func buildStaticSchemaOptions() map[reflect.Type]*jsonschema.Schema {
 		},
 		reflect.TypeFor[ganzhi.Zhi](): {
 			Type: "string", Enum: []any{"子", "丑", "寅", "卯", "辰", "巳", "午", "未", "申", "酉", "戌", "亥"},
+		},
+		reflect.TypeFor[qimen.JinhanSpirit](): {
+			Type: "string", Enum: []any{"diyao", "liuze", "wufu", "tiancao", "difu", "fengbo", "leigong", "yushi", "fengyun", "tangfu", "guoyin", "tianguan"},
 		},
 		reflect.TypeFor[GanName](): {
 			Type: "string", Enum: []any{"甲", "乙", "丙", "丁", "戊", "己", "庚", "辛", "壬", "癸"},
