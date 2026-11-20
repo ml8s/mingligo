@@ -346,7 +346,7 @@ func buildNatalRelationsFromDetection(bz ganzhi.Bazi, detection RelationDetectio
 				{Pillar: zhuLabels[relation.PillarB], Gan: ganzhi.GanName(relation.GanB)},
 			},
 			Wuxing:    wuxingOutput(relation.HeElement),
-			Position:  relation.Position.String(),
+			Position:  DecodeRelationPosition(relation.Position),
 			Contested: relation.Contested,
 		})
 	}
@@ -364,7 +364,7 @@ func buildNatalRelationsFromDetection(bz ganzhi.Bazi, detection RelationDetectio
 				{Pillar: zhuLabels[relation.PillarA], Gan: ganzhi.GanName(relation.GanA)},
 				{Pillar: zhuLabels[relation.PillarB], Gan: ganzhi.GanName(relation.GanB)},
 			},
-			Position: relation.Position.String(),
+			Position: DecodeRelationPosition(relation.Position),
 		})
 	}
 	for _, relation := range detection.ZhiLiuHe {

@@ -59,7 +59,7 @@ func TestNatalRelationsCoverLegacyRelationArrays(t *testing.T) {
 						{Pillar: zhuLabels[relation.PillarA], Gan: ganzhi.GanName(relation.GanA)},
 						{Pillar: zhuLabels[relation.PillarB], Gan: ganzhi.GanName(relation.GanB)},
 					},
-					Wuxing: relation.HeElement.String(), Position: relation.Position.String(), Contested: relation.Contested,
+					Wuxing: relation.HeElement.String(), Position: DecodeRelationPosition(relation.Position), Contested: relation.Contested,
 				})
 			}
 			for _, relation := range detection.GanChong {
@@ -74,7 +74,7 @@ func TestNatalRelationsCoverLegacyRelationArrays(t *testing.T) {
 						{Pillar: zhuLabels[relation.PillarA], Gan: ganzhi.GanName(relation.GanA)},
 						{Pillar: zhuLabels[relation.PillarB], Gan: ganzhi.GanName(relation.GanB)},
 					},
-					Position: relation.Position.String(),
+					Position: DecodeRelationPosition(relation.Position),
 				})
 			}
 

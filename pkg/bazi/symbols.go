@@ -10,7 +10,8 @@ const (
 	positionRemote
 )
 
-func (p RelationPosition) String() string {
+// DecodeRelationPosition decodes a RelationPosition symbol into its display text.
+func DecodeRelationPosition(p RelationPosition) string {
 	switch p {
 	case positionAdjacent:
 		return "adjacent"
