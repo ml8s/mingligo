@@ -10,9 +10,9 @@ import (
 // StemOccurrence records one exact stem occurrence in a palace. For a visible
 // stem source is "gan"; for a hidden stem it is main_qi / mid_qi / minor_qi.
 type StemOccurrence struct {
-	Pillar string `json:"zhu"`
-	Branch string `json:"zhi"`
-	Stem   string `json:"gan"`
+	Pillar PillarIndex `json:"zhu"`
+	Branch ganzhi.Zhi  `json:"zhi"`
+	Stem   ganzhi.Gan  `json:"gan"`
 	Source TenGodSource `json:"source"`
 }
 
@@ -162,8 +162,8 @@ func buildTiaoHouAvailability(
 			availability.Transparent = true
 			targetPillars[pillar.index] = true
 			availability.Occurrences = append(availability.Occurrences, StemOccurrence{
-				Pillar: zhuLabels[pillar.index], Branch: ganzhi.ZhiName(pillar.zhi),
-				Stem: ganzhi.GanName(stem), Source: sourceGan,
+				Pillar: PillarIndex(pillar.index), Branch: pillar.zhi,
+				Stem: stem, Source: sourceGan,
 			})
 		}
 		hidden := []struct {
@@ -189,8 +189,8 @@ func buildTiaoHouAvailability(
 				availability.Hidden = true
 				targetPillars[pillar.index] = true
 				availability.Occurrences = append(availability.Occurrences, StemOccurrence{
-					Pillar: zhuLabels[pillar.index], Branch: ganzhi.ZhiName(pillar.zhi),
-					Stem: ganzhi.GanName(stem), Source: item.source,
+					Pillar: PillarIndex(pillar.index), Branch: pillar.zhi,
+					Stem: stem, Source: item.source,
 				})
 			}
 		}
@@ -274,8 +274,8 @@ func hiddenStemOccurrences(bz ganzhi.Bazi, elem ganzhi.Wuxing) []StemOccurrence 
 		for _, item := range items {
 			if ganzhi.GanWuxing(item.gan) == elem {
 				result = append(result, StemOccurrence{
-					Pillar: zhuLabels[index], Branch: ganzhi.ZhiName(branches[index]),
-					Stem: ganzhi.GanName(item.gan), Source: item.source,
+					Pillar: PillarIndex(index), Branch: branches[index],
+					Stem: item.gan, Source: item.source,
 				})
 			}
 		}

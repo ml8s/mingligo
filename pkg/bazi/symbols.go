@@ -1,6 +1,11 @@
 package bazi
 
-import "github.com/ml8s/mingligo/pkg/ganzhi"
+import (
+	"fmt"
+	"strings"
+
+	"github.com/ml8s/mingligo/pkg/ganzhi"
+)
 
 // RelationPosition is the engine-owned strength hint for a paired relation:
 // adjacent pairs are tight combinations, others are candidates.
@@ -218,6 +223,16 @@ var pillarCodes = [...]string{"nian", "yue", "ri", "shi"}
 func DecodePillarIndex(p PillarIndex) string { return pillarCodes[p] }
 func (p PillarIndex) MarshalJSON() ([]byte, error) {
 	return []byte(`"` + DecodePillarIndex(p) + `"`), nil
+}
+
+func (p *PillarIndex) UnmarshalJSON(data []byte) error {
+	name := strings.Trim(string(data), `"`)
+	idx, ok := EncodePillarIndex(name)
+	if !ok {
+		return fmt.Errorf("unknown pillar: %s", name)
+	}
+	*p = idx
+	return nil
 }
 func EncodePillarIndex(code string) (PillarIndex, bool) {
 	for i, c := range pillarCodes {
