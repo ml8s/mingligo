@@ -29,7 +29,7 @@
 | `tianwen` | 节气、历法日期、时间边界 |
 | `bazi` `qimen` `liuyao` `ziwei` | 各域专属符号（格局、宫位、门星神、六亲、杂曜等） |
 
-每个域包的 `symbols.go` 集中定义该域所有符号：**类型 + 常量 + 名字表 + `Encode`/`Decode`**。同名概念跨包共用（如 `GongIndex`/`StarIndex`），不重复造。
+需要符号化的域包以 `symbols.go` 集中定义该域所有符号：**类型 + 常量 + 名字表 + `Encode`/`Decode`**（目前 ganzhi/tianwen/bazi/qimen/liuyao/ziwei 六包有；其它包无封闭命理符号集）。同名概念跨包共用（如 `GongIndex`/`StarIndex`），不重复造。
 
 ## 3. 双向映射（唯一边界）
 
@@ -56,7 +56,7 @@ decode: 符号 → 文本   （系统解码出人类语言；输出边界）
 
 ## 5. 时间与数据
 
-时间是天文事实，不是产品约定。`tianwen` 提供 `standard_time`、真太阳时、节气精确时刻、农历投影等符号与边界；八字等域只消费这些事实。所有需要出生时刻的入口用 `Compute*At`（标准时），时间解析先走 `tianwen.ResolveStandard`。
+时间是天文事实，不是产品约定。`tianwen` 提供标准时/真太阳时的**投影函数与边界解析**、节气精确时刻与农历投影，以及 `JieQi`/`LunarBasis` 符号（四个时间尺度本身是 `time.Time` + 命名约定，不是 Go 符号类型）；八字等域只消费这些事实。所有需要出生时刻的入口用 `Compute*At`（标准时），时间解析先走 `tianwen.ResolveStandard`。
 
 ## 6. 输出与适配器
 
@@ -79,3 +79,17 @@ decode: 符号 → 文本   （系统解码出人类语言；输出边界）
 | 算子写指针参数 / 全局可变状态 | 违规，改值入值出 |
 | `Encode`/`Decode`、数据加载、输出展示文案 | 边界，合规 |
 | wire 契约强制的 string-keyed map、复合非封闭值（如 `main_qi_not_transparent`） | 真边界，合规 |
+
+## 附录：审计判定清单（曾争议的项）
+
+| 项 | 判定 | 理由 |
+|---|---|---|
+| `NatalRelationMember`/`StemOccurrence`/`TargetedRelationEvidence` 的干支 | 已符号化 | 曾被 `EncodeGan/Zhi` 反解参与运算，是符号→string→符号往返 |
+| `ElementStructure.Wuxing/Season` | 已符号化 | 用解码文本比较旺衰；改符号后直接比较 |
+| `rel*` 干支关系、`cat*` 神煞吉凶 | 已符号化 | 封闭命理概念具名化 |
+| `CandidateWuxing`/`TenGodSource`/`TripleRelationKind`/`GanZhiRelationKind`/`PatternSubType`/`StarLei` | 已符号化 | 封闭集具名（string 底层，值即文本），即使只喂输出 |
+| `FuYiResult.WangShuai`/`WuxingCount` 的 string key | 真边界 | wire 契约强制 string-keyed map；符号 key 会输出数字破坏契约。消费端用 `fuYiWangShuaiAt` 单一边界 helper 转符号 |
+| `TombSchool.EarthBranch` | 真边界 | 固定"辰"的流派标注，不参与卦理；在 `ChartView` 中 MCP 直接引用，符号化需拆整个 View |
+| `TiaoHouResult.MarshalJSON` | 特例 | all-null secondary 是 domain 的输出形状定义（ADR 0004: domain owns output shape），非符号映射；wire 侧同形状对象 schema 依赖它 |
+| `main_qi_not_transparent` 等复合值 | 真边界 | 非封闭集，string 合理 |
+| 数据加载 `Encode*`、输入校验、输出文案/描述 | 边界 | string→符号在入口、符号→文案在出口 |
