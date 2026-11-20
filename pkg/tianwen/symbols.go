@@ -1,6 +1,9 @@
 package tianwen
 
-import "math"
+import (
+	"fmt"
+	"math"
+)
 
 // JieQi is the canonical solar-term symbol, indexed from 冬至(0) through
 // 大雪(23) — the same order as AllSolarTerms and qimen's canonical index.
@@ -68,4 +71,34 @@ func ParseJieQi(name string) (JieQi, bool) {
 		}
 	}
 	return 0, false
+}
+
+// LunarBasis selects the date frame used to project an instant into the
+// Chinese lunisolar calendar.
+type LunarBasis string
+
+const (
+	// LunarBasisOfficial uses the Beijing civil date and the UTC+8 calendar.
+	LunarBasisOfficial LunarBasis = "official"
+	// LunarBasisLocalLabel uses the caller's local date label with the UTC+8
+	// calendar table. This is the ziwei-compatible school convention.
+	LunarBasisLocalLabel LunarBasis = "local_label"
+	// LunarBasisLocalAstronomical uses the caller's local date and a calendar
+	// whose new moons and 中气 are assigned in the caller's zone.
+	LunarBasisLocalAstronomical LunarBasis = "local_astronomical"
+)
+
+// ParseLunarBasis validates a basis name. The empty string is the default
+// local_astronomical basis, which is the globally aligned projection.
+func ParseLunarBasis(basis string) (LunarBasis, error) {
+	switch LunarBasis(basis) {
+	case "", LunarBasisLocalAstronomical:
+		return LunarBasisLocalAstronomical, nil
+	case LunarBasisOfficial, LunarBasisLocalLabel:
+		return LunarBasis(basis), nil
+	default:
+		return "", fmt.Errorf(
+			"lunar basis must be official, local_label, or local_astronomical, got %q", basis,
+		)
+	}
 }
