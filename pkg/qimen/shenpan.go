@@ -33,3 +33,12 @@ func spiritDisplayName(spirit SpiritIndex, yinDun bool, school School) string {
 	}
 	return spirit.YangName()
 }
+
+// spiritIsYinXuanWu reports whether the slot is the 玄武 (朱雀 under 阴遁)
+// in the given school's naming convention.
+func spiritIsYinXuanWu(spirit SpiritIndex, yinDun bool, school School) bool {
+	if !yinDun || spirit != SpiritZhuQue {
+		return false
+	}
+	return spiritDisplayName(spirit, yinDun, school) == SpiritZhuQue.YinName()
+}

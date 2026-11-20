@@ -37,40 +37,23 @@ func ParseYongShen(s string) (YongShenSymbol, error) {
 }
 
 func parseDoor(s string) (DoorIndex, bool) {
-	// 门名格式："开门"/"生门"等（带门字）
-	for d := DoorXiu; d <= DoorZhong; d++ {
-		if d.String() == s {
-			return d, true
-		}
-	}
-	return 0, false
+	d, err := ParseDoorIndex(s)
+	return d, err == nil
 }
 
 func parseStar(s string) (StarIndex, bool) {
-	for st := StarTianPeng; st <= StarTianYing; st++ {
-		if st.String() == s {
-			return st, true
-		}
-	}
-	return 0, false
+	st, err := ParseStarIndex(s)
+	return st, err == nil
 }
 
 func parseSpirit(s string) (SpiritIndex, bool) {
-	for sp := SpiritZhiFu; sp <= SpiritTaiChang; sp++ {
-		if sp.YangName() == s || sp.YinName() == s {
-			return sp, true
-		}
-	}
-	return 0, false
+	sp, err := ParseSpiritIndex(s)
+	return sp, err == nil
 }
 
 func parseGan(s string) (ganzhi.Gan, bool) {
-	for g := ganzhi.GanJia; g <= ganzhi.GanGui; g++ {
-		if g.String() == s {
-			return g, true
-		}
-	}
-	return 0, false
+	g, err := ganzhi.ParseGan(s)
+	return g, err == nil
 }
 
 // SymbolResult 单个用神符号的落宫状态。

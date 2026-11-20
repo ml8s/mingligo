@@ -193,8 +193,7 @@ func computeThiefFacts(chart Chart) []ThiefFact {
 			}
 			add("大贼", "天蓬", gong, label)
 		}
-		if palace.SpiritSet && palace.Spirit == SpiritZhuQue &&
-			spiritDisplayName(palace.Spirit, chart.Board.YinDun, chart.Board.School) == "玄武" {
+		if palace.SpiritSet && spiritIsYinXuanWu(palace.Spirit, chart.Board.YinDun, chart.Board.School) {
 			label := palaceWang[gong]
 			if label == "" {
 				label = "未知"
