@@ -48,6 +48,9 @@ var jinhanJSON []byte
 //go:embed data/quarter.json
 var quarterJSON []byte
 
+//go:embed data/gong_facts.json
+var gongFactsJSON []byte
+
 type wuxingRelationEntry struct {
 	Name             string
 	TraditionalLabel string
@@ -289,6 +292,10 @@ var (
 	wuBuYuShiTable    map[[2]ganzhi.Gan]bool
 	fuTouYuanTable    map[ganzhi.Zhi]int
 
+	gongFactsTable   [10]gongFact
+	doorJiXiongTable [10]jiXiongFact
+	starJiXiongTable [10]jiXiongFact
+
 	patternRules           []patternRule
 	yingqiRuleTable        map[string]yingqiRuleEntry
 	yingqiHorizonDays      int
@@ -342,7 +349,7 @@ func Load() error {
 		loaders := []func() error{
 			loadGanInteractions, loadJushu, loadMenInteractions,
 			loadXingInteractions, loadCatalog, loadQuarter, loadPlate, loadPatterns,
-			loadYingQi, loadZhiRun, loadMaoShan, loadJinhan,
+			loadYingQi, loadZhiRun, loadMaoShan, loadJinhan, loadGongFacts,
 		}
 		for _, load := range loaders {
 			if err := load(); err != nil {
@@ -520,16 +527,16 @@ func loadCatalog() error {
 			DingjuMethod string `json:"dingju_method"`
 		} `json:"default"`
 		Scopes []struct {
-			Scope              string   `json:"scope"`
-			Name               string   `json:"name"`
+			Scope              string           `json:"scope"`
+			Name               string           `json:"name"`
 			LeadPillar         LeadPillarKind   `json:"lead_pillar"`
-			MethodSource       MethodSourceKind   `json:"method_source"`
-			DingjuMethods      []string `json:"dingju_methods"`
-			DefaultDingju      string   `json:"default_dingju_method"`
-			NoDingjuSchools    []string `json:"no_dingju_schools"`
-			QuarterRules       []string `json:"quarter_rules"`
-			DefaultQuarterRule string   `json:"default_quarter_rule"`
-			Features           []FeatureKind `json:"features"`
+			MethodSource       MethodSourceKind `json:"method_source"`
+			DingjuMethods      []string         `json:"dingju_methods"`
+			DefaultDingju      string           `json:"default_dingju_method"`
+			NoDingjuSchools    []string         `json:"no_dingju_schools"`
+			QuarterRules       []string         `json:"quarter_rules"`
+			DefaultQuarterRule string           `json:"default_quarter_rule"`
+			Features           []FeatureKind    `json:"features"`
 		} `json:"scopes"`
 		Schools []struct {
 			School               string   `json:"school"`
@@ -1960,4 +1967,60 @@ func hasDuplicate(values []string) bool {
 		seen[value] = true
 	}
 	return false
+}
+
+func loadGongFacts() error {
+	var table struct {
+		Gong []struct {
+			Gong       string `json:"gong"`
+			Person     string `json:"person"`
+			Range      string `json:"range"`
+			DomainYang string `json:"domain_yang"`
+			DomainYin  string `json:"domain_yin"`
+		} `json:"gong"`
+		Men []struct {
+			Men     string `json:"men"`
+			JiXiong string `json:"ji_xiong"`
+			YingShi string `json:"yingshi"`
+		} `json:"men"`
+		Xing []struct {
+			Xing    string `json:"xing"`
+			JiXiong string `json:"ji_xiong"`
+			YingShi string `json:"yingshi"`
+		} `json:"xing"`
+	}
+	if err := json.Unmarshal(gongFactsJSON, &table); err != nil {
+		return err
+	}
+	if len(table.Gong) != 9 || len(table.Men) != 8 || len(table.Xing) != 9 {
+		return fmt.Errorf("load gong facts: invalid table sizes %d/%d/%d", len(table.Gong), len(table.Men), len(table.Xing))
+	}
+	for _, e := range table.Gong {
+		g, err := EncodePalaceIndex(e.Gong)
+		if err != nil {
+			return fmt.Errorf("load gong facts: %w", err)
+		}
+		if gongFactsTable[g].Name != "" {
+			return fmt.Errorf("load gong facts: duplicate gong %q", e.Gong)
+		}
+		gongFactsTable[g] = gongFact{
+			Name: e.Gong, Person: e.Person, Range: e.Range,
+			DomainYang: e.DomainYang, DomainYin: e.DomainYin,
+		}
+	}
+	for _, e := range table.Men {
+		d, err := EncodeDoorIndex(e.Men + "门")
+		if err != nil {
+			return fmt.Errorf("load gong facts: %w", err)
+		}
+		doorJiXiongTable[d] = jiXiongFact{JiXiong: e.JiXiong, YingShi: e.YingShi}
+	}
+	for _, e := range table.Xing {
+		s, err := EncodeStarIndex(e.Xing)
+		if err != nil {
+			return fmt.Errorf("load gong facts: %w", err)
+		}
+		starJiXiongTable[s] = jiXiongFact{JiXiong: e.JiXiong, YingShi: e.YingShi}
+	}
+	return nil
 }

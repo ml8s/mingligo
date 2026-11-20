@@ -1,0 +1,35 @@
+{
+  "provenance": "traditional_qimen_gong_facts",
+  "gong": [
+    {"gong": "坎", "person": "中男", "range": "low", "domain_yang": "inner", "domain_yin": "outer"},
+    {"gong": "坤", "person": "老妇", "range": "low", "domain_yang": "inner", "domain_yin": "outer"},
+    {"gong": "震", "person": "长男 / 壮男", "range": "low", "domain_yang": "inner", "domain_yin": "outer"},
+    {"gong": "巽", "person": "长女", "range": "low", "domain_yang": "inner", "domain_yin": "outer"},
+    {"gong": "中", "person": "", "range": "high", "domain_yang": "center", "domain_yin": "center"},
+    {"gong": "乾", "person": "老阳", "range": "high", "domain_yang": "outer", "domain_yin": "inner"},
+    {"gong": "兑", "person": "少女", "range": "high", "domain_yang": "outer", "domain_yin": "inner"},
+    {"gong": "艮", "person": "少男 / 童年", "range": "high", "domain_yang": "outer", "domain_yin": "inner"},
+    {"gong": "离", "person": "中女", "range": "high", "domain_yang": "outer", "domain_yin": "inner"}
+  ],
+  "men": [
+    {"men": "休", "ji_xiong": "吉", "yingshi": "休息、修养、求财"},
+    {"men": "生", "ji_xiong": "大吉", "yingshi": "财运、生产"},
+    {"men": "伤", "ji_xiong": "凶", "yingshi": "争斗、损失"},
+    {"men": "杜", "ji_xiong": "平", "yingshi": "隐藏、堵塞"},
+    {"men": "景", "ji_xiong": "平", "yingshi": "文书、消息"},
+    {"men": "死", "ji_xiong": "大凶", "yingshi": "死亡、结束"},
+    {"men": "惊", "ji_xiong": "凶", "yingshi": "惊恐、官司"},
+    {"men": "开", "ji_xiong": "大吉", "yingshi": "开业、出行"}
+  ],
+  "xing": [
+    {"xing": "天蓬", "ji_xiong": "凶", "yingshi": "盗贼、争斗"},
+    {"xing": "天芮", "ji_xiong": "凶", "yingshi": "疾病、阴私"},
+    {"xing": "天冲", "ji_xiong": "平", "yingshi": "变动、冲击"},
+    {"xing": "天辅", "ji_xiong": "吉", "yingshi": "文昌、辅佐"},
+    {"xing": "天禽", "ji_xiong": "吉", "yingshi": "中正、统御"},
+    {"xing": "天心", "ji_xiong": "吉", "yingshi": "医药、谋略"},
+    {"xing": "天柱", "ji_xiong": "凶", "yingshi": "口舌、破坏"},
+    {"xing": "天任", "ji_xiong": "吉", "yingshi": "田土、踏实"},
+    {"xing": "天英", "ji_xiong": "平", "yingshi": "文书、虚华"}
+  ]
+}

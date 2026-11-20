@@ -26,6 +26,9 @@ type Chart struct {
 	KongWangAffected []AffectedSymbol   `json:"kong_wang_affected"`
 	MaXingAffected   []AffectedSymbol   `json:"ma_xing_affected"`
 	GongWangShuai    []GongWangShuai    `json:"gong_wang_shuai"`
+	GongProfiles     [9]GongProfile     `json:"gong_profiles"`
+	MenJiXiong       []MenJiXiong       `json:"men_ji_xiong"`
+	XingJiXiong      []XingJiXiong      `json:"xing_ji_xiong"`
 	DutyStarPalace   GongIndex          `json:"zhi_fu_xing_gong"`    // 值符星落宫（排盘固有）
 	DutyDoorPalace   GongIndex          `json:"zhi_shi_men_gong"`    // 值使门落宫（排盘固有）
 	YongShen         *YongShenResult    `json:"yong_shen,omitempty"` // 用神领域对象（求测人+事象用神）
@@ -121,6 +124,9 @@ func buildChart(bz ganzhi.Bazi, termTime, chartTime time.Time, method Method) Ch
 		KongWangAffected: affectedVoidSymbols(p, riGanP, shiGanP, leadP),
 		MaXingAffected:   affectedHorseSymbols(p, riGanP, shiGanP, leadP),
 		GongWangShuai:    wangShuaiList,
+		GongProfiles:     computeGongProfiles(ju.YinDun),
+		MenJiXiong:       computeMenJiXiong(),
+		XingJiXiong:      computeXingJiXiong(),
 		DutyStarPalace:   findStarPalace(p, p.DutyStar),
 		DutyDoorPalace:   findDoorPalaceIdx(p, p.DutyDoor),
 	}

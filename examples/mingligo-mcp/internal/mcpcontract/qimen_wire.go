@@ -305,6 +305,9 @@ type QimenStandardChartOutput struct {
 	KongWangAffected *[]QimenChartKongWangAffectedItem `json:"kong_wang_affected,omitempty" jsonschema:"kong_wang_affected列表。"`
 	MaXingAffected   *[]QimenChartMaXingAffectedItem   `json:"ma_xing_affected,omitempty" jsonschema:"ma_xing_affected列表。"`
 	GongWangShuai    *[]QimenGongWangShuaiFact         `json:"gong_wang_shuai,omitempty" jsonschema:"gong_wang_shuai列表。"`
+	GongProfiles     *[]QimenGongProfile               `json:"gong_profiles,omitempty" jsonschema:"九宫固有事实：方位/人物/范围/内外盘。"`
+	MenJiXiong       *[]QimenMenJiXiong                `json:"men_ji_xiong,omitempty" jsonschema:"八门固有吉凶与宜事。"`
+	XingJiXiong      *[]QimenXingJiXiong               `json:"xing_ji_xiong,omitempty" jsonschema:"九星固有吉凶与宜事。"`
 	ZhiFuXingGong    *QimenGongName                    `json:"zhi_fu_xing_gong,omitempty" jsonschema:"值符星落宫。"`
 	ZhiShiMenGong    *QimenGongName                    `json:"zhi_shi_men_gong,omitempty" jsonschema:"值使门落宫。"`
 	YongShen         *QimenChartYongShen               `json:"yong_shen,omitempty" jsonschema:"用神落宫与相关事实。"`
@@ -518,6 +521,27 @@ type QimenGongWangShuaiFact struct {
 	Gong      QimenGongName `json:"gong" jsonschema:"宫位。"`
 	Wuxing    ElementName   `json:"wuxing" jsonschema:"五行。"`
 	WangShuai WangShuaiName `json:"wang_shuai" jsonschema:"旺相休囚死状态。"`
+}
+
+type QimenGongProfile struct {
+	Gong      QimenGongName `json:"gong" jsonschema:"宫位。"`
+	Name      string        `json:"name" jsonschema:"宫名。"`
+	Direction string        `json:"direction" jsonschema:"方位。"`
+	Person    string        `json:"person,omitempty" jsonschema:"八卦人物取象。"`
+	Range     string        `json:"range" jsonschema:"宫位高低范围（low/high）。"`
+	Domain    string        `json:"domain" jsonschema:"内外盘（inner/outer/center），依阴阳遁而定。"`
+}
+
+type QimenMenJiXiong struct {
+	Men     QimenDoorName `json:"men" jsonschema:"八门。"`
+	JiXiong string        `json:"ji_xiong" jsonschema:"固有吉凶。"`
+	YingShi string        `json:"yingshi" jsonschema:"经典宜事取象。"`
+}
+
+type QimenXingJiXiong struct {
+	Xing    QimenStarName `json:"xing" jsonschema:"九星。"`
+	JiXiong string        `json:"ji_xiong" jsonschema:"固有吉凶。"`
+	YingShi string        `json:"yingshi" jsonschema:"经典宜事取象。"`
 }
 
 type QimenChartYongShen struct {

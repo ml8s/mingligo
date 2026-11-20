@@ -849,6 +849,168 @@
       "wang_shuai": "旺"
     }
   ],
+  "gong_profiles": [
+    {
+      "gong": "坎",
+      "name": "坎",
+      "direction": "北",
+      "person": "中男",
+      "range": "low",
+      "domain": "outer"
+    },
+    {
+      "gong": "坤",
+      "name": "坤",
+      "direction": "西南",
+      "person": "老妇",
+      "range": "low",
+      "domain": "outer"
+    },
+    {
+      "gong": "震",
+      "name": "震",
+      "direction": "东",
+      "person": "长男 / 壮男",
+      "range": "low",
+      "domain": "outer"
+    },
+    {
+      "gong": "巽",
+      "name": "巽",
+      "direction": "东南",
+      "person": "长女",
+      "range": "low",
+      "domain": "outer"
+    },
+    {
+      "gong": "中",
+      "name": "中",
+      "direction": "中",
+      "range": "high",
+      "domain": "center"
+    },
+    {
+      "gong": "乾",
+      "name": "乾",
+      "direction": "西北",
+      "person": "老阳",
+      "range": "high",
+      "domain": "inner"
+    },
+    {
+      "gong": "兑",
+      "name": "兑",
+      "direction": "西",
+      "person": "少女",
+      "range": "high",
+      "domain": "inner"
+    },
+    {
+      "gong": "艮",
+      "name": "艮",
+      "direction": "东北",
+      "person": "少男 / 童年",
+      "range": "high",
+      "domain": "inner"
+    },
+    {
+      "gong": "离",
+      "name": "离",
+      "direction": "南",
+      "person": "中女",
+      "range": "high",
+      "domain": "inner"
+    }
+  ],
+  "men_ji_xiong": [
+    {
+      "men": "休门",
+      "ji_xiong": "吉",
+      "yingshi": "休息、修养、求财"
+    },
+    {
+      "men": "生门",
+      "ji_xiong": "大吉",
+      "yingshi": "财运、生产"
+    },
+    {
+      "men": "伤门",
+      "ji_xiong": "凶",
+      "yingshi": "争斗、损失"
+    },
+    {
+      "men": "杜门",
+      "ji_xiong": "平",
+      "yingshi": "隐藏、堵塞"
+    },
+    {
+      "men": "景门",
+      "ji_xiong": "平",
+      "yingshi": "文书、消息"
+    },
+    {
+      "men": "死门",
+      "ji_xiong": "大凶",
+      "yingshi": "死亡、结束"
+    },
+    {
+      "men": "惊门",
+      "ji_xiong": "凶",
+      "yingshi": "惊恐、官司"
+    },
+    {
+      "men": "开门",
+      "ji_xiong": "大吉",
+      "yingshi": "开业、出行"
+    }
+  ],
+  "xing_ji_xiong": [
+    {
+      "xing": "天蓬",
+      "ji_xiong": "凶",
+      "yingshi": "盗贼、争斗"
+    },
+    {
+      "xing": "天芮",
+      "ji_xiong": "凶",
+      "yingshi": "疾病、阴私"
+    },
+    {
+      "xing": "天冲",
+      "ji_xiong": "平",
+      "yingshi": "变动、冲击"
+    },
+    {
+      "xing": "天辅",
+      "ji_xiong": "吉",
+      "yingshi": "文昌、辅佐"
+    },
+    {
+      "xing": "天禽",
+      "ji_xiong": "吉",
+      "yingshi": "中正、统御"
+    },
+    {
+      "xing": "天心",
+      "ji_xiong": "吉",
+      "yingshi": "医药、谋略"
+    },
+    {
+      "xing": "天柱",
+      "ji_xiong": "凶",
+      "yingshi": "口舌、破坏"
+    },
+    {
+      "xing": "天任",
+      "ji_xiong": "吉",
+      "yingshi": "田土、踏实"
+    },
+    {
+      "xing": "天英",
+      "ji_xiong": "平",
+      "yingshi": "文书、虚华"
+    }
+  ],
   "zhi_fu_xing_gong": "震",
   "zhi_shi_men_gong": "震",
   "special_facts": {
