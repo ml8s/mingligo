@@ -184,7 +184,7 @@ func computeFeiFu(p *Chart, yongShen YongShen) []Pattern {
 		relation := feiFuRelation(flying.Wuxing, ganzhi.ZhiWuxing(fuZhi))
 		patterns = append(patterns, Pattern{
 			Type:     PatternFeiFu,
-			SubType:  relation.String(),
+			SubType:  DecodeFeiFuRelation(relation),
 			Position: fuShen.Position,
 			IsTrue:   true,
 		})

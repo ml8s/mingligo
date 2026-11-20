@@ -41,12 +41,15 @@ const (
 
 var liuQinNames = [5]string{"父母", "兄弟", "官鬼", "妻财", "子孙"}
 
-func (q LiuQin) String() string {
-	if q >= 0 && q <= 4 {
-		return liuQinNames[q]
+// DecodeLiuQin decodes a LiuQin symbol into its display text (authoritative mapping).
+func DecodeLiuQin(v LiuQin) string {
+	if v >= 0 && v <= 4 {
+		return liuQinNames[v]
 	}
 	return "?"
 }
+
+func (q LiuQin) String() string { return DecodeLiuQin(q) }
 
 func (q LiuQin) MarshalJSON() ([]byte, error) { return json.Marshal(q.String()) }
 
@@ -78,12 +81,15 @@ const (
 
 var liuShouNames = [6]string{"青龙", "朱雀", "勾陈", "螣蛇", "白虎", "玄武"}
 
-func (l LiuShou) String() string {
-	if l >= 0 && l <= 5 {
-		return liuShouNames[l]
+// DecodeLiuShou decodes a LiuShou symbol into its display text (authoritative mapping).
+func DecodeLiuShou(v LiuShou) string {
+	if v >= 0 && v <= 5 {
+		return liuShouNames[v]
 	}
 	return "?"
 }
+
+func (l LiuShou) String() string { return DecodeLiuShou(l) }
 
 func (l LiuShou) MarshalJSON() ([]byte, error) { return json.Marshal(l.String()) }
 
@@ -112,12 +118,15 @@ const (
 
 var muKuSourceNames = [...]string{"day", "moving", "transformed"}
 
-func (m MuKuSource) String() string {
-	if int(m) < len(muKuSourceNames) {
-		return muKuSourceNames[m]
+// DecodeMuKuSource decodes a MuKuSource symbol into its display text (authoritative mapping).
+func DecodeMuKuSource(v MuKuSource) string {
+	if int(v) < len(muKuSourceNames) {
+		return muKuSourceNames[v]
 	}
 	return ""
 }
+
+func (m MuKuSource) String() string { return DecodeMuKuSource(m) }
 
 func (m MuKuSource) MarshalJSON() ([]byte, error) { return json.Marshal(m.String()) }
 
@@ -139,8 +148,9 @@ const (
 	ShiYingYing         // 应
 )
 
-func (s ShiYing) String() string {
-	switch s {
+// DecodeShiYing decodes a ShiYing symbol into its display text (authoritative mapping).
+func DecodeShiYing(v ShiYing) string {
+	switch v {
 	case ShiYingShi:
 		return "世"
 	case ShiYingYing:
@@ -149,6 +159,8 @@ func (s ShiYing) String() string {
 		return ""
 	}
 }
+
+func (s ShiYing) String() string { return DecodeShiYing(s) }
 
 func (s ShiYing) MarshalJSON() ([]byte, error) { return json.Marshal(s.String()) }
 
@@ -205,12 +217,15 @@ const (
 
 var dayRelationNames = [...]string{"冲", "合", "生", "扶", "克", "平"}
 
-func (r DayRelationType) String() string {
-	if int(r) < len(dayRelationNames) {
-		return dayRelationNames[r]
+// DecodeDayRelationType decodes a DayRelationType symbol into its display text (authoritative mapping).
+func DecodeDayRelationType(v DayRelationType) string {
+	if int(v) < len(dayRelationNames) {
+		return dayRelationNames[v]
 	}
 	return ""
 }
+
+func (r DayRelationType) String() string { return DecodeDayRelationType(r) }
 
 func (r DayRelationType) MarshalJSON() ([]byte, error) { return json.Marshal(r.String()) }
 
@@ -237,12 +252,15 @@ const (
 
 var feiFuNames = [...]string{"飞伏比和", "飞来生伏", "飞来克伏", "伏来生飞", "伏来克飞", ""}
 
-func (r FeiFuRelation) String() string {
-	if int(r) < len(feiFuNames) {
-		return feiFuNames[r]
+// DecodeFeiFuRelation decodes a FeiFuRelation symbol into its display text (authoritative mapping).
+func DecodeFeiFuRelation(v FeiFuRelation) string {
+	if int(v) < len(feiFuNames) {
+		return feiFuNames[v]
 	}
 	return ""
 }
+
+func (r FeiFuRelation) String() string { return DecodeFeiFuRelation(r) }
 
 func (r FeiFuRelation) MarshalJSON() ([]byte, error) { return json.Marshal(r.String()) }
 
@@ -310,4 +328,7 @@ const (
 
 var yongShenNames = [7]string{"父母", "兄弟", "官鬼", "妻财", "子孙", "世爻", "应爻"}
 
-func (y YongShen) String() string { return yongShenNames[y] }
+// DecodeYongShen decodes a YongShen symbol into its display text.
+func DecodeYongShen(v YongShen) string { return yongShenNames[v] }
+
+func (y YongShen) String() string { return DecodeYongShen(y) }

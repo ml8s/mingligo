@@ -169,7 +169,7 @@ func computeForceChain(chart *Chart, typ YongShen) *ForceChain {
 	}
 
 	chain := &ForceChain{
-		YongShen:    typ.String(),
+		YongShen:    DecodeYongShen(typ),
 		YongElement: yongElement.String(),
 		Position:    position,
 		IsHidden:    false,
@@ -208,7 +208,7 @@ func computeHiddenForceChain(chart *Chart, typ YongShen, fuShen *FuShen) *ForceC
 
 	relation := dayInteraction(fuZhi, chart.RiZhi)
 	chain := &ForceChain{
-		YongShen:    typ.String(),
+		YongShen:    DecodeYongShen(typ),
 		YongElement: yongElement.String(),
 		Position:    fuShen.Position,
 		IsHidden:    true,

@@ -35,7 +35,7 @@ func applyYaoStrength(chart *Chart) {
 
 func resolveYongshen(chart *Chart, yongShen YongShen) {
 	position := chart.findYongShen(yongShen)
-	chart.YongShen = YongShenResult{Name: yongShen.String(), Position: position}
+	chart.YongShen = YongShenResult{Name: DecodeYongShen(yongShen), Position: position}
 
 	if position == 0 {
 		chart.YongShen.FuShen = chart.findFuShen(yongShen)

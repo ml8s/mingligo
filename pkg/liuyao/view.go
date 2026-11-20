@@ -111,15 +111,15 @@ func (c Chart) lineView(line Line, rel DayRelation, wangShuai ganzhi.WangShuai) 
 	v := LineView{
 		Position: line.Position, YaoValue: int(line.Type),
 		GanZhi: ganzhi.GanName(line.Gan) + ganzhi.ZhiName(line.Zhi),
-		Wuxing: line.Wuxing.String(), LiuQin: line.LiuQin.String(),
-		ShiYing: line.ShiYing.String(), LiuShou: line.LiuShou.String(),
+		Wuxing: line.Wuxing.String(), LiuQin: DecodeLiuQin(line.LiuQin),
+		ShiYing: DecodeShiYing(line.ShiYing), LiuShou: DecodeLiuShou(line.LiuShou),
 		WangShuai: wangShuai.String(), ChangShengYue: line.ChangShengYue,
 		Flags: flags,
 	}
 	if len(rel.Relations) > 0 {
 		names := make([]string, 0, len(rel.Relations))
 		for _, item := range rel.Relations {
-			names = append(names, item.String())
+			names = append(names, DecodeDayRelationType(item))
 		}
 		v.RiChenRelations = map[string][]string{"relations": names}
 	}
@@ -130,14 +130,14 @@ func fuShenView(v *FuShen) *FuShenView {
 	if v == nil {
 		return nil
 	}
-	return &FuShenView{Position: v.Position, LiuQin: v.LiuQin.String(), Zhi: ganzhi.ZhiName(v.Zhi)}
+	return &FuShenView{Position: v.Position, LiuQin: DecodeLiuQin(v.LiuQin), Zhi: ganzhi.ZhiName(v.Zhi)}
 }
 
 func yongShenView(v YongShenResult) YongShenView {
 	view := YongShenView{
 		Name: v.Name, Position: v.Position, IsHidden: v.IsHidden,
 		WangShuai: v.WangShuai.String(), YuePo: v.YuePo, XunKong: v.XunKong,
-		MuKu: v.MuKu, LiuShou: v.LiuShou.String(), ChangSheng: v.ChangSheng,
+		MuKu: v.MuKu, LiuShou: DecodeLiuShou(v.LiuShou), ChangSheng: v.ChangSheng,
 		FuShen: fuShenView(v.FuShen),
 	}
 	for _, cand := range v.FuShenCandidates {

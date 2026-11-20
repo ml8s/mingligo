@@ -55,7 +55,7 @@ func (p *Chart) dayRelationHas(position int, types ...DayRelationType) bool {
 func (r DayRelation) String() string {
 	parts := make([]string, 0, len(r.Relations))
 	for _, item := range r.Relations {
-		parts = append(parts, item.String())
+		parts = append(parts, DecodeDayRelationType(item))
 	}
 	return strings.Join(parts, "兼")
 }
