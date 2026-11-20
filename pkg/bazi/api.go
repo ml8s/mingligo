@@ -100,6 +100,7 @@ func withDerivedFacts(chart Chart) Chart {
 	chart.GuanSha = GuanSha{QuQing: facts.OfficerKillingCleaned}
 	chart.CaiKu = CaiKu{Xian: facts.WealthTombPresent, XingRuKu: facts.WealthStarInTomb}
 	chart.GeJu.GeShenTou = facts.PatternGodTransparent
+	chart.Derived = computeNatalDerivedFacts(chart)
 	return chart
 }
 

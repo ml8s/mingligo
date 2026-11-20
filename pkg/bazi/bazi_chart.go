@@ -30,7 +30,6 @@ type Pillar struct {
 	SelfHeName     string               `json:"self_he_name"`
 }
 
-
 type TenGodProjection struct {
 	ShiShen ganzhi.ShiShen `json:"shi_shen"`
 	Name    string         `json:"name"`
@@ -81,6 +80,8 @@ type Chart struct {
 	// 官杀与财库是具体命理结论，不是通用事实袋。
 	GuanSha GuanSha `json:"guan_sha"`
 	CaiKu   CaiKu   `json:"cai_ku"`
+	// 从 guan_xi/shen_sha 派生的确定性事实（夫妻宫状态、日支类型）。
+	Derived NatalDerivedFacts `json:"derived"`
 
 	// 补充信息（原 bazi.chart_extra）
 	SanYuan    SanYuan             `json:"san_yuan"`

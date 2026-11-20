@@ -53,6 +53,7 @@ type BaziChartOutput struct {
 	ElementStates []BaziChartElementStatesItem `json:"wuxing_states" jsonschema:"五行季节旺弱、组合旺弱与生克方向"`
 	GuanSha       BaziChartGuanSha             `json:"guan_sha" jsonschema:"官杀取清结论。"`
 	CaiKu         BaziChartCaiKu               `json:"cai_ku" jsonschema:"财库结论。"`
+	Derived       BaziChartDerived             `json:"derived" jsonschema:"从 guan_xi/shen_sha 派生的确定性事实。"`
 	TiaoHou       BaziChartTiaoHou             `json:"tiao_hou" jsonschema:"调候候选：主辅调候五行候选 + 季节 + 条件"`
 	GeJu          BaziChartGeJu                `json:"ge_ju" jsonschema:"月令结构证据：月令格神 + 顺逆用 + 结构（非用神）"`
 	DayXun        string                       `json:"ri_xun" jsonschema:"日柱所在旬"`
@@ -228,6 +229,11 @@ type BaziChartGuanSha struct {
 type BaziChartCaiKu struct {
 	Xian     bool `json:"xian" jsonschema:"日主财星墓库支是否现于命局。"`
 	XingRuKu bool `json:"xing_ru_ku" jsonschema:"财星是否入墓库。"`
+}
+
+type BaziChartDerived struct {
+	SpousePalaceState string `json:"spouse_palace_state" jsonschema:"日支受冲合刑害状态（冲/合/刑/害/静）。"`
+	DayBranchType     string `json:"day_branch_type" jsonschema:"日支类型（桃花/驿马/墓库/无）。"`
 }
 
 type BaziChartTiaoHou struct {
