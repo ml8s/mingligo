@@ -31,7 +31,6 @@ type TiaoHouResult struct {
 	PrimaryWuxing      string               `json:"primary_wuxing"`
 	SecondaryWuxing    string               `json:"secondary_wuxing"`
 	Season             string               `json:"season"`
-	TiaoHouExplanation string               `json:"tiao_hou_explanation"`
 	ModelID            string               `json:"tiao_hou_model_id"`
 	Primary            TiaoHouAvailability  `json:"primary"`
 	Secondary          *TiaoHouAvailability `json:"secondary,omitempty"`

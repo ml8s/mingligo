@@ -23,9 +23,8 @@ type BaziPillarShiShensItem struct {
 
 // BaziPillarShenShaItem is the shared shen-sha projection item for all pillars.
 type BaziPillarShenShaItem struct {
-	Category    *ShenShaCategoryNameNullable `json:"category" jsonschema:"类别。"`
-	Description *string                      `json:"description" jsonschema:"说明。"`
-	Name        *string                      `json:"name" jsonschema:"名称。"`
+	Category *ShenShaCategoryNameNullable `json:"category" jsonschema:"类别。"`
+	Name     *string                      `json:"name" jsonschema:"名称。"`
 }
 
 // ── bazi.chart output ──
@@ -234,7 +233,6 @@ type BaziChartTiaoHou struct {
 	PrimaryWuxing      ElementName               `json:"primary_wuxing" jsonschema:"调候候选：主辅调候五行候选 + 季节 + 条件 中的 primary_wuxing。"`
 	SecondaryWuxing    SecondaryWuxingName       `json:"secondary_wuxing" jsonschema:"调候候选：主辅调候五行候选 + 季节 + 条件 中的 secondary_wuxing；缺失时为 无辅调候。"`
 	Season             string                    `json:"season" jsonschema:"季节状态。"`
-	TiaoHouExplanation string                    `json:"tiao_hou_explanation" jsonschema:"调候口径说明。"`
 	ModelID            string                    `json:"tiao_hou_model_id" jsonschema:"调候候选模型 ID。"`
 	Primary            BaziChartTiaoHouPrimary   `json:"primary" jsonschema:"主调候。"`
 	Secondary          BaziChartTiaoHouSecondary `json:"secondary" jsonschema:"辅调候。"`
@@ -529,9 +527,8 @@ type BaziLiuNianOutput struct {
 }
 
 type BaziSeriesShenshaItem struct {
-	Name        ShenshaName         `json:"name" jsonschema:"名称。"`
-	Category    ShenShaCategoryName `json:"category" jsonschema:"类别。"`
-	Description *string             `json:"description,omitempty" jsonschema:"神煞取象说明。"`
+	Name     ShenshaName         `json:"name" jsonschema:"名称。"`
+	Category ShenShaCategoryName `json:"category" jsonschema:"类别。"`
 }
 
 type BaziLiuNianFuyinFanyinItem struct {

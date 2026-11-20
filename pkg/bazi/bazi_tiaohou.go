@@ -9,7 +9,6 @@ type TiaoHou struct {
 	Season             string
 	PrimaryWuxing      string
 	SecondaryWuxing    string
-	Detail             string
 	SecondaryCondition string
 }
 
@@ -42,7 +41,6 @@ func computeTiaoHou(bz ganzhi.Bazi, relations []NatalRelationFact) TiaoHouResult
 		PrimaryWuxing:      th.PrimaryWuxing,
 		SecondaryWuxing:    th.SecondaryWuxing,
 		Season:             th.Season,
-		TiaoHouExplanation: th.Detail,
 		ModelID:            "qiongtong_primary_secondary_table",
 		Primary:            buildTiaoHouAvailability(bz, entry.primary, "primary", relations),
 		Secondary:          tiaoHouSecondary(bz, entry.secondary, relations),
@@ -75,23 +73,12 @@ func queryTiaoHou(riYuan ganzhi.Gan, yueZhi ganzhi.Zhi) (TiaoHou, bool) {
 
 	season := ganzhi.ZhiSeasonLabel(yueZhi)
 
-	detail := ganzhi.ZhiName(yueZhi) + "月" + ganzhi.GanName(riYuan) + ganzhi.DecodeWuxing(ganzhi.GanWuxing(riYuan))
-	detail += "，用" + ganzhi.GanName(e.primary) + "调候"
-	if e.secondary != 0 {
-		if e.secondaryCondition != "" {
-			detail += "，" + e.secondaryCondition
-		} else {
-			detail += "，" + ganzhi.GanName(e.secondary) + "辅之"
-		}
-	}
-
 	if e.secondary != 0 {
 		secondaryWuxing := ganzhi.DecodeWuxing(secondaryElem)
 		return TiaoHou{
 			Season:             season,
 			PrimaryWuxing:      ganzhi.DecodeWuxing(primaryElem),
 			SecondaryWuxing:    secondaryWuxing,
-			Detail:             detail,
 			SecondaryCondition: e.secondaryCondition,
 		}, true
 	}
@@ -99,7 +86,6 @@ func queryTiaoHou(riYuan ganzhi.Gan, yueZhi ganzhi.Zhi) (TiaoHou, bool) {
 		Season:             season,
 		PrimaryWuxing:      ganzhi.DecodeWuxing(primaryElem),
 		SecondaryWuxing:    NoSecondaryWuxing,
-		Detail:             detail,
 		SecondaryCondition: e.secondaryCondition,
 	}, true
 }

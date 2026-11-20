@@ -47,8 +47,8 @@ func TestTiaoHou_WinterDingFire_ShouldHaveFire(t *testing.T) {
 				if tt.wantYong == "火" && result.SecondaryWuxing != "" && result.SecondaryWuxing == "火" {
 					return
 				}
-				t.Errorf("调候用神 = %q, want %q (冬季需火调候)\n  detail: %s",
-					result.PrimaryWuxing, tt.wantYong, result.TiaoHouExplanation)
+				t.Errorf("调候用神 = %q, want %q (冬季需火调候)",
+					result.PrimaryWuxing, tt.wantYong)
 			}
 		})
 	}
@@ -63,8 +63,8 @@ func TestTiaoHou_WinterWater_ShouldHaveFire(t *testing.T) {
 	if result.PrimaryWuxing != "土" && result.PrimaryWuxing != "火" {
 		t.Errorf("壬日子月调候 = yong=%s, 应为土或火", result.PrimaryWuxing)
 	}
-	t.Logf("壬日子月: yong=%s xi=%s detail=%s",
-		result.PrimaryWuxing, result.SecondaryWuxing, result.TiaoHouExplanation)
+	t.Logf("壬日子月: yong=%s xi=%s",
+		result.PrimaryWuxing, result.SecondaryWuxing)
 }
 
 func TestTiaoHou_BingWu_ShouldUseGeng(t *testing.T) {
@@ -72,8 +72,8 @@ func TestTiaoHou_BingWu_ShouldUseGeng(t *testing.T) {
 	// primary=壬正确, 但secondary应为庚(非戊)
 	result := computeTiaoHou(mkTiaoHouChart(ganzhi.GanBing, ganzhi.ZhiWu).ToBazi(), computeNatalRelations(mkTiaoHouChart(ganzhi.GanBing, ganzhi.ZhiWu).ToBazi()))
 
-	t.Logf("丙午月: yong=%s xi=%s detail=%s",
-		result.PrimaryWuxing, result.SecondaryWuxing, result.TiaoHouExplanation)
+	t.Logf("丙午月: yong=%s xi=%s",
+		result.PrimaryWuxing, result.SecondaryWuxing)
 
 	if result.PrimaryWuxing != "水" {
 		t.Errorf("丙午月调候 = %q, want 水 (穷通宝鉴: 壬水)", result.PrimaryWuxing)
