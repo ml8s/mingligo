@@ -189,22 +189,12 @@ func addDeXiu(bz ganzhi.Bazi, yueZhi ganzhi.Zhi) [4][]ShenShaProjection {
 		return out
 	}
 	for pi, p := range bz.Slice() {
-		if containsGan(group.De, p.Gan) || containsGan(group.Xiu, p.Gan) {
-			out = mergeShenSha(out, addDeXiuEntry(pi))
+		if slices.Contains(group.De, p.Gan) || slices.Contains(group.Xiu, p.Gan) {
+			out[pi] = append(out[pi], ShenShaProjection{
+				Name: "德秀贵人", Category: catJi, Description: "主禀气清粹，逢凶化吉",
+			})
 		}
 	}
-	return out
-}
-
-func containsGan(values []ganzhi.Gan, want ganzhi.Gan) bool {
-	return slices.Contains(values, want)
-}
-
-func addDeXiuEntry(pillar int) [4][]ShenShaProjection {
-	var out [4][]ShenShaProjection
-	out[pillar] = append(out[pillar], ShenShaProjection{
-		Name: "德秀贵人", Category: catJi, Description: "主禀气清粹，逢凶化吉",
-	})
 	return out
 }
 
@@ -377,21 +367,17 @@ func addTongZi(bz ganzhi.Bazi, seasonIdx int) [4][]ShenShaProjection {
 		return false
 	}
 	if checkBranches(tongZiSeason[seasonIdx]) {
-		out = mergeShenSha(out, addTongZiEntry(2))
+		out[2] = append(out[2], ShenShaProjection{
+			Name: "童子煞", Category: catZhongXing, Description: "传统取象主幼年多病、姻缘迟滞",
+		})
 		return out
 	}
 	yearElement := ganzhi.NayinWuxingOf(zhus[0].Gan, zhus[0].Zhi)
 	if checkBranches(tongZiNayin[yearElement]) {
-		out = mergeShenSha(out, addTongZiEntry(2))
+		out[2] = append(out[2], ShenShaProjection{
+			Name: "童子煞", Category: catZhongXing, Description: "传统取象主幼年多病、姻缘迟滞",
+		})
 	}
-	return out
-}
-
-func addTongZiEntry(pillar int) [4][]ShenShaProjection {
-	var out [4][]ShenShaProjection
-	out[pillar] = append(out[pillar], ShenShaProjection{
-		Name: "童子煞", Category: catZhongXing, Description: "传统取象主幼年多病、姻缘迟滞",
-	})
 	return out
 }
 

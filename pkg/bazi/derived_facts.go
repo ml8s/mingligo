@@ -163,8 +163,10 @@ func fuYiWangShuaiAt(fuYi FuYiResult, elem ganzhi.Wuxing) ganzhi.WangShuai {
 	return ws
 }
 
+var allWuxing = [5]ganzhi.Wuxing{ganzhi.WxMu, ganzhi.WxHuo, ganzhi.WxTu, ganzhi.WxJin, ganzhi.WxShui}
+
 func computeElementStates(c Chart, transparent, rooted map[ganzhi.Wuxing]bool) map[ganzhi.Wuxing]ElementState {
-	all := []ganzhi.Wuxing{ganzhi.WxMu, ganzhi.WxHuo, ganzhi.WxTu, ganzhi.WxJin, ganzhi.WxShui}
+	all := allWuxing
 	result := make(map[ganzhi.Wuxing]ElementState, len(all))
 	for _, element := range all {
 		season := fuYiWangShuaiAt(c.FuYi, element)
@@ -209,7 +211,7 @@ func computeElementStates(c Chart, transparent, rooted map[ganzhi.Wuxing]bool) m
 
 func elementStateList(states map[ganzhi.Wuxing]ElementState) []ElementState {
 	result := make([]ElementState, 0, len(states))
-	for _, element := range []ganzhi.Wuxing{ganzhi.WxMu, ganzhi.WxHuo, ganzhi.WxTu, ganzhi.WxJin, ganzhi.WxShui} {
+	for _, element := range allWuxing {
 		result = append(result, states[element])
 	}
 	return result
@@ -269,7 +271,7 @@ func computeChartConclusions(c Chart) ChartConclusions {
 
 	dayElement := ganzhi.GanWuxing(c.Ri.Gan)
 	wealthElement := ganzhi.Wuxing(0)
-	for _, element := range []ganzhi.Wuxing{ganzhi.WxMu, ganzhi.WxHuo, ganzhi.WxTu, ganzhi.WxJin, ganzhi.WxShui} {
+	for _, element := range allWuxing {
 		if ganzhi.Ke(dayElement, element) {
 			wealthElement = element
 			break

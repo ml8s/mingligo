@@ -222,7 +222,7 @@ var starNames = map[StarIndex]string{
 }
 
 // starName returns the Chinese name of a star.
-func starName(s StarIndex) string { return starNames[s] }
+func starName(s StarIndex) string { return DecodeStarIndex(s) }
 
 // DecodeStarIndex decodes a StarIndex symbol into its display text (authoritative mapping).
 func DecodeStarIndex(v StarIndex) string {

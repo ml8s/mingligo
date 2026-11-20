@@ -54,6 +54,6 @@ func withChartExtraFields(chart Chart, core Core) Chart {
 	chart.GongJia = computeGongJia(bz)
 	chart.NayinRel = nayinRels
 	chart.ChangSheng = stages
-	chart.SanQiName = sanQiName(sanQiType(bz))
+	chart.SanQiName = DecodeSanQiKind(sanQiType(bz))
 	return chart
 }

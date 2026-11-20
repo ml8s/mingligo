@@ -346,13 +346,12 @@ func (p *GongIndex) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &s); err != nil {
 		return fmt.Errorf("gong must be a string, got %s", string(data))
 	}
-	for i, name := range gongNames {
-		if i > 0 && name == s {
-			*p = GongIndex(i)
-			return nil
-		}
+	v, err := EncodePalaceIndex(s)
+	if err != nil {
+		return err
 	}
-	return fmt.Errorf("unknown gong: %q", s)
+	*p = v
+	return nil
 }
 
 // StarIndex represents one of the 九星 (nine stars).
@@ -389,13 +388,12 @@ func (s *StarIndex) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &name); err != nil {
 		return fmt.Errorf("star must be a string (e.g. \"天蓬\"), got %s", string(data))
 	}
-	for i, n := range starNames {
-		if i > 0 && n == name {
-			*s = StarIndex(i)
-			return nil
-		}
+	v, err := EncodeStarIndex(name)
+	if err != nil {
+		return err
 	}
-	return fmt.Errorf("unknown star: %q", name)
+	*s = v
+	return nil
 }
 
 // DoorIndex represents the eight doors and the Ming Fa center door.
@@ -432,13 +430,12 @@ func (d *DoorIndex) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &name); err != nil {
 		return fmt.Errorf("door must be a string (e.g. \"休门\"), got %s", string(data))
 	}
-	for i, n := range doorNames {
-		if i > 0 && n+"门" == name {
-			*d = DoorIndex(i)
-			return nil
-		}
+	v, err := EncodeDoorIndex(name)
+	if err != nil {
+		return err
 	}
-	return fmt.Errorf("unknown door: %q", name)
+	*d = v
+	return nil
 }
 
 // SpiritIndex represents the rotate-plate 八神 and the fly-plate ninth spirit.
@@ -488,13 +485,12 @@ func (s *SpiritIndex) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &name); err != nil {
 		return fmt.Errorf("spirit must be a string, got %s", string(data))
 	}
-	for i := 1; i < len(spiritYangNames); i++ {
-		if SpiritIndex(i).YangName() == name || SpiritIndex(i).YinName() == name {
-			*s = SpiritIndex(i)
-			return nil
-		}
+	v, err := EncodeSpiritIndex(name)
+	if err != nil {
+		return err
 	}
-	return fmt.Errorf("unknown spirit: %q", name)
+	*s = v
+	return nil
 }
 
 // DutyStarPosition is the qimen-domain symbol for a duty star's required

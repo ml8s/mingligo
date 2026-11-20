@@ -80,9 +80,9 @@ func sanQiType(bz ganzhi.Bazi) SanQiKind {
 		kind    SanQiKind
 		a, b, c int
 	}{
-		{sanQiTianShang, 1, 5, 7},  // 甲戊庚
-		{sanQiDiXia, 2, 3, 4},      // 乙丙丁
-		{sanQiRenZhong, 9, 10, 8},  // 壬癸辛
+		{sanQiTianShang, 1, 5, 7}, // 甲戊庚
+		{sanQiDiXia, 2, 3, 4},     // 乙丙丁
+		{sanQiRenZhong, 9, 10, 8}, // 壬癸辛
 	}
 	for _, pat := range patterns {
 		for start := 0; start <= 1; start++ { // 年-月-日 或 月-日-时 两个三元组
@@ -95,6 +95,3 @@ func sanQiType(bz ganzhi.Bazi) SanQiKind {
 	}
 	return sanQiNone
 }
-
-// sanQiName returns the full name for a sanqi type.
-func sanQiName(k SanQiKind) string { return DecodeSanQiKind(k) }
