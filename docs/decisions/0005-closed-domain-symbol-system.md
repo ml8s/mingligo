@@ -87,19 +87,22 @@ decode : 符号 → 文本   （离开系统；输出边界；查表权威实现
 |---|---|---|---|
 | `ganzhi` | Gan/Zhi/Wuxing/WangShuai/ShiShen/XingKind/YinYang/Gender | 7/6/5 | 是；`IsXing` 用 `XingKind`，无 string 命理判断 |
 | `tianwen` | JieQi/LunarBasis/BoundaryKind/ResolveForm | 2/1/0 | 是；数值算子全符号，memo 缓存豁免 |
-| `bazi` | RelationPosition/SanQiKind/StrengthLevel/RootKind/RelationKind/PillarIndex/NatalRelationKind/GeJuKind/CongGeKind/YongXiJiKind/TargetTag 等 | 9/10/2 | 是；41 神煞 `add*`→命中集+`mergeShenSha`，`apply*`→`with*`，规则表键全符号 |
+| `bazi` | RelationPosition/SanQiKind/StrengthLevel/RootKind/RelationKind/PillarIndex/NatalRelationKind/GeJuKind/CongGeKind/YongXiJiKind/TargetTag/CandidateWuxing 等 | 10/11/2 | 是；41 神煞 `add*`→命中集+`mergeShenSha`，`apply*`→`with*`，规则表键全符号，用神 Yong/Xi/Ji 用 `CandidateWuxing`（消除"无候选"魔串），WangShuai 经单一边界 helper 查表 |
 | `qimen` | WuxingRelation/Yuan/ZhiRunState/DunSource/HourBoundary/DutyStarPosition/PillarLevel/HourRelation/YingQiRuleType/YingQiMatchKind/LeadPillarKind/MethodSourceKind/FeatureKind/DayBoundaryKind + Scope/School/DingjuMethod/QuarterRule/GongIndex/StarIndex/DoorIndex/SpiritIndex | 15/21/6 | 是；`spiritIsYinXuanWu` 用符号/流派判断，Jinhan `layout*`→`with*` |
-| `liuyao` | YaoType/LiuQin/LiuShou/YongShen/MuKuSource/ShiYing/DayRelationType/FeiFuRelation/guaIndex/DongYaoRelationType/ForceRole/PatternType/CoinFace/CoinScore/TargetRole/LifeStage | 5/10/7 | 是；5 个 builder→`with*`；25 个 `*Chart` 算子只读（无写入副作用） |
-| `ziwei` | ShenSha/FlowStarKind/FlowStar/GongIndex/StarIndex/JuShu/SiHua/Brightness/ChangShengStage/BoShiStage/JiangQianStage/SuiQianStage | 2/10/5 | 是；`ZaYao []string→[]ShenSha`（消除往返），十二神符号化，`applyBrightness` 新建 slice，bond `MajorStars []StarIndex` |
+| `liuyao` | YaoType/LiuQin/LiuShou/YongShen/MuKuSource/ShiYing/DayRelationType/FeiFuRelation/guaIndex/DongYaoRelationType/ForceRole/PatternType/CoinFace/CoinScore/TargetRole/LifeStage/PatternSubType/BranchRelationType | 5/12/7 | 是；5 个 builder→`with*`；25 个 `*Chart` 算子只读（无写入副作用）；格局子类型/地支关系具名化 |
+| `ziwei` | ShenSha/FlowStarKind/FlowStar/GongIndex/StarIndex/JuShu/SiHua/Brightness/ChangShengStage/BoShiStage/JiangQianStage/SuiQianStage/StarLei | 2/10/5 | 是；`ZaYao []string→[]ShenSha`（消除往返），十二神循环表具名化，`starLei`→`StarLei`，`applyBrightness` 新建 slice，bond `MajorStars []StarIndex` |
 
 **仍有 string 命理概念的区域（合理边界，非违规）**：
 
 - 输出 DTO 的纯展示字段（`Conflict.Facts`、`BranchRelationFact.Branches`、`YingQiCandidate.Mechanism`、`BondPalaceFacts.MajorStars` 在 MCP wire 侧等）——这些是 decode 后的文本，且 jsonschema 从 wire 推断 integer 与符号 `MarshalJSON` 输出中文冲突时，适配器用独立 wire struct 适配（见 §4）。
 - 数据加载边界的 Encode helper（`brightnessFrom`、`flowStarKindOf`、`parseDoor/Star/Spirit/Gan`）——string→符号的输入解析，位于边界。
 - 名字表/`String()` 薄壳（ganzhi/tianwen 底座）——为兼容 `fmt.Stringer`，逻辑仍只有 `Decode` 一份。
-- `hiddenTenGodSource(source string)`、`detectTriple(typ/suffix string)`——source/日期完全来自输出投影的展示常量，属低优先级可改进项，不影响运算正确性。
+- 输出契约的 string-keyed map：`FuYiResult.WangShuai map[string]string`、`WuxingCount map[string]int`、`SeasonStrength map[string]string`——key 是五行名文本（wire schema 为 string），强行改符号 key 会输出数字破坏契约；消费端用 `fuYiWangShuaiAt` 单一边界 helper 转回符号，避免散落往返。
+- `hiddenTenGodSource(source string)`——source 值含复合拼接（如 `main_qi_not_transparent`），非纯封闭集，string 合理。
+- `detectTriple(typ/suffix string)`、`tripleName(suffix string)`、`newZhiPairFact(group string)`——中文标签用于拼展示名/分组标签，属展示构造。
+- `TombSchool.EarthBranch string`——流派标注（固定"辰"），不参与核心卦理；改符号会触发 MCP wire schema 冲突，拆 View 成本大于收益，登记为边界。
 
-**审计结论**：封闭符号系统的核心公理（符号唯一定义、双向映射、算子纯函数、文本只在边界）已在全部六个域包落实；剩余 string 均为输出展示或输入解析边界，不构成空间内的命理运算。
+**审计结论**：封闭符号系统的核心公理（符号唯一定义、双向映射、算子纯函数、文本只在边界）已在全部六个域包落实。经两轮严格审计（逐函数签名核对输入是否符号闭集、算子是否纯函数），空间内已无"命理概念用裸 string 运算"的真违规；剩余 string 均为输出展示、输入 Encode、string-keyed 输出契约或数据/名字表，不构成空间内的命理运算。
 
 ## Consequences
 
