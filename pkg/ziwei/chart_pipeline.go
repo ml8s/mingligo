@@ -49,7 +49,7 @@ func fillZaYao(chart Chart) Chart {
 		var names []string
 		for st, zhiIdx := range stars {
 			if zhiIdx == int(palaceZhi)-1 {
-				names = append(names, st.String())
+				names = append(names, DecodeShenSha(st))
 			}
 		}
 		// map iteration is unordered; the published ZaYao order is canonical.

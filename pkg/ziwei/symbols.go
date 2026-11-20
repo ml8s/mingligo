@@ -65,12 +65,15 @@ var shenShaNames = [...]string{
 	"旬空", "年解", "天才", "天寿", "天伤", "天使",
 }
 
-func (s ShenSha) String() string {
-	if int(s) >= 0 && int(s) < len(shenShaNames) {
-		return shenShaNames[s]
+// DecodeShenSha decodes a ShenSha symbol into its display text (authoritative mapping).
+func DecodeShenSha(v ShenSha) string {
+	if int(v) >= 0 && int(v) < len(shenShaNames) {
+		return shenShaNames[v]
 	}
 	return ""
 }
+
+func (s ShenSha) String() string { return DecodeShenSha(s) }
 
 func EncodeShenSha(name string) (ShenSha, bool) {
 	for i, n := range shenShaNames {
@@ -101,12 +104,15 @@ const (
 
 var flowStarKindNames = [...]string{"", "禄", "羊", "陀", "魁", "钺", "马", "鸾", "喜", "昌", "曲"}
 
-func (k FlowStarKind) String() string {
-	if int(k) >= 0 && int(k) < len(flowStarKindNames) {
-		return flowStarKindNames[k]
+// DecodeFlowStarKind decodes a FlowStarKind symbol into its display text (authoritative mapping).
+func DecodeFlowStarKind(v FlowStarKind) string {
+	if int(v) >= 0 && int(v) < len(flowStarKindNames) {
+		return flowStarKindNames[v]
 	}
 	return ""
 }
+
+func (k FlowStarKind) String() string { return DecodeFlowStarKind(k) }
 
 func EncodeFlowStarKind(name string) (FlowStarKind, bool) {
 	for i, n := range flowStarKindNames {
@@ -132,17 +138,23 @@ const (
 
 var brightnessNames = [7]string{"庙", "旺", "得", "利", "平", "陷", "不"}
 
-func (b Brightness) String() string { return brightnessNames[b] }
+// DecodeBrightness decodes a Brightness symbol into its display text (authoritative mapping).
+func DecodeBrightness(v Brightness) string { return brightnessNames[v] }
 
 // GongIndex identifies one of 12 palaces (0=命宫 … 11=父母).
 type GongIndex int
 
-func (p GongIndex) String() string {
-	if int(p) < 0 || int(p) >= len(gongLabels) {
+// DecodeGongIndex decodes a GongIndex symbol into its display text (authoritative mapping).
+func DecodeGongIndex(v GongIndex) string {
+	if int(v) < 0 || int(v) >= len(gongLabels) {
 		return ""
 	}
-	return gongLabels[p]
+	return gongLabels[v]
 }
+
+func (p GongIndex) String() string { return DecodeGongIndex(p) }
+
+func (b Brightness) String() string { return DecodeBrightness(b) }
 
 func (p GongIndex) MarshalJSON() ([]byte, error) {
 	return json.Marshal(p.String())
@@ -218,9 +230,12 @@ var starNames = map[StarIndex]string{
 // starName returns the Chinese name of a star.
 func starName(s StarIndex) string { return starNames[s] }
 
-func (s StarIndex) String() string {
-	return starNames[s]
+// DecodeStarIndex decodes a StarIndex symbol into its display text (authoritative mapping).
+func DecodeStarIndex(v StarIndex) string {
+	return starNames[v]
 }
+
+func (s StarIndex) String() string { return DecodeStarIndex(s) }
 
 func (s StarIndex) MarshalJSON() ([]byte, error) {
 	return json.Marshal(s.String())
@@ -277,9 +292,12 @@ var juShuCodes = map[JuShu]string{
 	JuFire:  "fire_6",
 }
 
-func (j JuShu) String() string {
-	return juShuCodes[j]
+// DecodeJuShu decodes a JuShu symbol into its display text (authoritative mapping).
+func DecodeJuShu(v JuShu) string {
+	return juShuCodes[v]
 }
+
+func (j JuShu) String() string { return DecodeJuShu(j) }
 
 func (j JuShu) MarshalJSON() ([]byte, error) {
 	return json.Marshal(j.String())
