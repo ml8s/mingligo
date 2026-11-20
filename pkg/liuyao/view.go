@@ -126,13 +126,13 @@ func fuShenView(v *FuShen) *FuShenView {
 	if v == nil {
 		return nil
 	}
-	return &FuShenView{Position: v.Position, LiuQin: v.LiuQin.String(), Zhi: v.Zhi}
+	return &FuShenView{Position: v.Position, LiuQin: v.LiuQin.String(), Zhi: ganzhi.ZhiName(v.Zhi)}
 }
 
 func yongShenView(v YongShenResult) YongShenView {
 	view := YongShenView{
 		Name: v.Name, Position: v.Position, IsHidden: v.IsHidden,
-		WangShuai: v.WangShuai, YuePo: v.YuePo, XunKong: v.XunKong,
+		WangShuai: v.WangShuai.String(), YuePo: v.YuePo, XunKong: v.XunKong,
 		MuKu: v.MuKu, LiuShou: v.LiuShou.String(), ChangSheng: v.ChangSheng,
 		FuShen: fuShenView(v.FuShen),
 	}

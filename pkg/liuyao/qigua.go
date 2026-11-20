@@ -191,7 +191,7 @@ type YongShenResult struct {
 	Name             string   `json:"name"`                  // 用神六亲名
 	Position         int      `json:"position"`              // line position 1-6, 0 if not found
 	IsHidden         bool     `json:"is_hidden,omitempty"`   // 本卦不现，取本宫伏神
-	WangShuai        string   `json:"wang_shuai"`            // 用神旺衰（旺/相/休/囚/死）聚合
+	WangShuai        ganzhi.WangShuai `json:"wang_shuai"`            // 用神旺衰（旺/相/休/囚/死）聚合
 	YuePo            bool     `json:"yue_po,omitempty"`      // 用神月破
 	XunKong          bool     `json:"xun_kong,omitempty"`    // 用神旬空
 	MuKu             bool     `json:"mu_ku,omitempty"`       // 用神入墓

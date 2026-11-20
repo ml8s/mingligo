@@ -1,6 +1,7 @@
 package liuyao
 
 import (
+	"github.com/ml8s/mingligo/pkg/ganzhi"
 	"encoding/json"
 	"os"
 	"reflect"
@@ -31,9 +32,13 @@ func TestDomainOracle_LiuyaoConflicts(t *testing.T) {
 	}
 	for _, tc := range doc.Cases {
 		t.Run(tc.ID, func(t *testing.T) {
+			ws, err := ganzhi.ParseWangShuai(tc.WangShuai)
+			if err != nil {
+				t.Fatalf("case %s: %v", tc.ID, err)
+			}
 			chart := Chart{
 				YongShen: YongShenResult{
-					WangShuai: tc.WangShuai,
+					WangShuai: ws,
 					XunKong:   tc.XunKong,
 					YuePo:     tc.YuePo,
 				},

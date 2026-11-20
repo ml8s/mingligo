@@ -50,7 +50,7 @@ func buildPatternSemanticChart(t *testing.T, input []patternSemanticPalace) Char
 				t.Fatalf("parse star %q: %v", semantic.Name, err)
 			}
 			item := newStarInfo(star, int(star) < 14)
-			item.SiHua = semantic.SiHua
+			item.SiHua = siHuaType(semantic.SiHua)
 			item.Brightness = semantic.Brightness
 			stars = append(stars, item)
 		}

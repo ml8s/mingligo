@@ -109,12 +109,12 @@ func findPatterns(palaces [12]Gong) []Pattern {
 
 	prevHasJi, nextHasJi := false, false
 	for _, s := range prev.Stars {
-		if s.SiHua == "忌" {
+		if s.SiHua == HuaJi {
 			prevHasJi = true
 		}
 	}
 	for _, s := range next.Stars {
-		if s.SiHua == "忌" {
+		if s.SiHua == HuaJi {
 			nextHasJi = true
 		}
 	}
@@ -185,7 +185,7 @@ func sfLuCount(bz [12]Gong, sf [4]gongIndex) int {
 	count := 0
 	for _, pi := range sf {
 		for _, s := range bz[pi].Stars {
-			if s.Star == LuCun || s.SiHua == string(HuaLu) {
+			if s.Star == LuCun || s.SiHua == HuaLu {
 				count++
 			}
 		}
@@ -200,7 +200,7 @@ func hasCaiYinJiaYin(palaces [12]Gong) bool {
 	prev, next := palaces[11], palaces[1]
 	hasLuCai := func(pa Gong) bool {
 		for _, item := range pa.Stars {
-			if item.Star == LuCun || item.SiHua == string(HuaLu) {
+			if item.Star == LuCun || item.SiHua == HuaLu {
 				return true
 			}
 		}
@@ -301,7 +301,7 @@ func sfSiHuaCount(bz [12]Gong, sf [4]gongIndex, h siHuaType) int {
 	count := 0
 	for _, pi := range sf {
 		for _, s := range bz[pi].Stars {
-			if s.SiHua == string(h) {
+			if s.SiHua == h {
 				count++
 			}
 		}

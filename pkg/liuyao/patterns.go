@@ -196,10 +196,7 @@ func computeFeiFu(p *Chart, yongShen YongShen) []Pattern {
 		return patterns
 	}
 	for _, fuShen := range fuShenAll {
-		fuZhi, err := ganzhi.ParseZhi(fuShen.Zhi)
-		if err != nil {
-			continue
-		}
+		fuZhi := fuShen.Zhi
 		flying := p.Lines[fuShen.Position-1]
 		relation := feiFuRelation(flying.Wuxing, ganzhi.ZhiWuxing(fuZhi))
 		patterns = append(patterns, Pattern{

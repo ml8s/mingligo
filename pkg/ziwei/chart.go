@@ -142,7 +142,7 @@ func applyBrightnessAndSiHua(chart Chart) Chart {
 				chart.GongWei[i].Stars[j].Brightness = miaoWang(star.Star, chart.GongWei[i].Zhi).String()
 			}
 			if transformation, ok := siHua[star.Star]; ok {
-				chart.GongWei[i].Stars[j].SiHua = string(transformation)
+				chart.GongWei[i].Stars[j].SiHua = transformation
 			}
 		}
 	}

@@ -195,7 +195,7 @@ func computeForceChain(chart *Chart, typ YongShen) *ForceChain {
 }
 
 func computeHiddenForceChain(chart *Chart, typ YongShen, fuShen *FuShen) *ForceChain {
-	fuZhi := fuShenZhi(fuShen)
+	fuZhi := fuShen.Zhi
 	if fuZhi == 0 {
 		return nil
 	}
@@ -225,7 +225,7 @@ func computeHiddenForceChain(chart *Chart, typ YongShen, fuShen *FuShen) *ForceC
 			Role:      RoleYongShen,
 			Element:   yongElement.String(),
 			Positions: []int{fuShen.Position},
-			Branches:  []string{fuShen.Zhi},
+			Branches:  []string{ganzhi.ZhiName(fuShen.Zhi)},
 			Relations: []string{"日" + relation.String()},
 			States:    []string{"伏藏"},
 			Note:      "本卦不现，取本宫伏神",
@@ -511,7 +511,7 @@ func computeYongShenCandidates(chart *Chart, typ YongShen) []YongShenCandidate {
 		for _, hidden := range chart.findFuShenAll(typ) {
 			candidates = append(candidates, YongShenCandidate{
 				Position: hidden.Position,
-				Branch:   hidden.Zhi,
+				Branch:   ganzhi.ZhiName(hidden.Zhi),
 				IsHidden: true,
 				Selected: false,
 				Reason:   "本卦不现，本宫伏神候选",

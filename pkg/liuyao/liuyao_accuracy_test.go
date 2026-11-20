@@ -456,7 +456,7 @@ func TestFindFuShen_Found(t *testing.T) {
 	if fs.LiuQin != QinFumu {
 		t.Errorf("LiuQin = %s, want 父母", fs.LiuQin.String())
 	}
-	if fs.Zhi != "辰" {
+	if fs.Zhi != ganzhi.ZhiChen {
 		t.Errorf("Zhi = %s, want 辰", fs.Zhi)
 	}
 }
@@ -471,7 +471,7 @@ func TestFindFuShen_DifferentTarget(t *testing.T) {
 	if fs.Position != 4 {
 		t.Errorf("Position = %d, want 4", fs.Position)
 	}
-	if fs.Zhi != "午" {
+	if fs.Zhi != ganzhi.ZhiWu {
 		t.Errorf("Zhi = %s, want 午", fs.Zhi)
 	}
 }

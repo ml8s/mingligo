@@ -4,6 +4,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/ml8s/mingligo/pkg/ganzhi"
 	"github.com/ml8s/mingligo/pkg/tianwen"
 )
 
@@ -76,7 +77,7 @@ func TestYongShen_AggregatedFields(t *testing.T) {
 		t.Fatal("用神应存在")
 	}
 	// 用神旺衰应已聚合
-	if chart.YongShen.WangShuai == "" {
+	if chart.YongShen.WangShuai == ganzhi.WSNone {
 		t.Error("yong_shen.wang_shuai should be aggregated")
 	}
 	// 用神月破/旬空/入墓应存在
@@ -103,7 +104,7 @@ func TestYongShen_InvalidPosition(t *testing.T) {
 
 	if chart.YongShen.Position == 0 {
 		// 用神不现时，聚合字段应为空，动爻关系应为空
-		if chart.YongShen.WangShuai != "" {
+		if chart.YongShen.WangShuai != ganzhi.WSNone {
 			t.Error("用神不现时 wang_shuai 应为空")
 		}
 		if len(chart.DongYaoRelations) != 0 {

@@ -93,6 +93,8 @@ func ParseGender(s string) (Gender, error) {
 // WangShuai classifies the five-phase prosperity state.
 type WangShuai int
 
+const WSNone WangShuai = -1 // 空/未聚合
+
 const (
 	WSWang  WangShuai = iota // 旺
 	WSXiang                  // 相
@@ -112,18 +114,29 @@ func (ws WangShuai) String() string {
 
 func (ws WangShuai) MarshalJSON() ([]byte, error) { return json.Marshal(ws.String()) }
 
+func ParseWangShuai(s string) (WangShuai, error) {
+	for i, n := range wangShuaiNames {
+		if n == s {
+			return WangShuai(i), nil
+		}
+	}
+	if s == "" {
+		return WSNone, nil
+	}
+	return WSNone, fmt.Errorf("wang_shuai: unknown %q", s)
+}
+
 func (ws *WangShuai) UnmarshalJSON(data []byte) error {
 	var s string
 	if err := json.Unmarshal(data, &s); err != nil {
 		return fmt.Errorf("wang_shuai: expected string, got %s", string(data))
 	}
-	for i, n := range wangShuaiNames {
-		if n == s {
-			*ws = WangShuai(i)
-			return nil
-		}
+	parsed, err := ParseWangShuai(s)
+	if err != nil {
+		return err
 	}
-	return fmt.Errorf("wang_shuai: unknown %q", s)
+	*ws = parsed
+	return nil
 }
 
 func WangShuaiOf(elem Wuxing, yueZhi Zhi) WangShuai {

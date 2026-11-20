@@ -1,5 +1,7 @@
 package liuyao
 
+import "github.com/ml8s/mingligo/pkg/ganzhi"
+
 // Conflict is an engine-owned contradictory signal that interpretation must
 // resolve instead of silently choosing one side.
 type Conflict struct {
@@ -36,7 +38,7 @@ func computeConflicts(chart *Chart) []Conflict {
 			Facts:  append([]string(nil), relations...),
 		})
 	}
-	strong := chart.YongShen.WangShuai == "旺" || chart.YongShen.WangShuai == "相"
+	strong := chart.YongShen.WangShuai == ganzhi.WSWang || chart.YongShen.WangShuai == ganzhi.WSXiang
 	if strong && chart.YongShen.XunKong {
 		conflicts = append(conflicts, Conflict{
 			ID:     "strong-but-void",

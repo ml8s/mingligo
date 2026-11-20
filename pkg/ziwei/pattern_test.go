@@ -14,7 +14,7 @@ func makeGong(idx gongIndex, stars []StarInfo, zaYao []string) Gong {
 }
 
 func makeStar(star starIndex, name string, siHua string) StarInfo {
-	return StarInfo{Star: star, Name: name, IsMajor: star < 14, SiHua: siHua}
+	return StarInfo{Star: star, Name: name, IsMajor: star < 14, SiHua: siHuaType(siHua)}
 }
 
 func hasPattern(patterns []Pattern, name string) bool {

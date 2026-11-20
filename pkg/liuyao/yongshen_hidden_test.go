@@ -3,6 +3,8 @@ package liuyao
 import (
 	"testing"
 	"time"
+
+	"github.com/ml8s/mingligo/pkg/ganzhi"
 )
 
 // Regression for feedback: 天风姤 has no visible 妻财. A 妻财 appearing in the
@@ -25,10 +27,10 @@ func TestComputeChart_HiddenYongShenDoesNotUseBianOrFlyingLine(t *testing.T) {
 	}
 	if chart.YongShen.FuShen.Position != 2 ||
 		chart.YongShen.FuShen.LiuQin.String() != "妻财" ||
-		chart.YongShen.FuShen.Zhi != "寅" {
+		chart.YongShen.FuShen.Zhi != ganzhi.ZhiYin {
 		t.Fatalf("fu_shen = %+v, want position 2/妻财/寅", chart.YongShen.FuShen)
 	}
-	if chart.YongShen.WangShuai != "死" {
+	if chart.YongShen.WangShuai != ganzhi.WSSi {
 		t.Errorf("wang_shuai = %q, want 死 from fu-shen branch 寅", chart.YongShen.WangShuai)
 	}
 	if chart.YongShen.LiuShou.String() != "青龙" {

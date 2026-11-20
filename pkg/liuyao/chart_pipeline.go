@@ -45,7 +45,7 @@ func resolveYongshen(chart *Chart, yongShen YongShen) {
 	}
 
 	line := chart.Lines[position-1]
-	chart.YongShen.WangShuai = chart.WangShuai[position-1].String()
+	chart.YongShen.WangShuai = chart.WangShuai[position-1]
 	chart.YongShen.YuePo = line.YuePo
 	chart.YongShen.XunKong = line.XunKong
 	chart.YongShen.MuKu = line.MuKu
@@ -62,10 +62,10 @@ func resolveHiddenYongshen(chart *Chart, position int) {
 		return
 	}
 
-	fuZhi := fuShenZhi(fuShen)
+	fuZhi := fuShen.Zhi
 	fuElement := ganzhi.ZhiWuxing(fuZhi)
 	chart.YongShen.IsHidden = true
-	chart.YongShen.WangShuai = ganzhi.WangShuaiOf(fuElement, chart.YueZhi).String()
+	chart.YongShen.WangShuai = ganzhi.WangShuaiOf(fuElement, chart.YueZhi)
 	chart.YongShen.YuePo = ganzhi.IsLiuChong(fuZhi, chart.YueZhi)
 	chart.YongShen.XunKong = fuZhi == chart.XunKong[0] || fuZhi == chart.XunKong[1]
 	chart.YongShen.MuKu = len(fuTombSources(chart, fuElement)) > 0

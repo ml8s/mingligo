@@ -34,7 +34,7 @@ func computeDongYaoRelations(p *Chart, yongShenType YongShen) []DongYaoRelation 
 		yWuxing = yongLine.Wuxing
 		yongZhi = yongLine.Zhi
 	} else if fuShen := p.findFuShen(yongShenType); fuShen != nil {
-		yongZhi = fuShenZhi(fuShen)
+		yongZhi = fuShen.Zhi
 		yWuxing = ganzhi.ZhiWuxing(yongZhi)
 	} else {
 		return nil // 本卦和本宫伏神都不现

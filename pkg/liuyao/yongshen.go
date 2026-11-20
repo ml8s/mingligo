@@ -115,7 +115,7 @@ func (p *Chart) findYingYao() int {
 type FuShen struct {
 	Position int    `json:"position"` // 爻位 1-6
 	LiuQin   LiuQin `json:"liu_qin"`  // 伏神六亲
-	Zhi      string `json:"zhi"`      // 伏神地支
+	Zhi      ganzhi.Zhi `json:"zhi"` // 伏神地支
 }
 
 // yongShenToLiuQin maps YongShen → LiuQin for the first 5 types.
@@ -162,19 +162,10 @@ func (p *Chart) findFuShenAll(typ YongShen) []FuShen {
 			result = append(result, FuShen{
 				Position: i + 1,
 				LiuQin:   qin,
-				Zhi:      ganzhi.ZhiName(naZhi[i]),
+				Zhi:      naZhi[i],
 			})
 		}
 	}
 	return result
 }
 
-// fuShenZhi converts the already-validated public fu-shen branch name back to
-// the internal branch value used by deterministic state derivation.
-func fuShenZhi(fuShen *FuShen) ganzhi.Zhi {
-	zhi, err := ganzhi.ParseZhi(fuShen.Zhi)
-	if err != nil {
-		return 0
-	}
-	return zhi
-}
