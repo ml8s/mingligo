@@ -148,9 +148,9 @@ func assertSameLiuYueChart(t *testing.T, got, want LiuYue) {
 
 func liuYueWithSortedStars(value LiuYue) LiuYue {
 	for i := range value.GongWei {
-		stars := append([]string(nil), value.GongWei[i].Stars...)
+		stars := flowStarNames(value.GongWei[i].Stars)
 		sort.Strings(stars)
-		value.GongWei[i].Stars = stars
+		
 	}
 	return value
 }

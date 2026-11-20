@@ -7,19 +7,34 @@ import (
 	"testing"
 )
 
+func flowStarNames(list []FlowStar) []string {
+	out := make([]string, 0, len(list))
+	for _, s := range list {
+		out = append(out, s.Name)
+	}
+	return out
+}
+
+func flowStarListOf(names []string) []FlowStar {
+	out := make([]FlowStar, 0, len(names))
+	for _, name := range names {
+		out = append(out, FlowStar{Kind: flowStarKindOf(name), Name: name})
+	}
+	return out
+}
+
 func TestSortFlowStarsUsesCanonicalDisplayOrder(t *testing.T) {
-	got := sortFlowStars([]string{"月曲", "月喜", "月马", "月钺", "月魁", "月陀", "月羊", "月禄", "月鸾", "月昌"})
+	got := sortFlowStars(flowStarListOf([]string{"月曲", "月喜", "月马", "月钺", "月魁", "月陀", "月羊", "月禄", "月鸾", "月昌"}))
 	want := []string{"月禄", "月羊", "月陀", "月魁", "月钺", "月马", "月鸾", "月喜", "月昌", "月曲"}
-	if !reflect.DeepEqual(got, want) {
-		t.Fatalf("got %v, want %v", got, want)
+	if !reflect.DeepEqual(flowStarNames(got), want) {
+		t.Fatalf("got %v, want %v", flowStarNames(got), want)
 	}
 }
 
 func TestBuildFlowPalacesHasDeterministicStarOrder(t *testing.T) {
-	// The input is intentionally unsorted; map iteration must not leak into output.
-	stars := map[int][]string{
-		7: {"月曲", "月禄", "月昌", "月羊"},
-		8: {"流喜", "流禄", "流陀"},
+	stars := map[int][]FlowStar{
+		7: flowStarListOf([]string{"月曲", "月禄", "月昌", "月羊"}),
+		8: flowStarListOf([]string{"流喜", "流禄", "流陀"}),
 	}
 
 	first := buildFlowPalaces(0, stars)
@@ -37,19 +52,19 @@ func TestBuildFlowPalacesHasDeterministicStarOrder(t *testing.T) {
 	}
 
 	want := []string{"月禄", "月羊", "月昌", "月曲"}
-	if !reflect.DeepEqual(first[7].Stars, want) {
-		t.Fatalf("stars = %v, want %v", first[7].Stars, want)
+	if !reflect.DeepEqual(flowStarNames(first[7].Stars), want) {
+		t.Fatalf("stars = %v, want %v", flowStarNames(first[7].Stars), want)
 	}
 	want = []string{"流禄", "流陀", "流喜"}
-	if !reflect.DeepEqual(first[8].Stars, want) {
-		t.Fatalf("stars = %v, want %v", first[8].Stars, want)
+	if !reflect.DeepEqual(flowStarNames(first[8].Stars), want) {
+		t.Fatalf("stars = %v, want %v", flowStarNames(first[8].Stars), want)
 	}
 }
 
 func TestBuildFlowPalacesEmitsEmptyStarArrays(t *testing.T) {
-	palaces := buildFlowPalaces(0, map[int][]string{})
+	palaces := buildFlowPalaces(0, map[int][]FlowStar{})
 	for _, palace := range palaces {
-		if palace.Stars == nil || !reflect.DeepEqual(palace.Stars, []string{}) {
+		if palace.Stars == nil || !reflect.DeepEqual(palace.Stars, []FlowStar{}) {
 			t.Fatalf("palace %s stars = %#v, want non-nil empty array", palace.Name, palace.Stars)
 		}
 	}

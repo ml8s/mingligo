@@ -73,7 +73,7 @@ func DecodeShenSha(v ShenSha) string {
 	return ""
 }
 
-func (s ShenSha) MarshalJSON() ([]byte, error) { return []byte(`"`+DecodeShenSha(s)+`"`), nil }
+func (s ShenSha) MarshalJSON() ([]byte, error) { return []byte(`"` + DecodeShenSha(s) + `"`), nil }
 
 func EncodeShenSha(name string) (ShenSha, bool) {
 	for i, n := range shenShaNames {
@@ -337,3 +337,46 @@ const (
 	HuaKe   SiHua = "科"
 	HuaJi   SiHua = "忌"
 )
+
+// FlowStar is a flow-period star symbol: a stable kind plus its display name.
+// It keeps the 命理 kind symbolic while carrying the period-prefixed text.
+type FlowStar struct {
+	Kind FlowStarKind
+	Name string
+}
+
+func (f FlowStar) MarshalJSON() ([]byte, error) {
+	return []byte(`"` + f.Name + `"`), nil
+}
+
+// flowStarKindFor maps a star symbol to its flow-star kind.
+func flowStarKindFor(sid StarIndex) FlowStarKind {
+	switch sid {
+	case LuCun:
+		return fskLu
+	case QingYang:
+		return fskYang
+	case TuoLuo:
+		return fskTuo
+	case TianKui:
+		return fskKui
+	case TianYue:
+		return fskYue
+	case TianMa:
+		return fskMa
+	case HongLuan:
+		return fskLuan
+	case TianXi:
+		return fskXi
+	case WenChang:
+		return fskChang
+	case WenQu:
+		return fskQu
+	default:
+		return fskNone
+	}
+}
+
+func flowStarOf(sid StarIndex, name string) FlowStar {
+	return FlowStar{Kind: flowStarKindFor(sid), Name: name}
+}

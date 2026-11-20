@@ -85,18 +85,18 @@ func ComputeLiuNian(ctx FlowContext, liuNian int) LiuNian {
 		LuCun: "流禄", QingYang: "流羊", TuoLuo: "流陀", TianMa: "流马",
 		HongLuan: "流鸾", TianXi: "流喜",
 	}
-	starByAnXingIdx := make(map[int][]string)
+	starByAnXingIdx := make(map[int][]FlowStar)
 	for sid, z := range minorStars {
 		anXingIdx := zhiIdxToAnXingIdx(zhiToZhiIdx(z))
 		name, ok := flowShort[sid]
 		if !ok {
 			name = starName(sid)
 		}
-		starByAnXingIdx[anXingIdx] = append(starByAnXingIdx[anXingIdx], name)
+		starByAnXingIdx[anXingIdx] = append(starByAnXingIdx[anXingIdx], flowStarOf(sid, name))
 	}
 	// 年解（流年附加星，iztro 年支定位）
 	njAnXingIdx := zhiIdxToAnXingIdx(nianJiePos(liuYearZhi))
-	starByAnXingIdx[njAnXingIdx] = append(starByAnXingIdx[njAnXingIdx], "年解")
+	starByAnXingIdx[njAnXingIdx] = append(starByAnXingIdx[njAnXingIdx], FlowStar{Kind: fskNone, Name: "年解"})
 	yearlyIndex := zhiIdxToAnXingIdx(zhiToZhiIdx(liuYearZhi))
 	FlowPalaces := buildFlowPalaces(yearlyIndex, starByAnXingIdx)
 

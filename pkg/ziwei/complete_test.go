@@ -340,8 +340,8 @@ func assertFlowPalaces(t *testing.T, label string, got [12]FlowPalace, ref []flo
 			*fail++
 			continue
 		}
-		if !setEq(fp.Stars, r.Stars) {
-			t.Errorf("%s盘[%d]%s流耀: got %v want %v", label, fi, r.Name, fp.Stars, r.Stars)
+		if !setEq(flowStarNames(fp.Stars), r.Stars) {
+			t.Errorf("%s盘[%d]%s流耀: got %v want %v", label, fi, r.Name, flowStarNames(fp.Stars), r.Stars)
 			*fail++
 			continue
 		}

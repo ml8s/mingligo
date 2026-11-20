@@ -87,14 +87,14 @@ func computeLiuYueWithPeriod(ctx FlowContext, target tianwen.LunarDate, period F
 		IsLeapMonth: target.Leap,
 	})
 	short := liuMinorShort("月")
-	starByAnXingIdx := make(map[int][]string)
+	starByAnXingIdx := make(map[int][]FlowStar)
 	for sid, z := range stars {
 		anXingIdx := zhiIdxToAnXingIdx(zhiToZhiIdx(z))
 		name, ok := short[sid]
 		if !ok {
 			name = starName(sid)
 		}
-		starByAnXingIdx[anXingIdx] = append(starByAnXingIdx[anXingIdx], name)
+		starByAnXingIdx[anXingIdx] = append(starByAnXingIdx[anXingIdx], flowStarOf(sid, name))
 	}
 	return LiuYue{
 		MingGong:     0,
@@ -270,14 +270,14 @@ func ComputeLiuRiWith(ctx FlowContext, target tianwen.LunarDate, p tianwen.Lunar
 	riGan, riZhi := Gan(zhu.Gan), Zhi(zhu.Zhi)
 	stars := liuMinorStars(riGan, riZhi)
 	short := liuMinorShort("日")
-	starByAnXingIdx := make(map[int][]string)
+	starByAnXingIdx := make(map[int][]FlowStar)
 	for sid, z := range stars {
 		anXingIdx := zhiIdxToAnXingIdx(zhiToZhiIdx(z))
 		name, ok := short[sid]
 		if !ok {
 			name = starName(sid)
 		}
-		starByAnXingIdx[anXingIdx] = append(starByAnXingIdx[anXingIdx], name)
+		starByAnXingIdx[anXingIdx] = append(starByAnXingIdx[anXingIdx], flowStarOf(sid, name))
 	}
 	return LiuRi{
 		MingGong:     0,
@@ -361,14 +361,14 @@ func ComputeLiuShiWith(ctx FlowContext, target tianwen.LunarDate, shiZhi Zhi, p 
 	shiGan := shiGanCalc(riGan, shiZhi)
 	stars := liuMinorStars(shiGan, shiZhi)
 	short := liuMinorShort("时")
-	starByAnXingIdx := make(map[int][]string)
+	starByAnXingIdx := make(map[int][]FlowStar)
 	for sid, z := range stars {
 		anXingIdx := zhiIdxToAnXingIdx(zhiToZhiIdx(z))
 		name, ok := short[sid]
 		if !ok {
 			name = starName(sid)
 		}
-		starByAnXingIdx[anXingIdx] = append(starByAnXingIdx[anXingIdx], name)
+		starByAnXingIdx[anXingIdx] = append(starByAnXingIdx[anXingIdx], flowStarOf(sid, name))
 	}
 	return LiuShi{
 		MingGong:     0,
