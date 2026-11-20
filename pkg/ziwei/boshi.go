@@ -8,7 +8,7 @@ var boShiCycle = []string{
 }
 
 // computeBoShi 博士十二神。iztro算法：从禄存起，年支阴阳=性别→顺行，≠→逆行。
-func computeBoShi(ju JuShu, mingZhi Zhi, nianGan Gan, gender ganzhi.Gender, nianZhi Zhi) [12]string {
+func computeBoShi(ju JuShu, mingZhi Zhi, nianGan Gan, gender ganzhi.Gender, nianZhi Zhi) [12]BoShiStage {
 	// 禄存在zhiIdx
 	luCunZhiM1 := luCunTable[int(nianGan)-1]
 	// zhiIdx → gong index via zhi matching
@@ -21,7 +21,7 @@ func computeBoShi(ju JuShu, mingZhi Zhi, nianGan Gan, gender ganzhi.Gender, nian
 		}
 	}
 	if luPalace < 0 {
-		return [12]string{}
+		return [12]BoShiStage{}
 	}
 
 	// 年支阴阳 vs 性别 → 方向
@@ -33,10 +33,10 @@ func computeBoShi(ju JuShu, mingZhi Zhi, nianGan Gan, gender ganzhi.Gender, nian
 		dir = -1
 	}
 
-	var result [12]string
+	var result [12]BoShiStage
 	for i := 0; i < 12; i++ {
 		idx := (luPalace - i*dir + 12) % 12
-		result[idx] = boShiCycle[i]
+		result[idx] = BoShiStage(boShiCycle[i])
 	}
 	return result
 }

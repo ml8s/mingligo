@@ -240,7 +240,7 @@ func TestComplete(t *testing.T) {
 					pass++
 				}
 				// 长生
-				if got.ChangSheng != ref.Cs {
+				if string(got.ChangSheng) != ref.Cs {
 					t.Errorf("[%s]长生: got%s want%s", nm, got.ChangSheng, ref.Cs)
 					fail++
 				} else {
@@ -255,20 +255,20 @@ func TestComplete(t *testing.T) {
 					pass++
 				}
 				// 博士
-				if got.BoShi != ref.Bs {
+				if string(got.BoShi) != ref.Bs {
 					t.Errorf("[%s]博士: got%s want%s", nm, got.BoShi, ref.Bs)
 					fail++
 				} else {
 					pass++
 				}
 				// 将前/岁前
-				if got.JiangQian != ref.Jq {
+				if string(got.JiangQian) != ref.Jq {
 					t.Errorf("[%s]将前: got%s want%s", nm, got.JiangQian, ref.Jq)
 					fail++
 				} else {
 					pass++
 				}
-				if got.SuiQian != ref.Sq {
+				if string(got.SuiQian) != ref.Sq {
 					t.Errorf("[%s]岁前: got%s want%s", nm, got.SuiQian, ref.Sq)
 					fail++
 				} else {

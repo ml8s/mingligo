@@ -28,7 +28,7 @@ func juChangShengZhi(ju JuShu) Zhi {
 // computeChangSheng computes the 长生12神 for all 12 palaces.
 // Returns an array indexed by GongIndex (0=命宫..11=父母).
 // Direction: 阳男阴女→顺行, 阴男阳女→逆行 (opposite of xiaoXian).
-func computeChangSheng(ju JuShu, mingZhi Zhi, nianGan Gan, gender ganzhi.Gender) [12]string {
+func computeChangSheng(ju JuShu, mingZhi Zhi, nianGan Gan, gender ganzhi.Gender) [12]ChangShengStage {
 	startZhi := juChangShengZhi(ju)
 	startPalace := int((int(mingZhi) - int(startZhi) + 12) % 12)
 
@@ -41,7 +41,7 @@ func computeChangSheng(ju JuShu, mingZhi Zhi, nianGan Gan, gender ganzhi.Gender)
 		dir = -1 // 阴阳相同→逆行
 	}
 
-	var result [12]string
+	var result [12]ChangShengStage
 	for i := 0; i < 12; i++ {
 		var idx int
 		if dir == -1 { // 逆行: 从起始宫递减
@@ -49,7 +49,7 @@ func computeChangSheng(ju JuShu, mingZhi Zhi, nianGan Gan, gender ganzhi.Gender)
 		} else { // 顺行: 从起始宫递增
 			idx = (startPalace + i) % 12
 		}
-		result[idx] = changShengCycle[i]
+		result[idx] = ChangShengStage(changShengCycle[i])
 	}
 	return result
 }

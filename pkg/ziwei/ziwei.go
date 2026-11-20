@@ -43,10 +43,10 @@ type Gong struct {
 	IsYuanGong   bool       `json:"lai_yin_gong,omitempty"`
 	Stars        []StarInfo `json:"xing_yao"`
 	Ages         []int      `json:"xiao_xian,omitempty"`
-	ChangSheng   string     `json:"chang_sheng,omitempty"`
-	BoShi        string     `json:"bo_shi,omitempty"`
-	JiangQian    string     `json:"jiang_qian,omitempty"`
-	SuiQian      string     `json:"sui_qian,omitempty"`
+	ChangSheng   ChangShengStage `json:"chang_sheng,omitempty"`
+	BoShi        BoShiStage `json:"bo_shi,omitempty"`
+	JiangQian    JiangQianStage `json:"jiang_qian,omitempty"`
+	SuiQian      SuiQianStage `json:"sui_qian,omitempty"`
 	ZaYao        []ShenSha  `json:"za_yao,omitempty"`
 }
 

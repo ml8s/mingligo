@@ -11,7 +11,7 @@ var suiQianNames = [12]string{
 }
 
 // computeJiangQian returns the 将前12神. iztro: 年支定起始→顺时针display序→zhiIdxToPalaceIndex.
-func computeJiangQian(nianZhi Zhi, mingZhi Zhi) [12]string {
+func computeJiangQian(nianZhi Zhi, mingZhi Zhi) [12]JiangQianStage {
 	var jqStartIdx int
 	switch nianZhi {
 	case 3, 7, 11: // 寅午戌→午
@@ -23,25 +23,25 @@ func computeJiangQian(nianZhi Zhi, mingZhi Zhi) [12]string {
 	default: // 亥卯未→卯
 		jqStartIdx = 1
 	}
-	result := [12]string{}
+	result := [12]JiangQianStage{}
 	for i := 0; i < 12; i++ {
 		anXingIdx := (jqStartIdx + i) % 12
 		zhiIdx := (anXingIdx + 2) % 12
 		palaceIndex := zhiIdxToPalaceIndex(zhiToZhiIdx(mingZhi), zhiIdx)
-		result[palaceIndex] = jiangQianNames[i]
+		result[palaceIndex] = JiangQianStage(jiangQianNames[i])
 	}
 	return result
 }
 
 // computeSuiQian returns the 岁前12神. iztro: 年支起顺时针display序→zhiIdxToPalaceIndex.
-func computeSuiQian(nianZhi Zhi, mingZhi Zhi) [12]string {
+func computeSuiQian(nianZhi Zhi, mingZhi Zhi) [12]SuiQianStage {
 	nianAnXingIdx := (int(nianZhi) - 3 + 12) % 12 // nianZhi→iztro 安星索引
-	result := [12]string{}
+	result := [12]SuiQianStage{}
 	for i := 0; i < 12; i++ {
 		anXingIdx := (nianAnXingIdx + i) % 12
 		zhiIdx := (anXingIdx + 2) % 12
 		palaceIndex := zhiIdxToPalaceIndex(zhiToZhiIdx(mingZhi), zhiIdx)
-		result[palaceIndex] = suiQianNames[i]
+		result[palaceIndex] = SuiQianStage(suiQianNames[i])
 	}
 	return result
 }

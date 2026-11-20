@@ -380,3 +380,15 @@ func flowStarKindFor(sid StarIndex) FlowStarKind {
 func flowStarOf(sid StarIndex, name string) FlowStar {
 	return FlowStar{Kind: flowStarKindFor(sid), Name: name}
 }
+
+// ChangShengStage, BoShiStage, JiangQianStage, SuiQianStage are the four
+// twelve-stage cycles attached to palaces. Values are the stable display names.
+type ChangShengStage string
+type BoShiStage string
+type JiangQianStage string
+type SuiQianStage string
+
+func DecodeChangShengStage(s ChangShengStage) string { return string(s) }
+func DecodeBoShiStage(s BoShiStage) string           { return string(s) }
+func DecodeJiangQianStage(s JiangQianStage) string   { return string(s) }
+func DecodeSuiQianStage(s SuiQianStage) string       { return string(s) }
