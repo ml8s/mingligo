@@ -64,7 +64,7 @@ func TestQuarterCatalogIsClosedToTwoMethods(t *testing.T) {
 	want = Method{
 		Scope: ScopeQuarter, School: SchoolZhuanPan,
 		QuarterRule: QuarterTwelveMinuteTenDivision, BaseDingju: DingjuChaiBu,
-		DunSource: "hour_branch", HourBoundary: "late_zi",
+		DunSource: dsHourBranch, HourBoundary: hbLateZi,
 	}
 	if method != want {
 		t.Fatalf("十二分钟十分局 quarter method = %+v, want %+v", method, want)
@@ -81,7 +81,7 @@ func TestQuarterCatalogIsClosedToTwoMethods(t *testing.T) {
 		want := Method{
 			Scope: ScopeQuarter, School: SchoolZhuanPan,
 			QuarterRule: QuarterTwelveMinuteTenDivision, BaseDingju: wantBase,
-			DunSource: "hour_branch", HourBoundary: "late_zi",
+			DunSource: dsHourBranch, HourBoundary: hbLateZi,
 		}
 		if got != want {
 			t.Fatalf("twelve-minute base %s method = %+v, want %+v", method, got, want)
@@ -103,7 +103,7 @@ func TestQuarterCatalogIsClosedToTwoMethods(t *testing.T) {
 		want := Method{
 			Scope: ScopeQuarter, School: SchoolZhuanPan,
 			QuarterRule: QuarterTwelveMinuteTenDivision, BaseDingju: DingjuMaoShan,
-			DunSource: item.dun, HourBoundary: item.boundary,
+			DunSource: mustDunSource(item.dun), HourBoundary: mustHourBoundary(item.boundary),
 		}
 		if method != want {
 			t.Fatalf("十二分钟十分局 options %s/%s = %+v, want %+v", item.dun, item.boundary, method, want)
@@ -186,7 +186,7 @@ func TestTwelveMinuteTenDivisionQuarterBoundaries(t *testing.T) {
 	}
 	for _, tc := range cases {
 		when := time.Date(2026, 9, 7, tc.hour, tc.minute, 0, 0, time.FixedZone("CST", 8*3600))
-		if got := twelveMinuteQuarterIndexWithBoundary(when, "late_zi"); got != tc.index {
+		if got := twelveMinuteQuarterIndexWithBoundary(when, hbLateZi); got != tc.index {
 			t.Fatalf("twelveMinuteQuarterIndexWithBoundary(%02d:%02d) = %d, want %d", tc.hour, tc.minute, got, tc.index)
 		}
 	}
@@ -194,10 +194,10 @@ func TestTwelveMinuteTenDivisionQuarterBoundaries(t *testing.T) {
 
 func TestTwelveMinuteTenDivisionHourBoundaryOptions(t *testing.T) {
 	when := time.Date(2026, 9, 7, 0, 0, 0, 0, time.FixedZone("CST", 8*3600))
-	if got := twelveMinuteQuarterIndexWithBoundary(when, "late_zi"); got != 6 {
+	if got := twelveMinuteQuarterIndexWithBoundary(when, hbLateZi); got != 6 {
 		t.Fatalf("late-zi quarter = %d, want 6", got)
 	}
-	if got := twelveMinuteQuarterIndexWithBoundary(when, "zi_zheng"); got != 1 {
+	if got := twelveMinuteQuarterIndexWithBoundary(when, hbZiZheng); got != 1 {
 		t.Fatalf("zi-zheng quarter = %d, want 1", got)
 	}
 }
@@ -228,8 +228,8 @@ func TestTwelveMinuteTenDivisionDunSourceOptions(t *testing.T) {
 			t.Fatal(err)
 		}
 		if chart.Board.YinDun != want.yin || chart.Board.Jushu != want.ju ||
-			chart.Method.Quarter.DunSource != want.dun ||
-			chart.Method.Quarter.HourBoundary != want.boundary {
+			chart.Method.Quarter.DunSource.String() != want.dun ||
+			chart.Method.Quarter.HourBoundary.String() != want.boundary {
 			t.Fatalf("options %s/%s = %d/%v/%+v", want.dun, want.boundary,
 				chart.Board.Jushu, chart.Board.YinDun, chart.Method.Quarter)
 		}
@@ -373,7 +373,7 @@ func TestTwelveMinuteTenDivisionQuarterGoldenVectors(t *testing.T) {
 			chart, err := ComputeChartWithMethod(time.Time(when), time.Time(when), Method{
 				Scope: ScopeQuarter, School: SchoolZhuanPan,
 				QuarterRule: QuarterTwelveMinuteTenDivision, BaseDingju: mustDingjuForTest(t, want.BaseDingju),
-				DunSource: want.DunSource, HourBoundary: want.HourBoundary,
+				DunSource: mustDunSource(want.DunSource), HourBoundary: mustHourBoundary(want.HourBoundary),
 			})
 			if err != nil {
 				t.Fatal(err)
@@ -384,8 +384,8 @@ func TestTwelveMinuteTenDivisionQuarterGoldenVectors(t *testing.T) {
 			if chart.Method.Quarter == nil || chart.Method.Quarter.Index != want.QuarterIndex ||
 				chart.Method.Quarter.MinutesPerQuarter != 12 ||
 				chart.Method.Quarter.LeadPillarMode != "hour" ||
-				chart.Method.Quarter.DunSource != want.DunSource ||
-				chart.Method.Quarter.HourBoundary != want.HourBoundary {
+				chart.Method.Quarter.DunSource.String() != want.DunSource ||
+				chart.Method.Quarter.HourBoundary.String() != want.HourBoundary {
 				t.Fatalf("quarter metadata = %+v, want index %d/12min/hour lead", chart.Method.Quarter, want.QuarterIndex)
 			}
 			if got := chart.Method.LeadPillar.Name; got != want.Hour || got != want.Lead {
@@ -407,4 +407,20 @@ func mustDingjuForTest(t *testing.T, value string) DingjuMethod {
 		t.Fatal(err)
 	}
 	return method
+}
+
+func mustDunSource(name string) DunSource {
+	v, ok := ParseDunSource(name)
+	if !ok {
+		panic("bad dun source: " + name)
+	}
+	return v
+}
+
+func mustHourBoundary(name string) HourBoundary {
+	v, ok := ParseHourBoundary(name)
+	if !ok {
+		panic("bad hour boundary: " + name)
+	}
+	return v
 }

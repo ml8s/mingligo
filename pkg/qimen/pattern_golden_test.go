@@ -84,7 +84,7 @@ func TestPatternGoldenVectors(t *testing.T) {
 		if !covered[rule.Name] {
 			t.Fatalf("pattern rule %s has no golden vector", rule.Name)
 		}
-		if rule.DutyStarPosition == "" && vectorCounts[rule.Name] < len(rule.Conditions) {
+		if rule.DutyStarPosition == dspNone && vectorCounts[rule.Name] < len(rule.Conditions) {
 			t.Fatalf("pattern rule %s covers %d/%d condition branches", rule.Name, vectorCounts[rule.Name], len(rule.Conditions))
 		}
 	}

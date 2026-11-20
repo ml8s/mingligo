@@ -53,7 +53,7 @@ func TestPatternTableContract(t *testing.T) {
 		if rule.Description == "" || rule.YiJu == "" {
 			t.Errorf("%s lacks description or basis", rule.Name)
 		}
-		if rule.DutyStarPosition == "" {
+		if rule.DutyStarPosition == dspNone {
 			if len(rule.Conditions) == 0 {
 				t.Errorf("%s lacks symbol conditions", rule.Name)
 			}

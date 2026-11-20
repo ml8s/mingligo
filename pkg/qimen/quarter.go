@@ -10,8 +10,8 @@ type quarterInfo struct {
 	Index          int
 	Minutes        int
 	LeadPillarMode string
-	DunSource      string
-	HourBoundary   string
+	DunSource      DunSource
+	HourBoundary   HourBoundary
 	Pillar         ganzhi.Zhu
 	HourYangDun    bool
 	Sanyuan        quarterSanyuanEntry
@@ -23,8 +23,8 @@ type ChartQuarter struct {
 	Index             int    `json:"index"`
 	MinutesPerQuarter int    `json:"minutes_per_quarter"`
 	LeadPillarMode    string `json:"lead_pillar_mode"`
-	DunSource         string `json:"dun_source,omitempty"`
-	HourBoundary      string `json:"hour_boundary,omitempty"`
+	DunSource         DunSource `json:"dun_source,omitempty"`
+	HourBoundary      HourBoundary `json:"hour_boundary,omitempty"`
 }
 
 func newTenMinuteQuarterInfo(t time.Time, hourPillar ganzhi.Zhu) quarterInfo {
@@ -46,7 +46,7 @@ func newTenMinuteQuarterInfo(t time.Time, hourPillar ganzhi.Zhu) quarterInfo {
 func newTwelveMinuteQuarterInfo(t time.Time, hourPillar ganzhi.Zhu, baseYangDun bool, method Method) quarterInfo {
 	rule := quarterRules[QuarterTwelveMinuteTenDivision]
 	hourYangDun := quarterYangBranch[hourPillar.Zhi]
-	if method.DunSource == "solar_term" {
+	if method.DunSource == dsSolarTerm {
 		hourYangDun = baseYangDun
 	}
 	return quarterInfo{
@@ -60,7 +60,7 @@ func newTwelveMinuteQuarterInfo(t time.Time, hourPillar ganzhi.Zhu, baseYangDun 
 	}
 }
 
-func twelveMinuteQuarterIndexWithBoundary(t time.Time, boundary string) int {
+func twelveMinuteQuarterIndexWithBoundary(t time.Time, boundary HourBoundary) int {
 	rule := quarterRules[QuarterTwelveMinuteTenDivision]
 	return quarterIndexFor(t, rule, rule.HourBoundaries[boundary])
 }

@@ -108,8 +108,8 @@ type Method struct {
 	Dingju       DingjuMethod
 	QuarterRule  QuarterRule
 	BaseDingju   DingjuMethod
-	DunSource    string
-	HourBoundary string
+	DunSource    DunSource
+	HourBoundary HourBoundary
 }
 
 // ParseMethod validates a method combination against the catalog.
@@ -120,7 +120,7 @@ func ParseMethod(scope, school, dingjuMethod, quarterRule string) (Method, error
 // validateMethodFields validates an already-typed method combination against
 // the catalog. It is the single source of method validation; string parsing
 // lives only in ParseMethodWithOptions at the input boundary.
-func validateMethodFields(scope Scope, school School, dingju DingjuMethod, quarter QuarterRule, baseDingju DingjuMethod, dunSource, hourBoundary string) (Method, error) {
+func validateMethodFields(scope Scope, school School, dingju DingjuMethod, quarter QuarterRule, baseDingju DingjuMethod, dunSource DunSource, hourBoundary HourBoundary) (Method, error) {
 	scopeEntry, ok := scopeMethods[scope]
 	if !ok {
 		return Method{}, fmt.Errorf("unknown scope %q", scope)
@@ -159,27 +159,27 @@ func validateMethodFields(scope Scope, school School, dingju DingjuMethod, quart
 			if !quarterRules[quarter].BaseDingjuMethods[base] {
 				return Method{}, fmt.Errorf("twelve-minute quarter does not support base dingju method %q", base)
 			}
-			if dunSource == "" {
+			if dunSource == 0 {
 				dunSource = quarterRules[quarter].DefaultDunSource
 			}
 			if !quarterRules[quarter].DunSources[dunSource] {
 				return Method{}, fmt.Errorf("twelve-minute quarter does not support dun source %q", dunSource)
 			}
-			if hourBoundary == "" {
+			if hourBoundary == 0 {
 				hourBoundary = quarterRules[quarter].DefaultHourBoundary
 			}
 			if _, exists := quarterRules[quarter].HourBoundaries[hourBoundary]; !exists {
 				return Method{}, fmt.Errorf("twelve-minute quarter does not support hour boundary %q", hourBoundary)
 			}
 			result.BaseDingju, result.DunSource, result.HourBoundary = base, dunSource, hourBoundary
-		} else if baseDingju != "" || dunSource != "" || hourBoundary != "" {
+		} else if baseDingju != "" || dunSource != 0 || hourBoundary != 0 {
 			return Method{}, fmt.Errorf("quarter rule %q does not support Kejia options", quarter)
 		}
 	default:
 		if quarter != "" {
 			return Method{}, fmt.Errorf("scope %q does not support quarter_rule", scope)
 		}
-		if baseDingju != "" || dunSource != "" || hourBoundary != "" {
+		if baseDingju != "" || dunSource != 0 || hourBoundary != 0 {
 			return Method{}, fmt.Errorf("scope %q does not support Kejia options", scope)
 		}
 		if scopeEntry.allowsNoDingjuSchool(school) {
@@ -241,98 +241,46 @@ func ParseMethodWithOptions(
 	if err != nil {
 		return Method{}, err
 	}
-	scopeEntry, ok := scopeMethods[parsedScope]
-	if !ok {
-		return Method{}, fmt.Errorf("unknown scope %q", parsedScope)
-	}
-	schoolEntry, ok := schoolMethods[parsedSchool]
-	if !ok {
-		return Method{}, fmt.Errorf("unknown school %q", parsedSchool)
-	}
-	if !schoolEntry.allowsScope(parsedScope) {
-		return Method{}, fmt.Errorf("school %q does not support scope %q", parsedSchool, parsedScope)
-	}
-
-	result := Method{Scope: parsedScope, School: parsedSchool}
-	switch parsedScope {
-	case ScopeQuarter:
-		if dingjuMethod != "" {
-			return Method{}, fmt.Errorf("scope %q does not support dingju_method", parsedScope)
-		}
-		if quarterRule == "" {
-			return Method{}, fmt.Errorf("scope %q requires quarter_rule", parsedScope)
-		}
-		rule, err := ParseQuarterRule(quarterRule)
+	parsedDingju := DingjuMethod(dingjuMethod)
+	if dingjuMethod != "" {
+		parsedDingju, err = ParseDingjuMethod(dingjuMethod)
 		if err != nil {
 			return Method{}, err
 		}
-		if !scopeEntry.allowsQuarterRule(rule) || !schoolEntry.allowsQuarterRule(rule) {
-			return Method{}, fmt.Errorf("school %q does not support quarter rule %q", parsedSchool, rule)
-		}
-		result.QuarterRule = rule
-		if rule == QuarterTwelveMinuteTenDivision {
-			base := DingjuChaiBu
-			if baseDingjuMethod != "" {
-				parsedBase, err := ParseDingjuMethod(baseDingjuMethod)
-				if err != nil {
-					return Method{}, fmt.Errorf("invalid base dingju method: %w", err)
-				}
-				base = parsedBase
-			}
-			if !quarterRules[rule].BaseDingjuMethods[base] {
-				return Method{}, fmt.Errorf("twelve-minute quarter does not support base dingju method %q", base)
-			}
-			if dunSource == "" {
-				dunSource = quarterRules[rule].DefaultDunSource
-			}
-			if !quarterRules[rule].DunSources[dunSource] {
-				return Method{}, fmt.Errorf("twelve-minute quarter does not support dun source %q", dunSource)
-			}
-			if hourBoundary == "" {
-				hourBoundary = quarterRules[rule].DefaultHourBoundary
-			}
-			if _, exists := quarterRules[rule].HourBoundaries[hourBoundary]; !exists {
-				return Method{}, fmt.Errorf("twelve-minute quarter does not support hour boundary %q", hourBoundary)
-			}
-			result.BaseDingju, result.DunSource, result.HourBoundary = base, dunSource, hourBoundary
-		} else if baseDingjuMethod != "" || dunSource != "" || hourBoundary != "" {
-			return Method{}, fmt.Errorf("quarter rule %q does not support Kejia options", rule)
-		}
-	default:
-		if quarterRule != "" {
-			return Method{}, fmt.Errorf("scope %q does not support quarter_rule", parsedScope)
-		}
-		if baseDingjuMethod != "" || dunSource != "" || hourBoundary != "" {
-			return Method{}, fmt.Errorf("scope %q does not support Kejia options", parsedScope)
-		}
-		if scopeEntry.allowsNoDingjuSchool(parsedSchool) {
-			if dingjuMethod != "" {
-				return Method{}, fmt.Errorf("school %q must omit dingju_method", parsedSchool)
-			}
-			result.Dingju = DingjuNone
-		} else if len(scopeEntry.DingjuMethods) == 0 {
-			if dingjuMethod != "" {
-				return Method{}, fmt.Errorf("scope %q does not support dingju_method", parsedScope)
-			}
-		} else {
-			method, err := ParseDingjuMethod(dingjuMethod)
-			if err != nil {
-				return Method{}, err
-			}
-			if !scopeEntry.allowsDingju(method) {
-				return Method{}, fmt.Errorf("scope %q does not support dingju method %q", parsedScope, method)
-			}
-			result.Dingju = method
-		}
-		if result.Dingju == DingjuNone {
-			if !scopeEntry.allowsNoDingjuSchool(parsedSchool) || !schoolEntry.allowsDingju(DingjuNone) {
-				return Method{}, fmt.Errorf("school %q must omit dingju_method", parsedSchool)
-			}
-		} else if result.Dingju != "" && !schoolEntry.allowsDingju(result.Dingju) {
-			return Method{}, fmt.Errorf("school %q does not support dingju method %q", parsedSchool, result.Dingju)
+	}
+	parsedQuarter := QuarterRule(quarterRule)
+	if quarterRule != "" {
+		parsedQuarter, err = ParseQuarterRule(quarterRule)
+		if err != nil {
+			return Method{}, err
 		}
 	}
-	return result, nil
+	parsedBase := DingjuMethod(baseDingjuMethod)
+	if baseDingjuMethod != "" {
+		parsedBase, err = ParseDingjuMethod(baseDingjuMethod)
+		if err != nil {
+			return Method{}, err
+		}
+	}
+	var parsedDun DunSource
+	if dunSource != "" {
+		var ok bool
+		parsedDun, ok = ParseDunSource(dunSource)
+		if !ok {
+			return Method{}, fmt.Errorf("unknown dun source %q", dunSource)
+		}
+	}
+	var parsedBoundary HourBoundary
+	if hourBoundary != "" {
+		var ok bool
+		parsedBoundary, ok = ParseHourBoundary(hourBoundary)
+		if !ok {
+			return Method{}, fmt.Errorf("unknown hour boundary %q", hourBoundary)
+		}
+	}
+	return validateMethodFields(
+		parsedScope, parsedSchool, parsedDingju, parsedQuarter, parsedBase, parsedDun, parsedBoundary,
+	)
 }
 
 // ResolveMethod fills omitted API dimensions from the catalog and validates the

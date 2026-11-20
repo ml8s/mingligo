@@ -404,13 +404,45 @@ type Pattern struct {
 	GongWei     []GongIndex `json:"gong_wei,omitempty"`
 }
 
+// DutyStarPosition is the qimen-domain symbol for a duty star's required
+// position relative to its home palace.
+type DutyStarPosition uint8
+
+const (
+	dspNone     DutyStarPosition = iota // 未指定
+	dspHome                             // home 本位
+	dspOpposite                         // opposite 对冲
+)
+
+func ParseDutyStarPosition(name string) (DutyStarPosition, bool) {
+	switch name {
+	case "home":
+		return dspHome, true
+	case "opposite":
+		return dspOpposite, true
+	default:
+		return 0, false
+	}
+}
+
+func (d DutyStarPosition) String() string {
+	switch d {
+	case dspHome:
+		return "home"
+	case dspOpposite:
+		return "opposite"
+	default:
+		return ""
+	}
+}
+
 type patternRule struct {
 	Name             string
 	Description      string
 	YiJu             string
 	Auspicious       bool
 	RequiresDutyDoor bool
-	DutyStarPosition string
+	DutyStarPosition DutyStarPosition
 	Conditions       []patternCondition
 }
 

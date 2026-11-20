@@ -1,6 +1,7 @@
 package qimen
 
 import (
+	"encoding/json"
 	"sort"
 
 	"github.com/ml8s/mingligo/pkg/ganzhi"
@@ -15,8 +16,29 @@ type SpecializedContext struct {
 	Tianwang    []TianwangFact    `json:"tianwang_facts"`
 }
 
+// PillarLevel is the qimen-domain symbol for a four-pillar level.
+type PillarLevel uint8
+
+const (
+	levelYear  PillarLevel = iota // year
+	levelMonth                    // month
+	levelDay                      // day
+	levelHour                     // hour
+)
+
+var pillarLevelNames = [...]string{"year", "month", "day", "hour"}
+
+func (l PillarLevel) String() string {
+	if int(l) < len(pillarLevelNames) {
+		return pillarLevelNames[l]
+	}
+	return ""
+}
+
+func (l PillarLevel) MarshalJSON() ([]byte, error) { return json.Marshal(l.String()) }
+
 type GengGeFact struct {
-	Level    string     `json:"level"`
+	Level    PillarLevel `json:"level"`
 	Gong     GongIndex  `json:"gong"`
 	Door     string     `json:"men,omitempty"`
 	EarthGan ganzhi.Gan `json:"earth_gan"`
@@ -45,7 +67,7 @@ type TianwangFact struct {
 }
 
 type pillarLevel struct {
-	Level string
+	Level PillarLevel
 	Gan   ganzhi.Gan
 	Zhi   ganzhi.Zhi
 }
@@ -61,10 +83,10 @@ func computeSpecializedContext(chart Chart, bz ganzhi.Bazi) SpecializedContext {
 
 func computeGengGeFacts(chart Chart, bz ganzhi.Bazi) []GengGeFact {
 	pillars := []pillarLevel{
-		{Level: "year", Gan: bz.Nian.Gan, Zhi: bz.Nian.Zhi},
-		{Level: "month", Gan: bz.Yue.Gan, Zhi: bz.Yue.Zhi},
-		{Level: "day", Gan: bz.Ri.Gan, Zhi: bz.Ri.Zhi},
-		{Level: "hour", Gan: bz.Shi.Gan, Zhi: bz.Shi.Zhi},
+		{Level: levelYear, Gan: bz.Nian.Gan, Zhi: bz.Nian.Zhi},
+		{Level: levelMonth, Gan: bz.Yue.Gan, Zhi: bz.Yue.Zhi},
+		{Level: levelDay, Gan: bz.Ri.Gan, Zhi: bz.Ri.Zhi},
+		{Level: levelHour, Gan: bz.Shi.Gan, Zhi: bz.Shi.Zhi},
 	}
 	result := []GengGeFact{}
 	for _, interaction := range chart.GanInteractions {
@@ -101,15 +123,15 @@ func computeGengGeFacts(chart Chart, bz ganzhi.Bazi) []GengGeFact {
 
 const qimenLevelCount = 4
 
-func levelRank(level string) int {
+func levelRank(level PillarLevel) int {
 	switch level {
-	case "year":
+	case levelYear:
 		return 0
-	case "month":
+	case levelMonth:
 		return 1
-	case "day":
+	case levelDay:
 		return 2
-	case "hour":
+	case levelHour:
 		return 3
 	default:
 		return qimenLevelCount

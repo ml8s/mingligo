@@ -117,7 +117,7 @@ func TestDomainOracle_QimenSpecializedContext(t *testing.T) {
 			}
 			for index, want := range tc.Expected {
 				fact := got[index]
-				if fact.Level != want.Level || fact.Gong.String() != want.Gong || fact.EarthGan.String() != want.EarthGan {
+				if fact.Level.String() != want.Level || fact.Gong.String() != want.Gong || fact.EarthGan.String() != want.EarthGan {
 					t.Fatalf("row %d = %#v, want %#v", index, fact, want)
 				}
 			}

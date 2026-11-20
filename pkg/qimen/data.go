@@ -176,10 +176,10 @@ type quarterVariant struct {
 	BaseScope           Scope
 	BaseSchool          School
 	BaseDingjuMethods   map[DingjuMethod]bool
-	DunSources          map[string]bool
-	DefaultDunSource    string
-	HourBoundaries      map[string]int
-	DefaultHourBoundary string
+	DunSources          map[DunSource]bool
+	DefaultDunSource    DunSource
+	HourBoundaries      map[HourBoundary]int
+	DefaultHourBoundary HourBoundary
 	JuCycle             int
 	YangStep            int
 	YinStep             int
@@ -1001,43 +1001,45 @@ func loadTwelveMinuteQuarter(entry quarterJSONEntry, variant quarterVariant) (qu
 			return variant, fmt.Errorf("load quarter: twelve-minute rule lacks base dingju method %q", method)
 		}
 	}
-	variant.DunSources = make(map[string]bool, len(entry.DunSources))
+	variant.DunSources = make(map[DunSource]bool, len(entry.DunSources))
 	defaultDunCount := 0
 	for _, option := range entry.DunSources {
-		if option.Source != "hour_branch" && option.Source != "solar_term" {
+		ds, ok := ParseDunSource(option.Source)
+		if !ok {
 			return variant, fmt.Errorf("load quarter: invalid dun source %q", option.Source)
 		}
-		if variant.DunSources[option.Source] {
+		if variant.DunSources[ds] {
 			return variant, fmt.Errorf("load quarter: duplicate dun source %q", option.Source)
 		}
 		if option.Default {
-			variant.DefaultDunSource = option.Source
+			variant.DefaultDunSource = ds
 			defaultDunCount++
 		}
-		variant.DunSources[option.Source] = true
+		variant.DunSources[ds] = true
 	}
-	if defaultDunCount != 1 || !variant.DunSources["hour_branch"] || !variant.DunSources["solar_term"] {
+	if defaultDunCount != 1 || !variant.DunSources[dsHourBranch] || !variant.DunSources[dsSolarTerm] {
 		return variant, fmt.Errorf("load quarter: invalid dun source defaults")
 	}
-	variant.HourBoundaries = make(map[string]int, len(entry.HourBoundaries))
+	variant.HourBoundaries = make(map[HourBoundary]int, len(entry.HourBoundaries))
 	defaultBoundaryCount := 0
 	for _, option := range entry.HourBoundaries {
-		if option.Boundary != "late_zi" && option.Boundary != "zi_zheng" {
+		hb, ok := ParseHourBoundary(option.Boundary)
+		if !ok {
 			return variant, fmt.Errorf("load quarter: invalid hour boundary %q", option.Boundary)
 		}
-		if _, exists := variant.HourBoundaries[option.Boundary]; exists {
+		if _, exists := variant.HourBoundaries[hb]; exists {
 			return variant, fmt.Errorf("load quarter: duplicate hour boundary %q", option.Boundary)
 		}
 		if option.HourStartShift != 0 && option.HourStartShift != 1 {
 			return variant, fmt.Errorf("load quarter: invalid hour boundary shift %d", option.HourStartShift)
 		}
 		if option.Default {
-			variant.DefaultHourBoundary = option.Boundary
+			variant.DefaultHourBoundary = hb
 			defaultBoundaryCount++
 		}
-		variant.HourBoundaries[option.Boundary] = option.HourStartShift
+		variant.HourBoundaries[hb] = option.HourStartShift
 	}
-	if defaultBoundaryCount != 1 || variant.HourBoundaries["late_zi"] != 1 || variant.HourBoundaries["zi_zheng"] != 0 {
+	if defaultBoundaryCount != 1 || variant.HourBoundaries[hbLateZi] != 1 || variant.HourBoundaries[hbZiZheng] != 0 {
 		return variant, fmt.Errorf("load quarter: invalid hour boundary defaults")
 	}
 	variant.JuCycle, variant.YangStep, variant.YinStep =
@@ -1568,8 +1570,11 @@ func decodePatternTable(raw []byte) ([]patternRule, error) {
 			return nil, fmt.Errorf("load patterns: invalid or duplicate rule %q", rule.Name)
 		}
 		seen[rule.Name] = true
+		var dsp DutyStarPosition
 		if rule.DutyStarPosition != "" {
-			if rule.DutyStarPosition != "home" && rule.DutyStarPosition != "opposite" {
+			var ok bool
+			dsp, ok = ParseDutyStarPosition(rule.DutyStarPosition)
+			if !ok {
 				return nil, fmt.Errorf("load patterns: %q has invalid duty star position %q", rule.Name, rule.DutyStarPosition)
 			}
 			if len(rule.Conditions) > 0 || rule.RequiresDutyDoor || rule.GanInteraction != "" {
@@ -1582,7 +1587,7 @@ func decodePatternTable(raw []byte) ([]patternRule, error) {
 		loadedRule := patternRule{
 			Name: rule.Name, Description: rule.Description, YiJu: rule.YiJu,
 			Auspicious: rule.Auspicious, RequiresDutyDoor: rule.RequiresDutyDoor,
-			DutyStarPosition: rule.DutyStarPosition,
+			DutyStarPosition: dsp,
 		}
 		if rule.GanInteraction != "" {
 			if rule.Auspicious || len(rule.Conditions) > 0 {

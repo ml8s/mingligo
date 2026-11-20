@@ -8,7 +8,7 @@ func findPatterns(chart Board) []Pattern {
 	patterns := []Pattern{}
 	for _, rule := range patternRules {
 		switch rule.DutyStarPosition {
-		case "home", "opposite":
+		case dspHome, dspOpposite:
 			if palace := dutyStarSpecialPosition(chart, rule.DutyStarPosition); palace != 0 {
 				patterns = append(patterns, newPattern(rule, []GongIndex{palace}))
 			}
@@ -124,14 +124,14 @@ func dutyDoorPalace(chart Board) GongIndex {
 	return 0
 }
 
-func dutyStarSpecialPosition(chart Board, position string) GongIndex {
+func dutyStarSpecialPosition(chart Board, position DutyStarPosition) GongIndex {
 	duty := chart.DutyStar
 	if chart.School == SchoolZhuanPan && duty == tianQinStar {
 		duty = tianQinFollows
 	}
 	current := findStarPalace(chart, duty)
 	home := GongIndex(starHomePalace(duty) + 1)
-	if position == "home" {
+	if position == dspHome {
 		if current == home {
 			return current
 		}
