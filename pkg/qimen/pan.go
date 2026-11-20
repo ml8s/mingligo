@@ -70,6 +70,9 @@ func ArrangePan(ju juShu, bz ganzhi.Bazi) Board {
 			heavenGan := dipan[i]
 			result.GongWei[i].TianPanGan = &heavenGan
 		}
+		if shenSpirits[i] != 0 {
+			result.GongWei[i].Shen = spiritDisplayName(shenSpirits[i], ju.YinDun, ju.Method.School)
+		}
 		result.GongWei[i].HiddenPillar = hiddenPillars[i]
 	}
 	return result

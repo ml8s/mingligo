@@ -1,8 +1,6 @@
 package qimen
 
 import (
-	"encoding/json"
-
 	"github.com/ml8s/mingligo/pkg/ganzhi"
 	"github.com/ml8s/mingligo/pkg/tianwen"
 )
@@ -26,111 +24,42 @@ type BranchPalace struct {
 
 // Gong holds all layers of information for one 宫。
 type Gong struct {
-	Gong         PalaceIdentity
-	DiPanGan     ganzhi.Gan
-	AnGan        ganzhi.Gan
-	HiddenPillar string `json:"an_gan_zhi,omitempty"`
-	TianPan      []TianPanSymbol
-	TianPanGan   *ganzhi.Gan
-	Door         DoorIndex
-	DoorSet      bool
-	Spirit       SpiritIndex
-	SpiritSet    bool
+	AnGan        ganzhi.Gan      `json:"an_gan"`
+	HiddenPillar string          `json:"an_gan_zhi,omitempty"`
+	DiPanGan     ganzhi.Gan      `json:"di_pan_gan"`
+	Gong         PalaceIdentity  `json:"gong"`
+	Door         DoorIndex       `json:"men,omitempty"`
+	DoorSet      bool            `json:"men_present"`
+	Shen         string          `json:"shen,omitempty"`
+	SpiritSet    bool            `json:"shen_present"`
+	TianPan      []TianPanSymbol `json:"tian_pan,omitempty"`
+	TianPanGan   *ganzhi.Gan     `json:"tian_pan_gan,omitempty"`
+	Spirit       SpiritIndex     `json:"-"`
 }
 
 // board is the complete 奇门遁甲排盘。
 type Board struct {
-	Jushu          int
-	School         School
-	YinDun         bool
-	RiGan          ganzhi.Gan
-	RiZhi          ganzhi.Zhi
-	NianGan        ganzhi.Gan
-	NianZhi        ganzhi.Zhi
-	YueGan         ganzhi.Gan
-	YueZhi         ganzhi.Zhi
-	LeadGan        ganzhi.Gan
-	LeadZhi        ganzhi.Zhi
-	DutyStarPalace GongIndex
-	DutyDoorPalace GongIndex
-	DutyStar       StarIndex
-	DutyDoor       DoorIndex
-	GongWei        [9]Gong
-	MaXing         BranchPalace
-	HourGan        ganzhi.Gan
-	HourZhi        ganzhi.Zhi
-	KongWang       [2]BranchPalace
-	WuBuYuShi      bool
-}
-
-type boardJSON struct {
-	GongWei   [9]gongJSON     `json:"gong_wei"`
-	Jushu     int             `json:"jushu"`
-	KongWang  [2]BranchPalace `json:"kong_wang"`
-	MaXing    BranchPalace    `json:"ma_xing"`
-	NianGan   ganzhi.Gan      `json:"nian_gan"`
-	NianZhi   ganzhi.Zhi      `json:"nian_zhi"`
-	RiGan     ganzhi.Gan      `json:"ri_gan"`
-	RiZhi     ganzhi.Zhi      `json:"ri_zhi"`
-	ShiGan    ganzhi.Gan      `json:"shi_gan"`
-	ShiZhi    ganzhi.Zhi      `json:"shi_zhi"`
-	WuBuYuShi bool            `json:"wu_bu_yu_shi"`
-	YinDun    bool            `json:"yin_dun"`
-	YueGan    ganzhi.Gan      `json:"yue_gan"`
-	YueZhi    ganzhi.Zhi      `json:"yue_zhi"`
-	ZhiFuXing StarIndex       `json:"zhi_fu_xing"`
-	ZhiShiMen DoorIndex       `json:"zhi_shi_men"`
-}
-
-type gongJSON struct {
-	AnGan       ganzhi.Gan      `json:"an_gan"`
-	AnGanZhi    string          `json:"an_gan_zhi,omitempty"`
-	DiPanGan    ganzhi.Gan      `json:"di_pan_gan"`
-	Gong        PalaceIdentity  `json:"gong"`
-	Men         DoorIndex       `json:"men,omitempty"`
-	MenPresent  bool            `json:"men_present"`
-	Shen        string          `json:"shen,omitempty"`
-	ShenPresent bool            `json:"shen_present"`
-	TianPan     []TianPanSymbol `json:"tian_pan,omitempty"`
-	TianPanGan  *ganzhi.Gan     `json:"tian_pan_gan,omitempty"`
-}
-
-// MarshalJSON projects the API fields and renders spirit names for the current
-// 阴阳遁 and plate style.
-func (p Board) MarshalJSON() ([]byte, error) {
-	out := boardJSON{
-		Jushu: p.Jushu, YinDun: p.YinDun,
-		RiGan: p.RiGan, RiZhi: p.RiZhi,
-		NianGan: p.NianGan, NianZhi: p.NianZhi,
-		YueGan: p.YueGan, YueZhi: p.YueZhi,
-		ZhiFuXing: p.DutyStar, ZhiShiMen: p.DutyDoor,
-		GongWei: [9]gongJSON{}, MaXing: p.MaXing,
-		ShiGan: p.HourGan, ShiZhi: p.HourZhi,
-		KongWang: p.KongWang, WuBuYuShi: p.WuBuYuShi,
-	}
-	for i, pl := range p.GongWei {
-		gong := gongJSON{
-			Gong: pl.Gong, DiPanGan: pl.DiPanGan, AnGan: pl.AnGan,
-			MenPresent: pl.DoorSet, ShenPresent: pl.SpiritSet,
-		}
-		if pl.HiddenPillar != "" {
-			gong.AnGanZhi = pl.HiddenPillar
-		}
-		if len(pl.TianPan) > 0 {
-			gong.TianPan = pl.TianPan
-		}
-		if pl.TianPanGan != nil {
-			gong.TianPanGan = pl.TianPanGan
-		}
-		if pl.Door != 0 {
-			gong.Men = pl.Door
-		}
-		if pl.Spirit != 0 {
-			gong.Shen = spiritDisplayName(pl.Spirit, p.YinDun, p.School)
-		}
-		out.GongWei[i] = gong
-	}
-	return json.Marshal(out)
+	GongWei        [9]Gong         `json:"gong_wei"`
+	Jushu          int             `json:"jushu"`
+	KongWang       [2]BranchPalace `json:"kong_wang"`
+	MaXing         BranchPalace    `json:"ma_xing"`
+	NianGan        ganzhi.Gan      `json:"nian_gan"`
+	NianZhi        ganzhi.Zhi      `json:"nian_zhi"`
+	RiGan          ganzhi.Gan      `json:"ri_gan"`
+	RiZhi          ganzhi.Zhi      `json:"ri_zhi"`
+	HourGan        ganzhi.Gan      `json:"shi_gan"`
+	HourZhi        ganzhi.Zhi      `json:"shi_zhi"`
+	WuBuYuShi      bool            `json:"wu_bu_yu_shi"`
+	YinDun         bool            `json:"yin_dun"`
+	YueGan         ganzhi.Gan      `json:"yue_gan"`
+	YueZhi         ganzhi.Zhi      `json:"yue_zhi"`
+	DutyStar       StarIndex       `json:"zhi_fu_xing"`
+	DutyDoor       DoorIndex       `json:"zhi_shi_men"`
+	School         School          `json:"-"`
+	LeadGan        ganzhi.Gan      `json:"-"`
+	LeadZhi        ganzhi.Zhi      `json:"-"`
+	DutyStarPalace GongIndex       `json:"-"`
+	DutyDoorPalace GongIndex       `json:"-"`
 }
 
 // duty holds the value符 star and value使 door.
