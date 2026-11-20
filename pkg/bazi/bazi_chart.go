@@ -1,8 +1,6 @@
 package bazi
 
 import (
-	"encoding/json"
-
 	"github.com/ml8s/mingligo/pkg/ganzhi"
 )
 
@@ -32,24 +30,6 @@ type Pillar struct {
 	SelfHeName     string               `json:"self_he_name"`
 }
 
-func (p Pillar) MarshalJSON() ([]byte, error) {
-	return json.Marshal(struct {
-		Gan            string               `json:"gan"`
-		Zhi            string               `json:"zhi"`
-		DayMasterTrend string               `json:"ri_zhu_trend"`
-		Xun            string               `json:"xun"`
-		XunKong        string               `json:"xun_kong"`
-		NaYin          string               `json:"na_yin"`
-		CangGan        HiddenStemProjection `json:"cang_gan"`
-		ShiShens       []TenGodProjection   `json:"shi_shens"`
-		SelfSitting    string               `json:"self_sitting"`
-		ShenSha        []ShenShaProjection  `json:"shen_sha"`
-		IsVoid         bool                 `json:"is_void"`
-		IsSelfHe       bool                 `json:"is_self_he"`
-		IsKuiGang      bool                 `json:"is_kui_gang"`
-		SelfHeName     string               `json:"self_he_name"`
-	}{Gan: ganzhi.GanName(p.Gan), Zhi: ganzhi.ZhiName(p.Zhi), DayMasterTrend: p.DayMasterTrend, Xun: p.Xun, XunKong: p.XunKong, NaYin: p.NaYin, CangGan: p.CangGan, ShiShens: p.ShiShens, SelfSitting: p.SelfSitting, ShenSha: p.ShenSha, IsVoid: p.IsVoid, IsSelfHe: p.IsSelfHe, IsKuiGang: p.IsKuiGang, SelfHeName: p.SelfHeName})
-}
 
 type TenGodProjection struct {
 	ShiShen ganzhi.ShiShen `json:"shi_shen"`

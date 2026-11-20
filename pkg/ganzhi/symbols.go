@@ -212,13 +212,6 @@ func (z *Zhi) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (z Zhu) MarshalJSON() ([]byte, error) {
-	return json.Marshal(struct {
-		Gan string `json:"gan"`
-		Zhi string `json:"zhi"`
-	}{Gan: GanName(z.Gan), Zhi: ZhiName(z.Zhi)})
-}
-
 // -- Labels ------------------------------------------------------------------
 
 func zhiLabel(s string, ok bool) string {
