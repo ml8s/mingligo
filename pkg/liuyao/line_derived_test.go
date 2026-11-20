@@ -29,7 +29,7 @@ func TestComputeLineDerived_YuePo_DongSelf_ShengKe(t *testing.T) {
 		{Position: 6, Type: ShaoYang, Zhi: ganzhi.ZhiSi, Wuxing: ganzhi.WxHuo},  // 上爻巳火
 	}
 	chart := makeDerivedChart(lines, ganzhi.ZhiZi, []int{1})
-	computeLineDerived(&chart)
+	chart = withLineDerived(chart)
 
 	// 月破：子冲午（初爻午、上爻巳不受冲；辰/未/酉/卯不受子冲）
 	if !chart.Lines[0].YuePo {
@@ -75,7 +75,7 @@ func TestComputeLineDerived_JingGua(t *testing.T) {
 		{Position: 6, Type: ShaoYang, Zhi: ganzhi.ZhiSi, Wuxing: ganzhi.WxHuo},
 	}
 	chart := makeDerivedChart(lines, ganzhi.ZhiZi, nil)
-	computeLineDerived(&chart)
+	chart = withLineDerived(chart)
 
 	for i := 0; i < 6; i++ {
 		if chart.Lines[i].DongSelf || chart.Lines[i].DongSheng || chart.Lines[i].DongKe {
@@ -104,7 +104,7 @@ func TestComputeLineDerived_XunKong(t *testing.T) {
 	}
 	chart := makeDerivedChart(lines, ganzhi.ZhiYin, nil)
 	chart.XunKong = [2]ganzhi.Zhi{9, 10} // 申酉
-	computeLineDerived(&chart)
+	chart = withLineDerived(chart)
 
 	for i := 0; i < 6; i++ {
 		want := i == 4 // 五爻申值旬空

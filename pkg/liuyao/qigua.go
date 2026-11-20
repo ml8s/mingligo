@@ -208,16 +208,16 @@ func computeChart(bz ganzhi.Bazi, yongShen YongShen, yaos [6]int) Chart {
 	}
 
 	chart := newBaseChart(yaos, bz)
-	applyYaoStrength(&chart)
-	resolveYongshen(&chart, yongShen)
-	deriveAdvancedFacts(&chart, yongShen)
-	attachGuaCi(&chart)
+	chart = withYaoStrength(chart)
+	chart = withYongshen(chart, yongShen)
+	chart = withAdvancedFacts(chart, yongShen)
+	chart = withGuaCi(chart)
 	return chart
 }
 
 // computeLineDerived fills per-line deterministic states: 月破（月建冲）、本爻发动、
 // 以及各动爻对本爻的生克方向。变卦仅保留动变事实，不参与主用神定位。
-func computeLineDerived(p *Chart) {
+func withLineDerived(p Chart) Chart {
 	mark := func(lines *[6]Line) {
 		for i := range lines {
 			lines[i].YuePo = ganzhi.IsLiuChong(lines[i].Zhi, p.YueZhi)
@@ -276,4 +276,5 @@ func computeLineDerived(p *Chart) {
 		apply(&p.Lines)
 		apply(&p.BianLines)
 	}
+	return p
 }

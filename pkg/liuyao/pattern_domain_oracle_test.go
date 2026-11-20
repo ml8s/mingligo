@@ -181,7 +181,7 @@ func TestDomainOracle_LiuyaoPatternSemantics(t *testing.T) {
 				}
 				chart.BianLines[0] = Line{Position: 1, Type: ShaoYin, Zhi: changed, Wuxing: ganzhi.ZhiWuxing(changed)}
 			}
-			computeLineDerived(&chart)
+			chart = withLineDerived(chart)
 			if len(chart.Lines[0].MuKuTypes) != len(tc.ExpectedTypes) {
 				t.Fatalf("mu_ku_types = %#v, want %#v", chart.Lines[0].MuKuTypes, tc.ExpectedTypes)
 			}

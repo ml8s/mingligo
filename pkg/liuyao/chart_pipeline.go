@@ -22,7 +22,7 @@ func newBaseChart(yaos [6]int, bz ganzhi.Bazi) Chart {
 	return chart
 }
 
-func applyYaoStrength(chart *Chart) {
+func withYaoStrength(chart Chart) Chart {
 	for i := 0; i < 6; i++ {
 		chart.WangShuai[i] = ganzhi.WangShuaiOf(
 			ganzhi.ZhiWuxing(chart.Lines[i].Zhi),
@@ -30,18 +30,18 @@ func applyYaoStrength(chart *Chart) {
 		)
 		chart.DayRelations[i] = dayInteraction(chart.Lines[i].Zhi, chart.RiZhi)
 	}
-	computeLineDerived(chart)
+	return withLineDerived(chart)
 }
 
-func resolveYongshen(chart *Chart, yongShen YongShen) {
+func withYongshen(chart Chart, yongShen YongShen) Chart {
 	position := chart.findYongShen(yongShen)
 	chart.YongShen = YongShenResult{Name: DecodeYongShen(yongShen), Position: position}
 
 	if position == 0 {
 		chart.YongShen.FuShen = chart.findFuShen(yongShen)
 		chart.YongShen.FuShenCandidates = chart.findFuShenAll(yongShen)
-		resolveHiddenYongshen(chart, position)
-		return
+		chart = withHiddenYongshen(chart, position)
+		return chart
 	}
 
 	line := chart.Lines[position-1]
@@ -51,15 +51,16 @@ func resolveYongshen(chart *Chart, yongShen YongShen) {
 	chart.YongShen.MuKu = line.MuKu
 	chart.YongShen.LiuShou = line.LiuShou
 	chart.YongShen.ChangSheng = line.ChangShengYue
+	return chart
 }
 
-func resolveHiddenYongshen(chart *Chart, position int) {
+func withHiddenYongshen(chart Chart, position int) Chart {
 	if position != 0 {
-		return
+		return chart
 	}
 	fuShen := chart.YongShen.FuShen
 	if fuShen == nil {
-		return
+		return chart
 	}
 
 	fuZhi := fuShen.Zhi
@@ -68,26 +69,29 @@ func resolveHiddenYongshen(chart *Chart, position int) {
 	chart.YongShen.WangShuai = ganzhi.WangShuaiOf(fuElement, chart.YueZhi)
 	chart.YongShen.YuePo = ganzhi.IsLiuChong(fuZhi, chart.YueZhi)
 	chart.YongShen.XunKong = fuZhi == chart.XunKong[0] || fuZhi == chart.XunKong[1]
-	chart.YongShen.MuKu = len(fuTombSources(chart, fuElement)) > 0
+	chart.YongShen.MuKu = len(fuTombSources(&chart, fuElement)) > 0
 	chart.YongShen.ChangSheng = lifeStageOf(fuElement, chart.YueZhi)
+	return chart
 }
 
-func deriveAdvancedFacts(chart *Chart, yongShen YongShen) {
-	chart.DongYaoRelations = computeDongYaoRelations(chart, yongShen)
-	chart.Patterns = ComputePatterns(chart, yongShen)
-	chart.TimingCandidates = computeTimingCandidates(chart, yongShen)
-	chart.DayClashFacts = computeDayClashFacts(chart)
-	chart.MovingTransformations = computeMovingTransformations(chart)
-	chart.SanHeCandidates = computeSanHeCandidates(chart)
-	chart.ForceChain = computeForceChain(chart, yongShen)
-	chart.YongShenCandidates = computeYongShenCandidates(chart, yongShen)
-	chart.HiddenLines = computeHiddenLines(chart)
-	chart.BranchRelationFacts = computeBranchRelationFacts(chart)
-	chart.Conflicts = computeConflicts(chart)
+func withAdvancedFacts(chart Chart, yongShen YongShen) Chart {
+	chart.DongYaoRelations = computeDongYaoRelations(&chart, yongShen)
+	chart.Patterns = ComputePatterns(&chart, yongShen)
+	chart.TimingCandidates = computeTimingCandidates(&chart, yongShen)
+	chart.DayClashFacts = computeDayClashFacts(&chart)
+	chart.MovingTransformations = computeMovingTransformations(&chart)
+	chart.SanHeCandidates = computeSanHeCandidates(&chart)
+	chart.ForceChain = computeForceChain(&chart, yongShen)
+	chart.YongShenCandidates = computeYongShenCandidates(&chart, yongShen)
+	chart.HiddenLines = computeHiddenLines(&chart)
+	chart.BranchRelationFacts = computeBranchRelationFacts(&chart)
+	chart.Conflicts = computeConflicts(&chart)
+	return chart
 }
 
-func attachGuaCi(chart *Chart) {
+func withGuaCi(chart Chart) Chart {
 	if guaCi, err := GetGuaCi(int(chart.BenGua)); err == nil {
 		chart.GuaCi = guaCi
 	}
+	return chart
 }
