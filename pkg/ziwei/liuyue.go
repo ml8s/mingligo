@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/ml8s/mingligo/pkg/ganzhi"
 	"github.com/ml8s/mingligo/pkg/tianwen"
 )
 
@@ -330,7 +331,7 @@ func ComputeLiuShiAt(ctx FlowContext, standard time.Time, loc *time.Location, lo
 		StandardTime: standard.In(loc).Format(time.RFC3339Nano),
 		StandardDate: resolved.StandardDate.String(),
 		Lunar:        resolved.Lunar,
-		Shichen:      resolved.Shichen.String(),
+		Shichen:      ganzhi.DecodeZhi(resolved.Shichen),
 	}
 	return result, nil
 }

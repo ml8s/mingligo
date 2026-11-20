@@ -163,7 +163,7 @@ type WuxingCounts map[ganzhi.Wuxing]int
 func (counts WuxingCounts) StringCount() map[string]int {
 	stringCount := make(map[string]int, len(counts))
 	for element, count := range counts {
-		stringCount[element.String()] = count
+		stringCount[ganzhi.DecodeWuxing(element)] = count
 	}
 	return stringCount
 }
@@ -342,21 +342,21 @@ func resolveCongGeYongXiJi(rule congGeRule, dmElem ganzhi.Wuxing) (yong, xi, ji 
 	resolve := func(symbol string) string {
 		switch symbol {
 		case "dm_elem":
-			return dmElem.String()
+			return ganzhi.DecodeWuxing(dmElem)
 		case "ke_dm":
-			return elementThatControls(dmElem).String()
+			return ganzhi.DecodeWuxing(elementThatControls(dmElem))
 		case "xi_from_dm":
-			return elementThatDrains(dmElem).String()
+			return ganzhi.DecodeWuxing(elementThatDrains(dmElem))
 		case "guansha":
-			return elementThatControls(dmElem).String()
+			return ganzhi.DecodeWuxing(elementThatControls(dmElem))
 		case "cai":
-			return elementControlledBy(dmElem).String()
+			return ganzhi.DecodeWuxing(elementControlledBy(dmElem))
 		case "yin":
-			return elementThatGenerates(dmElem).String()
+			return ganzhi.DecodeWuxing(elementThatGenerates(dmElem))
 		case "bijie":
-			return dmElem.String()
+			return ganzhi.DecodeWuxing(dmElem)
 		case "shishang":
-			return elementThatDrains(dmElem).String()
+			return ganzhi.DecodeWuxing(elementThatDrains(dmElem))
 		default:
 			return ""
 		}

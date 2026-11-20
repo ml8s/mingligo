@@ -21,7 +21,7 @@ var guaTable [10]gua
 func buildGuaTable() {
 	for n := 1; n <= 9; n++ {
 		p := luoshu.PalaceTable[n]
-		guaTable[n] = gua{Index: n, Name: p.Name, Wuxing: p.Element.String(), YinYang: p.YinYang}
+		guaTable[n] = gua{Index: n, Name: p.Name, Wuxing: ganzhi.DecodeWuxing(p.Element), YinYang: p.YinYang}
 	}
 }
 

@@ -1,5 +1,7 @@
 package fengshui
 
+import "github.com/ml8s/mingligo/pkg/ganzhi"
+
 // AnnualFlyingStar holds one star's position in the 紫白流年飞星 board.
 type AnnualFlyingStar struct {
 	GongNum  int    `json:"gong_num"`
@@ -60,7 +62,7 @@ func ComputeAnnualFlyingStars(year int) AnnualBoard {
 		GongNum:  5,
 		Xing:     centerStar.Number,
 		XingName: centerStar.Name,
-		Wuxing:   centerStar.Element.String(),
+		Wuxing:   ganzhi.DecodeWuxing(centerStar.Element),
 		RuZhong:  true,
 	})
 
@@ -74,7 +76,7 @@ func ComputeAnnualFlyingStars(year int) AnnualBoard {
 			GongNum:  pn,
 			Xing:     s.Number,
 			XingName: s.Name,
-			Wuxing:   s.Element.String(),
+			Wuxing:   ganzhi.DecodeWuxing(s.Element),
 			RuZhong:  false,
 		})
 	}

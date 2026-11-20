@@ -212,10 +212,10 @@ func computeDayMasterCross(a, b Core) dayMasterCross {
 		Relation: bondGanRelationOf(analyzeGanRelation(a.Pillars[zhuRi].Gan, b.Pillars[zhuRi].Gan)),
 	}
 	cross.A = crossGanParty{
-		Gan: ganzhi.GanName(a.Pillars[zhuRi].Gan), Wuxing: ganzhi.GanWuxing(a.Pillars[zhuRi].Gan).String(), Gender: a.Gender.String(),
+		Gan: ganzhi.GanName(a.Pillars[zhuRi].Gan), Wuxing: ganzhi.DecodeWuxing(ganzhi.GanWuxing(a.Pillars[zhuRi].Gan)), Gender: a.Gender.String(),
 	}
 	cross.B = crossGanParty{
-		Gan: ganzhi.GanName(b.Pillars[zhuRi].Gan), Wuxing: ganzhi.GanWuxing(b.Pillars[zhuRi].Gan).String(), Gender: b.Gender.String(),
+		Gan: ganzhi.GanName(b.Pillars[zhuRi].Gan), Wuxing: ganzhi.DecodeWuxing(ganzhi.GanWuxing(b.Pillars[zhuRi].Gan)), Gender: b.Gender.String(),
 	}
 	return cross
 }
@@ -245,14 +245,14 @@ func computeElementCross(aFacts, bFacts bondChartFacts) elementCross {
 
 func convertWuxingCount(src map[ganzhi.Wuxing]int) map[string]int {
 	out := map[string]int{
-		ganzhi.WxMu.String():   0,
-		ganzhi.WxHuo.String():  0,
-		ganzhi.WxTu.String():   0,
-		ganzhi.WxJin.String():  0,
-		ganzhi.WxShui.String(): 0,
+		ganzhi.DecodeWuxing(ganzhi.WxMu):   0,
+		ganzhi.DecodeWuxing(ganzhi.WxHuo):  0,
+		ganzhi.DecodeWuxing(ganzhi.WxTu):   0,
+		ganzhi.DecodeWuxing(ganzhi.WxJin):  0,
+		ganzhi.DecodeWuxing(ganzhi.WxShui): 0,
 	}
 	for k, v := range src {
-		out[k.String()] = v
+		out[ganzhi.DecodeWuxing(k)] = v
 	}
 	return out
 }
@@ -287,11 +287,11 @@ func buildSpouseStarFactFromAnalysis(
 	out := spouseStarFact{
 		Gender: core.Gender.String(),
 		Primary: spouseStarGroup{
-			TenGod:      primary.String(),
+			TenGod:      ganzhi.DecodeShiShen(primary),
 			Occurrences: []spouseStarOccurrence{},
 		},
 		Secondary: spouseStarGroup{
-			TenGod:      secondary.String(),
+			TenGod:      ganzhi.DecodeShiShen(secondary),
 			Occurrences: []spouseStarOccurrence{},
 		},
 	}
@@ -390,7 +390,7 @@ func computeNaYinCross(a, b Core) nayinCross {
 	countElems := func(ny [4]string) map[string]int {
 		m := map[string]int{}
 		for _, s := range ny {
-			m[ganzhi.NayinWuxing(s).String()]++
+			m[ganzhi.DecodeWuxing(ganzhi.NayinWuxing(s))]++
 		}
 		return m
 	}

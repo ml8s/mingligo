@@ -50,7 +50,7 @@ func computeLiuYue(bz ganzhi.Bazi, t LiuYueTime) (*LiuYue, error) {
 
 	shensha := computeDynamicShenSha(mp.Zhi, bazi[0].Zhi, bazi[2].Zhi, riYuan)
 
-	monthElemStr := monthElem.String()
+	monthElemStr := ganzhi.DecodeWuxing(monthElem)
 
 	return &LiuYue{
 		Year:         t.Date.Year,
@@ -58,7 +58,7 @@ func computeLiuYue(bz ganzhi.Bazi, t LiuYueTime) (*LiuYue, error) {
 		YueGan:       mp.Gan,
 		YueZhi:       mp.Zhi,
 		YueGanWuxing: monthElemStr,
-		ShiShen:      tgName.String(),
+		ShiShen:      ganzhi.DecodeShiShen(tgName),
 		ShengRi:      gen,
 		KeRi:         rest,
 		GanRels:      ganRels,

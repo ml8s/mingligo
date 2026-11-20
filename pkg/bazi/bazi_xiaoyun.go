@@ -43,7 +43,7 @@ func computeXiaoYun(bz ganzhi.Bazi, gender ganzhi.Gender, maxAge int) []XiaoYunS
 				Gan:     zhu.Gan,
 				Zhi:     zhu.Zhi,
 				Name:    name,
-				ShiShen: tg.String(),
+				ShiShen: ganzhi.DecodeShiShen(tg),
 			})
 		}
 		return zhus

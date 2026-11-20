@@ -130,7 +130,7 @@ func computeLostContextFacts(chart Chart) []LostContextFact {
 	}
 	return []LostContextFact{{
 		Gong: palace, Door: door,
-		WangShuai: chart.HourStemPalace.WangShuai.WangShuai.String(),
+		WangShuai: ganzhi.DecodeWangShuai(chart.HourStemPalace.WangShuai.WangShuai),
 	}}
 }
 
@@ -159,7 +159,7 @@ func computeThiefFacts(chart Chart) []ThiefFact {
 	}
 	palaceWang := map[GongIndex]string{}
 	for _, row := range chart.GongWangShuai {
-		palaceWang[row.Gong] = row.WangShuai.String()
+		palaceWang[row.Gong] = ganzhi.DecodeWangShuai(row.WangShuai)
 	}
 
 	result := []ThiefFact{}

@@ -259,7 +259,7 @@ func ComputeLiuShiAt(core Core, standard time.Time, loc *time.Location, longitud
 	result.ShiChen = LiuShiChen{
 		StandardTime: t.Standard.In(loc).Format(time.RFC3339Nano),
 		StandardDate: t.StandardDate.String(),
-		Shichen:      t.Shichen.String(),
+		Shichen:      ganzhi.DecodeZhi(t.Shichen),
 	}
 	return result, nil
 }

@@ -1,7 +1,7 @@
 package ganzhi
 
 // ShiShenName returns the Chinese name for a ten god type.
-func ShiShenName(tg ShiShen) string { return tg.String() }
+func ShiShenName(tg ShiShen) string { return DecodeShiShen(tg) }
 
 // ShiShenFromGan returns the ShiShen for another gan relative to the day master.
 func ShiShenFromGan(riYuan, other Gan) ShiShen {

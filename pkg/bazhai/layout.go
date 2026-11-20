@@ -2,6 +2,7 @@ package bazhai
 
 import (
 	"fmt"
+	"github.com/ml8s/mingligo/pkg/ganzhi"
 
 	"github.com/ml8s/mingligo/pkg/luoshu"
 )
@@ -77,7 +78,7 @@ func evalPosition(guaNum, mingGua int) DoorStoveInfo {
 	return DoorStoveInfo{
 		Direction: luoshu.PalaceTable[guaNum].Direction,
 		GuaName:   luoshu.PalaceTable[guaNum].Name,
-		Wuxing:    luoshu.PalaceTable[guaNum].Element.String(),
+		Wuxing:    ganzhi.DecodeWuxing(luoshu.PalaceTable[guaNum].Element),
 		YouXing:   youxing,
 		Rating:    rating,
 		Group:     group,

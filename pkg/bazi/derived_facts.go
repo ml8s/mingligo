@@ -136,8 +136,8 @@ func computeTenGodStates(c Chart) ([]TenGodState, map[ganzhi.Wuxing]ElementState
 			break
 		}
 		states = append(states, TenGodState{
-			ShiShen:     shiShen.String(),
-			Wuxing:      accumulator.wuxing.String(),
+			ShiShen:     ganzhi.DecodeShiShen(shiShen),
+			Wuxing:      ganzhi.DecodeWuxing(accumulator.wuxing),
 			Transparent: accumulator.transparent,
 			Hidden:      accumulator.hidden,
 			Rooted:      element.Rooted,
@@ -158,18 +158,18 @@ func computeElementStates(c Chart, transparent, rooted map[ganzhi.Wuxing]bool) m
 	result := make(map[ganzhi.Wuxing]ElementState, len(all))
 	for _, element := range all {
 		state := ElementState{
-			Wuxing:       element.String(),
-			Season:       c.FuYi.WangShuai[element.String()],
+			Wuxing:       ganzhi.DecodeWuxing(element),
+			Season:       c.FuYi.WangShuai[ganzhi.DecodeWuxing(element)],
 			Transparent:  transparent[element],
 			Rooted:       rooted[element],
-			Controls:     elementControlledBy(element).String(),
-			ControlledBy: elementThatControls(element).String(),
+			Controls:     ganzhi.DecodeWuxing(elementControlledBy(element)),
+			ControlledBy: ganzhi.DecodeWuxing(elementThatControls(element)),
 			Reasons:      []string{},
 		}
-		switch c.FuYi.WangShuai[element.String()] {
-		case ganzhi.WSWang.String(), ganzhi.WSXiang.String():
+		switch c.FuYi.WangShuai[ganzhi.DecodeWuxing(element)] {
+		case ganzhi.DecodeWangShuai(ganzhi.WSWang), ganzhi.DecodeWangShuai(ganzhi.WSXiang):
 			state.SeasonStrength = "strong"
-		case ganzhi.WSXiu.String(), ganzhi.WSQiu.String(), ganzhi.WSSi.String():
+		case ganzhi.DecodeWangShuai(ganzhi.WSXiu), ganzhi.DecodeWangShuai(ganzhi.WSQiu), ganzhi.DecodeWangShuai(ganzhi.WSSi):
 			state.SeasonStrength = "weak"
 		}
 		switch {
@@ -217,7 +217,7 @@ func computeLuRoots(c Chart) []LuRoot {
 				continue
 			}
 			roots = append(roots, LuRoot{
-				ShiShen: item.ShiShen.String(),
+				ShiShen: ganzhi.DecodeShiShen(item.ShiShen),
 				Gan:     ganzhi.GanName(item.Gan),
 				Zhi:     ganzhi.ZhiName(ganzhi.LuZhi(item.Gan)),
 			})
@@ -451,7 +451,7 @@ func wuxingOutput(w ganzhi.Wuxing) string {
 	if w == 0 {
 		return ""
 	}
-	return w.String()
+	return ganzhi.DecodeWuxing(w)
 }
 
 func newZhiPairFact(kind, group string, zhiA ganzhi.Zhi, pillarA int, zhiB ganzhi.Zhi, pillarB int, wuxing ganzhi.Wuxing) NatalRelationFact {

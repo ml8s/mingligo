@@ -66,7 +66,7 @@ func computeNormalYongJi(riYuan ganzhi.Gan, strengthLabel string) (yongShen, xiS
 		}
 		return 0
 	}
-	return candidateString(resolve(rule.Yong).String()),
-		candidateString(resolve(rule.Xi).String()),
-		candidateString(resolve(rule.Ji).String())
+	return candidateString(ganzhi.DecodeWuxing(resolve(rule.Yong))),
+		candidateString(ganzhi.DecodeWuxing(resolve(rule.Xi))),
+		candidateString(ganzhi.DecodeWuxing(resolve(rule.Ji)))
 }

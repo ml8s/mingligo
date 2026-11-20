@@ -21,7 +21,7 @@ func computeGanInteractions(board Board) []GanInteraction {
 					Gong:       GongIndex(i + 1),
 					DiPanGan:   p.DiPanGan,
 					TianPanGan: heavenGan,
-					Name:       heavenGan.String() + "+" + p.DiPanGan.String(),
+					Name:       ganzhi.DecodeGan(heavenGan) + "+" + ganzhi.DecodeGan(p.DiPanGan),
 					Meaning:    entry.PatternName + "：" + entry.Meaning,
 					Auspicious: entry.Auspicious,
 				})

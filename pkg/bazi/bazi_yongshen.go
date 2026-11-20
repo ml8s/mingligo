@@ -112,10 +112,10 @@ type SeasonStrength map[string]string
 
 func SeasonStrengthAt(yueZhi ganzhi.Zhi) SeasonStrength {
 	return map[string]string{
-		ganzhi.WxMu.String():   ganzhi.WangShuaiOf(ganzhi.WxMu, yueZhi).String(),
-		ganzhi.WxHuo.String():  ganzhi.WangShuaiOf(ganzhi.WxHuo, yueZhi).String(),
-		ganzhi.WxTu.String():   ganzhi.WangShuaiOf(ganzhi.WxTu, yueZhi).String(),
-		ganzhi.WxJin.String():  ganzhi.WangShuaiOf(ganzhi.WxJin, yueZhi).String(),
-		ganzhi.WxShui.String(): ganzhi.WangShuaiOf(ganzhi.WxShui, yueZhi).String(),
+		ganzhi.DecodeWuxing(ganzhi.WxMu):   ganzhi.DecodeWangShuai(ganzhi.WangShuaiOf(ganzhi.WxMu, yueZhi)),
+		ganzhi.DecodeWuxing(ganzhi.WxHuo):  ganzhi.DecodeWangShuai(ganzhi.WangShuaiOf(ganzhi.WxHuo, yueZhi)),
+		ganzhi.DecodeWuxing(ganzhi.WxTu):   ganzhi.DecodeWangShuai(ganzhi.WangShuaiOf(ganzhi.WxTu, yueZhi)),
+		ganzhi.DecodeWuxing(ganzhi.WxJin):  ganzhi.DecodeWangShuai(ganzhi.WangShuaiOf(ganzhi.WxJin, yueZhi)),
+		ganzhi.DecodeWuxing(ganzhi.WxShui): ganzhi.DecodeWangShuai(ganzhi.WangShuaiOf(ganzhi.WxShui, yueZhi)),
 	}
 }

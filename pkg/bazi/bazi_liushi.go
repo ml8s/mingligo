@@ -39,7 +39,7 @@ func computeLiuShi(bz ganzhi.Bazi, t LiuShiTime) (*LiuShi, error) {
 		Time:    ganzhi.HourRanges[int(shiZhi)-1],
 		ShiGan:  shiGan,
 		ShiZhi:  shiZhi,
-		ShiShen: tgName.String(),
+		ShiShen: ganzhi.DecodeShiShen(tgName),
 		GanRels: ganRels,
 		ZhiRels: zhiRels,
 	}, nil

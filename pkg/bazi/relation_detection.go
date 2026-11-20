@@ -284,7 +284,7 @@ func tripleName(zhi []ganzhi.Zhi, element ganzhi.Wuxing, suffix string) string {
 	for i, b := range zhi {
 		parts[i] = ganzhi.ZhiName(b)
 	}
-	return strings.Join(parts, "") + element.String() + suffix
+	return strings.Join(parts, "") + ganzhi.DecodeWuxing(element) + suffix
 }
 
 func containsPair(list []ganzhi.Zhi, a, b ganzhi.Zhi) bool {

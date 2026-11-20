@@ -29,9 +29,9 @@ func computeXingInteractions(board Board) []XingInteraction {
 
 func xingInteractionName(star StarIndex, gong GongIndex) string {
 	if gong == GongZhong {
-		return starWuxing(star).String() + "星入中宫"
+		return ganzhi.DecodeWuxing(starWuxing(star)) + "星入中宫"
 	}
-	return starWuxing(star).String() + "星入" + palaceWuxing(gong).String() + "宫"
+	return ganzhi.DecodeWuxing(starWuxing(star)) + "星入" + ganzhi.DecodeWuxing(palaceWuxing(gong)) + "宫"
 }
 
 // XingGongWuXing represents 五行关系 of a star in a gong.

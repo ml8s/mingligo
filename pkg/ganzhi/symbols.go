@@ -10,18 +10,21 @@ import (
 // GanName returns the Chinese character for a heavenly gan (e.g. "甲").
 func DecodeGan(g Gan) string { return ganNames[g] }
 
+func (g Gan) String() string { return DecodeGan(g) }
+
 func GanName(g Gan) string { return DecodeGan(g) }
 
 // ZhiName returns the Chinese character for an earthly zhi (e.g. "子").
 func DecodeZhi(z Zhi) string { return zhiNames[z] }
+
+func (z Zhi) String() string { return DecodeZhi(z) }
 
 func ZhiName(z Zhi) string { return DecodeZhi(z) }
 
 // ZhiAnimal returns the zodiac animal for an earthly zhi (e.g. "鼠" for 子).
 func ZhiAnimal(z Zhi) string { return zhiAnimals[z] }
 
-func (g Gan) String() string { return DecodeGan(g) }
-func (z Zhi) String() string { return DecodeZhi(z) }
+func (w Wuxing) String() string { return DecodeWuxing(w) }
 
 func DecodeWuxing(w Wuxing) string {
 	switch w {
@@ -38,8 +41,6 @@ func DecodeWuxing(w Wuxing) string {
 	}
 	return "未知"
 }
-
-func (w Wuxing) String() string { return DecodeWuxing(w) }
 
 func (g Gender) String() string { return string(g) }
 
@@ -111,14 +112,14 @@ const (
 
 var wangShuaiNames = [5]string{"旺", "相", "休", "囚", "死"}
 
+func (ws WangShuai) String() string { return DecodeWangShuai(ws) }
+
 func DecodeWangShuai(ws WangShuai) string {
 	if ws >= 0 && int(ws) < len(wangShuaiNames) {
 		return wangShuaiNames[ws]
 	}
 	return ""
 }
-
-func (ws WangShuai) String() string { return DecodeWangShuai(ws) }
 
 func (ws WangShuai) MarshalJSON() ([]byte, error) { return json.Marshal(DecodeWangShuai(ws)) }
 
@@ -277,14 +278,14 @@ var shiShenNamesZH = [10]string{
 	"正财", "七杀", "正官", "偏印", "正印",
 }
 
+func (tg ShiShen) String() string { return DecodeShiShen(tg) }
+
 func DecodeShiShen(tg ShiShen) string {
 	if tg >= 0 && int(tg) < len(shiShenNamesZH) {
 		return shiShenNamesZH[tg]
 	}
 	return ""
 }
-
-func (tg ShiShen) String() string { return DecodeShiShen(tg) }
 
 func (tg ShiShen) MarshalJSON() ([]byte, error) {
 	return json.Marshal(DecodeShiShen(tg))

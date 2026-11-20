@@ -44,14 +44,14 @@ var jieQiNamesFromDongZhi = [24]string{
 }
 
 // DecodeJieQi decodes a JieQi symbol into its display text.
+func (j JieQi) String() string { return DecodeJieQi(j) }
+
 func DecodeJieQi(j JieQi) string {
 	if int(j) >= 0 && int(j) < len(jieQiNamesFromDongZhi) {
 		return jieQiNamesFromDongZhi[j]
 	}
 	return ""
 }
-
-func (j JieQi) String() string { return DecodeJieQi(j) }
 
 func (j JieQi) Longitude() float64 {
 	return JieQiLongitudes[(int(j)+21)%24]

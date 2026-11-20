@@ -10,10 +10,10 @@ import (
 
 // YongShenSymbol 表示一个奇门事象用神符号（门/星/神/干）。
 type YongShenSymbol struct {
-	Door   *DoorIndex   `json:"men,omitempty"`   // 事象门
-	Star   *StarIndex   `json:"xing,omitempty"`   // 事象星
+	Door   *DoorIndex   `json:"men,omitempty"`  // 事象门
+	Star   *StarIndex   `json:"xing,omitempty"` // 事象星
 	Spirit *SpiritIndex `json:"shen,omitempty"` // 事象神
-	Gan    *ganzhi.Gan  `json:"gan,omitempty"`   // 事象干
+	Gan    *ganzhi.Gan  `json:"gan,omitempty"`  // 事象干
 }
 
 // EncodeYongShen 解析单个用神符号（门/星/神/干名）。
@@ -170,10 +170,10 @@ func computeYongShen(chart Chart, syms []YongShenSymbol, birthDate BirthDate, ha
 			}
 			if int(sr.Palace) >= 1 && int(sr.Palace) <= 9 {
 				for _, item := range chart.Board.GongWei[sr.Palace-1].TianPan {
-					sr.TianGan = append(sr.TianGan, item.Gan.String())
+					sr.TianGan = append(sr.TianGan, ganzhi.DecodeGan(item.Gan))
 				}
 				if pointer := chart.Board.GongWei[sr.Palace-1].TianPanGan; pointer != nil {
-					sr.TianGan = append(sr.TianGan, pointer.String())
+					sr.TianGan = append(sr.TianGan, ganzhi.DecodeGan(*pointer))
 				}
 			}
 		}

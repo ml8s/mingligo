@@ -174,7 +174,7 @@ func computeDaYun(gt time.Time, bz ganzhi.Bazi, gender ganzhi.Gender) *DaYun {
 			StartYear: stepStart.Year(),
 			EndYear:   stepEnd.Year(),
 			Name:      ganzhi.GanName(step.Gan) + ganzhi.ZhiName(step.Zhi),
-			Element:   ganzhi.GanWuxing(step.Gan).String(),
+			Element:   ganzhi.DecodeWuxing(ganzhi.GanWuxing(step.Gan)),
 			ShiShen:   daYunShiShenLabel(riGan, step.Gan),
 		})
 	}
@@ -237,7 +237,7 @@ func daYunRootRefs(step ganzhi.Zhu, natalHidden [4]natalHiddenStemFact) []DaYunR
 }
 
 func daYunShiShenLabel(riYuan, other ganzhi.Gan) string {
-	if tg := ganzhi.ShiShenFromGan(riYuan, other).String(); tg != "" {
+	if tg := ganzhi.DecodeShiShen(ganzhi.ShiShenFromGan(riYuan, other)); tg != "" {
 		return tg + "运"
 	}
 	return "未知运"

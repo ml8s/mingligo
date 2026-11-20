@@ -86,16 +86,16 @@ func buildGeJuStructure(
 		GuanXiLinks: relationLinks(buildTargetedRelationEvidence(relations,
 			func(pillar string, gan ganzhi.Gan) []string {
 				return elementTargets(ganzhi.GanWuxing(gan), map[string]string{
-					patternElem.String(): "pattern",
-					controller.String():  "controller",
-					generator.String():   "generator",
+					ganzhi.DecodeWuxing(patternElem): "pattern",
+					ganzhi.DecodeWuxing(controller):  "controller",
+					ganzhi.DecodeWuxing(generator):   "generator",
 				})
 			},
 			func(pillar string) []string {
 				return branchElementTargets(bz, pillarIndex(pillar), map[string]string{
-					patternElem.String(): "pattern",
-					controller.String():  "controller",
-					generator.String():   "generator",
+					ganzhi.DecodeWuxing(patternElem): "pattern",
+					ganzhi.DecodeWuxing(controller):  "controller",
+					ganzhi.DecodeWuxing(generator):   "generator",
 				})
 			},
 		)),
@@ -128,7 +128,7 @@ func buildFuYiBasis(
 				if pillar == zhuLabels[zhuRi] {
 					targets = append(targets, "day_branch")
 				}
-				if len(branchElementTargets(bz, pillarIndex(pillar), map[string]string{dayMaster.String(): "day_master_root"})) > 0 {
+				if len(branchElementTargets(bz, pillarIndex(pillar), map[string]string{ganzhi.DecodeWuxing(dayMaster): "day_master_root"})) > 0 {
 					targets = append(targets, "day_master_root")
 				}
 				return targets
@@ -214,12 +214,12 @@ func buildTiaoHouAvailability(
 
 func buildElementStructure(bz ganzhi.Bazi, elem ganzhi.Wuxing, exact *ganzhi.Gan) ElementStructure {
 	structure := ElementStructure{
-		Wuxing:             elem.String(),
+		Wuxing:             ganzhi.DecodeWuxing(elem),
 		TransparentPillars: transparentPillars(bz, elem, exact),
 		Roots:              hiddenStemOccurrences(bz, elem),
 	}
-	structure.Season = ganzhi.WangShuaiOf(elem, bz.Yue.Zhi).String()
-	structure.Timely = structure.Season == ganzhi.WSWang.String() || structure.Season == ganzhi.WSXiang.String()
+	structure.Season = ganzhi.DecodeWangShuai(ganzhi.WangShuaiOf(elem, bz.Yue.Zhi))
+	structure.Timely = structure.Season == ganzhi.DecodeWangShuai(ganzhi.WSWang) || structure.Season == ganzhi.DecodeWangShuai(ganzhi.WSXiang)
 	switch {
 	case structure.Timely:
 		structure.Strength = "strong"
@@ -339,7 +339,7 @@ func buildTargetedRelationEvidence(
 }
 
 func elementTargets(elem ganzhi.Wuxing, labels map[string]string) []string {
-	if label, ok := labels[elem.String()]; ok {
+	if label, ok := labels[ganzhi.DecodeWuxing(elem)]; ok {
 		return []string{label}
 	}
 	return nil
@@ -370,7 +370,7 @@ func branchElementTargets(bz ganzhi.Bazi, pillar int, labels map[string]string) 
 	}
 	targets := make([]string, 0, len(labels))
 	for _, stem := range stems {
-		if label, ok := labels[ganzhi.GanWuxing(stem).String()]; ok {
+		if label, ok := labels[ganzhi.DecodeWuxing(ganzhi.GanWuxing(stem))]; ok {
 			targets = appendUniqueStrings(targets, label)
 		}
 	}
@@ -530,5 +530,5 @@ func pillarDistance(first, second string) int {
 }
 
 func isDeadOrTrappedSeason(season string) bool {
-	return season == ganzhi.WSQiu.String() || season == ganzhi.WSSi.String()
+	return season == ganzhi.DecodeWangShuai(ganzhi.WSQiu) || season == ganzhi.DecodeWangShuai(ganzhi.WSSi)
 }

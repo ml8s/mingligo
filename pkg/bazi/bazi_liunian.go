@@ -51,9 +51,9 @@ func computeLiuNian(bz ganzhi.Bazi, t LiuNianTime, currentDaYun *DaYunStep) (*Li
 		Year:          t.LichunYear,
 		NianGan:       nianGan,
 		NianZhi:       nianZhi,
-		NianGanWuxing: yearElem.String(),
+		NianGanWuxing: ganzhi.DecodeWuxing(yearElem),
 		LiuNianNaYin:  naYin,
-		ShiShen:       tgName.String(),
+		ShiShen:       ganzhi.DecodeShiShen(tgName),
 		ShengRi:       gen,
 		KeRi:          rest,
 	}

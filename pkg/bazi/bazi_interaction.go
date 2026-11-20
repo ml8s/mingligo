@@ -61,7 +61,7 @@ func analyzeGanRelation(a, b ganzhi.Gan) GanRelation {
 	for _, p := range ganzhi.GanHes {
 		if (a == p.A && b == p.B) || (a == p.B && b == p.A) {
 			r.Kind = relGanHe
-			r.Relation = fmt.Sprintf("%s%s合化%s", ganzhi.GanName(a), ganzhi.GanName(b), p.Result.String())
+			r.Relation = fmt.Sprintf("%s%s合化%s", ganzhi.GanName(a), ganzhi.GanName(b), ganzhi.DecodeWuxing(p.Result))
 			return r
 		}
 	}
@@ -110,7 +110,7 @@ func analyzeZhiRelation(a, b ganzhi.Zhi) ZhiRelation {
 	for _, p := range ganzhi.ZhiHes {
 		if (a == p.A && b == p.B) || (a == p.B && b == p.A) {
 			r.Kind = relLiuHe
-			r.Detail = fmt.Sprintf("%s%s合化%s", ganzhi.ZhiName(a), ganzhi.ZhiName(b), p.Result.String())
+			r.Detail = fmt.Sprintf("%s%s合化%s", ganzhi.ZhiName(a), ganzhi.ZhiName(b), ganzhi.DecodeWuxing(p.Result))
 			return r
 		}
 	}
@@ -191,12 +191,12 @@ func pairTripleHeRelation(a, b ganzhi.Zhi) (ZhiRelation, bool) {
 				}
 			}
 			r.Kind = relSanHePartial
-			r.Detail = fmt.Sprintf("%s%s半合%s局，缺%s", ganzhi.ZhiName(a), ganzhi.ZhiName(b), tr.Element.String(), ganzhi.ZhiName(missing))
+			r.Detail = fmt.Sprintf("%s%s半合%s局，缺%s", ganzhi.ZhiName(a), ganzhi.ZhiName(b), ganzhi.DecodeWuxing(tr.Element), ganzhi.ZhiName(missing))
 			return r, true
 		}
 		if (a == tr.Zhi[0] && b == tr.Zhi[2]) || (a == tr.Zhi[2] && b == tr.Zhi[0]) {
 			r.Kind = relSanHeGong
-			r.Detail = fmt.Sprintf("%s%s拱%s，%s局候选", ganzhi.ZhiName(a), ganzhi.ZhiName(b), ganzhi.ZhiName(imperial), tr.Element.String())
+			r.Detail = fmt.Sprintf("%s%s拱%s，%s局候选", ganzhi.ZhiName(a), ganzhi.ZhiName(b), ganzhi.ZhiName(imperial), ganzhi.DecodeWuxing(tr.Element))
 			return r, true
 		}
 	}
@@ -210,7 +210,7 @@ func pairTripleHuiRelation(a, b ganzhi.Zhi) (ZhiRelation, bool) {
 	for _, group := range ganzhi.TripleHuiList {
 		if (a == group.Zhi[0] && b == group.Zhi[2]) || (a == group.Zhi[2] && b == group.Zhi[0]) {
 			r.Kind = relSanHuiGong
-			r.Detail = fmt.Sprintf("%s%s拱%s，%s方候选", ganzhi.ZhiName(a), ganzhi.ZhiName(b), ganzhi.ZhiName(group.Zhi[1]), group.Element.String())
+			r.Detail = fmt.Sprintf("%s%s拱%s，%s方候选", ganzhi.ZhiName(a), ganzhi.ZhiName(b), ganzhi.ZhiName(group.Zhi[1]), ganzhi.DecodeWuxing(group.Element))
 			return r, true
 		}
 	}

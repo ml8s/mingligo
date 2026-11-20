@@ -23,17 +23,17 @@ type LineFlags struct {
 }
 
 type LineView struct {
-	Position        int               `json:"position"`
-	YaoValue        int               `json:"yao_value"`
-	GanZhi          string            `json:"gan_zhi"`
-	Wuxing          string            `json:"wuxing"`
-	LiuQin          string            `json:"liu_qin"`
-	ShiYing         string            `json:"shi_ying,omitempty"`
-	LiuShou         string            `json:"liu_shou"`
+	Position        int                 `json:"position"`
+	YaoValue        int                 `json:"yao_value"`
+	GanZhi          string              `json:"gan_zhi"`
+	Wuxing          string              `json:"wuxing"`
+	LiuQin          string              `json:"liu_qin"`
+	ShiYing         string              `json:"shi_ying,omitempty"`
+	LiuShou         string              `json:"liu_shou"`
 	RiChenRelations map[string][]string `json:"ri_chen_relations,omitempty"`
-	WangShuai       string            `json:"wang_shuai,omitempty"`
-	ChangShengYue   string            `json:"chang_sheng_yue,omitempty"`
-	Flags           LineFlags         `json:"flags"`
+	WangShuai       string              `json:"wang_shuai,omitempty"`
+	ChangShengYue   string              `json:"chang_sheng_yue,omitempty"`
+	Flags           LineFlags           `json:"flags"`
 }
 
 type PatternView struct {
@@ -57,49 +57,49 @@ type FuShenView struct {
 }
 
 type YongShenView struct {
-	Name             string        `json:"name"`
-	Position         int           `json:"position"`
-	IsHidden         bool          `json:"is_hidden,omitempty"`
-	WangShuai        string        `json:"wang_shuai"`
-	YuePo            bool          `json:"yue_po,omitempty"`
-	XunKong          bool          `json:"xun_kong,omitempty"`
-	MuKu             bool          `json:"mu_ku,omitempty"`
-	LiuShou          string        `json:"liu_shou,omitempty"`
-	ChangSheng       string        `json:"chang_sheng,omitempty"`
-	FuShen           *FuShenView   `json:"fu_shen,omitempty"`
-	FuShenCandidates []FuShenView  `json:"fu_shen_candidates,omitempty"`
+	Name             string       `json:"name"`
+	Position         int          `json:"position"`
+	IsHidden         bool         `json:"is_hidden,omitempty"`
+	WangShuai        string       `json:"wang_shuai"`
+	YuePo            bool         `json:"yue_po,omitempty"`
+	XunKong          bool         `json:"xun_kong,omitempty"`
+	MuKu             bool         `json:"mu_ku,omitempty"`
+	LiuShou          string       `json:"liu_shou,omitempty"`
+	ChangSheng       string       `json:"chang_sheng,omitempty"`
+	FuShen           *FuShenView  `json:"fu_shen,omitempty"`
+	FuShenCandidates []FuShenView `json:"fu_shen_candidates,omitempty"`
 }
 
 type AnalysisView struct {
-	TimingCandidates      []TimingCandidate       `json:"timing_candidates,omitempty"`
-	DongYaoRelations      []DongYaoRelation       `json:"dong_yao_relations,omitempty"`
-	HiddenLines           []HiddenLine            `json:"hidden_lines,omitempty"`
-	BranchRelationFacts   []BranchRelationFact    `json:"zhi_relation_facts,omitempty"`
-	TombSchool            TombSchool              `json:"tomb_school"`
-	DayClashFacts         []DayClashFact          `json:"day_clash_facts,omitempty"`
-	MovingTransformations []MovingTransformation  `json:"moving_transformations,omitempty"`
-	SanHeCandidates       []SanHeCandidate        `json:"san_he_candidates,omitempty"`
-	ForceChain            *ForceChain             `json:"yong_shen_force_chain,omitempty"`
-	YongShenCandidates    []YongShenCandidate     `json:"yong_shen_candidates,omitempty"`
-	Conflicts             []Conflict              `json:"conflicts,omitempty"`
+	TimingCandidates      []TimingCandidate      `json:"timing_candidates,omitempty"`
+	DongYaoRelations      []DongYaoRelation      `json:"dong_yao_relations,omitempty"`
+	HiddenLines           []HiddenLine           `json:"hidden_lines,omitempty"`
+	BranchRelationFacts   []BranchRelationFact   `json:"zhi_relation_facts,omitempty"`
+	TombSchool            TombSchool             `json:"tomb_school"`
+	DayClashFacts         []DayClashFact         `json:"day_clash_facts,omitempty"`
+	MovingTransformations []MovingTransformation `json:"moving_transformations,omitempty"`
+	SanHeCandidates       []SanHeCandidate       `json:"san_he_candidates,omitempty"`
+	ForceChain            *ForceChain            `json:"yong_shen_force_chain,omitempty"`
+	YongShenCandidates    []YongShenCandidate    `json:"yong_shen_candidates,omitempty"`
+	Conflicts             []Conflict             `json:"conflicts,omitempty"`
 }
 
 type ChartView struct {
-	GuaName      string         `json:"gua_name"`
-	BianGua      *string        `json:"bian_gua"`
-	Gong         string         `json:"gong"`
-	GongWuxing   string         `json:"gong_wuxing"`
-	Lines        []LineView     `json:"lines"`
-	BianLines    []LineView     `json:"bian_lines"`
-	RiChenGan    string         `json:"ri_chen_gan"`
-	RiChenZhi    string         `json:"ri_chen_zhi"`
-	YueJianGan   string         `json:"yue_jian_gan"`
-	YueJianZhi   string         `json:"yue_jian_zhi"`
-	XunKong      []string       `json:"xun_kong"`
-	Patterns     []PatternView  `json:"ge_ju"`
-	YongShen     YongShenView   `json:"yong_shen"`
-	GuaCi        *GuaCiView     `json:"gua_ci,omitempty"`
-	Analysis     AnalysisView   `json:"analysis"`
+	GuaName    string        `json:"gua_name"`
+	BianGua    *string       `json:"bian_gua"`
+	Gong       string        `json:"gong"`
+	GongWuxing string        `json:"gong_wuxing"`
+	Lines      []LineView    `json:"lines"`
+	BianLines  []LineView    `json:"bian_lines"`
+	RiChenGan  string        `json:"ri_chen_gan"`
+	RiChenZhi  string        `json:"ri_chen_zhi"`
+	YueJianGan string        `json:"yue_jian_gan"`
+	YueJianZhi string        `json:"yue_jian_zhi"`
+	XunKong    []string      `json:"xun_kong"`
+	Patterns   []PatternView `json:"ge_ju"`
+	YongShen   YongShenView  `json:"yong_shen"`
+	GuaCi      *GuaCiView    `json:"gua_ci,omitempty"`
+	Analysis   AnalysisView  `json:"analysis"`
 }
 
 func (c Chart) lineView(line Line, rel DayRelation, wangShuai ganzhi.WangShuai) LineView {
@@ -111,9 +111,9 @@ func (c Chart) lineView(line Line, rel DayRelation, wangShuai ganzhi.WangShuai) 
 	v := LineView{
 		Position: line.Position, YaoValue: int(line.Type),
 		GanZhi: ganzhi.GanName(line.Gan) + ganzhi.ZhiName(line.Zhi),
-		Wuxing: line.Wuxing.String(), LiuQin: DecodeLiuQin(line.LiuQin),
+		Wuxing: ganzhi.DecodeWuxing(line.Wuxing), LiuQin: DecodeLiuQin(line.LiuQin),
 		ShiYing: DecodeShiYing(line.ShiYing), LiuShou: DecodeLiuShou(line.LiuShou),
-		WangShuai: wangShuai.String(), ChangShengYue: line.ChangShengYue,
+		WangShuai: ganzhi.DecodeWangShuai(wangShuai), ChangShengYue: line.ChangShengYue,
 		Flags: flags,
 	}
 	if len(rel.Relations) > 0 {
@@ -136,7 +136,7 @@ func fuShenView(v *FuShen) *FuShenView {
 func yongShenView(v YongShenResult) YongShenView {
 	view := YongShenView{
 		Name: v.Name, Position: v.Position, IsHidden: v.IsHidden,
-		WangShuai: v.WangShuai.String(), YuePo: v.YuePo, XunKong: v.XunKong,
+		WangShuai: ganzhi.DecodeWangShuai(v.WangShuai), YuePo: v.YuePo, XunKong: v.XunKong,
 		MuKu: v.MuKu, LiuShou: DecodeLiuShou(v.LiuShou), ChangSheng: v.ChangSheng,
 		FuShen: fuShenView(v.FuShen),
 	}
@@ -152,11 +152,11 @@ func yongShenView(v YongShenResult) YongShenView {
 func (c Chart) View() ChartView {
 	view := ChartView{
 		GuaName: c.BenGua.Name(),
-		Gong: c.Palace, GongWuxing: c.PalaceWuxing.String(),
+		Gong:    c.Palace, GongWuxing: ganzhi.DecodeWuxing(c.PalaceWuxing),
 		Lines: make([]LineView, 0, 6), BianLines: make([]LineView, 0, 6),
 		RiChenGan: ganzhi.GanName(c.RiGan), RiChenZhi: ganzhi.ZhiName(c.RiZhi),
 		YueJianGan: ganzhi.GanName(c.YueGan), YueJianZhi: ganzhi.ZhiName(c.YueZhi),
-		XunKong: []string{ganzhi.ZhiName(c.XunKong[0]), ganzhi.ZhiName(c.XunKong[1])},
+		XunKong:  []string{ganzhi.ZhiName(c.XunKong[0]), ganzhi.ZhiName(c.XunKong[1])},
 		Patterns: make([]PatternView, 0, len(c.Patterns)),
 		YongShen: yongShenView(c.YongShen),
 	}

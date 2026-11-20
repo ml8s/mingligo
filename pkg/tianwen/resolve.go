@@ -460,7 +460,7 @@ func sideDetail(boundary Boundary, after bool, representative time.Time, longitu
 		}
 		return termName(boundary.Label) + side
 	case BoundaryShichen:
-		return shichenFromApparentSolarMinutes(apparentSolarMinutes(solar)).String() + "时"
+		return ganzhi.DecodeZhi(shichenFromApparentSolarMinutes(apparentSolarMinutes(solar))) + "时"
 	case BoundarySolarDay:
 		return solar.Format("2006-01-02")
 	default:

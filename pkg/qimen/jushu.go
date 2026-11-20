@@ -12,7 +12,7 @@ type solarTermInfo struct {
 	Time  time.Time
 }
 
-func (s solarTermInfo) name() string { return s.JieQi.String() }
+func (s solarTermInfo) name() string { return tianwen.DecodeJieQi(s.JieQi) }
 func (s solarTermInfo) index() int   { return int(s.JieQi) }
 
 // DetermineJuShu 用 termTime（Gregorian time）判定节气边界，用 chartTime（真太阳时壁钟）
@@ -79,7 +79,7 @@ func DetermineJuShu(termTime, chartTime time.Time, bz ganzhi.Bazi, method Method
 			Method: method,
 			Number: entry[yuanIdx], YinDun: entry[3] == 0,
 			Yuan: Yuan(yuanIdx), JieQi: actual.JieQi,
-			YongJuJieQi: yongJu.String(), ZhiRunState: state,
+			YongJuJieQi: tianwen.DecodeJieQi(yongJu), ZhiRunState: state,
 		}
 	}
 }

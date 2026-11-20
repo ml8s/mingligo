@@ -69,7 +69,7 @@ func QueryDate(dateStr string, event ...string) (Day, error) {
 		FuShen:      fuShenDirection(dpi.Gan),
 		StemTaboo:   pengZuGanTaboo(dpi.Gan),
 		BranchTaboo: pengZuZhiTaboo(dpi.Zhi),
-		Wuxing:      ganzhi.ZhiWuxing(dpi.Zhi).String(),
+		Wuxing:      ganzhi.DecodeWuxing(ganzhi.ZhiWuxing(dpi.Zhi)),
 		Mansion:     mansionForDay(ganzhi.Zhu{Gan: dpi.Gan, Zhi: dpi.Zhi}),
 		JieQi:       jq.TermName,
 		JieQiDays:   jq.DaysIn,

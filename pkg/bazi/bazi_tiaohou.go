@@ -75,7 +75,7 @@ func queryTiaoHou(riYuan ganzhi.Gan, yueZhi ganzhi.Zhi) (TiaoHou, bool) {
 
 	season := ganzhi.ZhiSeasonLabel(yueZhi)
 
-	detail := ganzhi.ZhiName(yueZhi) + "月" + ganzhi.GanName(riYuan) + ganzhi.GanWuxing(riYuan).String()
+	detail := ganzhi.ZhiName(yueZhi) + "月" + ganzhi.GanName(riYuan) + ganzhi.DecodeWuxing(ganzhi.GanWuxing(riYuan))
 	detail += "，用" + ganzhi.GanName(e.primary) + "调候"
 	if e.secondary != 0 {
 		if e.secondaryCondition != "" {
@@ -86,10 +86,10 @@ func queryTiaoHou(riYuan ganzhi.Gan, yueZhi ganzhi.Zhi) (TiaoHou, bool) {
 	}
 
 	if e.secondary != 0 {
-		secondaryWuxing := secondaryElem.String()
+		secondaryWuxing := ganzhi.DecodeWuxing(secondaryElem)
 		return TiaoHou{
 			Season:             season,
-			PrimaryWuxing:      primaryElem.String(),
+			PrimaryWuxing:      ganzhi.DecodeWuxing(primaryElem),
 			SecondaryWuxing:    secondaryWuxing,
 			Detail:             detail,
 			SecondaryCondition: e.secondaryCondition,
@@ -97,7 +97,7 @@ func queryTiaoHou(riYuan ganzhi.Gan, yueZhi ganzhi.Zhi) (TiaoHou, bool) {
 	}
 	return TiaoHou{
 		Season:             season,
-		PrimaryWuxing:      primaryElem.String(),
+		PrimaryWuxing:      ganzhi.DecodeWuxing(primaryElem),
 		SecondaryWuxing:    NoSecondaryWuxing,
 		Detail:             detail,
 		SecondaryCondition: e.secondaryCondition,

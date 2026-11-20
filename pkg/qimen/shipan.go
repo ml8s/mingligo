@@ -5,6 +5,7 @@ import (
 
 	"github.com/ml8s/mingligo/pkg/ganzhi"
 	"github.com/ml8s/mingligo/pkg/luoshu"
+	"github.com/ml8s/mingligo/pkg/tianwen"
 )
 
 // Chart bundles a complete奇门盘 with all analysis layers.
@@ -160,7 +161,7 @@ func buildChartMethod(ju juShu, bz ganzhi.Bazi) ChartMethod {
 		SpiritMode: school.SpiritMode, Geometry: school.Geometry,
 		StarMode: school.StarMode, DoorMode: school.DoorMode,
 		SpiritFlight: school.SpiritFlight,
-		JieQi:        ju.JieQi.String(), YongJuJieQi: ju.YongJuJieQi, Yuan: DecodeYuan(ju.Yuan),
+		JieQi:        tianwen.DecodeJieQi(ju.JieQi), YongJuJieQi: ju.YongJuJieQi, Yuan: DecodeYuan(ju.Yuan),
 		ZhiRunState:     DecodeZhiRunState(ju.ZhiRunState),
 		TianQin:         tianQin,
 		LeadPillar:      newPillarInfo(leadZhu),

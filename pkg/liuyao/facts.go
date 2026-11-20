@@ -114,7 +114,7 @@ type YongShenCandidate struct {
 }
 
 func forceEntry(chart *Chart, role ForceRole, element ganzhi.Wuxing, note string) ForceEntry {
-	entry := ForceEntry{Role: role, Element: element.String(), Note: note}
+	entry := ForceEntry{Role: role, Element: ganzhi.DecodeWuxing(element), Note: note}
 	for _, line := range chart.Lines {
 		if line.Wuxing != element {
 			continue
@@ -123,7 +123,7 @@ func forceEntry(chart *Chart, role ForceRole, element ganzhi.Wuxing, note string
 		entry.Branches = append(entry.Branches, ganzhi.ZhiName(line.Zhi))
 		relation := dayInteraction(line.Zhi, chart.RiZhi)
 		entry.Relations = append(entry.Relations, "日"+relation.String())
-		state := []string{chart.WangShuai[line.Position-1].String()}
+		state := []string{ganzhi.DecodeWangShuai(chart.WangShuai[line.Position-1])}
 		if line.DongSelf {
 			state = append(state, "发动")
 		} else {
@@ -170,7 +170,7 @@ func computeForceChain(chart *Chart, typ YongShen) *ForceChain {
 
 	chain := &ForceChain{
 		YongShen:    DecodeYongShen(typ),
-		YongElement: yongElement.String(),
+		YongElement: ganzhi.DecodeWuxing(yongElement),
 		Position:    position,
 		IsHidden:    false,
 	}
@@ -209,12 +209,12 @@ func computeHiddenForceChain(chart *Chart, typ YongShen, fuShen *FuShen) *ForceC
 	relation := dayInteraction(fuZhi, chart.RiZhi)
 	chain := &ForceChain{
 		YongShen:    DecodeYongShen(typ),
-		YongElement: yongElement.String(),
+		YongElement: ganzhi.DecodeWuxing(yongElement),
 		Position:    fuShen.Position,
 		IsHidden:    true,
 		Entries: []ForceEntry{{
 			Role:      RoleYongShen,
-			Element:   yongElement.String(),
+			Element:   ganzhi.DecodeWuxing(yongElement),
 			Positions: []int{fuShen.Position},
 			Branches:  []string{ganzhi.ZhiName(fuShen.Zhi)},
 			Relations: []string{"日" + relation.String()},
@@ -260,7 +260,7 @@ func computeDayClashFacts(chart *Chart) []DayClashFact {
 		basis := []string{
 			fmt.Sprintf("line.zhi=%s", ganzhi.ZhiName(line.Zhi)),
 			fmt.Sprintf("ri_zhi=%s", ganzhi.ZhiName(chart.RiZhi)),
-			fmt.Sprintf("wang_shuai=%s", ws.String()),
+			fmt.Sprintf("wang_shuai=%s", ganzhi.DecodeWangShuai(ws)),
 			fmt.Sprintf("dong_self=%t", line.DongSelf),
 			fmt.Sprintf("xun_kong=%t", line.XunKong),
 		}
@@ -287,8 +287,8 @@ func computeMovingTransformations(chart *Chart) []MovingTransformation {
 			FromBranch: ganzhi.ZhiName(from.Zhi),
 			ToBranch:   ganzhi.ZhiName(to.Zhi),
 			Basis: []string{
-				fmt.Sprintf("from_element=%s", from.Wuxing.String()),
-				fmt.Sprintf("to_element=%s", to.Wuxing.String()),
+				fmt.Sprintf("from_element=%s", ganzhi.DecodeWuxing(from.Wuxing)),
+				fmt.Sprintf("to_element=%s", ganzhi.DecodeWuxing(to.Wuxing)),
 			},
 		}
 		switch {
@@ -409,7 +409,7 @@ func computeSanHeCandidates(chart *Chart) []SanHeCandidate {
 		facts = append(facts, SanHeCandidate{
 			Positions:       linePositions,
 			Branches:        namedBranches(lineBranches),
-			Element:         group.Element.String(),
+			Element:         ganzhi.DecodeWuxing(group.Element),
 			Complete:        complete,
 			MovingCount:     moving,
 			Qualification:   qualification,
@@ -451,7 +451,7 @@ func computeYongShenCandidates(chart *Chart, typ YongShen) []YongShenCandidate {
 			Position:  position,
 			Branch:    ganzhi.ZhiName(line.Zhi),
 			Selected:  true,
-			WangShuai: chart.WangShuai[position-1].String(),
+			WangShuai: ganzhi.DecodeWangShuai(chart.WangShuai[position-1]),
 			Reason:    "问自身，取世爻",
 			Basis:     []string{"yong_shen=世爻"},
 		}}
@@ -469,7 +469,7 @@ func computeYongShenCandidates(chart *Chart, typ YongShen) []YongShenCandidate {
 		candidate := YongShenCandidate{
 			Position:  line.Position,
 			Branch:    ganzhi.ZhiName(line.Zhi),
-			WangShuai: chart.WangShuai[i].String(),
+			WangShuai: ganzhi.DecodeWangShuai(chart.WangShuai[i]),
 		}
 		if line.DongSelf {
 			candidate.Basis = append(candidate.Basis, "dong_self=true")

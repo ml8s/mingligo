@@ -188,17 +188,17 @@ func computeLiuQin(lineElem, palaceElem ganzhi.Wuxing) LiuQin {
 
 // YongShenResult holds the 六爻用神 analysis result（六爻领域的用神，与八字用神体系无关）。
 type YongShenResult struct {
-	Name             string   `json:"name"`                  // 用神六亲名
-	Position         int      `json:"position"`              // line position 1-6, 0 if not found
-	IsHidden         bool     `json:"is_hidden,omitempty"`   // 本卦不现，取本宫伏神
+	Name             string           `json:"name"`                  // 用神六亲名
+	Position         int              `json:"position"`              // line position 1-6, 0 if not found
+	IsHidden         bool             `json:"is_hidden,omitempty"`   // 本卦不现，取本宫伏神
 	WangShuai        ganzhi.WangShuai `json:"wang_shuai"`            // 用神旺衰（旺/相/休/囚/死）聚合
-	YuePo            bool     `json:"yue_po,omitempty"`      // 用神月破
-	XunKong          bool     `json:"xun_kong,omitempty"`    // 用神旬空
-	MuKu             bool     `json:"mu_ku,omitempty"`       // 用神入墓
-	LiuShou          LiuShou  `json:"liu_shou,omitempty"`    // 用神临的六神；伏神不继承飞神六神
-	ChangSheng       string   `json:"chang_sheng,omitempty"` // 用神五行在月支的十二长生
-	FuShen           *FuShen  `json:"fu_shen,omitempty"`
-	FuShenCandidates []FuShen `json:"fu_shen_candidates,omitempty"`
+	YuePo            bool             `json:"yue_po,omitempty"`      // 用神月破
+	XunKong          bool             `json:"xun_kong,omitempty"`    // 用神旬空
+	MuKu             bool             `json:"mu_ku,omitempty"`       // 用神入墓
+	LiuShou          LiuShou          `json:"liu_shou,omitempty"`    // 用神临的六神；伏神不继承飞神六神
+	ChangSheng       string           `json:"chang_sheng,omitempty"` // 用神五行在月支的十二长生
+	FuShen           *FuShen          `json:"fu_shen,omitempty"`
+	FuShenCandidates []FuShen         `json:"fu_shen_candidates,omitempty"`
 }
 
 // computeChart computes a complete 六爻 chart from bazi, question type, and yaos (required).
@@ -249,7 +249,7 @@ func computeLineDerived(p *Chart) {
 		if len(types) > 0 {
 			p.Lines[i].MuKu = true
 			p.Lines[i].MuKuBranch = ganzhi.ZhiName(tomb)
-			p.Lines[i].MuKuElement = p.Lines[i].Wuxing.String()
+			p.Lines[i].MuKuElement = ganzhi.DecodeWuxing(p.Lines[i].Wuxing)
 			p.Lines[i].MuKuTypes = types
 		}
 	}

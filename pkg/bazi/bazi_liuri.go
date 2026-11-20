@@ -102,7 +102,7 @@ func computeLiuRi(bz ganzhi.Bazi, t LiuRiTime, daYunZhu *ganzhi.Zhu, liuNianZhu 
 		RiGan:       dp.Gan,
 		RiZhi:       dp.Zhi,
 		DayNaYin:    naYin,
-		ShiShen:     tgName.String(),
+		ShiShen:     ganzhi.DecodeShiShen(tgName),
 		GanRels:     ganRels,
 		ZhiRels:     zhiRels,
 		DaYunRels:   DaYunRels,
