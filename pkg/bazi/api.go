@@ -57,51 +57,55 @@ func ComputeChartFromCore(core Core) Chart {
 	bz := core.ToBazi()
 	analysis := AnalyzePillars(bz, core.Gender)
 	chart := assembleChart(core, bz, analysis)
-	fillDaYunRoots(&chart, bz)
-	applyChartExtra(&chart, core)
-	applyInteractions(&chart, bz)
-	applyYongshenEvidence(&chart, core, analysis)
-	applyDerivedFacts(&chart)
+	chart = withDaYunRoots(chart, bz)
+	chart = withChartExtra(chart, core)
+	chart = withInteractions(chart, bz)
+	chart = withYongshenEvidence(chart, core, analysis)
+	chart = withDerivedFacts(chart)
 	chart.ZiShiRule = "晚子时(23:00-24:00)日柱不变、时柱按次日日干起（lunar 约定）"
 	return chart
 }
 
 // applyChartExtra derives the supplementary 三元 / 胎元 / 命宫 / 纳音 projections.
-func applyChartExtra(chart *Chart, core Core) {
-	applyChartExtraFields(chart, core)
+func withChartExtra(chart Chart, core Core) Chart {
+	chart = withChartExtraFields(chart, core)
 	chart.Zodiac = ganzhi.ZhiAnimal(core.ToBazi().Nian.Zhi)
+	return chart
 }
 
 // applyInteractions derives the complete stem/branch interaction groups.
-func applyInteractions(chart *Chart, bz ganzhi.Bazi) {
+func withInteractions(chart Chart, bz ganzhi.Bazi) Chart {
 	detection := DetectRelations(bz)
 	chart.GuanXi = buildNatalRelationsFromDetection(bz, detection)
+	return chart
 }
 
 // applyYongshenEvidence derives FuYi/TiaoHou candidates and GeJu structure.
-func applyYongshenEvidence(chart *Chart, core Core, analysis PillarAnalysis) {
+func withYongshenEvidence(chart Chart, core Core, analysis PillarAnalysis) Chart {
 	chart.FuYi, chart.TiaoHou, chart.GeJu = computeYongShenEvidenceFromAnalysis(core, analysis, chart.GuanXi)
 	chart.ShenShaSchool = ShenShaSchool{
 		DualReference: []string{"天乙贵人", "桃花", "驿马", "华盖", "将星", "劫煞", "灾煞"},
 		Policy:        "union_of_year_and_day_references",
 	}
+	return chart
 }
 
 // applyDerivedFacts derives the read-only facts consumed by judgment layers.
-func applyDerivedFacts(chart *Chart) {
+func withDerivedFacts(chart Chart) Chart {
 	var elementStates map[ganzhi.Wuxing]ElementState
-	chart.TenGodStates, elementStates = computeTenGodStates(*chart)
+	chart.TenGodStates, elementStates = computeTenGodStates(chart)
 	chart.ElementStates = elementStateList(elementStates)
-	chart.LuRoots = computeLuRoots(*chart)
-	facts := computeChartConclusions(*chart)
+	chart.LuRoots = computeLuRoots(chart)
+	facts := computeChartConclusions(chart)
 	chart.GuanSha = GuanSha{QuQing: facts.OfficerKillingCleaned}
 	chart.CaiKu = CaiKu{Xian: facts.WealthTombPresent, XingRuKu: facts.WealthStarInTomb}
 	chart.GeJu.GeShenTou = facts.PatternGodTransparent
+	return chart
 }
 
-func fillDaYunRoots(chart *Chart, bz ganzhi.Bazi) {
+func withDaYunRoots(chart Chart, bz ganzhi.Bazi) Chart {
 	if chart.DaYun == nil {
-		return
+		return chart
 	}
 	natalHidden := natalHiddenStems(bz)
 	for index := range chart.DaYun.Steps {
@@ -110,6 +114,7 @@ func fillDaYunRoots(chart *Chart, bz ganzhi.Bazi) {
 		rooted := len(step.RootRefs) > 0
 		step.Rooted = &rooted
 	}
+	return chart
 }
 
 // ComputeLiuNianAtTime computes the year pillar from a resolved 立春 year.
