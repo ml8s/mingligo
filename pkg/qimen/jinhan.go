@@ -69,9 +69,9 @@ func ComputeJinhanChart(gt time.Time, st time.Time) JinhanChart {
 			Gong: palaceIdentity(palace), MenPresent: false,
 		}
 	}
-	layoutJinhanStars(&chart.Board, bz.Ri, yinDun)
-	layoutJinhanDoors(&chart.Board, bz.Ri, yinDun)
-	layoutJinhanDaySpirits(&chart.Board, bz.Ri)
+	chart.Board = withJinhanStars(chart.Board, bz.Ri, yinDun)
+	chart.Board = withJinhanDoors(chart.Board, bz.Ri, yinDun)
+	chart.Board = withJinhanDaySpirits(chart.Board, bz.Ri)
 	return chart
 }
 
@@ -88,7 +88,7 @@ func buildJinhanMethod(term solarTermInfo) JinhanChartMethod {
 	}
 }
 
-func layoutJinhanStars(plate *JinhanBoard, dayZhu ganzhi.Zhu, yinDun bool) {
+func withJinhanStars(plate JinhanBoard, dayZhu ganzhi.Zhu, yinDun bool) JinhanBoard {
 	dayIndex := ganzhi.SixtyCycleIndex(dayZhu.Gan, dayZhu.Zhi)
 	anchors := jinhanYangStarStarts
 	flight := jinhanYangStarFlight
@@ -100,9 +100,10 @@ func layoutJinhanStars(plate *JinhanBoard, dayZhu ganzhi.Zhu, yinDun bool) {
 	for i, star := range jinhanStarOrder {
 		plate.GongWei[int(sequence[i])-1].Xing = star
 	}
+	return plate
 }
 
-func layoutJinhanDoors(plate *JinhanBoard, dayZhu ganzhi.Zhu, yinDun bool) {
+func withJinhanDoors(plate JinhanBoard, dayZhu ganzhi.Zhu, yinDun bool) JinhanBoard {
 	dayIndex := ganzhi.SixtyCycleIndex(dayZhu.Gan, dayZhu.Zhi)
 	group := floorMod(dayIndex/jinhanDoorDays, len(jinhanDoorStarts))
 	startIndex := group
@@ -120,15 +121,17 @@ func layoutJinhanDoors(plate *JinhanBoard, dayZhu ganzhi.Zhu, yinDun bool) {
 		plate.GongWei[int(palace)-1].Men = DecodeDoorIndex(door)
 		plate.GongWei[int(palace)-1].MenPresent = true
 	}
+	return plate
 }
 
-func layoutJinhanDaySpirits(plate *JinhanBoard, dayZhu ganzhi.Zhu) {
+func withJinhanDaySpirits(plate JinhanBoard, dayZhu ganzhi.Zhu) JinhanBoard {
 	spirits := jinhanDaySpirits[dayZhu.Gan]
 	for branch := ganzhi.ZhiZi; branch <= ganzhi.ZhiHai; branch++ {
 		plate.DaySpirits[int(branch)-1] = JinhanDaySpirit{
 			Zhi: branch, Shen: spirits[int(branch)-1],
 		}
 	}
+	return plate
 }
 
 func rotatePalaces(sequence []GongIndex, start GongIndex) []GongIndex {
