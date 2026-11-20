@@ -52,7 +52,7 @@ func TestWangShuaiOf(t *testing.T) {
 			if got != tt.want {
 				t.Errorf("WangShuaiOf(%s,%s) = %s, want %s",
 					ganzhi.ZhiName(tt.lineZhi), ganzhi.ZhiName(tt.yueZhi),
-					got.String(), tt.want.String())
+					got, tt.want)
 			}
 		})
 	}
@@ -190,7 +190,7 @@ func TestComputeLiuQin(t *testing.T) {
 			got := computeLiuQin(tt.lineElem, palaceElem)
 			if got != tt.want {
 				t.Errorf("computeLiuQin(%s,%s) = %s, want %s",
-					tt.lineElem.String(), palaceElem.String(), got.String(), tt.want.String())
+					tt.lineElem.String(), palaceElem.String(), DecodeLiuQin(got), DecodeLiuQin(tt.want))
 			}
 		})
 	}
@@ -244,7 +244,7 @@ func TestLiuQin_String(t *testing.T) {
 		{LiuQin(100), "?"},
 	}
 	for _, tt := range tests {
-		got := tt.q.String()
+		got := DecodeLiuQin(tt.q)
 		if got != tt.want {
 			t.Errorf("LiuQin(%d).String() = %s, want %s", int(tt.q), got, tt.want)
 		}
@@ -271,7 +271,7 @@ func TestLiuShou_String(t *testing.T) {
 		{LiuShou(100), "?"},
 	}
 	for _, tt := range tests {
-		got := tt.l.String()
+		got := DecodeLiuShou(tt.l)
 		if got != tt.want {
 			t.Errorf("LiuShou(%d).String() = %s, want %s", int(tt.l), got, tt.want)
 		}
@@ -320,7 +320,7 @@ func TestYongShenToLiuQin_All(t *testing.T) {
 		got := yongShenToLiuQin(tt.ys)
 		if got != tt.want {
 			t.Errorf("yongShenToLiuQin(%s) = %s, want %s",
-				tt.ys.String(), got.String(), tt.want.String())
+				DecodeYongShen(tt.ys), DecodeLiuQin(got), DecodeLiuQin(tt.want))
 		}
 	}
 }
@@ -454,7 +454,7 @@ func TestFindFuShen_Found(t *testing.T) {
 		t.Errorf("Position = %d, want 3", fs.Position)
 	}
 	if fs.LiuQin != QinFumu {
-		t.Errorf("LiuQin = %s, want 父母", fs.LiuQin.String())
+		t.Errorf("LiuQin = %s, want 父母", DecodeLiuQin(fs.LiuQin))
 	}
 	if fs.Zhi != ganzhi.ZhiChen {
 		t.Errorf("Zhi = %s, want 辰", fs.Zhi)
@@ -591,7 +591,7 @@ func TestYongShen_String(t *testing.T) {
 		{YongShiYao, "世爻"},
 	}
 	for _, tt := range tests {
-		got := tt.y.String()
+		got := DecodeYongShen(tt.y)
 		if got != tt.want {
 			t.Errorf("YongShen(%d).String() = %s, want %s", int(tt.y), got, tt.want)
 		}
@@ -683,7 +683,7 @@ func TestDayGanShouOrder(t *testing.T) {
 			order := dayGanShouOrder(tt.riGan)
 			if order[0] != tt.want0 {
 				t.Errorf("dayGanShouOrder(%s)[0] = %s, want %s",
-					ganzhi.GanName(tt.riGan), order[0].String(), tt.want0.String())
+					ganzhi.GanName(tt.riGan), DecodeLiuShou(order[0]), DecodeLiuShou(tt.want0))
 			}
 		})
 	}
@@ -754,7 +754,7 @@ func TestComputeChart_AllShunYangQianWeiTian(t *testing.T) {
 		t.Errorf("BianGua = %d, want 0 (no changing lines)", chart.BianGua)
 	}
 	for i := 0; i < 6; i++ {
-		if chart.Lines[i].LiuQin.String() == "?" {
+		if DecodeLiuQin(chart.Lines[i].LiuQin) == "?" {
 			t.Errorf("line %d: liu_qin unset", i+1)
 		}
 	}
@@ -822,7 +822,7 @@ func TestComputeChart_FullAnalysis(t *testing.T) {
 		if l.Zhi.String() == "" {
 			t.Errorf("line %d: zhi empty", i+1)
 		}
-		if l.LiuQin.String() == "?" {
+		if DecodeLiuQin(l.LiuQin) == "?" {
 			t.Errorf("line %d: liu_qin = ?", i+1)
 		}
 	}

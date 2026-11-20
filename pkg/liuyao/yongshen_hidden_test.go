@@ -26,15 +26,15 @@ func TestComputeChart_HiddenYongShenDoesNotUseBianOrFlyingLine(t *testing.T) {
 		t.Fatal("fu_shen is nil")
 	}
 	if chart.YongShen.FuShen.Position != 2 ||
-		chart.YongShen.FuShen.LiuQin.String() != "妻财" ||
+		DecodeLiuQin(chart.YongShen.FuShen.LiuQin) != "妻财" ||
 		chart.YongShen.FuShen.Zhi != ganzhi.ZhiYin {
 		t.Fatalf("fu_shen = %+v, want position 2/妻财/寅", chart.YongShen.FuShen)
 	}
 	if chart.YongShen.WangShuai != ganzhi.WSSi {
 		t.Errorf("wang_shuai = %q, want 死 from fu-shen branch 寅", chart.YongShen.WangShuai)
 	}
-	if chart.YongShen.LiuShou.String() != "青龙" {
-		t.Errorf("liu_shou = %q, want omitted; fu-shen must not inherit flying liu-shou", chart.YongShen.LiuShou)
+	if DecodeLiuShou(chart.YongShen.LiuShou) != "青龙" {
+		t.Errorf("liu_shou = %q, want omitted; fu-shen must not inherit flying liu-shou", DecodeLiuShou(chart.YongShen.LiuShou))
 	}
 	if chart.ForceChain == nil || !chart.ForceChain.IsHidden {
 		t.Fatalf("force_chain = %+v, want hidden force chain", chart.ForceChain)

@@ -186,7 +186,7 @@ func TestDomainOracle_LiuyaoPatternSemantics(t *testing.T) {
 				t.Fatalf("mu_ku_types = %#v, want %#v", chart.Lines[0].MuKuTypes, tc.ExpectedTypes)
 			}
 			for index := range tc.ExpectedTypes {
-				if chart.Lines[0].MuKuTypes[index].String() != tc.ExpectedTypes[index] {
+				if DecodeMuKuSource(chart.Lines[0].MuKuTypes[index]) != tc.ExpectedTypes[index] {
 					t.Fatalf("mu_ku_types = %#v, want %#v", chart.Lines[0].MuKuTypes, tc.ExpectedTypes)
 				}
 			}

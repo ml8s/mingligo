@@ -146,10 +146,10 @@ func TestYongShen_LiuShou(t *testing.T) {
 	// 用神六神应聚合（等于用神爻位的六神）
 	wantLiuShou := chart.Lines[chart.YongShen.Position-1].LiuShou
 	if chart.YongShen.LiuShou != wantLiuShou {
-		t.Errorf("yong_shen.liu_shou = %s, want %s", chart.YongShen.LiuShou, wantLiuShou)
+		t.Errorf("yong_shen.liu_shou = %s, want %s", DecodeLiuShou(chart.YongShen.LiuShou), DecodeLiuShou(wantLiuShou))
 	}
 	// 六神应为合法值
-	if chart.YongShen.LiuShou.String() == "" {
+	if DecodeLiuShou(chart.YongShen.LiuShou) == "" {
 		t.Error("yong_shen.liu_shou should not be empty")
 	}
 }

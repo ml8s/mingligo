@@ -78,7 +78,7 @@ func TestExternalDiffFixtures_HardFacts(t *testing.T) {
 			}
 			for i, line := range got.Lines {
 				if line.Zhi.String() != tc.Expected.LineBranches[i] ||
-					line.LiuQin.String() != tc.Expected.LineLiuQin[i] ||
+					DecodeLiuQin(line.LiuQin) != tc.Expected.LineLiuQin[i] ||
 					line.ShiYing != shiYingAt(i+1, tc.Expected.ShiPosition, tc.Expected.YingPosition) {
 					t.Fatalf("line %d differs: %+v", i+1, line)
 				}

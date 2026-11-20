@@ -38,7 +38,7 @@ func TestComputeChart_All4096YaoCombinations(t *testing.T) {
 								if int(line.Type) != yaos[i] {
 									t.Fatalf("yaos %v line %d type=%d", yaos, i, line.Type)
 								}
-								if line.LiuQin.String() == "?" || line.LiuShou.String() == "?" {
+								if DecodeLiuQin(line.LiuQin) == "?" || DecodeLiuShou(line.LiuShou) == "?" {
 									t.Fatalf("yaos %v has invalid six relative/spirit: %+v", yaos, line)
 								}
 								switch line.ShiYing {

@@ -49,9 +49,8 @@ func DecodeLiuQin(v LiuQin) string {
 	return "?"
 }
 
-func (q LiuQin) String() string { return DecodeLiuQin(q) }
 
-func (q LiuQin) MarshalJSON() ([]byte, error) { return json.Marshal(q.String()) }
+func (q LiuQin) MarshalJSON() ([]byte, error) { return json.Marshal(DecodeLiuQin(q)) }
 
 func (q *LiuQin) UnmarshalJSON(data []byte) error {
 	var s string
@@ -89,9 +88,8 @@ func DecodeLiuShou(v LiuShou) string {
 	return "?"
 }
 
-func (l LiuShou) String() string { return DecodeLiuShou(l) }
 
-func (l LiuShou) MarshalJSON() ([]byte, error) { return json.Marshal(l.String()) }
+func (l LiuShou) MarshalJSON() ([]byte, error) { return json.Marshal(DecodeLiuShou(l)) }
 
 func (l *LiuShou) UnmarshalJSON(data []byte) error {
 	var name string
@@ -126,9 +124,8 @@ func DecodeMuKuSource(v MuKuSource) string {
 	return ""
 }
 
-func (m MuKuSource) String() string { return DecodeMuKuSource(m) }
 
-func (m MuKuSource) MarshalJSON() ([]byte, error) { return json.Marshal(m.String()) }
+func (m MuKuSource) MarshalJSON() ([]byte, error) { return json.Marshal(DecodeMuKuSource(m)) }
 
 func EncodeMuKuSource(name string) MuKuSource {
 	for i, n := range muKuSourceNames {
@@ -160,9 +157,8 @@ func DecodeShiYing(v ShiYing) string {
 	}
 }
 
-func (s ShiYing) String() string { return DecodeShiYing(s) }
 
-func (s ShiYing) MarshalJSON() ([]byte, error) { return json.Marshal(s.String()) }
+func (s ShiYing) MarshalJSON() ([]byte, error) { return json.Marshal(DecodeShiYing(s)) }
 
 func EncodeShiYing(name string) ShiYing {
 	switch name {
@@ -178,15 +174,18 @@ func EncodeShiYing(name string) ShiYing {
 // guaIndex identifies one of the 64 hexagrams.
 type guaIndex int // 0-63, upper trigram 0-7, lower trigram 0-7
 
-func (g guaIndex) Name() string {
+// DecodeGuaIndex decodes a guaIndex symbol into its hexagram name.
+func DecodeGuaIndex(g guaIndex) string {
 	if int(g) < 0 || int(g) >= len(zhouyiTable) {
 		return ""
 	}
 	return zhouyiTable[g].Name
 }
 
+func (g guaIndex) Name() string { return DecodeGuaIndex(g) }
+
 func (g guaIndex) MarshalJSON() ([]byte, error) {
-	return json.Marshal(g.Name())
+	return json.Marshal(DecodeGuaIndex(g))
 }
 
 func (g *guaIndex) UnmarshalJSON(data []byte) error {
@@ -225,9 +224,8 @@ func DecodeDayRelationType(v DayRelationType) string {
 	return ""
 }
 
-func (r DayRelationType) String() string { return DecodeDayRelationType(r) }
 
-func (r DayRelationType) MarshalJSON() ([]byte, error) { return json.Marshal(r.String()) }
+func (r DayRelationType) MarshalJSON() ([]byte, error) { return json.Marshal(DecodeDayRelationType(r)) }
 
 func EncodeDayRelationType(name string) DayRelationType {
 	for i, n := range dayRelationNames {
@@ -260,9 +258,8 @@ func DecodeFeiFuRelation(v FeiFuRelation) string {
 	return ""
 }
 
-func (r FeiFuRelation) String() string { return DecodeFeiFuRelation(r) }
 
-func (r FeiFuRelation) MarshalJSON() ([]byte, error) { return json.Marshal(r.String()) }
+func (r FeiFuRelation) MarshalJSON() ([]byte, error) { return json.Marshal(DecodeFeiFuRelation(r)) }
 
 func EncodeFeiFuRelation(name string) FeiFuRelation {
 	for i, n := range feiFuNames {
@@ -331,4 +328,3 @@ var yongShenNames = [7]string{"父母", "兄弟", "官鬼", "妻财", "子孙", 
 // DecodeYongShen decodes a YongShen symbol into its display text.
 func DecodeYongShen(v YongShen) string { return yongShenNames[v] }
 
-func (y YongShen) String() string { return DecodeYongShen(y) }

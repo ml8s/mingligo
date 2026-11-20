@@ -62,8 +62,8 @@ func TestDongYao_BianGua_Anchors(t *testing.T) {
 					t.Errorf("bian_yao[0] 纳甲 = %s%s, want %s%s",
 						ganzhi.GanName(b0.Gan), ganzhi.ZhiName(b0.Zhi), c.bian1Gan, c.bian1Zhi)
 				}
-				if b0.LiuQin.String() != c.bian1Qin {
-					t.Errorf("bian_yao[0] 六亲 = %s, want %s（乾金生水→子孙）", b0.LiuQin, c.bian1Qin)
+				if DecodeLiuQin(b0.LiuQin) != c.bian1Qin {
+					t.Errorf("bian_yao[0] 六亲 = %s, want %s（乾金生水→子孙）", DecodeLiuQin(b0.LiuQin), c.bian1Qin)
 				}
 			}
 		})

@@ -6,7 +6,7 @@ func TestComputeHiddenLines_CoversAllMissingRelatives(t *testing.T) {
 	chart := factsChart(t, [6]int{7, 7, 7, 7, 7, 7})
 	visible := map[string]bool{}
 	for _, line := range chart.Lines {
-		visible[line.LiuQin.String()] = true
+		visible[DecodeLiuQin(line.LiuQin)] = true
 	}
 	for _, hidden := range chart.HiddenLines {
 		if visible[hidden.LiuQin] {
