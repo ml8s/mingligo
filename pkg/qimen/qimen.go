@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/ml8s/mingligo/pkg/ganzhi"
+	"github.com/ml8s/mingligo/pkg/tianwen"
 )
 
 // GongIndex is a 洛书九宫 index:
@@ -328,10 +329,10 @@ type juShu struct {
 	Method      Method
 	Number      int
 	YinDun      bool
-	Yuan        string // 上元/中元/下元
-	JieQi       string
+	Yuan        Yuan
+	JieQi       tianwen.JieQi
 	YongJuJieQi string
-	ZhiRunState string
+	ZhiRunState ZhiRunState
 	Quarter     *quarterInfo
 }
 

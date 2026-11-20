@@ -226,11 +226,11 @@ func loadMethodMatrixGoldenFixture(t *testing.T) methodGoldenFixture {
 		}
 		switch vector.ID {
 		case "method-06":
-			if vector.ZhiRunState != zhiRunStateNames["behind"] {
+			if vector.ZhiRunState != zhiRunStateNames[zsBehind] {
 				t.Fatalf("method-06 state = %q, want 接气", vector.ZhiRunState)
 			}
 		case "method-12":
-			if vector.ZhiRunState != zhiRunStateNames["repeat"] {
+			if vector.ZhiRunState != zhiRunStateNames[zsRepeat] {
 				t.Fatalf("method-12 state = %q, want 置闰", vector.ZhiRunState)
 			}
 		}

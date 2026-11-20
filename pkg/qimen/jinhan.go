@@ -60,7 +60,7 @@ type JinhanChart struct {
 func ComputeJinhanChart(gt time.Time, st time.Time) JinhanChart {
 	bz, termTime, _ := chartInputs(gt, st)
 	term := currentSolarTermInfo(termTime)
-	yinDun := term.Index >= 12
+	yinDun := term.index() >= 12
 	chart := JinhanChart{Method: buildJinhanMethod(term)}
 	chart.Board.YinDun = yinDun
 	chart.Board.RiGan, chart.Board.RiZhi = bz.Ri.Gan, bz.Ri.Zhi
@@ -84,7 +84,7 @@ func buildJinhanMethod(term solarTermInfo) JinhanChartMethod {
 		Geometry: school.Geometry, StarMode: school.StarMode,
 		DoorMode: school.DoorMode, SpiritMode: school.SpiritMode,
 		SpiritFlight: school.SpiritFlight, DunSource: jinhanDunSource,
-		JieQi: term.Name, MethodYiJu: jinhanYiJu,
+		JieQi: term.name(), MethodYiJu: jinhanYiJu,
 	}
 }
 

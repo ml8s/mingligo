@@ -9,6 +9,7 @@ import (
 
 	"github.com/ml8s/mingligo/pkg/ganzhi"
 	"github.com/ml8s/mingligo/pkg/luoshu"
+	"github.com/ml8s/mingligo/pkg/tianwen"
 )
 
 //go:embed data/gan_interaction.json
@@ -157,11 +158,11 @@ func (e scopeEntry) hasFeature(feature string) bool {
 
 type monthYearGroupEntry struct {
 	LeadingJu int
-	Yuan      string
+	Yuan      Yuan
 }
 
 type quarterSanyuanEntry struct {
-	Yuan   string
+	Yuan   Yuan
 	YangJu int
 	YinJu  int
 }
@@ -243,9 +244,7 @@ type quarterShiftJSON struct {
 
 var (
 	ganInteractionTable map[[2]ganzhi.Gan]ganEntry
-	solarTermJuTable    map[string][4]int
-	solarTermLongitudes map[string]float64
-	solarTermOrder      [24]string
+	solarTermJuTable    map[tianwen.JieQi][4]int
 	defaultScope        Scope
 	defaultSchool       School
 	scopeMethods        map[Scope]scopeEntry
@@ -255,7 +254,7 @@ var (
 	monthGroups         map[ganzhi.Zhi]monthYearGroupEntry
 	yearAnchor          int
 	yearCycle           int
-	yearJuByYuan        map[string]int
+	yearJuByYuan        map[Yuan]int
 	qimenDayBoundary    string
 	menGongTable        map[[2]int]doorEntry
 	xingGongTable       map[[2]int]XingInteraction
@@ -289,7 +288,7 @@ var (
 	xunKongTable           [6][2]ganzhi.Zhi
 	wuBuYuShiTable         map[[2]ganzhi.Gan]bool
 	fuTouYuanTable         map[ganzhi.Zhi]int
-	yuanNames              [3]string
+
 	patternRules           []patternRule
 	yingqiRuleTable        map[string]yingqiRuleEntry
 	yingqiHorizonDays      int
@@ -297,8 +296,8 @@ var (
 	zhiRunLeaderDays       int
 	zhiRunThreshold        int
 	zhiRunMaxIntervals     int
-	zhiRunRepeatTerms      map[string]bool
-	zhiRunStateNames       map[string]string
+	zhiRunRepeatTerms      map[tianwen.JieQi]bool
+	zhiRunStateNames       map[ZhiRunState]string
 	zhiRunBasis            map[string]string
 	maoShanShichenPerYuan  int
 	maoShanMaxYuan         int
@@ -418,23 +417,24 @@ func loadJushu() error {
 	if len(entries) != 24 {
 		return fmt.Errorf("load jushu: want 24 terms, got %d", len(entries))
 	}
-	solarTermJuTable = make(map[string][4]int, len(entries))
-	solarTermLongitudes = make(map[string]float64, len(entries))
+	solarTermJuTable = make(map[tianwen.JieQi][4]int, len(entries))
+	seenLongitude := make(map[float64]tianwen.JieQi, len(entries))
 	for _, entry := range entries {
-		if _, exists := solarTermJuTable[entry.JieQi]; exists {
+		jq, ok := tianwen.ParseJieQi(entry.JieQi)
+		if !ok {
+			return fmt.Errorf("load jushu: unknown term %q", entry.JieQi)
+		}
+		if _, exists := solarTermJuTable[jq]; exists {
 			return fmt.Errorf("load jushu: duplicate term %q", entry.JieQi)
 		}
 		if entry.Longitude < 0 || entry.Longitude >= 360 {
 			return fmt.Errorf("load jushu: invalid longitude for %q", entry.JieQi)
 		}
-		index := solarTermCanonicalIndex(entry.Longitude)
-		if index < 0 || solarTermOrder[index] != "" {
-			return fmt.Errorf("load jushu: invalid or duplicate canonical position for %q", entry.JieQi)
+		if jq.Longitude() != entry.Longitude {
+			return fmt.Errorf("load jushu: longitude %v mismatches term %q", entry.Longitude, entry.JieQi)
 		}
-		for name, longitude := range solarTermLongitudes {
-			if longitude == entry.Longitude {
-				return fmt.Errorf("load jushu: %q and %q share longitude %v", name, entry.JieQi, longitude)
-			}
+		if other, exists := seenLongitude[entry.Longitude]; exists {
+			return fmt.Errorf("load jushu: %q and %q share longitude %v", other, entry.JieQi, entry.Longitude)
 		}
 		if entry.ShangYuan < 1 || entry.ShangYuan > 9 || entry.ZhongYuan < 1 ||
 			entry.ZhongYuan > 9 || entry.XiaYuan < 1 || entry.XiaYuan > 9 {
@@ -444,15 +444,9 @@ func loadJushu() error {
 		if entry.YangDun {
 			yang = 1
 		}
-		solarTermLongitudes[entry.JieQi] = entry.Longitude
-		solarTermJuTable[entry.JieQi] = [4]int{
+		seenLongitude[entry.Longitude] = jq
+		solarTermJuTable[jq] = [4]int{
 			entry.ShangYuan, entry.ZhongYuan, entry.XiaYuan, yang,
-		}
-		solarTermOrder[index] = entry.JieQi
-	}
-	for index, name := range solarTermOrder {
-		if name == "" {
-			return fmt.Errorf("load jushu: canonical term %d is missing", index)
 		}
 	}
 	return nil
@@ -787,6 +781,10 @@ func loadCatalog() error {
 		if group.LeadingJu < 1 || group.LeadingJu > 9 || group.Yuan == "" {
 			return fmt.Errorf("load catalog: invalid month group")
 		}
+		yuan, ok := ParseYuan(group.Yuan)
+		if !ok {
+			return fmt.Errorf("load catalog: invalid month yuan %q", group.Yuan)
+		}
 		for _, name := range group.Branches {
 			branch, err := ganzhi.ParseZhi(name)
 			if err != nil {
@@ -795,7 +793,7 @@ func loadCatalog() error {
 			if _, exists := monthGroups[branch]; exists {
 				return fmt.Errorf("load catalog: duplicate month branch %q", name)
 			}
-			monthGroups[branch] = monthYearGroupEntry{LeadingJu: group.LeadingJu, Yuan: group.Yuan}
+			monthGroups[branch] = monthYearGroupEntry{LeadingJu: group.LeadingJu, Yuan: yuan}
 		}
 	}
 	if len(monthGroups) != 12 {
@@ -803,17 +801,21 @@ func loadCatalog() error {
 	}
 
 	yearAnchor, yearCycle = table.YearDingju.AnchorYear, table.YearDingju.CycleYears
-	yearJuByYuan = make(map[string]int, len(table.YearDingju.YuanJu))
+	yearJuByYuan = make(map[Yuan]int, len(table.YearDingju.YuanJu))
 	for _, entry := range table.YearDingju.YuanJu {
 		if entry.Ju < 1 || entry.Ju > 9 || entry.Yuan == "" {
 			return fmt.Errorf("load catalog: invalid year dingju entry")
 		}
-		if _, exists := yearJuByYuan[entry.Yuan]; exists {
+		yuan, ok := ParseYuan(entry.Yuan)
+		if !ok {
+			return fmt.Errorf("load catalog: invalid year yuan %q", entry.Yuan)
+		}
+		if _, exists := yearJuByYuan[yuan]; exists {
 			return fmt.Errorf("load catalog: duplicate year yuan %q", entry.Yuan)
 		}
-		yearJuByYuan[entry.Yuan] = entry.Ju
+		yearJuByYuan[yuan] = entry.Ju
 	}
-	for _, yuan := range []string{"上元", "中元", "下元"} {
+	for _, yuan := range []Yuan{YuanShang, YuanZhong, YuanXia} {
 		if _, ok := yearJuByYuan[yuan]; !ok {
 			return fmt.Errorf("load catalog: missing year yuan %q", yuan)
 		}
@@ -943,6 +945,10 @@ func loadTenMinuteQuarter(entry quarterJSONEntry) error {
 			group.YangJu < 1 || group.YangJu > 9 || group.YinJu < 1 || group.YinJu > 9 {
 			return fmt.Errorf("load quarter: invalid dingju group %+v", group)
 		}
+		yuan, ok := ParseYuan(group.Yuan)
+		if !ok {
+			return fmt.Errorf("load quarter: invalid yuan %q", group.Yuan)
+		}
 		for _, name := range group.Branches {
 			branch, err := ganzhi.ParseZhi(name)
 			if err != nil {
@@ -952,7 +958,7 @@ func loadTenMinuteQuarter(entry quarterJSONEntry) error {
 				return fmt.Errorf("load quarter: duplicate dingju branch %q", name)
 			}
 			quarterSanyuanByBranch[branch] = quarterSanyuanEntry{
-				Yuan: group.Yuan, YangJu: group.YangJu, YinJu: group.YinJu,
+				Yuan: yuan, YangJu: group.YangJu, YinJu: group.YinJu,
 			}
 		}
 	}
@@ -1336,7 +1342,6 @@ func loadPlate() error {
 		default:
 			return fmt.Errorf("load plate: invalid yuan %q", entry.Yuan)
 		}
-		yuanNames[yuan] = entry.Yuan
 		for _, branch := range entry.Branches {
 			zhi, err := ganzhi.ParseZhi(branch)
 			if err != nil {
@@ -1478,7 +1483,7 @@ func validatePlateTables() error {
 		return fmt.Errorf("load plate: wu_bu_yu_shi must contain ten pairs")
 	}
 	for branch, yuan := range fuTouYuanTable {
-		if yuan < 0 || yuan > 2 || yuanNames[yuan] == "" {
+		if yuan < 0 || yuan > 2 {
 			return fmt.Errorf("load plate: branch %d has invalid fu-tou yuan", branch+1)
 		}
 	}
@@ -1749,29 +1754,40 @@ func loadZhiRun() error {
 	zhiRunLeaderDays = table.LeaderIntervalDays
 	zhiRunThreshold = table.AdoptThresholdDays
 	zhiRunMaxIntervals = table.MaxTermIntervals
-	zhiRunRepeatTerms = make(map[string]bool, len(table.RepeatableTerms))
+	zhiRunRepeatTerms = make(map[tianwen.JieQi]bool, len(table.RepeatableTerms))
 	for _, name := range table.RepeatableTerms {
-		if _, ok := solarTermJuTable[name]; !ok {
+		jq, ok := tianwen.ParseJieQi(name)
+		if !ok {
 			return fmt.Errorf("load zhirun: unknown repeatable term %q", name)
 		}
-		if zhiRunRepeatTerms[name] {
+		if _, ok := solarTermJuTable[jq]; !ok {
+			return fmt.Errorf("load zhirun: unknown repeatable term %q", name)
+		}
+		if zhiRunRepeatTerms[jq] {
 			return fmt.Errorf("load zhirun: duplicate repeatable term %q", name)
 		}
-		zhiRunRepeatTerms[name] = true
+		zhiRunRepeatTerms[jq] = true
 	}
-	zhiRunStateNames = make(map[string]string, len(table.States))
+	zhiRunStateNames = make(map[ZhiRunState]string, len(table.States))
 	for _, state := range table.States {
 		if state.State == "" || state.Name == "" || state.Condition == "" {
 			return fmt.Errorf("load zhirun: incomplete state %+v", state)
 		}
-		if _, exists := zhiRunStateNames[state.State]; exists {
+		zs, ok := ParseZhiRunState(state.State)
+		if !ok {
+			return fmt.Errorf("load zhirun: unknown state %q", state.State)
+		}
+		if _, exists := zhiRunStateNames[zs]; exists {
 			return fmt.Errorf("load zhirun: duplicate state %q", state.State)
 		}
-		zhiRunStateNames[state.State] = state.Name
+		if zhiRunStateNames[zs] != "" && zhiRunStateNames[zs] != state.Name {
+			return fmt.Errorf("load zhirun: state %q label mismatch", state.State)
+		}
+		zhiRunStateNames[zs] = state.Name
 	}
-	for _, state := range []string{"exact", "ahead", "behind", "repeat"} {
+	for _, state := range []ZhiRunState{zsExact, zsAhead, zsBehind, zsRepeat} {
 		if zhiRunStateNames[state] == "" {
-			return fmt.Errorf("load zhirun: missing state %q", state)
+			return fmt.Errorf("load zhirun: missing state %q", state.Key())
 		}
 	}
 	zhiRunBasis = map[string]string{

@@ -1,6 +1,7 @@
 package qimen
 
 import (
+	"github.com/ml8s/mingligo/pkg/tianwen"
 	"testing"
 	"time"
 
@@ -32,7 +33,9 @@ func TestZhiRunTableContract(t *testing.T) {
 	if zhiRunLeaderDays != 15 || zhiRunThreshold != 7 || zhiRunMaxIntervals != 12 {
 		t.Fatalf("grid = %d/%d/%d, want 15/7/12", zhiRunLeaderDays, zhiRunThreshold, zhiRunMaxIntervals)
 	}
-	if !zhiRunRepeatTerms["芒种"] || !zhiRunRepeatTerms["大雪"] {
+	mangZhong, _ := tianwen.ParseJieQi("芒种")
+	daXue, _ := tianwen.ParseJieQi("大雪")
+	if !zhiRunRepeatTerms[mangZhong] || !zhiRunRepeatTerms[daXue] {
 		t.Fatal("only Mangzhong and Daxue may repeat")
 	}
 	for _, basis := range zhiRunBasis {

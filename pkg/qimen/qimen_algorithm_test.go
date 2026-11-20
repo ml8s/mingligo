@@ -234,13 +234,13 @@ func TestExactSolarTermBoundary(t *testing.T) {
 	for _, boundary := range boundaries {
 		t.Run(boundary.name, func(t *testing.T) {
 			exact := tianwen.SolarTermTime(2024, boundary.longitude)
-			if got := currentSolarTermInfo(exact.Add(-time.Hour)).Name; got == boundary.afterName {
+			if got := currentSolarTermInfo(exact.Add(-time.Hour)).name(); got == boundary.afterName {
 				t.Errorf("one hour before boundary entered %s", boundary.afterName)
 			}
-			if got := currentSolarTermInfo(exact.Add(time.Hour)).Name; got != boundary.afterName {
+			if got := currentSolarTermInfo(exact.Add(time.Hour)).name(); got != boundary.afterName {
 				t.Errorf("one hour after boundary term = %s, want %s", got, boundary.afterName)
 			}
-			if got := currentSolarTermInfo(exact).Name; got != boundary.afterName {
+			if got := currentSolarTermInfo(exact).name(); got != boundary.afterName {
 				t.Errorf("at boundary term = %s, want %s", got, boundary.afterName)
 			}
 		})

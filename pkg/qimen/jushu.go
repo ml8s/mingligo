@@ -1,7 +1,6 @@
 package qimen
 
 import (
-	"math"
 	"time"
 
 	"github.com/ml8s/mingligo/pkg/ganzhi"
@@ -9,10 +8,12 @@ import (
 )
 
 type solarTermInfo struct {
-	Name  string
-	Index int
+	JieQi tianwen.JieQi
 	Time  time.Time
 }
+
+func (s solarTermInfo) name() string { return s.JieQi.String() }
+func (s solarTermInfo) index() int   { return int(s.JieQi) }
 
 // DetermineJuShu 用 termTime（Gregorian time）判定节气边界，用 chartTime（真太阳时壁钟）
 // 做时辰内的分钟分法，两者与 bz 的时柱口径保持一致。
@@ -29,7 +30,7 @@ func DetermineJuShu(termTime, chartTime time.Time, bz ganzhi.Bazi, method Method
 			ju := twelveMinuteShiftJu(base.Number, quarter.Index, quarter.HourYangDun)
 			return juShu{
 				Method: method, Number: ju, YinDun: !quarter.HourYangDun,
-				Yuan: base.Yuan, JieQi: actual.Name, YongJuJieQi: base.YongJuJieQi,
+				Yuan: base.Yuan, JieQi: actual.JieQi, YongJuJieQi: base.YongJuJieQi,
 				Quarter: &quarter,
 			}
 		}
@@ -40,7 +41,7 @@ func DetermineJuShu(termTime, chartTime time.Time, bz ganzhi.Bazi, method Method
 		}
 		return juShu{
 			Method: method, Number: ju, YinDun: !quarter.HourYangDun,
-			Yuan: quarter.Sanyuan.Yuan, JieQi: actual.Name,
+			Yuan: quarter.Sanyuan.Yuan, JieQi: actual.JieQi,
 			YongJuJieQi: variant.YongJuJieQi, Quarter: &quarter,
 		}
 	case "month_cycle":
@@ -49,36 +50,36 @@ func DetermineJuShu(termTime, chartTime time.Time, bz ganzhi.Bazi, method Method
 		ju := floorMod(group.LeadingJu-1-monthSeq, 9) + 1
 		return juShu{
 			Method: method, Number: ju, YinDun: true, Yuan: group.Yuan,
-			JieQi: actual.Name, YongJuJieQi: "月家定局",
+			JieQi: actual.JieQi, YongJuJieQi: "月家定局",
 		}
 	case "year_cycle":
 		cycleYear := actual.Time.Year()
-		if actual.Index < 3 {
+		if actual.index() < 3 {
 			cycleYear--
 		}
 		years := cycleYear - yearAnchor
 		element := floorMod((years-floorMod(years, yearCycle))/yearCycle, 3)
-		yuan := yuanName(element)
+		yuan := Yuan(element)
 		return juShu{
 			Method: method, Number: yearJuByYuan[yuan], YinDun: true, Yuan: yuan,
-			JieQi: actual.Name, YongJuJieQi: "年家定局",
+			JieQi: actual.JieQi, YongJuJieQi: "年家定局",
 		}
 	default:
-		yongJu := actual.Name
-		state := ""
+		yongJu := actual.JieQi
+		var state ZhiRunState
 		if method.Dingju == DingjuZhiRun {
 			yongJu, state = determineZhiRunTerm(termTime, actual)
 		}
-		yuan := determineYuan(bz.Ri)
+		yuanIdx := int(determineYuan(bz.Ri))
 		if method.Dingju == DingjuMaoShan {
-			yuan = determineMaoShanYuan(termTime, actual)
+			yuanIdx = determineMaoShanYuan(termTime, actual)
 		}
 		entry := solarTermJuTable[yongJu]
 		return juShu{
 			Method: method,
-			Number: entry[yuan], YinDun: entry[3] == 0,
-			Yuan: yuanName(yuan), JieQi: actual.Name,
-			YongJuJieQi: yongJu, ZhiRunState: state,
+			Number: entry[yuanIdx], YinDun: entry[3] == 0,
+			Yuan: Yuan(yuanIdx), JieQi: actual.JieQi,
+			YongJuJieQi: yongJu.String(), ZhiRunState: state,
 		}
 	}
 }
@@ -101,18 +102,16 @@ func determineMaoShanYuan(t time.Time, actual solarTermInfo) int {
 }
 
 func currentSolarTermInfo(t time.Time) solarTermInfo {
-	result := solarTermInfo{Name: "冬至"}
+	result := solarTermInfo{JieQi: tianwen.JQDongZhi}
 	var latest time.Time
 	if previousWinter := tianwen.SolarTermTime(t.Year()-1, 270); !t.Before(previousWinter) {
-		result = solarTermInfoAt(t.Year()-1, 0)
+		result = solarTermInfoAt(t.Year()-1, int(tianwen.JQDongZhi))
 		latest = previousWinter
 	}
-	for name, longitude := range solarTermLongitudes {
-		term := tianwen.SolarTermTime(t.Year(), longitude)
+	for jq := tianwen.JieQi(0); jq < 24; jq++ {
+		term := tianwen.SolarTermTime(t.Year(), jq.Longitude())
 		if !t.Before(term) && term.After(latest) {
-			result = solarTermInfo{
-				Name: name, Index: solarTermCanonicalIndex(longitude), Time: term,
-			}
+			result = solarTermInfo{JieQi: jq, Time: term}
 			latest = term
 		}
 	}
@@ -120,37 +119,23 @@ func currentSolarTermInfo(t time.Time) solarTermInfo {
 }
 
 func solarTermInfoAt(year, index int) solarTermInfo {
-	name := solarTermOrder[index]
-	return solarTermInfo{
-		Name: name, Index: index,
-		Time: tianwen.SolarTermTime(year, canonicalSolarLongitude(index)),
-	}
-}
-
-func solarTermCanonicalIndex(longitude float64) int {
-	if longitude < 0 || longitude >= 360 || math.Mod(longitude, 15) != 0 {
-		return -1
-	}
-	return int(math.Mod(longitude-270+360, 360) / 15)
-}
-
-func canonicalSolarLongitude(index int) float64 {
-	return math.Mod(float64(index)*15+270, 360)
+	jq := tianwen.JieQi(index)
+	return solarTermInfo{JieQi: jq, Time: tianwen.SolarTermTime(year, jq.Longitude())}
 }
 
 func solarTermSequence(info solarTermInfo) int {
 	year := info.Time.Year()
-	if info.Index == 0 {
+	if info.index() == 0 {
 		year++
 	}
-	return year*24 + info.Index
+	return year*24 + info.index()
 }
 
-func determineZhiRunTerm(t time.Time, actual solarTermInfo) (string, string) {
+func determineZhiRunTerm(t time.Time, actual solarTermInfo) (tianwen.JieQi, ZhiRunState) {
 	day := qimenDayNumber(t)
 	leader := day - floorMod(day, zhiRunLeaderDays)
 	upcomingLongitude := 90.0
-	if actual.Index >= 12 {
+	if actual.index() >= 12 {
 		upcomingLongitude = 270
 	}
 	upcoming := nextSolarTerm(t, upcomingLongitude)
@@ -159,7 +144,7 @@ func determineZhiRunTerm(t time.Time, actual solarTermInfo) (string, string) {
 		currentLongitude = 90
 	}
 	current := latestSolarTerm(t, currentLongitude)
-	previous := solarTermInfoAt(current.Time.Year()-1, 12-current.Index)
+	previous := solarTermInfoAt(current.Time.Year()-1, 12-current.index())
 
 	for _, anchor := range []solarTermInfo{upcoming, current, previous} {
 		anchorLeader := adoptingZhiRunLeader(anchor, t.Location())
@@ -170,10 +155,10 @@ func determineZhiRunTerm(t time.Time, actual solarTermInfo) (string, string) {
 		interval := min(rawInterval, zhiRunMaxIntervals-1)
 		workingSequence := solarTermSequence(anchor) + interval
 		workingIndex := floorMod(workingSequence, 24)
-		working := solarTermOrder[workingIndex]
+		working := tianwen.JieQi(workingIndex)
 		return working, zhiRunState(t, actual, working, upcoming, anchor, leader, rawInterval, workingSequence)
 	}
-	return actual.Name, zhiRunStateNames["behind"]
+	return actual.JieQi, zsBehind
 }
 
 func nextSolarTerm(t time.Time, longitude float64) solarTermInfo {
@@ -183,10 +168,8 @@ func nextSolarTerm(t time.Time, longitude float64) solarTermInfo {
 		year++
 		term = tianwen.SolarTermTime(year, longitude)
 	}
-	return solarTermInfo{
-		Name:  solarTermOrder[solarTermCanonicalIndex(longitude)],
-		Index: solarTermCanonicalIndex(longitude), Time: term,
-	}
+	jq, _ := tianwen.JieQiOfLongitude(longitude)
+	return solarTermInfo{JieQi: jq, Time: term}
 }
 
 func latestSolarTerm(t time.Time, longitude float64) solarTermInfo {
@@ -196,10 +179,8 @@ func latestSolarTerm(t time.Time, longitude float64) solarTermInfo {
 		year--
 		term = tianwen.SolarTermTime(year, longitude)
 	}
-	return solarTermInfo{
-		Name:  solarTermOrder[solarTermCanonicalIndex(longitude)],
-		Index: solarTermCanonicalIndex(longitude), Time: term,
-	}
+	jq, _ := tianwen.JieQiOfLongitude(longitude)
+	return solarTermInfo{JieQi: jq, Time: term}
 }
 
 func adoptingZhiRunLeader(term solarTermInfo, location *time.Location) int {
@@ -212,24 +193,24 @@ func adoptingZhiRunLeader(term solarTermInfo, location *time.Location) int {
 	return leader
 }
 
-func zhiRunState(t time.Time, actual solarTermInfo, working string, upcoming, anchor solarTermInfo, leader, rawInterval, workingSequence int) string {
+func zhiRunState(t time.Time, actual solarTermInfo, working tianwen.JieQi, upcoming, anchor solarTermInfo, leader, rawInterval, workingSequence int) ZhiRunState {
 	workingTerm := solarTermInfoFromSequence(workingSequence)
 	workingDay := qimenDayNumber(workingTerm.Time.In(t.Location()))
 	actualSequence := solarTermSequence(actual)
 	if workingDay == leader && workingSequence == actualSequence && !workingTerm.Time.After(t) {
-		return zhiRunStateNames["exact"]
+		return zsExact
 	}
 	if qimenDayNumber(upcoming.Time.In(t.Location())) == qimenDayNumber(t) {
-		return zhiRunStateNames["behind"]
+		return zsBehind
 	}
 	if rawInterval > zhiRunMaxIntervals-1 && zhiRunRepeatTerms[working] &&
-		actual.Name == working && qimenDayNumber(anchor.Time.In(t.Location())) != qimenDayNumber(t) {
-		return zhiRunStateNames["repeat"]
+		actual.JieQi == working && qimenDayNumber(anchor.Time.In(t.Location())) != qimenDayNumber(t) {
+		return zsRepeat
 	}
 	if workingSequence > actualSequence {
-		return zhiRunStateNames["ahead"]
+		return zsAhead
 	}
-	return zhiRunStateNames["behind"]
+	return zsBehind
 }
 
 func solarTermInfoFromSequence(sequence int) solarTermInfo {
@@ -264,10 +245,6 @@ func determineYuan(dayZhu ganzhi.Zhu) int {
 	dayIdx := ganzhi.SixtyCycleIndex(dayZhu.Gan, dayZhu.Zhi)
 	fuTou := ganzhi.SixtyToZhu(dayIdx - dayIdx%5)
 	return fuTouYuanTable[fuTou.Zhi]
-}
-
-func yuanName(yuan int) string {
-	return yuanNames[yuan]
 }
 
 func fuTou(dayZhu ganzhi.Zhu) ganzhi.Zhu {
