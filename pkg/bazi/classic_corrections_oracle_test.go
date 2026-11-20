@@ -133,7 +133,7 @@ func TestDomainOracle_BaziClassicCorrections(t *testing.T) {
 			}
 			chart := mkGeJuChart(gan, ganzhi.GanBing, ganzhi.GanGui, ganzhi.GanRen, zhi)
 			got := computeGeJu(chart, nil)
-			if got.Pattern != tc.Pattern || got.Usage != tc.Usage {
+			if string(got.Pattern) != tc.Pattern || got.Usage != tc.Usage {
 				t.Fatalf("geju = %+v, want %s/%s", got, tc.Pattern, tc.Usage)
 			}
 			if got.PatternGodSource == "" ||
@@ -153,7 +153,7 @@ func TestDomainOracle_BaziClassicCorrections(t *testing.T) {
 				t.Fatalf("羊刃 fact is inconsistent with classic yin-stem boundary")
 			}
 			ge := full.GeJu
-			if ge.Pattern != tc.Pattern || ge.PatternGod != tc.PatternGod ||
+			if string(ge.Pattern) != tc.Pattern || ge.PatternGod != tc.PatternGod ||
 				ge.PatternGodSource != tc.PatternGodSource || ge.Usage != tc.Usage ||
 				ge.Structure.Pattern.Wuxing == "" {
 				t.Fatalf("geju = %+v, want %+v", ge, tc)

@@ -50,7 +50,7 @@ func TestDomainOracle_BaziYongShenStructure(t *testing.T) {
 	for _, tc := range doc.GeJuCases {
 		t.Run(tc.ID, func(t *testing.T) {
 			got := ComputeChartFromCore(pillarsCoreFromStrings(t, tc.Pillars)).GeJu
-			if got.Pattern != tc.ExpectedPattern || got.PatternGod != tc.ExpectedPatternGod {
+			if string(got.Pattern) != tc.ExpectedPattern || got.PatternGod != tc.ExpectedPatternGod {
 				t.Fatalf("pattern = %s/%s, want %s/%s", got.Pattern, got.PatternGod, tc.ExpectedPattern, tc.ExpectedPatternGod)
 			}
 			assertStrings(t, decodePillars(got.Structure.Pattern.TransparentPillars), tc.ExpectedTransparentPillars)

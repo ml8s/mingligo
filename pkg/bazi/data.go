@@ -114,11 +114,11 @@ func loadXiaoYunRules() error {
 
 // geJuPattern 格局规则（《子平真诠》）：格神十神 → 格名与顺逆用。
 type geJuPattern struct {
-	Name  string
+	Name  GeJuKind
 	Usage string
 }
 
-var geJuRules map[string]geJuPattern
+var geJuRules map[ganzhi.ShiShen]geJuPattern
 
 func loadGeJuRules() error {
 	var raw struct {
@@ -131,9 +131,17 @@ func loadGeJuRules() error {
 	if err := json.Unmarshal(gejuRulesJSON, &raw); err != nil {
 		return fmt.Errorf("unmarshal geju_rules.json: %w", err)
 	}
-	geJuRules = make(map[string]geJuPattern, len(raw.Patterns))
+	geJuRules = make(map[ganzhi.ShiShen]geJuPattern, len(raw.Patterns))
 	for _, p := range raw.Patterns {
-		geJuRules[p.ShiShen] = geJuPattern{Name: p.Name, Usage: p.Usage}
+		ss, err := ganzhi.EncodeShiShen(p.ShiShen)
+		if err != nil {
+			return fmt.Errorf("invalid geju shishen %q: %w", p.ShiShen, err)
+		}
+		kind, ok := EncodeGeJuKind(p.Name)
+		if !ok {
+			return fmt.Errorf("invalid geju name %q", p.Name)
+		}
+		geJuRules[ss] = geJuPattern{Name: kind, Usage: p.Usage}
 	}
 	return nil
 }

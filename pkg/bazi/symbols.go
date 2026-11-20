@@ -253,7 +253,9 @@ var relationKindCodes = [...]string{
 }
 
 func DecodeNatalRelationKind(r NatalRelationKind) string { return relationKindCodes[r] }
-func (r NatalRelationKind) MarshalJSON() ([]byte, error) { return []byte(`"`+DecodeNatalRelationKind(r)+`"`), nil }
+func (r NatalRelationKind) MarshalJSON() ([]byte, error) {
+	return []byte(`"` + DecodeNatalRelationKind(r) + `"`), nil
+}
 func EncodeNatalRelationKind(code string) (NatalRelationKind, bool) {
 	for i, c := range relationKindCodes {
 		if c != "" && c == code {
@@ -263,31 +265,32 @@ func EncodeNatalRelationKind(code string) (NatalRelationKind, bool) {
 	return natalRelationUnknown, false
 }
 
-// GeJuKind is one of the eight 格 (正官格/七杀格/...).
-type GeJuKind uint8
+// GeJuKind is one of the 格局 (正官格/七杀格/...). Its value IS the stable
+// display text, so it formats and serializes as text without Decode.
+type GeJuKind string
 
 const (
-	geJuUnknown   GeJuKind = iota
-	geJuZhengGuan          // 正官格
-	geJuQiSha              // 七杀格
-	geJuZhengCai           // 正财格
-	geJuPianCai            // 偏财格
-	geJuZhengYin           // 正印格
-	geJuPianYin            // 偏印格
-	geJuShiShen            // 食神格
-	geJuShangGuan          // 伤官格
+	geJuUnknown   GeJuKind = ""
+	geJuZhengGuan GeJuKind = "正官格"
+	geJuQiSha     GeJuKind = "七杀格"
+	geJuZhengCai  GeJuKind = "正财格"
+	geJuPianCai   GeJuKind = "偏财格"
+	geJuZhengYin  GeJuKind = "正印格"
+	geJuPianYin   GeJuKind = "偏印格"
+	geJuShiShen   GeJuKind = "食神格"
+	geJuShangGuan GeJuKind = "伤官格"
+	geJuZa        GeJuKind = "杂格"
+	geJuYueRen    GeJuKind = "月刃格"
+	geJuJianLu    GeJuKind = "建禄格"
 )
 
-var geJuKindNames = [...]string{"", "正官格", "七杀格", "正财格", "偏财格", "正印格", "偏印格", "食神格", "伤官格"}
-
-func DecodeGeJuKind(g GeJuKind) string { return geJuKindNames[g] }
+func DecodeGeJuKind(g GeJuKind) string { return string(g) }
 func EncodeGeJuKind(name string) (GeJuKind, bool) {
-	for i, n := range geJuKindNames {
-		if n != "" && n == name {
-			return GeJuKind(i), true
-		}
+	k := GeJuKind(name)
+	if k == geJuUnknown {
+		return geJuUnknown, false
 	}
-	return geJuUnknown, false
+	return k, true
 }
 
 // CongGeKind is one of the 从格 variants.

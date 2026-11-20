@@ -27,7 +27,7 @@ func TestShiShenToPatternName(t *testing.T) {
 	}
 	for _, tc := range cases {
 		got := shiShenToPatternName(tc.shishen)
-		if got != tc.want {
+		if string(got) != tc.want {
 			t.Errorf("十神 %d → 格名 %s, want %s", tc.shishen, got, tc.want)
 		}
 	}

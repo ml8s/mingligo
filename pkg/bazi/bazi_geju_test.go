@@ -82,7 +82,7 @@ func TestComputeGeJu_AllPatterns(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			cb := mkGeJuChart(tt.riGan, tt.yueGan, ganzhi.GanGui, ganzhi.GanRen, tt.yueZhi)
 			result := computeGeJu(cb, nil)
-			if result.Pattern != tt.wantPattern {
+			if string(result.Pattern) != tt.wantPattern {
 				t.Errorf("Pattern = %q, want %q\n  note: %s", result.Pattern, tt.wantPattern, tt.note)
 			}
 			if result.Usage != tt.wantUsage {
@@ -145,7 +145,7 @@ func TestComputeGeJu_JianLuYueRen(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			cb := mkGeJuChart(tt.riGan, ganzhi.GanBing, ganzhi.GanGui, ganzhi.GanRen, tt.yueZhi)
 			result := computeGeJu(cb, nil)
-			if result.Pattern != tt.wantPattern {
+			if string(result.Pattern) != tt.wantPattern {
 				t.Errorf("Pattern = %q, want %q", result.Pattern, tt.wantPattern)
 			}
 			if result.Usage != tt.wantUsage {
@@ -264,7 +264,7 @@ func TestGeJu_RealCharts(t *testing.T) {
 			st := tianwen.ApparentSolarFromCivil(tt.birthTime, 116.4, 8)
 			chart := ComputeChart(stgt, st, tt.gender)
 			geJu := chart.GeJu
-			if geJu.Pattern != tt.wantPattern {
+			if string(geJu.Pattern) != tt.wantPattern {
 				t.Errorf("Pattern = %q, want %q\n  note: %s", geJu.Pattern, tt.wantPattern, tt.note)
 			}
 			if geJu.Usage != tt.wantUsage {

@@ -64,7 +64,7 @@ func TestZiPing_GeJu_AllEightPatterns(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			result := computeGeJu(tt.chart, nil)
-			if result.Pattern != tt.wantPattern {
+			if string(result.Pattern) != tt.wantPattern {
 				t.Errorf("Pattern=%q want=%q", result.Pattern, tt.wantPattern)
 			}
 			if result.Usage != tt.wantUsage {
@@ -99,7 +99,7 @@ func TestZiPing_JianLuYueRen(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			result := computeGeJu(tt.chart, nil)
-			if result.Pattern != tt.wantPattern {
+			if string(result.Pattern) != tt.wantPattern {
 				t.Errorf("Pattern=%q want=%q", result.Pattern, tt.wantPattern)
 			}
 			if result.Usage != tt.wantUsage {

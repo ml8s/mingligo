@@ -45,7 +45,7 @@ func TestComputeYongshenEvidence_PresentsCandidatesAndStructure(t *testing.T) {
 	for _, field := range []struct{ name, val string }{
 		{"TiaoHou.PrimaryWuxing", tiaoHou.PrimaryWuxing},
 		{"TiaoHou.Season", tiaoHou.Season},
-		{"GeJu.Pattern", geJu.Pattern},
+		{"GeJu.Pattern", string(geJu.Pattern)},
 		{"GeJu.Usage", geJu.Usage},
 	} {
 		if field.val == "" {

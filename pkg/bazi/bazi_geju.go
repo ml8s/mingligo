@@ -69,11 +69,11 @@ func GeJuAt(
 	var yongFa string
 
 	// 顺逆用入表 geju_rules.json：吉格顺用（官财印食）、凶格逆用（杀伤）。
-	if p, ok := geJuRules[ganzhi.DecodeShiShen(patternShiShen)]; ok {
+	if p, ok := geJuRules[patternShiShen]; ok {
 		yongFa = p.Usage
 	} else {
 		yongFa = "逆用"
-		patternName = "杂格"
+		patternName = geJuZa
 	}
 
 	return GeJuResult{
@@ -88,11 +88,9 @@ func GeJuAt(
 
 func JianLuYueRen(bz ganzhi.Bazi, isYueRen bool, relations []NatalRelationFact) GeJuResult {
 	dmElem := ganzhi.GanWuxing(bz.Ri.Gan)
-	var patternName string
+	patternName := geJuJianLu
 	if isYueRen {
-		patternName = "月刃格"
-	} else {
-		patternName = "建禄格"
+		patternName = geJuYueRen
 	}
 	return GeJuResult{
 		Pattern:          patternName,
@@ -127,9 +125,9 @@ func jianLuYueRenZhi(riGan ganzhi.Gan, yueZhi ganzhi.Zhi) (isLu, isYueRen bool) 
 
 // shiShenToPatternName converts a shishen to its pattern name.
 // 格局格名入表 geju_rules.json（《子平真诠》官杀财印食伤各成一格）。
-func shiShenToPatternName(ss ganzhi.ShiShen) string {
-	if p, ok := geJuRules[ganzhi.DecodeShiShen(ss)]; ok {
+func shiShenToPatternName(ss ganzhi.ShiShen) GeJuKind {
+	if p, ok := geJuRules[ss]; ok {
 		return p.Name
 	}
-	return "杂格"
+	return geJuZa
 }

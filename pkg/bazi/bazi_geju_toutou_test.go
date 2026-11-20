@@ -210,7 +210,7 @@ func TestGeJu_TouTou_AllPatterns(t *testing.T) {
 			geJu := c.GeJu
 
 			got := geJu
-			if got.Pattern != tt.wantPattern {
+			if string(got.Pattern) != tt.wantPattern {
 				t.Errorf("Pattern = %q, want %q\n  note: %s", got.Pattern, tt.wantPattern, tt.note)
 			}
 			if got.Usage != tt.wantUsage {

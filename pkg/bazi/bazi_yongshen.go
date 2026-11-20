@@ -61,7 +61,7 @@ func (r TiaoHouResult) MarshalJSON() ([]byte, error) {
 // command. It deliberately does not emit yong/xi/ji: pattern success,
 // rescue, and final favorable elements require whole-chart review.
 type GeJuResult struct {
-	Pattern string `json:"ge_ju"`
+	Pattern GeJuKind `json:"ge_ju"`
 	// GeShenTou is the pattern-god transparency conclusion.
 	GeShenTou bool   `json:"ge_shen_tou"`
 	Usage     string `json:"usage"` // "顺用" or "逆用"

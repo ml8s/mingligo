@@ -626,13 +626,13 @@ func patternGodTransparent(c Chart) bool {
 	return false
 }
 
-var patternTenGods = map[string]ganzhi.ShiShen{
-	"正官格": ganzhi.ShiShenZhengGuan,
-	"七杀格": ganzhi.ShiShenQiSha,
-	"正财格": ganzhi.ShiShenZhengCai,
-	"偏财格": ganzhi.ShiShenPianCai,
-	"正印格": ganzhi.ShiShenZhengYin,
-	"偏印格": ganzhi.ShiShenPianYin,
-	"食神格": ganzhi.ShiShenShiShen,
-	"伤官格": ganzhi.ShiShenShangGuan,
+var patternTenGods = map[GeJuKind]ganzhi.ShiShen{
+	geJuZhengGuan: ganzhi.ShiShenZhengGuan,
+	geJuQiSha: ganzhi.ShiShenQiSha,
+	geJuZhengCai: ganzhi.ShiShenZhengCai,
+	geJuPianCai: ganzhi.ShiShenPianCai,
+	geJuZhengYin: ganzhi.ShiShenZhengYin,
+	geJuPianYin: ganzhi.ShiShenPianYin,
+	geJuShiShen: ganzhi.ShiShenShiShen,
+	geJuShangGuan: ganzhi.ShiShenShangGuan,
 }
