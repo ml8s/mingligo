@@ -86,8 +86,8 @@ func TestXingJiaHui_CompleteMatrix(t *testing.T) {
 				t.Errorf("xingJiaHuiTable 缺 [%d,%d]", shan, xiang)
 				continue
 			}
-			if entry.Name == "" || entry.Meaning == "" {
-				t.Errorf("[%d,%d] name/meaning 不能为空", shan, xiang)
+			if entry.Name == "" {
+				t.Errorf("[%d,%d] name 不能为空", shan, xiang)
 			}
 		}
 	}

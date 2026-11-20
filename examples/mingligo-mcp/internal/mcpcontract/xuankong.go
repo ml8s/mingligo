@@ -33,10 +33,10 @@ type XuankongStarOutput struct {
 }
 
 type XuankongPalaceOutput struct {
-	GongNum   GuaNumber          `json:"gong_num" jsonschema:"洛书宫数。"`
-	YunXing   XuankongStarOutput `json:"yun_xing" jsonschema:"运星。"`
-	ShanXing  XuankongStarOutput `json:"shan_xing" jsonschema:"山星。"`
-	XiangXing XuankongStarOutput `json:"xiang_xing" jsonschema:"向星。"`
+	GongNum   GuaNumber            `json:"gong_num" jsonschema:"洛书宫数。"`
+	YunXing   XuankongStarOutput   `json:"yun_xing" jsonschema:"运星。"`
+	ShanXing  XuankongStarOutput   `json:"shan_xing" jsonschema:"山星。"`
+	XiangXing XuankongStarOutput   `json:"xiang_xing" jsonschema:"向星。"`
 	JiaHui    XuankongJiaHuiOutput `json:"jia_hui" jsonschema:"该宫双星加会。"`
 }
 
@@ -49,8 +49,7 @@ type XuankongFourSituationOutput struct {
 }
 
 type XuankongJiaHuiOutput struct {
-	Name    string `json:"name" jsonschema:"星曜加会名称。"`
-	Meaning string `json:"meaning" jsonschema:"星曜加会通则含义。"`
+	Name string `json:"name" jsonschema:"星曜加会名称。"`
 }
 
 type XuankongShouShanOutput struct {
@@ -181,4 +180,3 @@ func xuankongComputeChart(at time.Time, zuoShan MountainIndex, xiangShan Mountai
 	}
 	return xuankong.ComputeChartAt(at, int(zuoShan), int(xiangShan))
 }
-

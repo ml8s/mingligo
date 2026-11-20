@@ -8,8 +8,7 @@ import (
 
 // xuanKongStar holds the three stars (运星, 山星, 向星) for one palace.
 type palaceJiaHui struct {
-	Name    string `json:"name"`
-	Meaning string `json:"meaning"`
+	Name string `json:"name"`
 }
 
 type xuanKongStar struct {
@@ -214,7 +213,6 @@ type xingJiaHui struct {
 	ShanNum  int    `json:"shan_num"`
 	XiangNum int    `json:"xiang_num"`
 	Name     string `json:"name"`
-	Meaning  string `json:"meaning"`
 }
 
 func (p *Chart) computeXingJiaHui() {
@@ -222,11 +220,10 @@ func (p *Chart) computeXingJiaHui() {
 		pal := &p.Palaces[i]
 		key := [2]int{pal.MountainStar.Number, pal.FacingStar.Number}
 		if entry, ok := xingJiaHuiTable[key]; ok {
-			pal.JiaHui = palaceJiaHui{Name: entry.Name, Meaning: entry.Meaning}
+			pal.JiaHui = palaceJiaHui{Name: entry.Name}
 		} else {
 			pal.JiaHui = palaceJiaHui{
-				Name:    "星曜加会",
-				Meaning: "该组合未列入固定通则，须参合星、宫、运与峦头判断",
+				Name: "星曜加会",
 			}
 		}
 	}

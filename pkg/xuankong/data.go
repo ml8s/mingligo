@@ -36,10 +36,9 @@ func Load() error {
 
 func loadXingJiaHui() error {
 	var entries []struct {
-		Shan    int    `json:"shan"`
-		Xiang   int    `json:"xiang"`
-		Name    string `json:"name"`
-		Meaning string `json:"meaning"`
+		Shan  int    `json:"shan"`
+		Xiang int    `json:"xiang"`
+		Name  string `json:"name"`
 	}
 	if err := json.Unmarshal(xingJiaHuiJSON, &entries); err != nil {
 		return err
@@ -50,7 +49,6 @@ func loadXingJiaHui() error {
 			ShanNum:  e.Shan,
 			XiangNum: e.Xiang,
 			Name:     e.Name,
-			Meaning:  e.Meaning,
 		}
 	}
 	return nil

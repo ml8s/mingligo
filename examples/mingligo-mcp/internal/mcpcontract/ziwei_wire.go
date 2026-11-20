@@ -226,8 +226,7 @@ type ZiweiSanFangSiZheng struct {
 }
 
 type ZiweiGeJu struct {
-	Description *string `json:"description,omitempty" jsonschema:"说明；展示文本由内容层管理。"`
-	Name        string  `json:"name" jsonschema:"格局名。"`
+	Name string `json:"name" jsonschema:"格局名。"`
 }
 
 type ZiweiChartGongItem struct {
