@@ -61,7 +61,7 @@ func (c Chart) FlowContext() FlowContext {
 // BondPalaceFacts carries only the palace facts consumed by bond output.
 type BondPalaceFacts struct {
 	Palace     string   `json:"gong"`
-	MajorStars []string `json:"major_xing"`
+	MajorStars []StarIndex `json:"major_xing"`
 }
 
 // BondSideFacts carries only the natal palace facts consumed by bond.
@@ -74,10 +74,10 @@ type BondSideFacts struct {
 // BondSideFacts extracts the palace facts consumed by bond.
 func (c Chart) BondSideFacts() BondSideFacts {
 	facts := func(idx int) BondPalaceFacts {
-		majorStars := make([]string, 0, len(c.GongWei[idx].Stars))
+		majorStars := make([]StarIndex, 0, len(c.GongWei[idx].Stars))
 		for _, star := range c.GongWei[idx].Stars {
 			if star.IsMajor {
-				majorStars = append(majorStars, star.Name)
+				majorStars = append(majorStars, star.Star)
 			}
 		}
 		return BondPalaceFacts{Palace: c.GongWei[idx].Name, MajorStars: majorStars}

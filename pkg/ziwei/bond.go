@@ -31,7 +31,7 @@ func bondPalacePair(aPalace, bPalace BondPalaceFacts, kind GongIndex) BondPalace
 	}
 }
 
-func pairStatus(palace GongIndex, aStars, bStars []string) string {
+func pairStatus(palace GongIndex, aStars, bStars []StarIndex) string {
 	switch palace {
 	case gongFuQi:
 		return spouseStatus(aStars, bStars)
@@ -41,7 +41,7 @@ func pairStatus(palace GongIndex, aStars, bStars []string) string {
 	return ""
 }
 
-func spouseStatus(aStars, bStars []string) string {
+func spouseStatus(aStars, bStars []StarIndex) string {
 	switch {
 	case len(aStars) == 0 && len(bStars) == 0:
 		return "双方夫妻宫皆无主星，按紫微通例借对宫主星观察"
@@ -54,7 +54,7 @@ func spouseStatus(aStars, bStars []string) string {
 	}
 }
 
-func childStatus(aStars, bStars []string) string {
+func childStatus(aStars, bStars []StarIndex) string {
 	switch {
 	case len(aStars) == 0 && len(bStars) == 0:
 		return "双方子女宫皆无主星，按紫微通例借对宫主星观察"

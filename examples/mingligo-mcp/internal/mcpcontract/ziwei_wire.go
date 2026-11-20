@@ -184,9 +184,16 @@ type ZiweiBondOutput struct {
 	ZiNvGong ZiweiBondPalacePair `json:"zi_nv_gong" jsonschema:"双方子女宫。"`
 }
 
-type ZiweiBondPalaceFacts = ziwei.BondPalaceFacts
+type ZiweiBondPalaceFacts struct {
+	Palace     string   `json:"gong"`
+	MajorStars []string `json:"major_xing"`
+}
 
-type ZiweiBondPalacePair = ziwei.BondPalacePair
+type ZiweiBondPalacePair struct {
+	A      ZiweiBondPalaceFacts `json:"a"`
+	B      ZiweiBondPalaceFacts `json:"b"`
+	Status string               `json:"status"`
+}
 
 // ── ziwei.chart output ──
 
