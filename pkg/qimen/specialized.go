@@ -37,11 +37,11 @@ type ThiefFact struct {
 }
 
 type TianwangFact struct {
-	Kind           string     `json:"kind"`
-	Gan            ganzhi.Gan `json:"gan"`
-	Gong           GongIndex  `json:"gong"`
-	HourGong       GongIndex  `json:"hour_gong"`
-	RelationToHour string     `json:"relation_to_hour"`
+	Kind           string       `json:"kind"`
+	Gan            ganzhi.Gan   `json:"gan"`
+	Gong           GongIndex    `json:"gong"`
+	HourGong       GongIndex    `json:"hour_gong"`
+	RelationToHour HourRelation `json:"relation_to_hour"`
 }
 
 type pillarLevel struct {
@@ -237,18 +237,18 @@ func computeTianwangFacts(chart Chart) []TianwangFact {
 	return result
 }
 
-func elementRelationToHour(source, target ganzhi.Wuxing) string {
+func elementRelationToHour(source, target ganzhi.Wuxing) HourRelation {
 	if source == target {
-		return "same"
+		return hourSame
 	}
 	switch {
 	case ganzhi.Sheng(source, target):
-		return "generates"
+		return hourGenerates
 	case ganzhi.Ke(source, target):
-		return "controls"
+		return hourControls
 	case ganzhi.Sheng(target, source):
-		return "generated_by"
+		return hourGeneratedBy
 	default:
-		return "controlled_by"
+		return hourControlledBy
 	}
 }

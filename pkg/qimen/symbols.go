@@ -80,7 +80,6 @@ func DecodeWuxingRelation(v WuxingRelation) string {
 	return ""
 }
 
-
 func EncodeWuxingRelation(name string) (WuxingRelation, bool) {
 	for i, n := range wuxingRelationNames {
 		if n == name {
@@ -109,7 +108,6 @@ func DecodeYuan(v Yuan) string {
 	}
 	return ""
 }
-
 
 func EncodeYuan(name string) (Yuan, bool) {
 	for i, n := range yuanLabels {
@@ -141,7 +139,6 @@ func DecodeZhiRunState(v ZhiRunState) string {
 	}
 	return ""
 }
-
 
 func (s ZhiRunState) Key() string {
 	if int(s) < len(zhiRunStateNamesByKey) {
@@ -178,7 +175,6 @@ func DecodeDunSource(v DunSource) string {
 	return ""
 }
 
-
 func (d DunSource) MarshalJSON() ([]byte, error) { return json.Marshal(DecodeDunSource(d)) }
 
 func EncodeDunSource(name string) (DunSource, bool) {
@@ -208,7 +204,6 @@ func DecodeHourBoundary(v HourBoundary) string {
 	}
 	return ""
 }
-
 
 func (h HourBoundary) MarshalJSON() ([]byte, error) { return json.Marshal(DecodeHourBoundary(h)) }
 
@@ -246,7 +241,6 @@ func EncodeDingjuMethod(value string) (DingjuMethod, error) {
 // DecodeDingjuMethod decodes a DingjuMethod symbol into its display text.
 func DecodeDingjuMethod(v DingjuMethod) string { return string(v) }
 
-
 // QuarterRule selects a named Kejia time-division rule.
 type QuarterRule string
 
@@ -269,7 +263,6 @@ func EncodeQuarterRule(value string) (QuarterRule, error) {
 
 // DecodeQuarterRule decodes a QuarterRule symbol into its display text.
 func DecodeQuarterRule(v QuarterRule) string { return string(v) }
-
 
 // Scope selects the chart's time layer and duty pillar.
 type Scope string
@@ -295,7 +288,6 @@ func EncodeScope(value string) (Scope, error) {
 // DecodeScope decodes a Scope symbol into its display text.
 func DecodeScope(v Scope) string { return string(v) }
 
-
 // School selects a plate geometry and its spirit convention.
 type School string
 
@@ -318,7 +310,6 @@ func EncodeSchool(value string) (School, error) {
 
 // DecodeSchool decodes a School symbol into its display text.
 func DecodeSchool(v School) string { return string(v) }
-
 
 // GongIndex is a 洛书九宫 index:
 // 1=坎, 2=坤, 3=震, 4=巽, 5=中, 6=乾, 7=兑, 8=艮, 9=离.
@@ -345,7 +336,6 @@ func DecodeGongIndex(v GongIndex) string {
 	}
 	return "?"
 }
-
 
 func (p GongIndex) MarshalJSON() ([]byte, error) {
 	return json.Marshal(DecodeGongIndex(p))
@@ -390,7 +380,6 @@ func DecodeStarIndex(v StarIndex) string {
 	return "?"
 }
 
-
 func (s StarIndex) MarshalJSON() ([]byte, error) {
 	return json.Marshal(DecodeStarIndex(s))
 }
@@ -433,7 +422,6 @@ func DecodeDoorIndex(v DoorIndex) string {
 	}
 	return "?"
 }
-
 
 func (d DoorIndex) MarshalJSON() ([]byte, error) {
 	return json.Marshal(DecodeDoorIndex(d))
@@ -542,7 +530,6 @@ func DecodeDutyStarPosition(v DutyStarPosition) string {
 	}
 }
 
-
 // PillarLevel is the qimen-domain symbol for a four-pillar level.
 type PillarLevel uint8
 
@@ -563,7 +550,6 @@ func DecodePillarLevel(v PillarLevel) string {
 	return ""
 }
 
-
 func (l PillarLevel) MarshalJSON() ([]byte, error) { return json.Marshal(DecodePillarLevel(l)) }
 
 func EncodePillarLevel(name string) (PillarLevel, bool) {
@@ -574,3 +560,17 @@ func EncodePillarLevel(name string) (PillarLevel, bool) {
 	}
 	return 0, false
 }
+
+// HourRelation is the five-element relation of a symbol to the hour palace.
+// Its value is the stable output code.
+type HourRelation string
+
+const (
+	hourSame         HourRelation = "same"
+	hourGenerates    HourRelation = "generates"
+	hourControls     HourRelation = "controls"
+	hourGeneratedBy  HourRelation = "generated_by"
+	hourControlledBy HourRelation = "controlled_by"
+)
+
+func DecodeHourRelation(h HourRelation) string { return string(h) }
