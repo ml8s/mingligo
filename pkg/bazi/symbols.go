@@ -376,3 +376,43 @@ func (k TripleRelationKind) suffix() string {
 // GanZhiRelationKind is the kind of a 干/支 interaction (相同/相生/相克/...).
 // Its value IS the display text.
 type GanZhiRelationKind string
+
+// PalaceState is the 夫妻宫 (day branch) relation state: which kind of
+// guan-xi relation the day branch participates in. Its value IS the stable text.
+type PalaceState string
+
+const (
+	palaceStateQuiet PalaceState = "静"
+	palaceStateChong PalaceState = "冲"
+	palaceStateHe    PalaceState = "合"
+	palaceStateXing  PalaceState = "刑"
+	palaceStateHai   PalaceState = "害"
+)
+
+func EncodePalaceState(s string) (PalaceState, bool) {
+	state := PalaceState(s)
+	switch state {
+	case palaceStateQuiet, palaceStateChong, palaceStateHe, palaceStateXing, palaceStateHai:
+		return state, true
+	}
+	return palaceStateQuiet, false
+}
+
+// BranchImageKind is the 日支取象 classification. Its value IS the stable text.
+type BranchImageKind string
+
+const (
+	branchImageNone   BranchImageKind = "无"
+	branchImagePeach  BranchImageKind = "桃花"
+	branchImageTravel BranchImageKind = "驿马"
+	branchImageTomb   BranchImageKind = "墓库"
+)
+
+func EncodeBranchImageKind(s string) (BranchImageKind, bool) {
+	kind := BranchImageKind(s)
+	switch kind {
+	case branchImageNone, branchImagePeach, branchImageTravel, branchImageTomb:
+		return kind, true
+	}
+	return branchImageNone, false
+}

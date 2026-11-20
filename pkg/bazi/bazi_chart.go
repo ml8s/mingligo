@@ -80,8 +80,9 @@ type Chart struct {
 	// 官杀与财库是具体命理结论，不是通用事实袋。
 	GuanSha GuanSha `json:"guan_sha"`
 	CaiKu   CaiKu   `json:"cai_ku"`
-	// 从 guan_xi/shen_sha 派生的确定性事实（夫妻宫状态、日支类型）。
-	Derived NatalDerivedFacts `json:"derived"`
+	// 从 guan_xi/shen_sha 派生的确定性命理事实（符号空间内计算）。
+	SpousePalaceState PalaceState     `json:"spouse_palace_state"`
+	DayBranchType     BranchImageKind `json:"day_branch_type"`
 
 	// 补充信息（原 bazi.chart_extra）
 	SanYuan    SanYuan             `json:"san_yuan"`

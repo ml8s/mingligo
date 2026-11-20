@@ -103,6 +103,7 @@ func registerWireEnums(options *jsonschema.ForOptions) {
 	registerWireEnum[SiHuaName](options, "忌", "权", "禄", "科")
 	registerWireNullableEnum[SiHuaNameNullable](options, "忌", "权", "禄", "科")
 	registerWireEnum[SpousePalaceStateName](options, "冲", "刑", "合", "害", "静")
+	registerWireEnum[BranchImageKindName](options, "无", "桃花", "驿马", "墓库")
 	registerWireEnum[StrengthName](options, "neutral", "strong", "weak")
 	registerWireNullableEnum[StrengthNameNullable](options, "neutral", "strong", "weak")
 	registerWireEnum[TenGodName](options, "七杀", "伤官", "偏印", "偏财", "劫财", "正印", "正官", "正财", "比肩", "食神")
@@ -248,6 +249,8 @@ type SiHuaName string
 type SiHuaNameNullable string
 
 type SpousePalaceStateName string
+
+type BranchImageKindName string
 
 type StrengthName string
 
