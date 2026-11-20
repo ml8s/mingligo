@@ -40,8 +40,8 @@ type TargetedRelationEvidence struct {
 	Kind     NatalRelationKind
 	Group    string
 	Pillars  []PillarIndex
-	Branches []string
-	Stems    []string
+	Branches []ganzhi.Zhi
+	Stems    []ganzhi.Gan
 	Targets  []string
 }
 
@@ -304,23 +304,16 @@ func buildTargetedRelationEvidence(
 	facts := make([]TargetedRelationEvidence, 0, len(relations))
 	for _, relation := range relations {
 		targets := make([]string, 0, 4)
-		stems := make([]string, 0, len(relation.Members))
-		branches := make([]string, 0, len(relation.Members))
+		stems := make([]ganzhi.Gan, 0, len(relation.Members))
+		branches := make([]ganzhi.Zhi, 0, len(relation.Members))
 		pillars := make([]PillarIndex, 0, len(relation.Members))
 		for _, member := range relation.Members {
 			pillars = append(pillars, member.Pillar)
-			if member.Gan != "" {
-				stem, err := ganzhi.EncodeGan(member.Gan)
-				if err != nil {
-					continue
-				}
+			if member.Gan != 0 {
 				stems = append(stems, member.Gan)
-				targets = appendUniqueStrings(targets, stemTargets(member.Pillar, stem)...)
+				targets = appendUniqueStrings(targets, stemTargets(member.Pillar, member.Gan)...)
 			}
-			if member.Zhi != "" {
-				if _, err := ganzhi.EncodeZhi(member.Zhi); err != nil {
-					continue
-				}
+			if member.Zhi != 0 {
 				branches = append(branches, member.Zhi)
 				targets = appendUniqueStrings(targets, memoBranchTargets(member.Pillar)...)
 			}
@@ -398,7 +391,7 @@ func dedupeTargetedRelationEvidence(values []TargetedRelationEvidence) []Targete
 	result := make([]TargetedRelationEvidence, 0, len(values))
 	seen := map[string]bool{}
 	for _, value := range values {
-		key := strings.Join([]string{DecodeNatalRelationKind(value.Kind), value.Group, pillarIndexKeys(value.Pillars), strings.Join(value.Branches, ","), strings.Join(value.Targets, ",")}, "\x00")
+		key := strings.Join([]string{DecodeNatalRelationKind(value.Kind), value.Group, pillarIndexKeys(value.Pillars), zhiKeys(value.Branches), strings.Join(value.Targets, ",")}, "\x00")
 		if seen[key] {
 			continue
 		}
@@ -447,18 +440,13 @@ func canonicalRelationReference(value TargetedRelationEvidence) (NatalRelationFa
 		if len(value.Stems) != 2 || len(value.Pillars) != 2 {
 			return NatalRelationFact{}, false
 		}
-		ganA, errA := ganzhi.EncodeGan(value.Stems[0])
-		ganB, errB := ganzhi.EncodeGan(value.Stems[1])
-		if errA != nil || errB != nil {
-			return NatalRelationFact{}, false
-		}
 		if value.Kind == relationKindGanHe || value.Kind == relationKindGanHeCandidate {
-			fact.Group = ganHeGroupLabel(ganA, ganB)
+			fact.Group = ganHeGroupLabel(value.Stems[0], value.Stems[1])
 			if pillarDistance(value.Pillars[0], value.Pillars[1]) != 1 {
 				fact.Kind = relationKindGanHeCandidate
 			}
 		} else {
-			fact.Group = ganChongGroupLabel(ganA, ganB)
+			fact.Group = ganChongGroupLabel(value.Stems[0], value.Stems[1])
 		}
 		fact.Members = []NatalRelationMember{
 			{Pillar: value.Pillars[0], Gan: value.Stems[0]},
@@ -468,26 +456,16 @@ func canonicalRelationReference(value TargetedRelationEvidence) (NatalRelationFa
 		if len(value.Branches) != 2 || len(value.Pillars) != 2 {
 			return NatalRelationFact{}, false
 		}
-		zhiA, errA := ganzhi.EncodeZhi(value.Branches[0])
-		zhiB, errB := ganzhi.EncodeZhi(value.Branches[1])
-		if errA != nil || errB != nil {
-			return NatalRelationFact{}, false
-		}
-		fact.Group = canonicalZhiPairGroup(value.Kind, zhiA, zhiB)
+		fact.Group = canonicalZhiPairGroup(value.Kind, value.Branches[0], value.Branches[1])
 		fact.Members = zhiMembers(value.Pillars, value.Branches)
 	case relationKindLiuXing:
 		if len(value.Branches) != 2 || len(value.Pillars) != 2 {
 			return NatalRelationFact{}, false
 		}
-		zhiA, errA := ganzhi.EncodeZhi(value.Branches[0])
-		zhiB, errB := ganzhi.EncodeZhi(value.Branches[1])
-		if errA != nil || errB != nil {
-			return NatalRelationFact{}, false
-		}
-		fact.Group = canonicalXingGroup(zhiA, zhiB)
+		fact.Group = canonicalXingGroup(value.Branches[0], value.Branches[1])
 		fact.Members = zhiMembers(value.Pillars, value.Branches)
 	case relationKindSanHe, relationKindSanHePartial, relationKindSanHui:
-		fact.Group = branchGroupLabel(parseZhiNames(value.Branches))
+		fact.Group = branchGroupLabel(value.Branches)
 		fact.Members = zhiMembers(value.Pillars, value.Branches)
 	default:
 		return NatalRelationFact{}, false
@@ -499,7 +477,7 @@ func canonicalRelationReference(value TargetedRelationEvidence) (NatalRelationFa
 	return fact, true
 }
 
-func zhiMembers(pillars []PillarIndex, branches []string) []NatalRelationMember {
+func zhiMembers(pillars []PillarIndex, branches []ganzhi.Zhi) []NatalRelationMember {
 	if len(pillars) != len(branches) {
 		return nil
 	}
@@ -520,6 +498,14 @@ func pillarDistance(first, second PillarIndex) int {
 		distance = -distance
 	}
 	return distance
+}
+
+func zhiKeys(zhis []ganzhi.Zhi) string {
+	parts := make([]string, 0, len(zhis))
+	for _, z := range zhis {
+		parts = append(parts, ganzhi.ZhiName(z))
+	}
+	return strings.Join(parts, ",")
 }
 
 func pillarIndexKeys(pillars []PillarIndex) string {

@@ -10,16 +10,16 @@ import (
 // LuRoot records a visible stem whose traditional Lu branch appears in one of
 // the four palaces. Hidden stems are not promoted to Lu roots.
 type LuRoot struct {
-	ShiShen string `json:"shi_shen"`
-	Gan     string `json:"gan"`
-	Zhi     string `json:"zhi"`
+	ShiShen string      `json:"shi_shen"`
+	Gan     ganzhi.Gan  `json:"gan"`
+	Zhi     ganzhi.Zhi  `json:"zhi"`
 }
 
 // NatalRelationMember locates one stem or branch participant in its palace.
 type NatalRelationMember struct {
 	Pillar PillarIndex `json:"zhu"`
-	Gan    string `json:"gan,omitempty"`
-	Zhi    string `json:"zhi,omitempty"`
+	Gan    ganzhi.Gan  `json:"gan,omitempty"`
+	Zhi    ganzhi.Zhi  `json:"zhi,omitempty"`
 }
 
 // NatalRelationFact is the canonical natal relation projection. Group is the
@@ -229,8 +229,8 @@ func computeLuRoots(c Chart) []LuRoot {
 			}
 			roots = append(roots, LuRoot{
 				ShiShen: ganzhi.DecodeShiShen(item.ShiShen),
-				Gan:     ganzhi.GanName(item.Gan),
-				Zhi:     ganzhi.ZhiName(ganzhi.LuZhi(item.Gan)),
+				Gan:     item.Gan,
+				Zhi:     ganzhi.LuZhi(item.Gan),
 			})
 		}
 	}
@@ -353,8 +353,8 @@ func buildNatalRelationsFromDetection(bz ganzhi.Bazi, detection RelationDetectio
 			Kind:  kind,
 			Group: ganHeGroupLabel(relation.GanA, relation.GanB),
 			Members: []NatalRelationMember{
-				{Pillar: PillarIndex(relation.PillarA), Gan: ganzhi.GanName(relation.GanA)},
-				{Pillar: PillarIndex(relation.PillarB), Gan: ganzhi.GanName(relation.GanB)},
+				{Pillar: PillarIndex(relation.PillarA), Gan: relation.GanA},
+				{Pillar: PillarIndex(relation.PillarB), Gan: relation.GanB},
 			},
 			Wuxing:    wuxingOutput(relation.HeElement),
 			Position:  DecodeRelationPosition(relation.Position),
@@ -372,8 +372,8 @@ func buildNatalRelationsFromDetection(bz ganzhi.Bazi, detection RelationDetectio
 			Kind:  kind,
 			Group: group,
 			Members: []NatalRelationMember{
-				{Pillar: PillarIndex(relation.PillarA), Gan: ganzhi.GanName(relation.GanA)},
-				{Pillar: PillarIndex(relation.PillarB), Gan: ganzhi.GanName(relation.GanB)},
+				{Pillar: PillarIndex(relation.PillarA), Gan: relation.GanA},
+				{Pillar: PillarIndex(relation.PillarB), Gan: relation.GanB},
 			},
 			Position: DecodeRelationPosition(relation.Position),
 		})
@@ -419,7 +419,7 @@ func buildNatalRelationsFromDetection(bz ganzhi.Bazi, detection RelationDetectio
 		for _, branch := range group.Zhi {
 			members = append(members, NatalRelationMember{
 				Pillar: pillarWithZhi(bz, branch),
-				Zhi:    ganzhi.ZhiName(branch),
+				Zhi:    branch,
 			})
 		}
 		add(NatalRelationFact{
@@ -449,9 +449,9 @@ func buildNatalRelationsFromDetection(bz ganzhi.Bazi, detection RelationDetectio
 func natalRelationFactID(fact NatalRelationFact) string {
 	keys := make([]string, 0, len(fact.Members))
 	for _, member := range fact.Members {
-		value := member.Gan
-		if value == "" {
-			value = member.Zhi
+		value := ganzhi.GanName(member.Gan)
+		if member.Gan == 0 {
+			value = ganzhi.ZhiName(member.Zhi)
 		}
 		keys = append(keys, DecodePillarIndex(member.Pillar)+":"+value)
 	}
@@ -471,8 +471,8 @@ func newZhiPairFact(kind NatalRelationKind, group string, zhiA ganzhi.Zhi, pilla
 		Kind:  kind,
 		Group: group,
 		Members: []NatalRelationMember{
-			{Pillar: PillarIndex(pillarA), Zhi: ganzhi.ZhiName(zhiA)},
-			{Pillar: PillarIndex(pillarB), Zhi: ganzhi.ZhiName(zhiB)},
+			{Pillar: PillarIndex(pillarA), Zhi: zhiA},
+			{Pillar: PillarIndex(pillarB), Zhi: zhiB},
 		},
 		Wuxing: wuxingOutput(wuxing),
 	}
@@ -484,7 +484,7 @@ func newTripleRelationFact(kind NatalRelationKind, bz ganzhi.Bazi, relation Trip
 	for _, branch := range relation.Branches {
 		members = append(members, NatalRelationMember{
 			Pillar: pillarWithZhi(bz, branch),
-			Zhi:    ganzhi.ZhiName(branch),
+			Zhi:    branch,
 		})
 	}
 	return NatalRelationFact{

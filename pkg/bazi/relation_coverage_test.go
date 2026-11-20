@@ -56,8 +56,8 @@ func TestNatalRelationsCoverLegacyRelationArrays(t *testing.T) {
 				requireRelation(NatalRelationFact{
 					ID: kind + ":" + group, Kind: mustEncodeNatalKind(kind), Group: group,
 					Members: []NatalRelationMember{
-						{Pillar: PillarIndex(relation.PillarA), Gan: ganzhi.GanName(relation.GanA)},
-						{Pillar: PillarIndex(relation.PillarB), Gan: ganzhi.GanName(relation.GanB)},
+						{Pillar: PillarIndex(relation.PillarA), Gan: relation.GanA},
+						{Pillar: PillarIndex(relation.PillarB), Gan: relation.GanB},
 					},
 					Wuxing: relation.HeElement.String(), Position: DecodeRelationPosition(relation.Position), Contested: relation.Contested,
 				})
@@ -71,8 +71,8 @@ func TestNatalRelationsCoverLegacyRelationArrays(t *testing.T) {
 				requireRelation(NatalRelationFact{
 					ID: kind + ":" + group, Kind: mustEncodeNatalKind(kind), Group: group,
 					Members: []NatalRelationMember{
-						{Pillar: PillarIndex(relation.PillarA), Gan: ganzhi.GanName(relation.GanA)},
-						{Pillar: PillarIndex(relation.PillarB), Gan: ganzhi.GanName(relation.GanB)},
+						{Pillar: PillarIndex(relation.PillarA), Gan: relation.GanA},
+						{Pillar: PillarIndex(relation.PillarB), Gan: relation.GanB},
 					},
 					Position: DecodeRelationPosition(relation.Position),
 				})
@@ -89,8 +89,8 @@ func TestNatalRelationsCoverLegacyRelationArrays(t *testing.T) {
 				requireRelation(NatalRelationFact{
 					ID: kind + ":" + group, Kind: mustEncodeNatalKind(kind), Group: group,
 					Members: []NatalRelationMember{
-						{Pillar: PillarIndex(pillarA), Zhi: ganzhi.ZhiName(zhiA)},
-						{Pillar: PillarIndex(pillarB), Zhi: ganzhi.ZhiName(zhiB)},
+						{Pillar: PillarIndex(pillarA), Zhi: zhiA},
+						{Pillar: PillarIndex(pillarB), Zhi: zhiB},
 					},
 					Wuxing: wuxing,
 				})
@@ -121,7 +121,7 @@ func TestNatalRelationsCoverLegacyRelationArrays(t *testing.T) {
 					members := make([]NatalRelationMember, 0, len(relation.Branches))
 					for _, branch := range relation.Branches {
 						members = append(members, NatalRelationMember{
-							Pillar: pillarWithZhi(chart.ToBazi(), branch), Zhi: ganzhi.ZhiName(branch),
+							Pillar: pillarWithZhi(chart.ToBazi(), branch), Zhi: branch,
 						})
 					}
 					requireRelation(NatalRelationFact{
