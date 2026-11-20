@@ -60,7 +60,7 @@ func parseGan(s string) (ganzhi.Gan, bool) {
 type SymbolResult struct {
 	Symbol         string       `json:"symbol"`
 	Palace         GongIndex    `json:"gong"`
-	TianGan        []string     `json:"tian_gan"`
+	TianGan        []ganzhi.Gan `json:"tian_gan"`
 	KongWangBranch []ganzhi.Zhi `json:"kong_wang_zhi"`
 	MaXingBranch   *ganzhi.Zhi  `json:"ma_xing_zhi,omitempty"`
 }
@@ -146,7 +146,7 @@ func computeYongShen(chart Chart, syms []YongShenSymbol, birthDate BirthDate, ha
 	// 用神符号组合：逐个定位落宫取状态
 	for _, s := range syms {
 		sr := SymbolResult{
-			Symbol: symbolName(s, chart), TianGan: []string{}, KongWangBranch: []ganzhi.Zhi{},
+			Symbol: symbolName(s, chart), TianGan: []ganzhi.Gan{}, KongWangBranch: []ganzhi.Zhi{},
 		}
 		switch {
 		case s.Door != nil:
@@ -170,10 +170,10 @@ func computeYongShen(chart Chart, syms []YongShenSymbol, birthDate BirthDate, ha
 			}
 			if int(sr.Palace) >= 1 && int(sr.Palace) <= 9 {
 				for _, item := range chart.Board.GongWei[sr.Palace-1].TianPan {
-					sr.TianGan = append(sr.TianGan, ganzhi.DecodeGan(item.Gan))
+					sr.TianGan = append(sr.TianGan, item.Gan)
 				}
 				if pointer := chart.Board.GongWei[sr.Palace-1].TianPanGan; pointer != nil {
-					sr.TianGan = append(sr.TianGan, ganzhi.DecodeGan(*pointer))
+					sr.TianGan = append(sr.TianGan, *pointer)
 				}
 			}
 		}
