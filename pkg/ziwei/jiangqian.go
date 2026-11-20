@@ -1,11 +1,11 @@
 package ziwei
 
-var jiangQianNames = [12]string{
+var jiangQianNames = [12]JiangQianStage{
 	"将星", "攀鞍", "岁驿", "息神", "华盖", "劫煞",
 	"灾煞", "天煞", "指背", "咸池", "月煞", "亡神",
 }
 
-var suiQianNames = [12]string{
+var suiQianNames = [12]SuiQianStage{
 	"岁建", "晦气", "丧门", "贯索", "官符", "小耗",
 	"大耗", "龙德", "白虎", "天德", "吊客", "病符",
 }
@@ -28,7 +28,7 @@ func computeJiangQian(nianZhi Zhi, mingZhi Zhi) [12]JiangQianStage {
 		anXingIdx := (jqStartIdx + i) % 12
 		zhiIdx := (anXingIdx + 2) % 12
 		palaceIndex := zhiIdxToPalaceIndex(zhiToZhiIdx(mingZhi), zhiIdx)
-		result[palaceIndex] = JiangQianStage(jiangQianNames[i])
+		result[palaceIndex] = jiangQianNames[i]
 	}
 	return result
 }
@@ -41,7 +41,7 @@ func computeSuiQian(nianZhi Zhi, mingZhi Zhi) [12]SuiQianStage {
 		anXingIdx := (nianAnXingIdx + i) % 12
 		zhiIdx := (anXingIdx + 2) % 12
 		palaceIndex := zhiIdxToPalaceIndex(zhiToZhiIdx(mingZhi), zhiIdx)
-		result[palaceIndex] = SuiQianStage(suiQianNames[i])
+		result[palaceIndex] = suiQianNames[i]
 	}
 	return result
 }

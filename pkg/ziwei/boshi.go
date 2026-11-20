@@ -2,7 +2,7 @@ package ziwei
 
 import "github.com/ml8s/mingligo/pkg/ganzhi"
 
-var boShiCycle = []string{
+var boShiCycle = [12]BoShiStage{
 	"博士", "力士", "青龙", "小耗", "将军", "奏书",
 	"飞廉", "喜神", "病符", "大耗", "伏兵", "官府",
 }
@@ -36,7 +36,7 @@ func computeBoShi(ju JuShu, mingZhi Zhi, nianGan Gan, gender ganzhi.Gender, nian
 	var result [12]BoShiStage
 	for i := 0; i < 12; i++ {
 		idx := (luPalace - i*dir + 12) % 12
-		result[idx] = BoShiStage(boShiCycle[i])
+		result[idx] = boShiCycle[i]
 	}
 	return result
 }

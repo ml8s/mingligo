@@ -3,7 +3,7 @@ package ziwei
 import "github.com/ml8s/mingligo/pkg/ganzhi"
 
 // changShengCycle is the fixed order of 长生12神.
-var changShengCycle = []string{
+var changShengCycle = [12]ChangShengStage{
 	"长生", "沐浴", "冠带", "临官", "帝旺", "衰",
 	"病", "死", "墓", "绝", "胎", "养",
 }
@@ -49,7 +49,7 @@ func computeChangSheng(ju JuShu, mingZhi Zhi, nianGan Gan, gender ganzhi.Gender)
 		} else { // 顺行: 从起始宫递增
 			idx = (startPalace + i) % 12
 		}
-		result[idx] = ChangShengStage(changShengCycle[i])
+		result[idx] = changShengCycle[i]
 	}
 	return result
 }
