@@ -96,7 +96,7 @@ func TestYingQiComputesDateWindow(t *testing.T) {
 		assertYingQiDates(t, candidate, kongWant, kongBranches)
 		matches := map[string]int{}
 		for _, item := range candidate.Dates {
-			matches[item.Match]++
+			matches[string(item.Match)]++
 		}
 		if matches["same"] != 5 || matches["opposite"] != 5 {
 			t.Fatalf("void matches = %v, want five same and five opposite", matches)

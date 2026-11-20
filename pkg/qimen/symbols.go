@@ -608,3 +608,22 @@ func DecodeLeadPillarKind(l LeadPillarKind) string     { return string(l) }
 func DecodeMethodSourceKind(m MethodSourceKind) string { return string(m) }
 func DecodeFeatureKind(f FeatureKind) string           { return string(f) }
 func DecodeDayBoundaryKind(d DayBoundaryKind) string   { return string(d) }
+
+// YingQiRuleType selects a 应期 date-match rule.
+type YingQiRuleType string
+
+// YingQiMatchKind selects same/opposite branch matching.
+type YingQiMatchKind string
+
+const (
+	yingQiRuleMaXing   YingQiRuleType = "ma_xing"
+	yingQiRuleKongWang YingQiRuleType = "kong_wang"
+	yingQiRuleDutyStar YingQiRuleType = "duty_star"
+	yingQiRuleDutyDoor YingQiRuleType = "duty_door"
+
+	yingQiMatchSame     YingQiMatchKind = "same"
+	yingQiMatchOpposite YingQiMatchKind = "opposite"
+)
+
+func DecodeYingQiRuleType(y YingQiRuleType) string  { return string(y) }
+func DecodeYingQiMatchKind(y YingQiMatchKind) string { return string(y) }

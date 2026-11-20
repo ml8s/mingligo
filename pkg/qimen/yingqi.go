@@ -24,7 +24,7 @@ type YingQiCandidate struct {
 type YingQiDate struct {
 	Date   string `json:"trigger_date"`
 	Branch string `json:"zhi"`
-	Match  string `json:"match"`
+	Match  YingQiMatchKind `json:"match"`
 }
 
 type YingQi struct {
@@ -40,7 +40,7 @@ func computeYingQi(chart Chart, chartTime time.Time, focuses map[GongIndex][]Rel
 			Type: ruleType, Mechanism: rule.Mechanism,
 			Branch: ganzhi.ZhiName(branchPalace.Branch), Gong: branchPalace.Gong,
 			RelatedTo: relatedSymbols(branchPalace.Gong, focuses),
-			Dates:     yingQiDates(ruleType, branchPalace.Branch, window),
+			Dates:     yingQiDates(YingQiRuleType(ruleType), branchPalace.Branch, window),
 		})
 	}
 	if chart.Board.MaXing.Branch != 0 {
@@ -76,7 +76,7 @@ func yingQiDayWindow(chart Chart, chartTime time.Time) yingQiWindow {
 	}
 }
 
-func yingQiDates(ruleType string, target ganzhi.Zhi, window yingQiWindow) []YingQiDate {
+func yingQiDates(ruleType YingQiRuleType, target ganzhi.Zhi, window yingQiWindow) []YingQiDate {
 	matches := yingqiDateMatches[ruleType]
 	if len(matches) == 0 {
 		return []YingQiDate{}
@@ -86,11 +86,11 @@ func yingQiDates(ruleType string, target ganzhi.Zhi, window yingQiWindow) []Ying
 	for index := range matches {
 		match := &matches[index]
 		wanted := target
-		if match.Match == "opposite" {
+		if match.Match == yingQiMatchOpposite {
 			wanted = oppositeZhi(target)
 		}
 		offset := (int(wanted) - int(window.AnchorBranch) + 12) % 12
-		if match.Match == "same" {
+		if match.Match == yingQiMatchSame {
 			sameOffset, sameMatch = offset, match
 		} else {
 			oppositeOffset, oppositeMatch = offset, match

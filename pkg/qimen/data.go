@@ -58,7 +58,7 @@ type yingqiRuleEntry struct {
 }
 
 type yingqiDateMatch struct {
-	Match string
+	Match YingQiMatchKind
 }
 
 type zhiRunStateEntry struct {
@@ -292,7 +292,7 @@ var (
 	patternRules           []patternRule
 	yingqiRuleTable        map[string]yingqiRuleEntry
 	yingqiHorizonDays      int
-	yingqiDateMatches      map[string][]yingqiDateMatch
+	yingqiDateMatches      map[YingQiRuleType][]yingqiDateMatch
 	zhiRunLeaderDays       int
 	zhiRunThreshold        int
 	zhiRunMaxIntervals     int
@@ -1705,7 +1705,7 @@ func loadYingQi() error {
 	}
 	yingqiHorizonDays = table.HorizonDays
 	yingqiRuleTable = make(map[string]yingqiRuleEntry, len(table.Rules))
-	yingqiDateMatches = make(map[string][]yingqiDateMatch, len(table.DateMatches))
+	yingqiDateMatches = make(map[YingQiRuleType][]yingqiDateMatch, len(table.DateMatches))
 	for _, entry := range table.Rules {
 		if _, exists := yingqiRuleTable[entry.Type]; exists {
 			return fmt.Errorf("load yingqi: duplicate type %q", entry.Type)
@@ -1718,9 +1718,9 @@ func loadYingQi() error {
 			if match.Match != "same" && match.Match != "opposite" {
 				return fmt.Errorf("load yingqi: invalid date match for %q", entry.Type)
 			}
-			matches = append(matches, yingqiDateMatch{Match: match.Match})
+			matches = append(matches, yingqiDateMatch{Match: YingQiMatchKind(match.Match)})
 		}
-		yingqiDateMatches[entry.Type] = matches
+		yingqiDateMatches[YingQiRuleType(entry.Type)] = matches
 	}
 	for _, ruleType := range []string{"ma_xing", "kong_wang", "duty_star", "duty_door"} {
 		rule, ok := yingqiRuleTable[ruleType]
