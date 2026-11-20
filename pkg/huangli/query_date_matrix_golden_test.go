@@ -57,15 +57,15 @@ func TestQueryDateMatrixGolden_TwoOracleCalendarAndEventRules(t *testing.T) {
 			if err != nil {
 				t.Fatalf("QueryDate: %v", err)
 			}
-			wantGan, err := ganzhi.ParseGan(golden.Expected.DayGan)
+			wantGan, err := ganzhi.EncodeGan(golden.Expected.DayGan)
 			if err != nil {
 				t.Fatal(err)
 			}
-			wantDayZhi, err := ganzhi.ParseZhi(golden.Expected.DayZhi)
+			wantDayZhi, err := ganzhi.EncodeZhi(golden.Expected.DayZhi)
 			if err != nil {
 				t.Fatal(err)
 			}
-			wantYueZhi, err := ganzhi.ParseZhi(golden.Expected.YueZhi)
+			wantYueZhi, err := ganzhi.EncodeZhi(golden.Expected.YueZhi)
 			if err != nil {
 				t.Fatal(err)
 			}

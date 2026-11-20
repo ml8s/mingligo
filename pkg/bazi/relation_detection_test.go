@@ -180,10 +180,10 @@ func assertTripleLocation(t *testing.T, got TripleRelationDetection, branches []
 }
 
 //nolint:errcheck
-func mustParseGan(s string) ganzhi.Gan { g, _ := ganzhi.ParseGan(s); return g }
+func mustParseGan(s string) ganzhi.Gan { g, _ := ganzhi.EncodeGan(s); return g }
 
 //nolint:errcheck
-func mustParseZhi(s string) ganzhi.Zhi { z, _ := ganzhi.ParseZhi(s); return z }
+func mustParseZhi(s string) ganzhi.Zhi { z, _ := ganzhi.EncodeZhi(s); return z }
 
 func TestDetectRelations_GanHe(t *testing.T) {
 	// 甲子 己巳 甲子 己巳 → 四个两两甲己合均需列出；三个紧邻，一个年时远隔。

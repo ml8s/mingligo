@@ -72,7 +72,7 @@ func TestQuarterCatalogIsClosedToTwoMethods(t *testing.T) {
 	for method, wantBase := range map[string]DingjuMethod{
 		"zhirun": DingjuZhiRun, "maoshan": DingjuMaoShan,
 	} {
-		got, err := ParseMethodWithOptions(
+		got, err := EncodeMethodWithOptions(
 			"quarter", "zhuanpan", "", "twelve_minute_ten_division", method, "", "",
 		)
 		if err != nil {
@@ -93,7 +93,7 @@ func TestQuarterCatalogIsClosedToTwoMethods(t *testing.T) {
 		{"hour_branch", "late_zi"},
 		{"solar_term", "zi_zheng"},
 	} {
-		method, err := ParseMethodWithOptions(
+		method, err := EncodeMethodWithOptions(
 			"quarter", "zhuanpan", "", "twelve_minute_ten_division",
 			"maoshan", item.dun, item.boundary,
 		)
@@ -114,8 +114,8 @@ func TestQuarterCatalogIsClosedToTwoMethods(t *testing.T) {
 		{"hour", "zhuanpan", "chaibu", "", "zhirun"},
 		{"quarter", "zhuanpan", "ten_minute_sanyuan", "", "chaibu"},
 	} {
-		if _, err := ParseMethodWithOptions(item[0], item[1], item[2], item[3], item[4], "", ""); err == nil {
-			t.Errorf("ParseMethodWithOptions(%v) should reject", item)
+		if _, err := EncodeMethodWithOptions(item[0], item[1], item[2], item[3], item[4], "", ""); err == nil {
+			t.Errorf("EncodeMethodWithOptions(%v) should reject", item)
 		}
 	}
 	for _, item := range [][7]string{
@@ -124,8 +124,8 @@ func TestQuarterCatalogIsClosedToTwoMethods(t *testing.T) {
 		{"hour", "zhuanpan", "chaibu", "", "", "solar_term", ""},
 		{"hour", "zhuanpan", "chaibu", "", "", "", "zi_zheng"},
 	} {
-		if _, err := ParseMethodWithOptions(item[0], item[1], item[2], item[3], item[4], item[5], item[6]); err == nil {
-			t.Errorf("ParseMethodWithOptions(%v) should reject", item)
+		if _, err := EncodeMethodWithOptions(item[0], item[1], item[2], item[3], item[4], item[5], item[6]); err == nil {
+			t.Errorf("EncodeMethodWithOptions(%v) should reject", item)
 		}
 	}
 	for _, item := range [][3]string{
@@ -140,8 +140,8 @@ func TestQuarterCatalogIsClosedToTwoMethods(t *testing.T) {
 		{"hour", "zhuanpan", "ten_minute_sanyuan"},
 		{"hour", "zhuanpan", "twelve_minute_ten_division"},
 	} {
-		if _, err := ParseMethod(item[0], item[1], item[2], ""); err == nil {
-			t.Errorf("ParseMethod(%q,%q,%q) should reject", item[0], item[1], item[2])
+		if _, err := EncodeMethod(item[0], item[1], item[2], ""); err == nil {
+			t.Errorf("EncodeMethod(%q,%q,%q) should reject", item[0], item[1], item[2])
 		}
 	}
 }
@@ -216,7 +216,7 @@ func TestTwelveMinuteTenDivisionDunSourceOptions(t *testing.T) {
 		{"solar_term", "zi_zheng", true, 4},
 	}
 	for _, want := range tests {
-		method, err := ParseMethodWithOptions(
+		method, err := EncodeMethodWithOptions(
 			"quarter", "zhuanpan", "", "twelve_minute_ten_division",
 			"chaibu", want.dun, want.boundary,
 		)
@@ -278,11 +278,11 @@ func parsePillarForTest(value string) (ganzhi.Zhu, error) {
 	if len(runes) != 2 {
 		return ganzhi.Zhu{}, fmt.Errorf("invalid pillar %q", value)
 	}
-	gan, err := ganzhi.ParseGan(string(runes[0]))
+	gan, err := ganzhi.EncodeGan(string(runes[0]))
 	if err != nil {
 		return ganzhi.Zhu{}, err
 	}
-	zhi, err := ganzhi.ParseZhi(string(runes[1]))
+	zhi, err := ganzhi.EncodeZhi(string(runes[1]))
 	if err != nil {
 		return ganzhi.Zhu{}, err
 	}
@@ -402,7 +402,7 @@ func TestTwelveMinuteTenDivisionQuarterGoldenVectors(t *testing.T) {
 
 func mustDingjuForTest(t *testing.T, value string) DingjuMethod {
 	t.Helper()
-	method, err := ParseDingjuMethod(value)
+	method, err := EncodeDingjuMethod(value)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -410,7 +410,7 @@ func mustDingjuForTest(t *testing.T, value string) DingjuMethod {
 }
 
 func mustDunSource(name string) DunSource {
-	v, ok := ParseDunSource(name)
+	v, ok := EncodeDunSource(name)
 	if !ok {
 		panic("bad dun source: " + name)
 	}
@@ -418,7 +418,7 @@ func mustDunSource(name string) DunSource {
 }
 
 func mustHourBoundary(name string) HourBoundary {
-	v, ok := ParseHourBoundary(name)
+	v, ok := EncodeHourBoundary(name)
 	if !ok {
 		panic("bad hour boundary: " + name)
 	}

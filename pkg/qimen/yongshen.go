@@ -16,8 +16,8 @@ type YongShenSymbol struct {
 	Gan    *ganzhi.Gan  `json:"gan,omitempty"`   // 事象干
 }
 
-// ParseYongShen 解析单个用神符号（门/星/神/干名）。
-func ParseYongShen(s string) (YongShenSymbol, error) {
+// EncodeYongShen 解析单个用神符号（门/星/神/干名）。
+func EncodeYongShen(s string) (YongShenSymbol, error) {
 	if d, ok := parseDoor(s); ok {
 		return YongShenSymbol{Door: &d}, nil
 	}
@@ -37,22 +37,22 @@ func ParseYongShen(s string) (YongShenSymbol, error) {
 }
 
 func parseDoor(s string) (DoorIndex, bool) {
-	d, err := ParseDoorIndex(s)
+	d, err := EncodeDoorIndex(s)
 	return d, err == nil
 }
 
 func parseStar(s string) (StarIndex, bool) {
-	st, err := ParseStarIndex(s)
+	st, err := EncodeStarIndex(s)
 	return st, err == nil
 }
 
 func parseSpirit(s string) (SpiritIndex, bool) {
-	sp, err := ParseSpiritIndex(s)
+	sp, err := EncodeSpiritIndex(s)
 	return sp, err == nil
 }
 
 func parseGan(s string) (ganzhi.Gan, bool) {
-	g, err := ganzhi.ParseGan(s)
+	g, err := ganzhi.EncodeGan(s)
 	return g, err == nil
 }
 

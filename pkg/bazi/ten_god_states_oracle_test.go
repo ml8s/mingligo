@@ -102,11 +102,11 @@ func TestDomainOracle_DaYunRootStates(t *testing.T) {
 		t.Run(tc.ID, func(t *testing.T) {
 			chart := pillarsCoreFromStrings(t, tc.Pillars)
 			runes := []rune(tc.DaYun)
-			gan, err := ganzhi.ParseGan(string(runes[0]))
+			gan, err := ganzhi.EncodeGan(string(runes[0]))
 			if err != nil {
 				t.Fatal(err)
 			}
-			zhi, err := ganzhi.ParseZhi(string(runes[1]))
+			zhi, err := ganzhi.EncodeZhi(string(runes[1]))
 			if err != nil {
 				t.Fatal(err)
 			}

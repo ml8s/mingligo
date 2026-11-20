@@ -112,11 +112,11 @@ func loadHuangdao() error {
 
 	qingLongStart = make(map[ganzhi.Zhi]ganzhi.Zhi, len(data.QingLongStart))
 	for zhiStr, startStr := range data.QingLongStart {
-		zhi, err := ganzhi.ParseZhi(zhiStr)
+		zhi, err := ganzhi.EncodeZhi(zhiStr)
 		if err != nil {
 			return err
 		}
-		start, err := ganzhi.ParseZhi(startStr)
+		start, err := ganzhi.EncodeZhi(startStr)
 		if err != nil {
 			return err
 		}

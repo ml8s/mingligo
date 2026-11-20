@@ -321,7 +321,7 @@ func buildPrecisionWindow(in ResolveInput, form ResolveForm, year int, month tim
 		}
 		return Window{Start: date.Add(start), End: date.Add(end)}, nil
 	case formShichen:
-		zhi, err := ganzhi.ParseZhi(strings.TrimSpace(in.Shichen))
+		zhi, err := ganzhi.EncodeZhi(strings.TrimSpace(in.Shichen))
 		if err != nil {
 			return Window{}, fmt.Errorf("shichen must be one of 子丑寅卯辰巳午未申酉戌亥: %w", err)
 		}

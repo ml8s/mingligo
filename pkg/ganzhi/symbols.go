@@ -39,8 +39,8 @@ func (g Gender) String() string { return string(g) }
 
 // -- Text → Symbol -----------------------------------------------------------
 
-// ParseGan converts a Chinese gan name (e.g. "甲") to a Gan value.
-func ParseGan(s string) (Gan, error) {
+// EncodeGan converts a Chinese gan name (e.g. "甲") to a Gan value.
+func EncodeGan(s string) (Gan, error) {
 	for i := 1; i <= 10; i++ {
 		if ganNames[i] == s {
 			return Gan(i), nil
@@ -49,8 +49,8 @@ func ParseGan(s string) (Gan, error) {
 	return 0, fmt.Errorf("unknown gan: %q", s)
 }
 
-// ParseZhi converts a Chinese zhi name (e.g. "子") to a Zhi value.
-func ParseZhi(s string) (Zhi, error) {
+// EncodeZhi converts a Chinese zhi name (e.g. "子") to a Zhi value.
+func EncodeZhi(s string) (Zhi, error) {
 	for i := 1; i <= 12; i++ {
 		if zhiNames[i] == s {
 			return Zhi(i), nil
@@ -59,8 +59,8 @@ func ParseZhi(s string) (Zhi, error) {
 	return 0, fmt.Errorf("unknown zhi: %q", s)
 }
 
-// ParseWuxing converts a Chinese or English element name to a Wuxing value.
-func ParseWuxing(s string) (Wuxing, error) {
+// EncodeWuxing converts a Chinese or English element name to a Wuxing value.
+func EncodeWuxing(s string) (Wuxing, error) {
 	switch s {
 	case "木", "wood":
 		return WxMu, nil
@@ -76,8 +76,8 @@ func ParseWuxing(s string) (Wuxing, error) {
 	return 0, fmt.Errorf("unknown wuxing: %q", s)
 }
 
-// ParseGender converts a string to a Gender value.
-func ParseGender(s string) (Gender, error) {
+// EncodeGender converts a string to a Gender value.
+func EncodeGender(s string) (Gender, error) {
 	switch s {
 	case "male", "男":
 		return Male, nil
@@ -87,7 +87,7 @@ func ParseGender(s string) (Gender, error) {
 	return "", fmt.Errorf("unknown gender: %q", s)
 }
 
-// ParseYinYang converts a Chinese yin/yang name to a YinYang value.
+// EncodeYinYang converts a Chinese yin/yang name to a YinYang value.
 // -- WangShuai (五行旺衰) ------------------------------------------------------
 
 // WangShuai classifies the five-phase prosperity state.
@@ -114,7 +114,7 @@ func (ws WangShuai) String() string {
 
 func (ws WangShuai) MarshalJSON() ([]byte, error) { return json.Marshal(ws.String()) }
 
-func ParseWangShuai(s string) (WangShuai, error) {
+func EncodeWangShuai(s string) (WangShuai, error) {
 	for i, n := range wangShuaiNames {
 		if n == s {
 			return WangShuai(i), nil
@@ -131,7 +131,7 @@ func (ws *WangShuai) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &s); err != nil {
 		return fmt.Errorf("wang_shuai: expected string, got %s", string(data))
 	}
-	parsed, err := ParseWangShuai(s)
+	parsed, err := EncodeWangShuai(s)
 	if err != nil {
 		return err
 	}
@@ -170,7 +170,7 @@ func (w *Wuxing) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &name); err != nil {
 		return fmt.Errorf("wuxing must be a string, got %s", string(data))
 	}
-	parsed, err := ParseWuxing(name)
+	parsed, err := EncodeWuxing(name)
 	if err != nil {
 		return fmt.Errorf("unknown wuxing: %q", name)
 	}
@@ -187,7 +187,7 @@ func (g *Gan) UnmarshalJSON(data []byte) error {
 		*g = 0
 		return nil
 	}
-	parsed, err := ParseGan(name)
+	parsed, err := EncodeGan(name)
 	if err != nil {
 		return fmt.Errorf("unknown gan: %q", name)
 	}
@@ -204,7 +204,7 @@ func (z *Zhi) UnmarshalJSON(data []byte) error {
 		*z = 0
 		return nil
 	}
-	parsed, err := ParseZhi(name)
+	parsed, err := EncodeZhi(name)
 	if err != nil {
 		return fmt.Errorf("unknown zhi: %q", name)
 	}
@@ -285,7 +285,7 @@ func (tg *ShiShen) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &name); err != nil {
 		return fmt.Errorf("shishen must be a string, got %s", string(data))
 	}
-	parsed, err := ParseShiShen(name)
+	parsed, err := EncodeShiShen(name)
 	if err != nil {
 		return fmt.Errorf("unknown shishen: %q", name)
 	}
@@ -293,8 +293,8 @@ func (tg *ShiShen) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// ParseShiShen converts a Chinese ten-god name to a ShiShen value.
-func ParseShiShen(s string) (ShiShen, error) {
+// EncodeShiShen converts a Chinese ten-god name to a ShiShen value.
+func EncodeShiShen(s string) (ShiShen, error) {
 	for i, name := range shiShenNamesZH {
 		if name == s {
 			return ShiShen(i), nil

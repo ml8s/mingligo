@@ -405,7 +405,7 @@ func TestShiShenName_Invalid(t *testing.T) {
 }
 
 // =============================================================================
-// ParseWuxing — 五行 (中英文)
+// EncodeWuxing — 五行 (中英文)
 // =============================================================================
 
 func TestParseWuxing_Chinese(t *testing.T) {
@@ -422,12 +422,12 @@ func TestParseWuxing_Chinese(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := ParseWuxing(tt.input)
+			got, err := EncodeWuxing(tt.input)
 			if err != nil {
-				t.Errorf("ParseWuxing(%s) error: %v", tt.input, err)
+				t.Errorf("EncodeWuxing(%s) error: %v", tt.input, err)
 			}
 			if got != tt.want {
-				t.Errorf("ParseWuxing(%s)=%d, want %d", tt.input, got, tt.want)
+				t.Errorf("EncodeWuxing(%s)=%d, want %d", tt.input, got, tt.want)
 			}
 		})
 	}
@@ -447,12 +447,12 @@ func TestParseWuxing_English(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := ParseWuxing(tt.input)
+			got, err := EncodeWuxing(tt.input)
 			if err != nil {
-				t.Errorf("ParseWuxing(%s) error: %v", tt.input, err)
+				t.Errorf("EncodeWuxing(%s) error: %v", tt.input, err)
 			}
 			if got != tt.want {
-				t.Errorf("ParseWuxing(%s)=%d, want %d", tt.input, got, tt.want)
+				t.Errorf("EncodeWuxing(%s)=%d, want %d", tt.input, got, tt.want)
 			}
 		})
 	}
@@ -460,9 +460,9 @@ func TestParseWuxing_English(t *testing.T) {
 
 func TestParseWuxing_Invalid(t *testing.T) {
 	for _, s := range []string{"", "X", "unknown", "土土"} {
-		got, err := ParseWuxing(s)
+		got, err := EncodeWuxing(s)
 		if err == nil {
-			t.Errorf("ParseWuxing(%s)=%d, want error", s, got)
+			t.Errorf("EncodeWuxing(%s)=%d, want error", s, got)
 		}
 	}
 }
@@ -1487,7 +1487,7 @@ func TestGanYinYang_All(t *testing.T) {
 	}
 }
 
-// -- Wuxing.String / ParseWuxing round-trip --
+// -- Wuxing.String / EncodeWuxing round-trip --
 
 func TestWuxing_String(t *testing.T) {
 	want := map[Wuxing]string{WxMu: "木", WxHuo: "火", WxTu: "土", WxJin: "金", WxShui: "水"}
@@ -1501,16 +1501,16 @@ func TestWuxing_String(t *testing.T) {
 func TestParseWuxing_Roundtrip(t *testing.T) {
 	names := []string{"木", "火", "土", "金", "水"}
 	for _, s := range names {
-		w, err := ParseWuxing(s)
+		w, err := EncodeWuxing(s)
 		if err != nil {
-			t.Errorf("ParseWuxing(%s) error: %v", s, err)
+			t.Errorf("EncodeWuxing(%s) error: %v", s, err)
 		}
 		if w.String() != s {
 			t.Errorf("roundtrip: %s → %d → %s", s, w, w.String())
 		}
 	}
-	if _, err := ParseWuxing("X"); err == nil {
-		t.Error("ParseWuxing(X) should error")
+	if _, err := EncodeWuxing("X"); err == nil {
+		t.Error("EncodeWuxing(X) should error")
 	}
 }
 
@@ -1794,10 +1794,10 @@ func TestParseWangShuai(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			got, err := parseWangShuai(tt.input)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("ParseWangShuai(%q) err=%v, wantErr=%v", tt.input, err, tt.wantErr)
+				t.Errorf("EncodeWangShuai(%q) err=%v, wantErr=%v", tt.input, err, tt.wantErr)
 			}
 			if err == nil && got != tt.want {
-				t.Errorf("ParseWangShuai(%q) = %v, want %v", tt.input, got, tt.want)
+				t.Errorf("EncodeWangShuai(%q) = %v, want %v", tt.input, got, tt.want)
 			}
 		})
 	}

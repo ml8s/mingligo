@@ -42,11 +42,11 @@ func TestDomainOracle_HuangliCore(t *testing.T) {
 		}
 	}
 	for month, want := range doc.QingLong {
-		z, err := ganzhi.ParseZhi(month)
+		z, err := ganzhi.EncodeZhi(month)
 		if err != nil {
 			t.Fatal(err)
 		}
-		wantZ, err := ganzhi.ParseZhi(want)
+		wantZ, err := ganzhi.EncodeZhi(want)
 		if err != nil {
 			t.Fatal(err)
 		}

@@ -29,7 +29,7 @@ func TestJushu_SolarTermDingju_All72(t *testing.T) {
 		t.Fatalf("solarTermJuTable 长度 = %d, want 24", len(solarTermJuTable))
 	}
 	for _, w := range want {
-		nameJQ, _ := tianwen.ParseJieQi(w.name)
+		nameJQ, _ := tianwen.EncodeJieQi(w.name)
 		e, ok := solarTermJuTable[nameJQ]
 		if !ok {
 			t.Fatalf("%s missing from dingju table", w.name)

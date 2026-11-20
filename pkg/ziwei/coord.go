@@ -111,7 +111,7 @@ func flowStarKindOf(name string) FlowStarKind {
 	} else {
 		k = runes[1]
 	}
-	parsed, _ := ParseFlowStarKind(string(k))
+	parsed, _ := EncodeFlowStarKind(string(k))
 	return parsed
 }
 

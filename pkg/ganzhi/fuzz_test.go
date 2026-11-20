@@ -16,25 +16,25 @@ func FuzzParseGender(f *testing.F) {
 	f.Add("Male")
 
 	f.Fuzz(func(t *testing.T, s string) {
-		g, err := ParseGender(s)
+		g, err := EncodeGender(s)
 		switch s {
 		case "male", "男":
 			if err != nil {
-				t.Errorf("ParseGender(%q) unexpected error: %v", s, err)
+				t.Errorf("EncodeGender(%q) unexpected error: %v", s, err)
 			}
 			if g != Male {
-				t.Errorf("ParseGender(%q) = %v, want Male", s, g)
+				t.Errorf("EncodeGender(%q) = %v, want Male", s, g)
 			}
 		case "female", "女":
 			if err != nil {
-				t.Errorf("ParseGender(%q) unexpected error: %v", s, err)
+				t.Errorf("EncodeGender(%q) unexpected error: %v", s, err)
 			}
 			if g != Female {
-				t.Errorf("ParseGender(%q) = %v, want Female", s, g)
+				t.Errorf("EncodeGender(%q) = %v, want Female", s, g)
 			}
 		default:
 			if err == nil {
-				t.Errorf("ParseGender(%q) = %v, want error", s, g)
+				t.Errorf("EncodeGender(%q) = %v, want error", s, g)
 			}
 		}
 	})
@@ -49,14 +49,14 @@ func FuzzParseGan(f *testing.F) {
 	f.Add("A")
 
 	f.Fuzz(func(t *testing.T, s string) {
-		g, err := ParseGan(s)
+		g, err := EncodeGan(s)
 		if err == nil {
 			if g < 1 || g > 10 {
-				t.Errorf("ParseGan(%q) = %v, nil; want value in [1,10]", s, g)
+				t.Errorf("EncodeGan(%q) = %v, nil; want value in [1,10]", s, g)
 			}
 		} else {
 			if g != 0 {
-				t.Errorf("ParseGan(%q) = (%v, %v); want zero value on error", s, g, err)
+				t.Errorf("EncodeGan(%q) = (%v, %v); want zero value on error", s, g, err)
 			}
 		}
 	})
@@ -70,14 +70,14 @@ func FuzzParseZhi(f *testing.F) {
 	f.Add("猫")
 
 	f.Fuzz(func(t *testing.T, s string) {
-		z, err := ParseZhi(s)
+		z, err := EncodeZhi(s)
 		if err == nil {
 			if z < 1 || z > 12 {
-				t.Errorf("ParseZhi(%q) = %v, nil; want value in [1,12]", s, z)
+				t.Errorf("EncodeZhi(%q) = %v, nil; want value in [1,12]", s, z)
 			}
 		} else {
 			if z != 0 {
-				t.Errorf("ParseZhi(%q) = (%v, %v); want zero value on error", s, z, err)
+				t.Errorf("EncodeZhi(%q) = (%v, %v); want zero value on error", s, z, err)
 			}
 		}
 	})
@@ -92,14 +92,14 @@ func FuzzParseWuxing(f *testing.F) {
 	f.Add("earth")
 
 	f.Fuzz(func(t *testing.T, s string) {
-		w, err := ParseWuxing(s)
+		w, err := EncodeWuxing(s)
 		if err == nil {
 			if w < WxMu || w > WxShui {
-				t.Errorf("ParseWuxing(%q) = %v, nil; want value in [Mu,Huo,Tu,Jin,Shui]", s, w)
+				t.Errorf("EncodeWuxing(%q) = %v, nil; want value in [Mu,Huo,Tu,Jin,Shui]", s, w)
 			}
 		} else {
 			if w != 0 {
-				t.Errorf("ParseWuxing(%q) = (%v, %v); want zero value on error", s, w, err)
+				t.Errorf("EncodeWuxing(%q) = (%v, %v); want zero value on error", s, w, err)
 			}
 		}
 	})
@@ -129,14 +129,14 @@ func FuzzParseShiShen(f *testing.F) {
 	f.Add("魁罡")
 
 	f.Fuzz(func(t *testing.T, s string) {
-		ss, err := ParseShiShen(s)
+		ss, err := EncodeShiShen(s)
 		if err == nil {
 			if ss < 0 || ss > ShiShenZhengYin {
-				t.Errorf("ParseShiShen(%q) = %v, nil; want 0..9", s, ss)
+				t.Errorf("EncodeShiShen(%q) = %v, nil; want 0..9", s, ss)
 			}
 		} else {
 			if ss != -1 {
-				t.Errorf("ParseShiShen(%q) = (%v, %v); want -1 on error", s, ss, err)
+				t.Errorf("EncodeShiShen(%q) = (%v, %v); want -1 on error", s, ss, err)
 			}
 		}
 	})
@@ -166,14 +166,14 @@ func FuzzParseYinYang(f *testing.F) {
 	f.Add("Yang")
 
 	f.Fuzz(func(t *testing.T, s string) {
-		yy, err := ParseYinYang(s)
+		yy, err := EncodeYinYang(s)
 		if err == nil {
 			if yy != Yang && yy != Yin {
-				t.Errorf("ParseYinYang(%q) = %v, nil; want Yin or Yang", s, yy)
+				t.Errorf("EncodeYinYang(%q) = %v, nil; want Yin or Yang", s, yy)
 			}
 		} else {
 			if yy != false {
-				t.Errorf("ParseYinYang(%q) = (%v, %v); want false on error", s, yy, err)
+				t.Errorf("EncodeYinYang(%q) = (%v, %v); want false on error", s, yy, err)
 			}
 		}
 	})
@@ -236,7 +236,7 @@ func FuzzZhiUnmarshalJSON(f *testing.F) {
 	})
 }
 
-func ParseYinYang(s string) (YinYang, error) {
+func EncodeYinYang(s string) (YinYang, error) {
 	switch s {
 	case "阳":
 		return Yang, nil

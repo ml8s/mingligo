@@ -31,15 +31,15 @@ func TestDomainOracle_DongYaoDirectPriority(t *testing.T) {
 	}
 	for _, tc := range doc.Cases {
 		t.Run(tc.ID, func(t *testing.T) {
-			typ, err := ParseYongShen(tc.Target)
+			typ, err := EncodeYongShen(tc.Target)
 			if err != nil {
 				t.Fatal(err)
 			}
-			yong, err := ganzhi.ParseZhi(tc.YongZhi)
+			yong, err := ganzhi.EncodeZhi(tc.YongZhi)
 			if err != nil {
 				t.Fatal(err)
 			}
-			moving, err := ganzhi.ParseZhi(tc.MovingZhi)
+			moving, err := ganzhi.EncodeZhi(tc.MovingZhi)
 			if err != nil {
 				t.Fatal(err)
 			}

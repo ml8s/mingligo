@@ -137,7 +137,7 @@ func Load() error {
 }
 
 func parseGan(s string) Gan {
-	g, err := ParseGan(s)
+	g, err := EncodeGan(s)
 	if err != nil {
 		panic(fmt.Sprintf("ganzhi: embedded data has invalid gan %q: %v", s, err))
 	}
@@ -145,7 +145,7 @@ func parseGan(s string) Gan {
 }
 
 func parseZhi(s string) Zhi {
-	z, err := ParseZhi(s)
+	z, err := EncodeZhi(s)
 	if err != nil {
 		panic(fmt.Sprintf("ganzhi: embedded data has invalid zhi %q: %v", s, err))
 	}
@@ -153,7 +153,7 @@ func parseZhi(s string) Zhi {
 }
 
 func parseWuxing(s string) Wuxing {
-	w, err := ParseWuxing(s)
+	w, err := EncodeWuxing(s)
 	if err != nil {
 		panic(fmt.Sprintf("ganzhi: embedded data has invalid wuxing %q: %v", s, err))
 	}
@@ -271,7 +271,7 @@ func NayinWuxing(nayin string) Wuxing {
 	if len(rs) == 0 {
 		return 0
 	}
-	wx, err := ParseWuxing(string(rs[len(rs)-1]))
+	wx, err := EncodeWuxing(string(rs[len(rs)-1]))
 	if err != nil {
 		return 0
 	}

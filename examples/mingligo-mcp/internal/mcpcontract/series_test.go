@@ -229,11 +229,11 @@ func TestSeriesRollovers(t *testing.T) {
 	}
 	first, _ := hours[0]["shi_chen"].(map[string]any)["shichen"].(string)
 	second, _ := hours[1]["shi_chen"].(map[string]any)["shichen"].(string)
-	firstZhi, err := ganzhi.ParseZhi(first)
+	firstZhi, err := ganzhi.EncodeZhi(first)
 	if err != nil {
 		t.Fatal(err)
 	}
-	secondZhi, err := ganzhi.ParseZhi(second)
+	secondZhi, err := ganzhi.EncodeZhi(second)
 	if err != nil {
 		t.Fatal(err)
 	}

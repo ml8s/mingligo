@@ -68,7 +68,7 @@ func TestDomainOracle_LiuyaoNaJiaAndWorld(t *testing.T) {
 	}
 	for _, tc := range doc.VisibleYongShen {
 		t.Run(tc.Hexagram+"_"+tc.YongShen, func(t *testing.T) {
-			yong, err := ParseYongShen(tc.YongShen)
+			yong, err := EncodeYongShen(tc.YongShen)
 			if err != nil {
 				t.Fatal(err)
 			}

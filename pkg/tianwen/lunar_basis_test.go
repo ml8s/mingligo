@@ -56,11 +56,11 @@ func TestLunarProjectorBases(t *testing.T) {
 
 func TestParseLunarBasis(t *testing.T) {
 	for _, input := range []string{"", "official", "local_label", "local_astronomical"} {
-		if _, err := ParseLunarBasis(input); err != nil {
-			t.Fatalf("ParseLunarBasis(%q): %v", input, err)
+		if _, err := EncodeLunarBasis(input); err != nil {
+			t.Fatalf("EncodeLunarBasis(%q): %v", input, err)
 		}
 	}
-	if _, err := ParseLunarBasis("solar"); err == nil {
-		t.Fatal("ParseLunarBasis(solar) should fail")
+	if _, err := EncodeLunarBasis("solar"); err == nil {
+		t.Fatal("EncodeLunarBasis(solar) should fail")
 	}
 }

@@ -138,8 +138,8 @@ func TestTiaoHou_AuthoritativeAnchors(t *testing.T) {
 		"壬寅": "庚丙", "壬卯": "庚戊", "壬辰": "甲庚",
 	}
 	for key, want := range anchors {
-		gan, _ := ganzhi.ParseGan(key[:3])
-		zhi, _ := ganzhi.ParseZhi(key[3:])
+		gan, _ := ganzhi.EncodeGan(key[:3])
+		zhi, _ := ganzhi.EncodeZhi(key[3:])
 		e, ok := lookupTiaohou[tiaohouKey{int(gan), int(zhi)}]
 		if !ok {
 			t.Errorf("%s日%s月: 表内无条目", ganzhi.GanName(gan), ganzhi.ZhiName(zhi))

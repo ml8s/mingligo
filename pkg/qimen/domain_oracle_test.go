@@ -41,7 +41,7 @@ func TestDomainOracle_QimenAll72Ju(t *testing.T) {
 		t.Fatalf("yingqi rows = %d, want 2", len(doc.YingQi))
 	}
 	for _, tc := range doc.Cases {
-		termJQ, _ := tianwen.ParseJieQi(tc.Term)
+		termJQ, _ := tianwen.EncodeJieQi(tc.Term)
 		entry, ok := solarTermJuTable[termJQ]
 		if !ok {
 			t.Fatalf("missing term %s", tc.Term)

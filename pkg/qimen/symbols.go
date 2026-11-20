@@ -5,8 +5,8 @@ import (
 	"fmt"
 )
 
-// ParsePalaceIndex converts a Chinese gong name to a GongIndex value.
-func ParsePalaceIndex(s string) (GongIndex, error) {
+// EncodePalaceIndex converts a Chinese gong name to a GongIndex value.
+func EncodePalaceIndex(s string) (GongIndex, error) {
 	for i := 1; i <= 9; i++ {
 		if gongNames[i] == s {
 			return GongIndex(i), nil
@@ -15,8 +15,8 @@ func ParsePalaceIndex(s string) (GongIndex, error) {
 	return 0, fmt.Errorf("unknown gong: %q", s)
 }
 
-// ParseStarIndex converts a Chinese star name to a StarIndex value.
-func ParseStarIndex(s string) (StarIndex, error) {
+// EncodeStarIndex converts a Chinese star name to a StarIndex value.
+func EncodeStarIndex(s string) (StarIndex, error) {
 	for i := 1; i <= 9; i++ {
 		if starNames[i] == s {
 			return StarIndex(i), nil
@@ -25,8 +25,8 @@ func ParseStarIndex(s string) (StarIndex, error) {
 	return 0, fmt.Errorf("unknown star: %q", s)
 }
 
-// ParseDoorIndex converts a Chinese door name to a DoorIndex value.
-func ParseDoorIndex(s string) (DoorIndex, error) {
+// EncodeDoorIndex converts a Chinese door name to a DoorIndex value.
+func EncodeDoorIndex(s string) (DoorIndex, error) {
 	for i := 1; i <= len(doorNames)-1; i++ {
 		if doorNames[i]+"门" == s {
 			return DoorIndex(i), nil
@@ -35,8 +35,8 @@ func ParseDoorIndex(s string) (DoorIndex, error) {
 	return 0, fmt.Errorf("unknown door: %q", s)
 }
 
-// ParseSpiritIndex converts a Chinese spirit name to a SpiritIndex value.
-func ParseSpiritIndex(s string) (SpiritIndex, error) {
+// EncodeSpiritIndex converts a Chinese spirit name to a SpiritIndex value.
+func EncodeSpiritIndex(s string) (SpiritIndex, error) {
 	if s == "太常" {
 		return SpiritTaiChang, nil
 	}
@@ -79,7 +79,7 @@ func (r WuxingRelation) String() string {
 	return ""
 }
 
-func ParseWuxingRelation(name string) (WuxingRelation, bool) {
+func EncodeWuxingRelation(name string) (WuxingRelation, bool) {
 	for i, n := range wuxingRelationNames {
 		if n == name {
 			return WuxingRelation(i), true
@@ -107,7 +107,7 @@ func (y Yuan) String() string {
 	return ""
 }
 
-func ParseYuan(name string) (Yuan, bool) {
+func EncodeYuan(name string) (Yuan, bool) {
 	for i, n := range yuanLabels {
 		if n == name {
 			return Yuan(i), true
@@ -144,7 +144,7 @@ func (s ZhiRunState) Key() string {
 	return ""
 }
 
-func ParseZhiRunState(key string) (ZhiRunState, bool) {
+func EncodeZhiRunState(key string) (ZhiRunState, bool) {
 	for i, n := range zhiRunStateNamesByKey {
 		if n == key && key != "" {
 			return ZhiRunState(i), true
@@ -173,7 +173,7 @@ func (d DunSource) String() string {
 
 func (d DunSource) MarshalJSON() ([]byte, error) { return json.Marshal(d.String()) }
 
-func ParseDunSource(name string) (DunSource, bool) {
+func EncodeDunSource(name string) (DunSource, bool) {
 	for i, n := range dunSourceNames {
 		if n == name {
 			return DunSource(i), true
@@ -202,7 +202,7 @@ func (h HourBoundary) String() string {
 
 func (h HourBoundary) MarshalJSON() ([]byte, error) { return json.Marshal(h.String()) }
 
-func ParseHourBoundary(name string) (HourBoundary, bool) {
+func EncodeHourBoundary(name string) (HourBoundary, bool) {
 	for i, n := range hourBoundaryNames {
 		if n == name {
 			return HourBoundary(i), true
@@ -221,8 +221,8 @@ const (
 	DingjuNone    DingjuMethod = "none"
 )
 
-// ParseDingjuMethod validates a dingju-method identifier.
-func ParseDingjuMethod(value string) (DingjuMethod, error) {
+// EncodeDingjuMethod validates a dingju-method identifier.
+func EncodeDingjuMethod(value string) (DingjuMethod, error) {
 	switch DingjuMethod(value) {
 	case DingjuChaiBu, DingjuZhiRun, DingjuMaoShan, DingjuNone:
 		return DingjuMethod(value), nil
@@ -243,8 +243,8 @@ const (
 	QuarterTwelveMinuteTenDivision QuarterRule = "twelve_minute_ten_division"
 )
 
-// ParseQuarterRule validates a Kejia rule identifier.
-func ParseQuarterRule(value string) (QuarterRule, error) {
+// EncodeQuarterRule validates a Kejia rule identifier.
+func EncodeQuarterRule(value string) (QuarterRule, error) {
 	switch QuarterRule(value) {
 	case QuarterTenMinuteSanYuan, QuarterTwelveMinuteTenDivision:
 		return QuarterRule(value), nil
@@ -268,8 +268,8 @@ const (
 	ScopeYear    Scope = "year"
 )
 
-// ParseScope validates a time-scope identifier.
-func ParseScope(value string) (Scope, error) {
+// EncodeScope validates a time-scope identifier.
+func EncodeScope(value string) (Scope, error) {
 	switch Scope(value) {
 	case ScopeHour, ScopeDay, ScopeQuarter, ScopeMonth, ScopeYear:
 		return Scope(value), nil
@@ -290,8 +290,8 @@ const (
 	SchoolJinhanYuJing School = "jinhan_yujing"
 )
 
-// ParseSchool validates a plate-school identifier.
-func ParseSchool(value string) (School, error) {
+// EncodeSchool validates a plate-school identifier.
+func EncodeSchool(value string) (School, error) {
 	switch School(value) {
 	case SchoolZhuanPan, SchoolLuoShuFeiPan, SchoolMingFaFeiPan, SchoolJinhanYuJing:
 		return School(value), nil
@@ -495,7 +495,7 @@ const (
 	dspOpposite                         // opposite 对冲
 )
 
-func ParseDutyStarPosition(name string) (DutyStarPosition, bool) {
+func EncodeDutyStarPosition(name string) (DutyStarPosition, bool) {
 	switch name {
 	case "home":
 		return dspHome, true
@@ -538,7 +538,7 @@ func (l PillarLevel) String() string {
 
 func (l PillarLevel) MarshalJSON() ([]byte, error) { return json.Marshal(l.String()) }
 
-func ParsePillarLevel(name string) (PillarLevel, bool) {
+func EncodePillarLevel(name string) (PillarLevel, bool) {
 	for i, n := range pillarLevelNames {
 		if n == name {
 			return PillarLevel(i), true

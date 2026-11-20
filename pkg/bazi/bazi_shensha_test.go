@@ -1039,11 +1039,11 @@ func TestSelfHe_Authoritative(t *testing.T) {
 	}
 	for pillar, name := range want {
 		t.Run(pillar, func(t *testing.T) {
-			gan, err := ganzhi.ParseGan(pillar[:3])
+			gan, err := ganzhi.EncodeGan(pillar[:3])
 			if err != nil {
 				t.Fatal(err)
 			}
-			zhi, err := ganzhi.ParseZhi(pillar[3:])
+			zhi, err := ganzhi.EncodeZhi(pillar[3:])
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -1059,8 +1059,8 @@ func TestSelfHe_Authoritative(t *testing.T) {
 	// 反例：藏干虽可构成暗合但非主流自合组合（甲丑、戊丑、丙丑、甲未、乙申等）
 	neg := []string{"甲丑", "戊丑", "丙丑", "甲未", "乙申", "甲戌", "乙酉", "丙子", "丁丑", "庚午", "辛卯", "壬子", "癸丑", "甲子", "己丑", "庚寅", "癸酉", "辛丑", "乙丑", "丙寅"}
 	for _, pillar := range neg {
-		gan, _ := ganzhi.ParseGan(pillar[:3])
-		zhi, _ := ganzhi.ParseZhi(pillar[3:])
+		gan, _ := ganzhi.EncodeGan(pillar[:3])
+		zhi, _ := ganzhi.EncodeZhi(pillar[3:])
 		if isSelfHe(ganzhi.Zhu{Gan: gan, Zhi: zhi}) {
 			t.Errorf("%s 不应判为干支自合（非主流组合）", pillar)
 		}

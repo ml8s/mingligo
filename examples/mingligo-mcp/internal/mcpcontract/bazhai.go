@@ -95,7 +95,7 @@ func BazhaiChart(_ context.Context, input BazhaiChartInput) (bazhai.Chart, error
 	if err != nil {
 		return bazhai.Chart{}, fmt.Errorf("bazhai.chart: %w", err)
 	}
-	gender, err := ganzhi.ParseGender(string(input.Subject.Gender))
+	gender, err := ganzhi.EncodeGender(string(input.Subject.Gender))
 	if err != nil {
 		return bazhai.Chart{}, fmt.Errorf("bazhai.chart: %w", err)
 	}

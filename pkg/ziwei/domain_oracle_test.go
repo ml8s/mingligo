@@ -66,7 +66,7 @@ func loadZiweiOracle(t *testing.T) struct {
 func TestDomainOracle_CoreTables(t *testing.T) {
 	doc := loadZiweiOracle(t)
 	for _, tc := range doc.SiHua {
-		g, err := ganzhi.ParseGan(tc.Stem)
+		g, err := ganzhi.EncodeGan(tc.Stem)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -79,7 +79,7 @@ func TestDomainOracle_CoreTables(t *testing.T) {
 		}
 	}
 	for _, tc := range doc.Soul {
-		z, err := ganzhi.ParseZhi(tc.Branch)
+		z, err := ganzhi.EncodeZhi(tc.Branch)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -88,7 +88,7 @@ func TestDomainOracle_CoreTables(t *testing.T) {
 		}
 	}
 	for _, tc := range doc.Body {
-		z, err := ganzhi.ParseZhi(tc.Branch)
+		z, err := ganzhi.EncodeZhi(tc.Branch)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -100,11 +100,11 @@ func TestDomainOracle_CoreTables(t *testing.T) {
 		t.Fatalf("tian kui/yue oracle sizes = %d/%d, want 10/10", len(doc.TianKui), len(doc.TianYue))
 	}
 	for _, tc := range doc.TianKui {
-		g, err := ganzhi.ParseGan(tc.Stem)
+		g, err := ganzhi.EncodeGan(tc.Stem)
 		if err != nil {
 			t.Fatal(err)
 		}
-		z, err := ganzhi.ParseZhi(tc.Branch)
+		z, err := ganzhi.EncodeZhi(tc.Branch)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -113,11 +113,11 @@ func TestDomainOracle_CoreTables(t *testing.T) {
 		}
 	}
 	for _, tc := range doc.TianYue {
-		g, err := ganzhi.ParseGan(tc.Stem)
+		g, err := ganzhi.EncodeGan(tc.Stem)
 		if err != nil {
 			t.Fatal(err)
 		}
-		z, err := ganzhi.ParseZhi(tc.Branch)
+		z, err := ganzhi.EncodeZhi(tc.Branch)
 		if err != nil {
 			t.Fatal(err)
 		}

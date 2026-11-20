@@ -36,9 +36,9 @@ func TestMingFaDoorIndex(t *testing.T) {
 	if DoorZhong.String() != "中门" {
 		t.Fatalf("center door = %s", DoorZhong)
 	}
-	parsed, err := ParseDoorIndex("中门")
+	parsed, err := EncodeDoorIndex("中门")
 	if err != nil || parsed != DoorZhong {
-		t.Fatalf("ParseDoorIndex(中门) = %v, %v; want %v", parsed, err, DoorZhong)
+		t.Fatalf("EncodeDoorIndex(中门) = %v, %v; want %v", parsed, err, DoorZhong)
 	}
 }
 
@@ -183,7 +183,7 @@ func TestMingFaCheckedInAnchor(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	method, err := ParseMethod(anchor.Method.Scope, anchor.Method.School, anchor.Method.Dingju, "")
+	method, err := EncodeMethod(anchor.Method.Scope, anchor.Method.School, anchor.Method.Dingju, "")
 	if err != nil {
 		t.Fatal(err)
 	}

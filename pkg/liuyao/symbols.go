@@ -5,8 +5,8 @@ import (
 	"fmt"
 )
 
-// ParseYongShen converts a Chinese yongshen name to a YongShen value.
-func ParseYongShen(s string) (YongShen, error) {
+// EncodeYongShen converts a Chinese yongshen name to a YongShen value.
+func EncodeYongShen(s string) (YongShen, error) {
 	for i, name := range yongShenNames {
 		if name == s {
 			return YongShen(i), nil
@@ -121,7 +121,7 @@ func (m MuKuSource) String() string {
 
 func (m MuKuSource) MarshalJSON() ([]byte, error) { return json.Marshal(m.String()) }
 
-func ParseMuKuSource(name string) MuKuSource {
+func EncodeMuKuSource(name string) MuKuSource {
 	for i, n := range muKuSourceNames {
 		if n == name {
 			return MuKuSource(i)
@@ -152,7 +152,7 @@ func (s ShiYing) String() string {
 
 func (s ShiYing) MarshalJSON() ([]byte, error) { return json.Marshal(s.String()) }
 
-func ParseShiYing(name string) ShiYing {
+func EncodeShiYing(name string) ShiYing {
 	switch name {
 	case "世":
 		return ShiYingShi
@@ -214,7 +214,7 @@ func (r DayRelationType) String() string {
 
 func (r DayRelationType) MarshalJSON() ([]byte, error) { return json.Marshal(r.String()) }
 
-func ParseDayRelationType(name string) DayRelationType {
+func EncodeDayRelationType(name string) DayRelationType {
 	for i, n := range dayRelationNames {
 		if n == name {
 			return DayRelationType(i)
@@ -246,7 +246,7 @@ func (r FeiFuRelation) String() string {
 
 func (r FeiFuRelation) MarshalJSON() ([]byte, error) { return json.Marshal(r.String()) }
 
-func ParseFeiFuRelation(name string) FeiFuRelation {
+func EncodeFeiFuRelation(name string) FeiFuRelation {
 	for i, n := range feiFuNames {
 		if n == name {
 			return FeiFuRelation(i)

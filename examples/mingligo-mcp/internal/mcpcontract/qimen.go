@@ -50,7 +50,7 @@ func QimenChart(_ context.Context, input QimenChartInput) (QimenChartOutput, err
 	if len(input.YongShen) > 0 || birthDate.Has {
 		symbols := make([]qimen.YongShenSymbol, 0, len(input.YongShen))
 		for _, name := range input.YongShen {
-			symbol, err := qimen.ParseYongShen(name)
+			symbol, err := qimen.EncodeYongShen(name)
 			if err != nil {
 				return QimenChartOutput{}, fmt.Errorf("qimen.chart: %w", err)
 			}

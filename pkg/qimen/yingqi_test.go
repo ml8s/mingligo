@@ -35,15 +35,15 @@ func TestYingQiTableDefinesDateWindow(t *testing.T) {
 }
 
 func TestYingQiComputesDateWindow(t *testing.T) {
-	you, err := ganzhi.ParseZhi("酉")
+	you, err := ganzhi.EncodeZhi("酉")
 	if err != nil {
 		t.Fatal(err)
 	}
-	mao, err := ganzhi.ParseZhi("卯")
+	mao, err := ganzhi.EncodeZhi("卯")
 	if err != nil {
 		t.Fatal(err)
 	}
-	riGan, err := ganzhi.ParseGan("乙")
+	riGan, err := ganzhi.EncodeGan("乙")
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -63,8 +63,8 @@ func JieQiOfLongitude(longitude float64) (JieQi, bool) {
 	return JieQi(int(math.Mod(longitude-270+360, 360) / 15)), true
 }
 
-// ParseJieQi maps a Chinese solar-term name back to its canonical symbol.
-func ParseJieQi(name string) (JieQi, bool) {
+// EncodeJieQi maps a Chinese solar-term name back to its canonical symbol.
+func EncodeJieQi(name string) (JieQi, bool) {
 	for i, n := range jieQiNamesFromDongZhi {
 		if n == name {
 			return JieQi(i), true
@@ -88,9 +88,9 @@ const (
 	LunarBasisLocalAstronomical LunarBasis = "local_astronomical"
 )
 
-// ParseLunarBasis validates a basis name. The empty string is the default
+// EncodeLunarBasis validates a basis name. The empty string is the default
 // local_astronomical basis, which is the globally aligned projection.
-func ParseLunarBasis(basis string) (LunarBasis, error) {
+func EncodeLunarBasis(basis string) (LunarBasis, error) {
 	switch LunarBasis(basis) {
 	case "", LunarBasisLocalAstronomical:
 		return LunarBasisLocalAstronomical, nil

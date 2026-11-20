@@ -17,11 +17,11 @@ func pillarsCoreFromStrings(t *testing.T, pillars []string) Core {
 	var core Core
 	for index, pillar := range pillars {
 		runes := []rune(pillar)
-		gan, err := ganzhi.ParseGan(string(runes[0]))
+		gan, err := ganzhi.EncodeGan(string(runes[0]))
 		if err != nil {
 			t.Fatal(err)
 		}
-		zhi, err := ganzhi.ParseZhi(string(runes[1]))
+		zhi, err := ganzhi.EncodeZhi(string(runes[1]))
 		if err != nil {
 			t.Fatal(err)
 		}

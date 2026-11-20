@@ -11,11 +11,11 @@ import (
 
 func parseOracleZhu(t *testing.T, name string) ganzhi.Zhu {
 	t.Helper()
-	gan, err := ganzhi.ParseGan(string([]rune(name)[0]))
+	gan, err := ganzhi.EncodeGan(string([]rune(name)[0]))
 	if err != nil {
 		t.Fatal(err)
 	}
-	zhi, err := ganzhi.ParseZhi(string([]rune(name)[1]))
+	zhi, err := ganzhi.EncodeZhi(string([]rune(name)[1]))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -89,11 +89,11 @@ func TestDomainOracle_BaziClassicCorrections(t *testing.T) {
 	}
 	for _, tc := range doc.YangRen {
 		t.Run("yang_ren/"+tc.DayGan, func(t *testing.T) {
-			gan, err := ganzhi.ParseGan(tc.DayGan)
+			gan, err := ganzhi.EncodeGan(tc.DayGan)
 			if err != nil {
 				t.Fatal(err)
 			}
-			zhi, err := ganzhi.ParseZhi(tc.Branch)
+			zhi, err := ganzhi.EncodeZhi(tc.Branch)
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -123,11 +123,11 @@ func TestDomainOracle_BaziClassicCorrections(t *testing.T) {
 	}
 	for _, tc := range doc.YueRenGe {
 		t.Run("yue_ren_ge/"+tc.DayGan, func(t *testing.T) {
-			gan, err := ganzhi.ParseGan(tc.DayGan)
+			gan, err := ganzhi.EncodeGan(tc.DayGan)
 			if err != nil {
 				t.Fatal(err)
 			}
-			zhi, err := ganzhi.ParseZhi(tc.Month)
+			zhi, err := ganzhi.EncodeZhi(tc.Month)
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -201,7 +201,7 @@ func TestDomainOracle_BaziClassicCorrections(t *testing.T) {
 
 func mustOracleBaziZhi(t *testing.T, name string) ganzhi.Zhi {
 	t.Helper()
-	zhi, err := ganzhi.ParseZhi(name)
+	zhi, err := ganzhi.EncodeZhi(name)
 	if err != nil {
 		t.Fatal(err)
 	}

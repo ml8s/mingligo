@@ -95,11 +95,11 @@ func loadXiaoYunRules() error {
 		if len([]rune(ganZhi)) != 2 {
 			return fmt.Errorf("xiaoyun start %q 无效", ganZhi)
 		}
-		gan, err := ganzhi.ParseGan(string([]rune(ganZhi)[0]))
+		gan, err := ganzhi.EncodeGan(string([]rune(ganZhi)[0]))
 		if err != nil {
 			return err
 		}
-		zhi, err := ganzhi.ParseZhi(string([]rune(ganZhi)[1]))
+		zhi, err := ganzhi.EncodeZhi(string([]rune(ganZhi)[1]))
 		if err != nil {
 			return err
 		}
@@ -220,21 +220,21 @@ func loadTiaohou() error {
 	}
 	lookupTiaohou = make(map[tiaohouKey]tiaohouEntry, len(entries))
 	for _, e := range entries {
-		dm, err := ganzhi.ParseGan(e.RiYuan)
+		dm, err := ganzhi.EncodeGan(e.RiYuan)
 		if err != nil {
 			return err
 		}
-		mb, err := ganzhi.ParseZhi(e.MonthBranch)
+		mb, err := ganzhi.EncodeZhi(e.MonthBranch)
 		if err != nil {
 			return err
 		}
-		pri, err := ganzhi.ParseGan(e.Primary)
+		pri, err := ganzhi.EncodeGan(e.Primary)
 		if err != nil {
 			return err
 		}
 		var sec ganzhi.Gan
 		if e.Secondary != "" {
-			sec, err = ganzhi.ParseGan(e.Secondary)
+			sec, err = ganzhi.EncodeGan(e.Secondary)
 			if err != nil {
 				return err
 			}
@@ -291,12 +291,12 @@ func loadShensha() error {
 
 	loadTriad := func(dst map[ganzhi.Zhi]ganzhi.Zhi, src map[string]string) error {
 		for triadKey, targetStr := range src {
-			target, err := ganzhi.ParseZhi(targetStr)
+			target, err := ganzhi.EncodeZhi(targetStr)
 			if err != nil {
 				return fmt.Errorf("triad target %q: %w", targetStr, err)
 			}
 			for _, r := range triadKey {
-				zhi, err := ganzhi.ParseZhi(string(r))
+				zhi, err := ganzhi.EncodeZhi(string(r))
 				if err != nil {
 					return fmt.Errorf("triad member %q in %q: %w", string(r), triadKey, err)
 				}
@@ -324,11 +324,11 @@ func loadShensha() error {
 	loadGanSingle := func(src map[string]string) (map[ganzhi.Gan]ganzhi.Zhi, error) {
 		dst := make(map[ganzhi.Gan]ganzhi.Zhi, len(src))
 		for ganStr, zhiStr := range src {
-			gan, err := ganzhi.ParseGan(ganStr)
+			gan, err := ganzhi.EncodeGan(ganStr)
 			if err != nil {
 				return nil, fmt.Errorf("gan %q: %w", ganStr, err)
 			}
-			zhi, err := ganzhi.ParseZhi(zhiStr)
+			zhi, err := ganzhi.EncodeZhi(zhiStr)
 			if err != nil {
 				return nil, fmt.Errorf("zhi %q: %w", zhiStr, err)
 			}
@@ -355,13 +355,13 @@ func loadShensha() error {
 	loadGanMulti := func(src map[string][]string) (map[ganzhi.Gan][]ganzhi.Zhi, error) {
 		dst := make(map[ganzhi.Gan][]ganzhi.Zhi, len(src))
 		for ganStr, zhiStrs := range src {
-			gan, err := ganzhi.ParseGan(ganStr)
+			gan, err := ganzhi.EncodeGan(ganStr)
 			if err != nil {
 				return nil, fmt.Errorf("gan %q: %w", ganStr, err)
 			}
 			zhi := make([]ganzhi.Zhi, len(zhiStrs))
 			for i, bs := range zhiStrs {
-				b, err := ganzhi.ParseZhi(bs)
+				b, err := ganzhi.EncodeZhi(bs)
 				if err != nil {
 					return nil, fmt.Errorf("zhi %q: %w", bs, err)
 				}
@@ -404,11 +404,11 @@ func loadShensha() error {
 	loadZhiSingle := func(src map[string]string) (map[ganzhi.Zhi]ganzhi.Zhi, error) {
 		dst := make(map[ganzhi.Zhi]ganzhi.Zhi, len(src))
 		for zhiStr, targetStr := range src {
-			zhi, err := ganzhi.ParseZhi(zhiStr)
+			zhi, err := ganzhi.EncodeZhi(zhiStr)
 			if err != nil {
 				return nil, fmt.Errorf("zhi %q: %w", zhiStr, err)
 			}
-			target, err := ganzhi.ParseZhi(targetStr)
+			target, err := ganzhi.EncodeZhi(targetStr)
 			if err != nil {
 				return nil, fmt.Errorf("target %q: %w", targetStr, err)
 			}
@@ -435,13 +435,13 @@ func loadShensha() error {
 	loadBranchToStems := func(src map[string][]string) (map[ganzhi.Zhi][]ganzhi.Gan, error) {
 		dst := make(map[ganzhi.Zhi][]ganzhi.Gan, len(src))
 		for zhiStr, ganStrs := range src {
-			zhi, err := ganzhi.ParseZhi(zhiStr)
+			zhi, err := ganzhi.EncodeZhi(zhiStr)
 			if err != nil {
 				return nil, fmt.Errorf("zhi %q: %w", zhiStr, err)
 			}
 			gan := make([]ganzhi.Gan, len(ganStrs))
 			for i, ss := range ganStrs {
-				s, err := ganzhi.ParseGan(ss)
+				s, err := ganzhi.EncodeGan(ss)
 				if err != nil {
 					return nil, fmt.Errorf("gan %q: %w", ss, err)
 				}
@@ -456,17 +456,17 @@ func loadShensha() error {
 	loadBranchToTianDe := func(src map[string][]string) (map[ganzhi.Zhi][]tianDeTarget, error) {
 		dst := make(map[ganzhi.Zhi][]tianDeTarget, len(src))
 		for zhiStr, targetStrs := range src {
-			zhi, err := ganzhi.ParseZhi(zhiStr)
+			zhi, err := ganzhi.EncodeZhi(zhiStr)
 			if err != nil {
 				return nil, fmt.Errorf("zhi %q: %w", zhiStr, err)
 			}
 			var tgts []tianDeTarget
 			for _, ts := range targetStrs {
-				if gan, err := ganzhi.ParseGan(ts); err == nil {
+				if gan, err := ganzhi.EncodeGan(ts); err == nil {
 					tgts = append(tgts, tianDeTarget{Gan: gan})
 					continue
 				}
-				if zhi, err := ganzhi.ParseZhi(ts); err == nil {
+				if zhi, err := ganzhi.EncodeZhi(ts); err == nil {
 					tgts = append(tgts, tianDeTarget{IsZhi: true, Zhi: zhi})
 					continue
 				}
@@ -488,11 +488,11 @@ func loadShensha() error {
 
 	yuedeGan = make(map[ganzhi.Zhi]ganzhi.Gan, len(data.YueGan.YueDe))
 	for zhiStr, ganStr := range data.YueGan.YueDe {
-		zhi, err := ganzhi.ParseZhi(zhiStr)
+		zhi, err := ganzhi.EncodeZhi(zhiStr)
 		if err != nil {
 			return fmt.Errorf("yue_de zhi %q: %w", zhiStr, err)
 		}
-		gan, err := ganzhi.ParseGan(ganStr)
+		gan, err := ganzhi.EncodeGan(ganStr)
 		if err != nil {
 			return fmt.Errorf("yue_de gan %q: %w", ganStr, err)
 		}
@@ -510,7 +510,7 @@ func loadShensha() error {
 			return fmt.Errorf("de_xiu xiu %q: %w", triadKey, err)
 		}
 		for _, r := range triadKey {
-			zhi, err := ganzhi.ParseZhi(string(r))
+			zhi, err := ganzhi.EncodeZhi(string(r))
 			if err != nil {
 				return fmt.Errorf("de_xiu member %q in %q: %w", string(r), triadKey, err)
 			}
@@ -524,11 +524,11 @@ func loadShensha() error {
 		if len(runes) != 2 {
 			return fmt.Errorf("yin_cha_yang_cuo: invalid pair %q", pair)
 		}
-		gan, err := ganzhi.ParseGan(string(runes[0]))
+		gan, err := ganzhi.EncodeGan(string(runes[0]))
 		if err != nil {
 			return fmt.Errorf("yin_cha_yang_cuo gan %q: %w", pair, err)
 		}
-		zhi, err := ganzhi.ParseZhi(string(runes[1]))
+		zhi, err := ganzhi.EncodeZhi(string(runes[1]))
 		if err != nil {
 			return fmt.Errorf("yin_cha_yang_cuo zhi %q: %w", pair, err)
 		}
@@ -545,7 +545,7 @@ func loadShensha() error {
 	for elements, branches := range data.TongZi.Nayin {
 		zhis := parseZhis(branches)
 		for _, r := range elements {
-			element, err := ganzhi.ParseWuxing(string(r))
+			element, err := ganzhi.EncodeWuxing(string(r))
 			if err != nil {
 				return fmt.Errorf("tong_zi nayin element %q: %w", elements, err)
 			}
@@ -556,7 +556,7 @@ func loadShensha() error {
 	// --- tian luo di wang ---
 	tianLuoDiWang = make(map[ganzhi.Zhi]string, len(data.TianLuoDiWang))
 	for zhiStr, label := range data.TianLuoDiWang {
-		zhi, err := ganzhi.ParseZhi(zhiStr)
+		zhi, err := ganzhi.EncodeZhi(zhiStr)
 		if err != nil {
 			return fmt.Errorf("tian_luo_di_wang zhi %q: %w", zhiStr, err)
 		}
@@ -575,7 +575,7 @@ func loadShensha() error {
 func parseGans(values []string) ([]ganzhi.Gan, error) {
 	out := make([]ganzhi.Gan, 0, len(values))
 	for _, value := range values {
-		gan, err := ganzhi.ParseGan(value)
+		gan, err := ganzhi.EncodeGan(value)
 		if err != nil {
 			return nil, err
 		}
@@ -587,7 +587,7 @@ func parseGans(values []string) ([]ganzhi.Gan, error) {
 func parseZhis(values []string) []ganzhi.Zhi {
 	out := make([]ganzhi.Zhi, 0, len(values))
 	for _, value := range values {
-		zhi, err := ganzhi.ParseZhi(value)
+		zhi, err := ganzhi.EncodeZhi(value)
 		if err != nil {
 			panic(fmt.Sprintf("bazi: parse zhi %q: %v", value, err))
 		}
@@ -610,11 +610,11 @@ func loadRideRigui() error {
 		if len(pair) != 2 {
 			continue
 		}
-		gan, err := ganzhi.ParseGan(pair[0])
+		gan, err := ganzhi.EncodeGan(pair[0])
 		if err != nil {
 			return fmt.Errorf("ri_de gan %q: %w", pair[0], err)
 		}
-		zhi, err := ganzhi.ParseZhi(pair[1])
+		zhi, err := ganzhi.EncodeZhi(pair[1])
 		if err != nil {
 			return fmt.Errorf("ri_de zhi %q: %w", pair[1], err)
 		}
@@ -626,11 +626,11 @@ func loadRideRigui() error {
 		if len(pair) != 2 {
 			continue
 		}
-		gan, err := ganzhi.ParseGan(pair[0])
+		gan, err := ganzhi.EncodeGan(pair[0])
 		if err != nil {
 			return fmt.Errorf("ri_gui gan %q: %w", pair[0], err)
 		}
-		zhi, err := ganzhi.ParseZhi(pair[1])
+		zhi, err := ganzhi.EncodeZhi(pair[1])
 		if err != nil {
 			return fmt.Errorf("ri_gui zhi %q: %w", pair[1], err)
 		}

@@ -35,11 +35,11 @@ func TestDomainOracle_ZhiPairRelations(t *testing.T) {
 	}
 	for _, tc := range doc.Cases {
 		t.Run(tc.ID, func(t *testing.T) {
-			a, err := ganzhi.ParseZhi(tc.A)
+			a, err := ganzhi.EncodeZhi(tc.A)
 			if err != nil {
 				t.Fatal(err)
 			}
-			b, err := ganzhi.ParseZhi(tc.B)
+			b, err := ganzhi.EncodeZhi(tc.B)
 			if err != nil {
 				t.Fatal(err)
 			}

@@ -62,7 +62,7 @@ func TestComputeChartWithYongShenProjectsTiming(t *testing.T) {
 		time.Date(1984, 2, 15, 8, 0, 0, 0, time.FixedZone("CST", 8*3600)),
 		116.4, 8,
 	)
-	symbol, err := ParseYongShen("生门")
+	symbol, err := EncodeYongShen("生门")
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -104,7 +104,7 @@ func TestChartExtra_AllFieldsPresent(t *testing.T) {
 
 //nolint:errcheck
 func zh(g, z string) ganzhi.Zhu {
-	gan, _ := ganzhi.ParseGan(g)
-	zhi, _ := ganzhi.ParseZhi(z)
+	gan, _ := ganzhi.EncodeGan(g)
+	zhi, _ := ganzhi.EncodeZhi(z)
 	return ganzhi.Zhu{Gan: gan, Zhi: zhi}
 }

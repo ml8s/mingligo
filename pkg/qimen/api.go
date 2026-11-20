@@ -21,14 +21,14 @@ type Method struct {
 	HourBoundary HourBoundary
 }
 
-// ParseMethod validates a method combination against the catalog.
-func ParseMethod(scope, school, dingjuMethod, quarterRule string) (Method, error) {
-	return ParseMethodWithOptions(scope, school, dingjuMethod, quarterRule, "", "", "")
+// EncodeMethod validates a method combination against the catalog.
+func EncodeMethod(scope, school, dingjuMethod, quarterRule string) (Method, error) {
+	return EncodeMethodWithOptions(scope, school, dingjuMethod, quarterRule, "", "", "")
 }
 
 // validateMethodFields validates an already-typed method combination against
 // the catalog. It is the single source of method validation; string parsing
-// lives only in ParseMethodWithOptions at the input boundary.
+// lives only in EncodeMethodWithOptions at the input boundary.
 func validateMethodFields(scope Scope, school School, dingju DingjuMethod, quarter QuarterRule, baseDingju DingjuMethod, dunSource DunSource, hourBoundary HourBoundary) (Method, error) {
 	scopeEntry, ok := scopeMethods[scope]
 	if !ok {
@@ -138,35 +138,35 @@ func validateDingju(d DingjuMethod) error {
 	}
 }
 
-// ParseMethodWithOptions validates a method and its Kejia-specific options.
-func ParseMethodWithOptions(
+// EncodeMethodWithOptions validates a method and its Kejia-specific options.
+func EncodeMethodWithOptions(
 	scope, school, dingjuMethod, quarterRule, baseDingjuMethod, dunSource, hourBoundary string,
 ) (Method, error) {
-	parsedScope, err := ParseScope(scope)
+	parsedScope, err := EncodeScope(scope)
 	if err != nil {
 		return Method{}, err
 	}
-	parsedSchool, err := ParseSchool(school)
+	parsedSchool, err := EncodeSchool(school)
 	if err != nil {
 		return Method{}, err
 	}
 	parsedDingju := DingjuMethod(dingjuMethod)
 	if dingjuMethod != "" {
-		parsedDingju, err = ParseDingjuMethod(dingjuMethod)
+		parsedDingju, err = EncodeDingjuMethod(dingjuMethod)
 		if err != nil {
 			return Method{}, err
 		}
 	}
 	parsedQuarter := QuarterRule(quarterRule)
 	if quarterRule != "" {
-		parsedQuarter, err = ParseQuarterRule(quarterRule)
+		parsedQuarter, err = EncodeQuarterRule(quarterRule)
 		if err != nil {
 			return Method{}, err
 		}
 	}
 	parsedBase := DingjuMethod(baseDingjuMethod)
 	if baseDingjuMethod != "" {
-		parsedBase, err = ParseDingjuMethod(baseDingjuMethod)
+		parsedBase, err = EncodeDingjuMethod(baseDingjuMethod)
 		if err != nil {
 			return Method{}, err
 		}
@@ -174,7 +174,7 @@ func ParseMethodWithOptions(
 	var parsedDun DunSource
 	if dunSource != "" {
 		var ok bool
-		parsedDun, ok = ParseDunSource(dunSource)
+		parsedDun, ok = EncodeDunSource(dunSource)
 		if !ok {
 			return Method{}, fmt.Errorf("unknown dun source %q", dunSource)
 		}
@@ -182,7 +182,7 @@ func ParseMethodWithOptions(
 	var parsedBoundary HourBoundary
 	if hourBoundary != "" {
 		var ok bool
-		parsedBoundary, ok = ParseHourBoundary(hourBoundary)
+		parsedBoundary, ok = EncodeHourBoundary(hourBoundary)
 		if !ok {
 			return Method{}, fmt.Errorf("unknown hour boundary %q", hourBoundary)
 		}
@@ -201,11 +201,11 @@ func ResolveMethod(scope, school, dingjuMethod, quarterRule string) (Method, err
 	if school == "" {
 		school = defaultSchool.String()
 	}
-	parsedScope, err := ParseScope(scope)
+	parsedScope, err := EncodeScope(scope)
 	if err != nil {
 		return Method{}, err
 	}
-	parsedSchool, err := ParseSchool(school)
+	parsedSchool, err := EncodeSchool(school)
 	if err != nil {
 		return Method{}, err
 	}
@@ -214,15 +214,15 @@ func ResolveMethod(scope, school, dingjuMethod, quarterRule string) (Method, err
 		if quarterRule == "" {
 			quarterRule = entry.DefaultQuarterRule.String()
 		}
-		return ParseMethod(scope, school, "", quarterRule)
+		return EncodeMethod(scope, school, "", quarterRule)
 	}
 	if dingjuMethod == "" && entry.allowsNoDingjuSchool(parsedSchool) {
-		return ParseMethod(scope, school, "", "")
+		return EncodeMethod(scope, school, "", "")
 	}
 	if dingjuMethod == "" && entry.DefaultDingju != "" {
 		dingjuMethod = entry.DefaultDingju.String()
 	}
-	return ParseMethod(scope, school, dingjuMethod, "")
+	return EncodeMethod(scope, school, dingjuMethod, "")
 }
 
 func ResolveMethodWithOptions(
@@ -236,7 +236,7 @@ func ResolveMethodWithOptions(
 	if resolved.Dingju == DingjuNone {
 		dingju = ""
 	}
-	return ParseMethodWithOptions(
+	return EncodeMethodWithOptions(
 		resolved.Scope.String(), resolved.School.String(), dingju,
 		resolved.QuarterRule.String(), baseDingjuMethod, dunSource, hourBoundary,
 	)

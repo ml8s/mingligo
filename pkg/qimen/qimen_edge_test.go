@@ -39,7 +39,7 @@ func TestEdgeDates(t *testing.T) {
 			}
 			// 用神符号冒烟
 			for _, s := range []string{"生门", "戊", "天辅", "六合"} {
-				sym, err := ParseYongShen(s)
+				sym, err := EncodeYongShen(s)
 				if err != nil {
 					t.Fatalf("%s %d时 解析 %s: %v", d, h, s, err)
 				}

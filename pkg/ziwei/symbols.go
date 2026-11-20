@@ -72,7 +72,7 @@ func (s ShenSha) String() string {
 	return ""
 }
 
-func ParseShenSha(name string) (ShenSha, bool) {
+func EncodeShenSha(name string) (ShenSha, bool) {
 	for i, n := range shenShaNames {
 		if n == name {
 			return ShenSha(i), true
@@ -108,7 +108,7 @@ func (k FlowStarKind) String() string {
 	return ""
 }
 
-func ParseFlowStarKind(name string) (FlowStarKind, bool) {
+func EncodeFlowStarKind(name string) (FlowStarKind, bool) {
 	for i, n := range flowStarKindNames {
 		if n != "" && n == name {
 			return FlowStarKind(i), true

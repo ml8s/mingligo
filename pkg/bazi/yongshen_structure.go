@@ -309,7 +309,7 @@ func buildTargetedRelationEvidence(
 		for _, member := range relation.Members {
 			pillars = append(pillars, member.Pillar)
 			if member.Gan != "" {
-				stem, err := ganzhi.ParseGan(member.Gan)
+				stem, err := ganzhi.EncodeGan(member.Gan)
 				if err != nil {
 					continue
 				}
@@ -317,7 +317,7 @@ func buildTargetedRelationEvidence(
 				targets = appendUniqueStrings(targets, stemTargets(member.Pillar, stem)...)
 			}
 			if member.Zhi != "" {
-				if _, err := ganzhi.ParseZhi(member.Zhi); err != nil {
+				if _, err := ganzhi.EncodeZhi(member.Zhi); err != nil {
 					continue
 				}
 				branches = append(branches, member.Zhi)
@@ -446,8 +446,8 @@ func canonicalRelationReference(value TargetedRelationEvidence) (NatalRelationFa
 		if len(value.Stems) != 2 || len(value.Pillars) != 2 {
 			return NatalRelationFact{}, false
 		}
-		ganA, errA := ganzhi.ParseGan(value.Stems[0])
-		ganB, errB := ganzhi.ParseGan(value.Stems[1])
+		ganA, errA := ganzhi.EncodeGan(value.Stems[0])
+		ganB, errB := ganzhi.EncodeGan(value.Stems[1])
 		if errA != nil || errB != nil {
 			return NatalRelationFact{}, false
 		}
@@ -467,8 +467,8 @@ func canonicalRelationReference(value TargetedRelationEvidence) (NatalRelationFa
 		if len(value.Branches) != 2 || len(value.Pillars) != 2 {
 			return NatalRelationFact{}, false
 		}
-		zhiA, errA := ganzhi.ParseZhi(value.Branches[0])
-		zhiB, errB := ganzhi.ParseZhi(value.Branches[1])
+		zhiA, errA := ganzhi.EncodeZhi(value.Branches[0])
+		zhiB, errB := ganzhi.EncodeZhi(value.Branches[1])
 		if errA != nil || errB != nil {
 			return NatalRelationFact{}, false
 		}
@@ -478,8 +478,8 @@ func canonicalRelationReference(value TargetedRelationEvidence) (NatalRelationFa
 		if len(value.Branches) != 2 || len(value.Pillars) != 2 {
 			return NatalRelationFact{}, false
 		}
-		zhiA, errA := ganzhi.ParseZhi(value.Branches[0])
-		zhiB, errB := ganzhi.ParseZhi(value.Branches[1])
+		zhiA, errA := ganzhi.EncodeZhi(value.Branches[0])
+		zhiB, errB := ganzhi.EncodeZhi(value.Branches[1])
 		if errA != nil || errB != nil {
 			return NatalRelationFact{}, false
 		}

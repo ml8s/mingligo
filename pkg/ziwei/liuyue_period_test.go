@@ -11,7 +11,7 @@ import (
 
 func liuYueTestChart(t *testing.T) Chart {
 	t.Helper()
-	shiZhi, err := ganzhi.ParseZhi("辰")
+	shiZhi, err := ganzhi.EncodeZhi("辰")
 	if err != nil {
 		t.Fatalf("parse shichen: %v", err)
 	}

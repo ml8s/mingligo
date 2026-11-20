@@ -32,7 +32,7 @@ func TestDomainOracle_LiuyaoConflicts(t *testing.T) {
 	}
 	for _, tc := range doc.Cases {
 		t.Run(tc.ID, func(t *testing.T) {
-			ws, err := ganzhi.ParseWangShuai(tc.WangShuai)
+			ws, err := ganzhi.EncodeWangShuai(tc.WangShuai)
 			if err != nil {
 				t.Fatalf("case %s: %v", tc.ID, err)
 			}

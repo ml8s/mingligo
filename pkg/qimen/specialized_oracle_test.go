@@ -21,7 +21,7 @@ func oracleGong(t *testing.T, name string) GongIndex {
 
 func oracleGan(t *testing.T, name string) ganzhi.Gan {
 	t.Helper()
-	gan, err := ganzhi.ParseGan(name)
+	gan, err := ganzhi.EncodeGan(name)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -195,7 +195,7 @@ func TestDomainOracle_QimenSpecializedContext(t *testing.T) {
 
 func mustOracleZhi(t *testing.T, name string) ganzhi.Zhi {
 	t.Helper()
-	zhi, err := ganzhi.ParseZhi(name)
+	zhi, err := ganzhi.EncodeZhi(name)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -204,7 +204,7 @@ func mustOracleZhi(t *testing.T, name string) ganzhi.Zhi {
 
 func oracleWangShuai(t *testing.T, name string) ganzhi.WangShuai {
 	t.Helper()
-	value, err := ganzhitest.ParseWangShuai(name)
+	value, err := ganzhitest.EncodeWangShuai(name)
 	if err != nil {
 		t.Fatal(err)
 	}

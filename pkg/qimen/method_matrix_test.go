@@ -34,12 +34,12 @@ func TestParseMethodMatrix(t *testing.T) {
 	}
 	for _, method := range validMatrix {
 		tc := method
-		got, err := ParseMethod(tc.Scope.String(), tc.School.String(), tc.Dingju.String(), "")
+		got, err := EncodeMethod(tc.Scope.String(), tc.School.String(), tc.Dingju.String(), "")
 		if err != nil {
-			t.Fatalf("ParseMethod(%q,%q,%q): %v", tc.Scope, tc.School, tc.Dingju, err)
+			t.Fatalf("EncodeMethod(%q,%q,%q): %v", tc.Scope, tc.School, tc.Dingju, err)
 		}
 		if got != tc {
-			t.Fatalf("ParseMethod(%q,%q,%q) = %+v, want %+v", tc.Scope, tc.School, tc.Dingju, got, tc)
+			t.Fatalf("EncodeMethod(%q,%q,%q) = %+v, want %+v", tc.Scope, tc.School, tc.Dingju, got, tc)
 		}
 	}
 	invalid := [][3]string{
@@ -49,8 +49,8 @@ func TestParseMethodMatrix(t *testing.T) {
 		{"", "zhuanpan", ""},
 	}
 	for _, tc := range invalid {
-		if _, err := ParseMethod(tc[0], tc[1], tc[2], ""); err == nil {
-			t.Errorf("ParseMethod(%q,%q,%q) should reject", tc[0], tc[1], tc[2])
+		if _, err := EncodeMethod(tc[0], tc[1], tc[2], ""); err == nil {
+			t.Errorf("EncodeMethod(%q,%q,%q) should reject", tc[0], tc[1], tc[2])
 		}
 	}
 	if _, err := ComputeChartWithMethod(
@@ -211,7 +211,7 @@ func loadMethodMatrixGoldenFixture(t *testing.T) methodGoldenFixture {
 		default:
 			t.Fatalf("unknown method golden provenance %q", vector.Provenance)
 		}
-		if _, err := ParseMethod(vector.Method.Scope, vector.Method.School, vector.Method.Dingju, ""); err != nil {
+		if _, err := EncodeMethod(vector.Method.Scope, vector.Method.School, vector.Method.Dingju, ""); err != nil {
 			t.Fatalf("invalid method golden combination %+v: %v", vector.Method, err)
 		}
 		if vector.ActualJieQi == "" || vector.YongJuJieQi == "" || vector.Ju < 1 || vector.Ju > 9 ||
@@ -401,7 +401,7 @@ func TestMethodMatrixExternalAnchors(t *testing.T) {
 	fixture := loadMethodMatrixGoldenFixture(t)
 	for _, anchor := range fixture.Vectors {
 		t.Run(anchor.Name, func(t *testing.T) {
-			method, err := ParseMethod(anchor.Method.Scope, anchor.Method.School, anchor.Method.Dingju, "")
+			method, err := EncodeMethod(anchor.Method.Scope, anchor.Method.School, anchor.Method.Dingju, "")
 			if err != nil {
 				t.Fatal(err)
 			}

@@ -23,13 +23,13 @@ func TestDomainOracle_AnnualShenShaPositions(t *testing.T) {
 		t.Fatalf("year anchors = %d, want 4", len(doc.Positions))
 	}
 	for yearText, positions := range doc.Positions {
-		year, err := ganzhi.ParseZhi(yearText)
+		year, err := ganzhi.EncodeZhi(yearText)
 		if err != nil {
 			t.Fatalf("parse year %s: %v", yearText, err)
 		}
 		for name, targetText := range positions {
 			t.Run(yearText+"-"+name, func(t *testing.T) {
-				target, err := ganzhi.ParseZhi(targetText)
+				target, err := ganzhi.EncodeZhi(targetText)
 				if err != nil {
 					t.Fatalf("parse target %s: %v", targetText, err)
 				}

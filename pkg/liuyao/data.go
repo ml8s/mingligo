@@ -92,7 +92,7 @@ func loadHexagrams() error {
 			return fmt.Errorf("liuyao: unknown palace %q in na_zhi", palaceName)
 		}
 		for j, zn := range zhiNames {
-			z, err := ganzhi.ParseZhi(zn)
+			z, err := ganzhi.EncodeZhi(zn)
 			if err != nil {
 				return err
 			}
@@ -109,7 +109,7 @@ func parseGanPair(v interface{}) ([2]ganzhi.Gan, error) {
 	var out [2]ganzhi.Gan
 	switch t := v.(type) {
 	case string:
-		g, err := ganzhi.ParseGan(t)
+		g, err := ganzhi.EncodeGan(t)
 		if err != nil {
 			return out, err
 		}
@@ -120,7 +120,7 @@ func parseGanPair(v interface{}) ([2]ganzhi.Gan, error) {
 			if !ok || i >= 2 {
 				return out, fmt.Errorf("invalid na_gan entry")
 			}
-			g, err := ganzhi.ParseGan(name)
+			g, err := ganzhi.EncodeGan(name)
 			if err != nil {
 				return out, err
 			}

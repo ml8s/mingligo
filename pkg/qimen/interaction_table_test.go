@@ -65,11 +65,11 @@ func TestGanInteractionTableContract(t *testing.T) {
 		{"壬", "癸"}, {"癸", "辛"}, {"丁", "己"}, {"乙", "己"}, {"乙", "壬"},
 	}
 	for _, pair := range wantMissing {
-		earth, err := ganzhi.ParseGan(pair[0])
+		earth, err := ganzhi.EncodeGan(pair[0])
 		if err != nil {
 			t.Fatal(err)
 		}
-		heaven, err := ganzhi.ParseGan(pair[1])
+		heaven, err := ganzhi.EncodeGan(pair[1])
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -81,11 +81,11 @@ func TestGanInteractionTableContract(t *testing.T) {
 }
 
 func TestGanInteractionDisplayNameIsMechanical(t *testing.T) {
-	earth, err := ganzhi.ParseGan("戊")
+	earth, err := ganzhi.EncodeGan("戊")
 	if err != nil {
 		t.Fatal(err)
 	}
-	heaven, err := ganzhi.ParseGan("庚")
+	heaven, err := ganzhi.EncodeGan("庚")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -100,7 +100,7 @@ func TestGanInteractionDisplayNameIsMechanical(t *testing.T) {
 }
 
 func TestGanGongFactsPreserveHeavenAndEarthLayers(t *testing.T) {
-	heavenMoving, err := ganzhi.ParseGan("壬")
+	heavenMoving, err := ganzhi.EncodeGan("壬")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -120,11 +120,11 @@ func TestGanGongFactsPreserveHeavenAndEarthLayers(t *testing.T) {
 }
 
 func TestGanInteractionDoesNotInventMissingRule(t *testing.T) {
-	earth, err := ganzhi.ParseGan("己")
+	earth, err := ganzhi.EncodeGan("己")
 	if err != nil {
 		t.Fatal(err)
 	}
-	heaven, err := ganzhi.ParseGan("壬")
+	heaven, err := ganzhi.EncodeGan("壬")
 	if err != nil {
 		t.Fatal(err)
 	}

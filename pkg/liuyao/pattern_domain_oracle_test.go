@@ -49,7 +49,7 @@ func oracleWuxing(name string) ganzhi.Wuxing {
 
 func mustOracleZhi(t *testing.T, name string) ganzhi.Zhi {
 	t.Helper()
-	value, err := ganzhi.ParseZhi(name)
+	value, err := ganzhi.EncodeZhi(name)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -194,7 +194,7 @@ func TestDomainOracle_LiuyaoPatternSemantics(t *testing.T) {
 	}
 	for _, tc := range doc.SelectionCases {
 		t.Run(tc.ID, func(t *testing.T) {
-			typ, err := ParseYongShen(tc.YongShen)
+			typ, err := EncodeYongShen(tc.YongShen)
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -203,18 +203,18 @@ func TestDomainOracle_LiuyaoPatternSemantics(t *testing.T) {
 				if item.Position < 1 || item.Position > 6 {
 					t.Fatalf("invalid position %d", item.Position)
 				}
-				zhi, err := ganzhi.ParseZhi(item.Zhi)
+				zhi, err := ganzhi.EncodeZhi(item.Zhi)
 				if err != nil {
 					t.Fatal(err)
 				}
-				ws, err := ganzhitest.ParseWangShuai(item.WangShuai)
+				ws, err := ganzhitest.EncodeWangShuai(item.WangShuai)
 				if err != nil {
 					t.Fatal(err)
 				}
 				chart.Lines[item.Position-1] = Line{
 					Position: item.Position, Zhi: zhi, LiuQin: parseOracleLiuQin(t, item.LiuQin),
 					XunKong: item.XunKong, YuePo: item.YuePo, MuKu: item.MuKu,
-					DongSelf: item.DongSelf, ShiYing: ParseShiYing(item.ShiYing),
+					DongSelf: item.DongSelf, ShiYing: EncodeShiYing(item.ShiYing),
 				}
 				chart.WangShuai[item.Position-1] = ws
 			}
@@ -225,18 +225,18 @@ func TestDomainOracle_LiuyaoPatternSemantics(t *testing.T) {
 	}
 	for _, tc := range doc.PatternCases {
 		t.Run(tc.ID, func(t *testing.T) {
-			typ, err := ParseYongShen(tc.Target)
+			typ, err := EncodeYongShen(tc.Target)
 			if err != nil {
 				t.Fatal(err)
 			}
 			chart := Chart{DongYao: tc.MovingPositions}
 			if len(tc.Lines) > 0 {
 				for _, item := range tc.Lines {
-					zhi, err := ganzhi.ParseZhi(item.Zhi)
+					zhi, err := ganzhi.EncodeZhi(item.Zhi)
 					if err != nil {
 						t.Fatal(err)
 					}
-					ws, err := ganzhitest.ParseWangShuai(item.WangShuai)
+					ws, err := ganzhitest.EncodeWangShuai(item.WangShuai)
 					if err != nil {
 						t.Fatal(err)
 					}
@@ -249,7 +249,7 @@ func TestDomainOracle_LiuyaoPatternSemantics(t *testing.T) {
 				for index, relation := range tc.DayRelations {
 					types := make([]DayRelationType, 0, len(relation.Relations))
 					for _, name := range relation.Relations {
-						types = append(types, ParseDayRelationType(name))
+						types = append(types, EncodeDayRelationType(name))
 					}
 					chart.DayRelations[index] = DayRelation{Relations: types}
 				}
@@ -260,11 +260,11 @@ func TestDomainOracle_LiuyaoPatternSemantics(t *testing.T) {
 				return
 			}
 			for index, name := range tc.LinesZhi {
-				from, err := ganzhi.ParseZhi(name)
+				from, err := ganzhi.EncodeZhi(name)
 				if err != nil {
 					t.Fatal(err)
 				}
-				to, err := ganzhi.ParseZhi(tc.ChangedLinesZhi[index])
+				to, err := ganzhi.EncodeZhi(tc.ChangedLinesZhi[index])
 				if err != nil {
 					t.Fatal(err)
 				}
@@ -306,7 +306,7 @@ func TestDomainOracle_LiuyaoPatternSemantics(t *testing.T) {
 			if err != nil {
 				t.Fatal(err)
 			}
-			typ, err := ParseYongShen(tc.YongShen)
+			typ, err := EncodeYongShen(tc.YongShen)
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -392,17 +392,17 @@ func TestDomainOracle_LiuyaoPatternSemantics(t *testing.T) {
 	for _, tc := range doc.SanheCases {
 		t.Run(tc.ID, func(t *testing.T) {
 			chart := Chart{}
-			ri, err := ganzhi.ParseZhi(tc.RiZhi)
+			ri, err := ganzhi.EncodeZhi(tc.RiZhi)
 			if err != nil {
 				t.Fatal(err)
 			}
-			yue, err := ganzhi.ParseZhi(tc.YueZhi)
+			yue, err := ganzhi.EncodeZhi(tc.YueZhi)
 			if err != nil {
 				t.Fatal(err)
 			}
 			chart.RiZhi, chart.YueZhi = ri, yue
 			for _, item := range tc.Lines {
-				zhi, err := ganzhi.ParseZhi(item.Zhi)
+				zhi, err := ganzhi.EncodeZhi(item.Zhi)
 				if err != nil {
 					t.Fatal(err)
 				}

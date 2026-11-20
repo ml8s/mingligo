@@ -14,14 +14,14 @@ func TestParseDingjuMethod(t *testing.T) {
 		"zhirun": DingjuZhiRun,
 	}
 	for input, want := range valid {
-		got, err := ParseDingjuMethod(input)
+		got, err := EncodeDingjuMethod(input)
 		if err != nil || got != want {
-			t.Fatalf("ParseDingjuMethod(%q) = %v, %v; want %v", input, got, err, want)
+			t.Fatalf("EncodeDingjuMethod(%q) = %v, %v; want %v", input, got, err, want)
 		}
 	}
 	for _, input := range []string{"", "luoshu_feipan", "SHIRUN", "day"} {
-		if _, err := ParseDingjuMethod(input); err == nil {
-			t.Errorf("ParseDingjuMethod(%q) should reject", input)
+		if _, err := EncodeDingjuMethod(input); err == nil {
+			t.Errorf("EncodeDingjuMethod(%q) should reject", input)
 		}
 	}
 }
@@ -33,8 +33,8 @@ func TestZhiRunTableContract(t *testing.T) {
 	if zhiRunLeaderDays != 15 || zhiRunThreshold != 7 || zhiRunMaxIntervals != 12 {
 		t.Fatalf("grid = %d/%d/%d, want 15/7/12", zhiRunLeaderDays, zhiRunThreshold, zhiRunMaxIntervals)
 	}
-	mangZhong, _ := tianwen.ParseJieQi("芒种")
-	daXue, _ := tianwen.ParseJieQi("大雪")
+	mangZhong, _ := tianwen.EncodeJieQi("芒种")
+	daXue, _ := tianwen.EncodeJieQi("大雪")
 	if !zhiRunRepeatTerms[mangZhong] || !zhiRunRepeatTerms[daXue] {
 		t.Fatal("only Mangzhong and Daxue may repeat")
 	}
@@ -193,7 +193,7 @@ func TestZhiRunExternalRotatingPlateAnchor(t *testing.T) {
 }
 
 func TestComputeChartWithYongShenAndMethod(t *testing.T) {
-	symbol, err := ParseYongShen("生门")
+	symbol, err := EncodeYongShen("生门")
 	if err != nil {
 		t.Fatal(err)
 	}

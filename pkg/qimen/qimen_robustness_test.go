@@ -27,7 +27,7 @@ func TestRandomDates(t *testing.T) {
 		}
 		// 随机用神符号
 		syms := []string{"生门", "开门", "天辅", "天芮", "六合", "值符", "戊", "庚", "乙", "天禽"}
-		s, _ := ParseYongShen(syms[i%len(syms)])
+		s, _ := EncodeYongShen(syms[i%len(syms)])
 		_ = computeYongShenSymbols(ch, []YongShenSymbol{s})
 	}
 }

@@ -51,11 +51,11 @@ func loadBaziOracle(t *testing.T) baziOracle {
 func TestDomainOracle_TenGodsAll100(t *testing.T) {
 	doc := loadBaziOracle(t)
 	for _, tc := range doc.TenGods {
-		dm, err := ParseGan(tc.Day)
+		dm, err := EncodeGan(tc.Day)
 		if err != nil {
 			t.Fatal(err)
 		}
-		otherGan, err := ParseGan(tc.Other)
+		otherGan, err := EncodeGan(tc.Other)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -68,7 +68,7 @@ func TestDomainOracle_TenGodsAll100(t *testing.T) {
 func TestDomainOracle_HiddenStemsAll12(t *testing.T) {
 	doc := loadBaziOracle(t)
 	for _, tc := range doc.Hidden {
-		z, err := ParseZhi(tc.Branch)
+		z, err := EncodeZhi(tc.Branch)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -86,19 +86,19 @@ func TestDomainOracle_NayinXunKongChangSheng(t *testing.T) {
 	for _, tc := range doc.Nayin {
 		first := []rune(tc.First)
 		second := []rune(tc.Second)
-		a, e1 := ParseGan(string(first[0]))
+		a, e1 := EncodeGan(string(first[0]))
 		if e1 != nil {
 			t.Fatal(e1)
 		}
-		az, e2 := ParseZhi(string(first[1]))
+		az, e2 := EncodeZhi(string(first[1]))
 		if e2 != nil {
 			t.Fatal(e2)
 		}
-		b, e3 := ParseGan(string(second[0]))
+		b, e3 := EncodeGan(string(second[0]))
 		if e3 != nil {
 			t.Fatal(e3)
 		}
-		bz, e4 := ParseZhi(string(second[1]))
+		bz, e4 := EncodeZhi(string(second[1]))
 		if e4 != nil {
 			t.Fatal(e4)
 		}
@@ -112,11 +112,11 @@ func TestDomainOracle_NayinXunKongChangSheng(t *testing.T) {
 
 	for _, tc := range doc.XunKong {
 		leaderRune := []rune(tc.Leader)
-		leader, err := ParseGan(string(leaderRune[0]))
+		leader, err := EncodeGan(string(leaderRune[0]))
 		if err != nil {
 			t.Fatal(err)
 		}
-		z, err2 := ParseZhi(string(leaderRune[1]))
+		z, err2 := EncodeZhi(string(leaderRune[1]))
 		if err2 != nil {
 			t.Fatal(err2)
 		}
@@ -129,11 +129,11 @@ func TestDomainOracle_NayinXunKongChangSheng(t *testing.T) {
 		}
 	}
 	for _, tc := range doc.ChangSheng {
-		g, err := ParseGan(tc.Stem)
+		g, err := EncodeGan(tc.Stem)
 		if err != nil {
 			t.Fatal(err)
 		}
-		z, err2 := ParseZhi(tc.Branch)
+		z, err2 := EncodeZhi(tc.Branch)
 		if err2 != nil {
 			t.Fatal(err2)
 		}
@@ -152,11 +152,11 @@ func TestDomainOracle_NayinXunKongChangSheng(t *testing.T) {
 		t.Fatalf("ten stem lu rows = %d, want 10", len(doc.Lu))
 	}
 	for ganName, zhiName := range doc.Lu {
-		g, err := ParseGan(ganName)
+		g, err := EncodeGan(ganName)
 		if err != nil {
 			t.Fatal(err)
 		}
-		z, err := ParseZhi(zhiName)
+		z, err := EncodeZhi(zhiName)
 		if err != nil {
 			t.Fatal(err)
 		}

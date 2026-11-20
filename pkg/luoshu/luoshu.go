@@ -59,7 +59,7 @@ func Load() error {
 				loadErr = fmt.Errorf("luoshu: duplicate palace number: %d", row.Number)
 				return
 			}
-			element, err := ganzhi.ParseWuxing(row.Wuxing)
+			element, err := ganzhi.EncodeWuxing(row.Wuxing)
 			if err != nil {
 				loadErr = fmt.Errorf("luoshu: palace %d: %w", row.Number, err)
 				return

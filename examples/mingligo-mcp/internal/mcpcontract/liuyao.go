@@ -586,7 +586,7 @@ func liuyaoResolveFocus(focus LiuyaoFocusInput) (LiuyaoYongShenName, error) {
 		if focus.YongShen == "" {
 			return "", fmt.Errorf("yong_shen focus requires yong_shen")
 		}
-		if _, err := liuyao.ParseYongShen(focus.YongShen); err != nil {
+		if _, err := liuyao.EncodeYongShen(focus.YongShen); err != nil {
 			return "", fmt.Errorf("invalid yong_shen focus: %w", err)
 		}
 		return LiuyaoYongShenName(focus.YongShen), nil
@@ -687,7 +687,7 @@ func LiuyaoChart(_ context.Context, input LiuyaoChartInput) (LiuyaoChartResultOu
 	if float64(input.Event.CastingContext.Longitude) < -180 || float64(input.Event.CastingContext.Longitude) > 180 {
 		return LiuyaoChartResultOutput{}, fmt.Errorf("liuyao.chart: longitude must be within [-180,180], got %v", float64(input.Event.CastingContext.Longitude))
 	}
-	ys, err := liuyao.ParseYongShen(string(input.Event.CastingContext.YongShen))
+	ys, err := liuyao.EncodeYongShen(string(input.Event.CastingContext.YongShen))
 	if err != nil {
 		return LiuyaoChartResultOutput{}, fmt.Errorf("liuyao.chart: %w", err)
 	}

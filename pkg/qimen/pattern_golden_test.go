@@ -230,55 +230,55 @@ func assertPatternGoldenVector(t *testing.T, vector patternGoldenVector) {
 
 func patternGoldenPan(t *testing.T, golden patternGoldenPanSpec) Board {
 	t.Helper()
-	school, err := ParseSchool(golden.School)
+	school, err := EncodeSchool(golden.School)
 	if err != nil {
 		t.Fatal(err)
 	}
-	dutyStar, err := ParseStarIndex(golden.DutyStar)
+	dutyStar, err := EncodeStarIndex(golden.DutyStar)
 	if err != nil {
 		t.Fatal(err)
 	}
-	dutyDoor, err := ParseDoorIndex(golden.DutyDoor)
+	dutyDoor, err := EncodeDoorIndex(golden.DutyDoor)
 	if err != nil {
 		t.Fatal(err)
 	}
 	result := Board{School: school, YinDun: golden.YinDun, DutyStar: dutyStar, DutyDoor: dutyDoor}
 	for _, goldenPalace := range golden.Palaces {
-		palace, err := ParsePalaceIndex(goldenPalace.Gong)
+		palace, err := EncodePalaceIndex(goldenPalace.Gong)
 		if err != nil {
 			t.Fatal(err)
 		}
 		item := &result.GongWei[int(palace)-1]
-		item.DiPanGan, err = ganzhi.ParseGan(goldenPalace.DiPanGan)
+		item.DiPanGan, err = ganzhi.EncodeGan(goldenPalace.DiPanGan)
 		if err != nil {
 			t.Fatal(err)
 		}
 		for _, symbol := range goldenPalace.TianPan {
-			gan, err := ganzhi.ParseGan(symbol.Gan)
+			gan, err := ganzhi.EncodeGan(symbol.Gan)
 			if err != nil {
 				t.Fatal(err)
 			}
-			star, err := ParseStarIndex(symbol.Star)
+			star, err := EncodeStarIndex(symbol.Star)
 			if err != nil {
 				t.Fatal(err)
 			}
 			item.TianPan = append(item.TianPan, TianPanSymbol{Gan: gan, Star: star})
 		}
 		if goldenPalace.TianPanGan != "" {
-			gan, err := ganzhi.ParseGan(goldenPalace.TianPanGan)
+			gan, err := ganzhi.EncodeGan(goldenPalace.TianPanGan)
 			if err != nil {
 				t.Fatal(err)
 			}
 			item.TianPanGan = &gan
 		}
 		if goldenPalace.Door != "" {
-			item.Door, err = ParseDoorIndex(goldenPalace.Door)
+			item.Door, err = EncodeDoorIndex(goldenPalace.Door)
 			if err != nil {
 				t.Fatal(err)
 			}
 		}
 		if goldenPalace.Spirit != "" {
-			item.Spirit, err = ParseSpiritIndex(goldenPalace.Spirit)
+			item.Spirit, err = EncodeSpiritIndex(goldenPalace.Spirit)
 			if err != nil {
 				t.Fatal(err)
 			}

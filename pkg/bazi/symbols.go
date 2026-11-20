@@ -21,7 +21,7 @@ func (p RelationPosition) String() string {
 	}
 }
 
-func ParseRelationPosition(name string) (RelationPosition, bool) {
+func EncodeRelationPosition(name string) (RelationPosition, bool) {
 	switch name {
 	case "adjacent":
 		return positionAdjacent, true

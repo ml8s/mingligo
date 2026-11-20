@@ -14,7 +14,7 @@ type LunarProjector struct {
 
 // NewLunarProjector builds a projector. A nil location falls back to UTC+8.
 func NewLunarProjector(basis LunarBasis, loc *time.Location) (LunarProjector, error) {
-	parsed, err := ParseLunarBasis(string(basis))
+	parsed, err := EncodeLunarBasis(string(basis))
 	if err != nil {
 		return LunarProjector{}, err
 	}

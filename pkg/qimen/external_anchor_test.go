@@ -200,7 +200,7 @@ func assertExternalPalaceLayers(
 	if wantStar == StarTianRui && !foundQin {
 		t.Errorf("palace %d lacks explicit TianQin fact", palaceNumber)
 	}
-	wantDoor, err := ParseDoorIndex(string(runes[4]) + "门")
+	wantDoor, err := EncodeDoorIndex(string(runes[4]) + "门")
 	if err != nil {
 		t.Fatalf("palace %d door: %v", palaceNumber, err)
 	}

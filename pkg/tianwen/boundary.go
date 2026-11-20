@@ -68,7 +68,7 @@ func (o BoundaryOptions) zone() *time.Location {
 }
 
 func (o BoundaryOptions) lunarProjector() LunarProjector {
-	basis, err := ParseLunarBasis(string(o.LunarBasis))
+	basis, err := EncodeLunarBasis(string(o.LunarBasis))
 	if err != nil {
 		basis = LunarBasisLocalAstronomical
 	}
@@ -80,7 +80,7 @@ func (o BoundaryOptions) lunarProjector() LunarProjector {
 }
 
 func (o BoundaryOptions) dayLocation() *time.Location {
-	basis, err := ParseLunarBasis(string(o.LunarBasis))
+	basis, err := EncodeLunarBasis(string(o.LunarBasis))
 	if err == nil && basis == LunarBasisOfficial {
 		return cstLocation
 	}

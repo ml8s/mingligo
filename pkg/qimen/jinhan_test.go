@@ -104,11 +104,11 @@ func TestJinhanGolden(t *testing.T) {
 			if chart.Board.YinDun != vector.YinDun {
 				t.Fatalf("yin dun = %v, want %v", chart.Board.YinDun, vector.YinDun)
 			}
-			wantGan, err := ganzhi.ParseGan(vector.DayGan)
+			wantGan, err := ganzhi.EncodeGan(vector.DayGan)
 			if err != nil {
 				t.Fatal(err)
 			}
-			wantZhi, err := ganzhi.ParseZhi(vector.DayZhi)
+			wantZhi, err := ganzhi.EncodeZhi(vector.DayZhi)
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -173,7 +173,7 @@ func TestComputeChartWithYongShenRejectsJinhan(t *testing.T) {
 		time.Date(2026, 9, 7, 12, 0, 0, 0, time.FixedZone("CST", 8*3600)),
 		116.4, 8,
 	)
-	symbol, err := ParseYongShen("生门")
+	symbol, err := EncodeYongShen("生门")
 	if err != nil {
 		t.Fatal(err)
 	}

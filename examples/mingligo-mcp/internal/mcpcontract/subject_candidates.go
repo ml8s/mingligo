@@ -190,7 +190,7 @@ func TianwenSubjectCandidates(_ context.Context, input TianwenSubjectCandidatesI
 		}
 	}
 
-	if _, err := ganzhi.ParseGender(string(input.SubjectGender)); err != nil {
+	if _, err := ganzhi.EncodeGender(string(input.SubjectGender)); err != nil {
 		return TianwenSubjectCandidatesOutput{}, fmt.Errorf("tianwen.subject_candidates: gender: %w", err)
 	}
 

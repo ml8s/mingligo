@@ -28,7 +28,7 @@ func (subject NatalSubject) standardTime() (time.Time, error) {
 }
 
 func (subject NatalSubject) gender() (ganzhi.Gender, error) {
-	return ganzhi.ParseGender(string(subject.Gender))
+	return ganzhi.EncodeGender(string(subject.Gender))
 }
 
 func (subject NatalSubject) validate() (time.Time, ganzhi.Gender, error) {

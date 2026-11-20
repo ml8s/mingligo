@@ -37,7 +37,7 @@ func buildPatternSemanticChart(t *testing.T, input []patternSemanticPalace) Char
 		}
 		zhi := Zhi(0)
 		if item.Zhi != "" {
-			parsed, err := ganzhi.ParseZhi(item.Zhi)
+			parsed, err := ganzhi.EncodeZhi(item.Zhi)
 			if err != nil {
 				t.Fatalf("parse zhi %q: %v", item.Zhi, err)
 			}

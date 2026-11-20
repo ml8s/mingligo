@@ -38,11 +38,11 @@ func TestTiaoHou_ClassicCorrectionOracle(t *testing.T) {
 
 	for _, tc := range doc.Entries {
 		t.Run(tc.ID, func(t *testing.T) {
-			dm, err := ganzhi.ParseGan(tc.RiYuan)
+			dm, err := ganzhi.EncodeGan(tc.RiYuan)
 			if err != nil {
 				t.Fatal(err)
 			}
-			mb, err := ganzhi.ParseZhi(tc.MonthBranch)
+			mb, err := ganzhi.EncodeZhi(tc.MonthBranch)
 			if err != nil {
 				t.Fatal(err)
 			}

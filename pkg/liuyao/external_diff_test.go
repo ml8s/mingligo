@@ -54,7 +54,7 @@ func TestExternalDiffFixtures_HardFacts(t *testing.T) {
 				t.Fatal(err)
 			}
 			st := tianwen.ApparentSolarFromCivil(local, 116.4, 8)
-			yong, err := ParseYongShen(tc.Input.YongShen)
+			yong, err := EncodeYongShen(tc.Input.YongShen)
 			if err != nil {
 				t.Fatal(err)
 			}

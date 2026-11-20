@@ -176,8 +176,8 @@ func TestSpiritIndex_UnmarshalJSON_StringOnly(t *testing.T) {
 }
 
 func TestSpiritIndex_ParseTaiChang(t *testing.T) {
-	spirit, err := ParseSpiritIndex("太常")
+	spirit, err := EncodeSpiritIndex("太常")
 	if err != nil || spirit != SpiritTaiChang {
-		t.Fatalf("ParseSpiritIndex(太常) = %d, %v; want %d", spirit, err, SpiritTaiChang)
+		t.Fatalf("EncodeSpiritIndex(太常) = %d, %v; want %d", spirit, err, SpiritTaiChang)
 	}
 }

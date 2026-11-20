@@ -545,7 +545,7 @@ func canonicalXingGroup(a, b ganzhi.Zhi) string {
 func parseZhiNames(names []string) []ganzhi.Zhi {
 	values := make([]ganzhi.Zhi, 0, len(names))
 	for _, name := range names {
-		value, err := ganzhi.ParseZhi(name)
+		value, err := ganzhi.EncodeZhi(name)
 		if err != nil {
 			continue
 		}

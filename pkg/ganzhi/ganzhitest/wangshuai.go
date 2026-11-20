@@ -8,8 +8,8 @@ import (
 	"github.com/ml8s/mingligo/pkg/ganzhi"
 )
 
-// ParseWangShuai converts a Chinese prosperity label used by oracle fixtures.
-func ParseWangShuai(s string) (ganzhi.WangShuai, error) {
+// EncodeWangShuai converts a Chinese prosperity label used by oracle fixtures.
+func EncodeWangShuai(s string) (ganzhi.WangShuai, error) {
 	switch s {
 	case "旺":
 		return ganzhi.WSWang, nil

@@ -105,13 +105,13 @@ func loadXiaoXianRules() error {
 	}
 	xiaoxianStartByBranch = make(map[ganzhi.Zhi]int)
 	for _, p := range raw.StartPalaces {
-		startZhi, err := ganzhi.ParseZhi(p.Start)
+		startZhi, err := ganzhi.EncodeZhi(p.Start)
 		if err != nil {
 			return err
 		}
 		startIdx := zhiIdxToAnXingIdx(zhiToZhiIdx(startZhi))
 		for _, b := range p.Triad {
-			zhi, err := ganzhi.ParseZhi(b)
+			zhi, err := ganzhi.EncodeZhi(b)
 			if err != nil {
 				return err
 			}
@@ -137,7 +137,7 @@ func loadTables() error {
 	// siHuaTable
 	siHuaTable = make(map[Gan][4]StarIndex, 10)
 	for ganName, h := range data.SiHua {
-		gan, err := ganzhi.ParseGan(ganName)
+		gan, err := ganzhi.EncodeGan(ganName)
 		if err != nil {
 			return err
 		}
@@ -164,7 +164,7 @@ func loadTables() error {
 
 	// luCunTable
 	for ganName, pos := range data.LuCun {
-		gan, err := ganzhi.ParseGan(ganName)
+		gan, err := ganzhi.EncodeGan(ganName)
 		if err != nil {
 			return err
 		}
@@ -173,14 +173,14 @@ func loadTables() error {
 
 	// tianKuiTable / tianYueTable
 	for ganName, pos := range data.TianKui {
-		gan, err := ganzhi.ParseGan(ganName)
+		gan, err := ganzhi.EncodeGan(ganName)
 		if err != nil {
 			return err
 		}
 		tianKuiTable[int(gan)-1] = pos
 	}
 	for ganName, pos := range data.TianYue {
-		gan, err := ganzhi.ParseGan(ganName)
+		gan, err := ganzhi.EncodeGan(ganName)
 		if err != nil {
 			return err
 		}
@@ -206,7 +206,7 @@ func loadTables() error {
 		tianMaTable = [12]int{2, 11, 8, 5, 2, 11, 8, 5, 2, 11, 8, 5}
 	} else {
 		for zhiName, pos := range data.TianMa {
-			zhi, err := ganzhi.ParseZhi(zhiName)
+			zhi, err := ganzhi.EncodeZhi(zhiName)
 			if err != nil {
 				return err
 			}

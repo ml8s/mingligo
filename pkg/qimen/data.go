@@ -385,11 +385,11 @@ func loadGanInteractions() error {
 	entries := document.Entries
 	ganInteractionTable = make(map[[2]ganzhi.Gan]ganEntry, len(entries))
 	for _, entry := range entries {
-		earth, err := ganzhi.ParseGan(entry.Earth)
+		earth, err := ganzhi.EncodeGan(entry.Earth)
 		if err != nil {
 			return err
 		}
-		heaven, err := ganzhi.ParseGan(entry.Heaven)
+		heaven, err := ganzhi.EncodeGan(entry.Heaven)
 		if err != nil {
 			return err
 		}
@@ -420,7 +420,7 @@ func loadJushu() error {
 	solarTermJuTable = make(map[tianwen.JieQi][4]int, len(entries))
 	seenLongitude := make(map[float64]tianwen.JieQi, len(entries))
 	for _, entry := range entries {
-		jq, ok := tianwen.ParseJieQi(entry.JieQi)
+		jq, ok := tianwen.EncodeJieQi(entry.JieQi)
 		if !ok {
 			return fmt.Errorf("load jushu: unknown term %q", entry.JieQi)
 		}
@@ -466,11 +466,11 @@ func loadMenInteractions() error {
 	entries := document.Entries
 	menGongTable = make(map[[2]int]doorEntry, len(entries))
 	for _, entry := range entries {
-		door, err := ParseDoorIndex(entry.Door)
+		door, err := EncodeDoorIndex(entry.Door)
 		if err != nil {
 			return err
 		}
-		palace, err := ParsePalaceIndex(entry.Gong)
+		palace, err := EncodePalaceIndex(entry.Gong)
 		if err != nil {
 			return err
 		}
@@ -495,11 +495,11 @@ func loadXingInteractions() error {
 	entries := document.Entries
 	xingGongTable = make(map[[2]int]XingInteraction, len(entries))
 	for _, e := range entries {
-		s, err := ParseStarIndex(e.Star)
+		s, err := EncodeStarIndex(e.Star)
 		if err != nil {
 			return err
 		}
-		p, err := ParsePalaceIndex(e.Gong)
+		p, err := EncodePalaceIndex(e.Gong)
 		if err != nil {
 			return err
 		}
@@ -578,16 +578,16 @@ func loadCatalog() error {
 		return fmt.Errorf("load catalog: unsupported day boundary")
 	}
 	qimenDayBoundary = table.DayBoundary
-	parsedDefaultScope, err := ParseScope(table.Default.Scope)
+	parsedDefaultScope, err := EncodeScope(table.Default.Scope)
 	if err != nil {
 		return fmt.Errorf("load catalog: default scope: %w", err)
 	}
-	parsedDefaultSchool, err := ParseSchool(table.Default.School)
+	parsedDefaultSchool, err := EncodeSchool(table.Default.School)
 	if err != nil {
 		return fmt.Errorf("load catalog: default school: %w", err)
 	}
 	defaultScope, defaultSchool = parsedDefaultScope, parsedDefaultSchool
-	defaultDingju, err := ParseDingjuMethod(table.Default.DingjuMethod)
+	defaultDingju, err := EncodeDingjuMethod(table.Default.DingjuMethod)
 	if err != nil {
 		return fmt.Errorf("load catalog: default dingju method: %w", err)
 	}
@@ -598,7 +598,7 @@ func loadCatalog() error {
 
 	dingjuMethodNames = make(map[DingjuMethod]string, len(table.DingjuMethods))
 	for _, entry := range table.DingjuMethods {
-		method, err := ParseDingjuMethod(entry.DingjuMethod)
+		method, err := EncodeDingjuMethod(entry.DingjuMethod)
 		if err != nil {
 			return fmt.Errorf("load catalog: %w", err)
 		}
@@ -614,7 +614,7 @@ func loadCatalog() error {
 	}
 	quarterRuleNames = make(map[QuarterRule]string, len(table.QuarterRules))
 	for _, entry := range table.QuarterRules {
-		rule, err := ParseQuarterRule(entry.QuarterRule)
+		rule, err := EncodeQuarterRule(entry.QuarterRule)
 		if err != nil {
 			return fmt.Errorf("load catalog: %w", err)
 		}
@@ -631,7 +631,7 @@ func loadCatalog() error {
 
 	scopeMethods = make(map[Scope]scopeEntry, len(table.Scopes))
 	for _, entry := range table.Scopes {
-		scope, err := ParseScope(entry.Scope)
+		scope, err := EncodeScope(entry.Scope)
 		if err != nil {
 			return fmt.Errorf("load catalog: %w", err)
 		}
@@ -651,7 +651,7 @@ func loadCatalog() error {
 			MethodSource: entry.MethodSource,
 		}
 		for _, name := range entry.DingjuMethods {
-			method, err := ParseDingjuMethod(name)
+			method, err := EncodeDingjuMethod(name)
 			if err != nil {
 				return fmt.Errorf("load catalog: scope %q: %w", entry.Scope, err)
 			}
@@ -661,7 +661,7 @@ func loadCatalog() error {
 			loaded.DingjuMethods = append(loaded.DingjuMethods, method)
 		}
 		if entry.DefaultDingju != "" {
-			method, err := ParseDingjuMethod(entry.DefaultDingju)
+			method, err := EncodeDingjuMethod(entry.DefaultDingju)
 			if err != nil || !loaded.allowsDingju(method) {
 				return fmt.Errorf("load catalog: scope %q has invalid default dingju method %q", entry.Scope, entry.DefaultDingju)
 			}
@@ -670,7 +670,7 @@ func loadCatalog() error {
 			return fmt.Errorf("load catalog: scope %q lacks a default dingju method", entry.Scope)
 		}
 		for _, name := range entry.QuarterRules {
-			rule, err := ParseQuarterRule(name)
+			rule, err := EncodeQuarterRule(name)
 			if err != nil {
 				return fmt.Errorf("load catalog: scope %q: %w", entry.Scope, err)
 			}
@@ -680,7 +680,7 @@ func loadCatalog() error {
 			loaded.QuarterRules = append(loaded.QuarterRules, rule)
 		}
 		if entry.DefaultQuarterRule != "" {
-			rule, err := ParseQuarterRule(entry.DefaultQuarterRule)
+			rule, err := EncodeQuarterRule(entry.DefaultQuarterRule)
 			if err != nil || !loaded.allowsQuarterRule(rule) {
 				return fmt.Errorf("load catalog: scope %q has invalid default quarter rule %q", entry.Scope, entry.DefaultQuarterRule)
 			}
@@ -695,7 +695,7 @@ func loadCatalog() error {
 			loaded.Features = append(loaded.Features, feature)
 		}
 		for _, name := range entry.NoDingjuSchools {
-			school, err := ParseSchool(name)
+			school, err := EncodeSchool(name)
 			if err != nil || loaded.allowsNoDingjuSchool(school) {
 				return fmt.Errorf("load catalog: scope %q has invalid no-dingju school %q", entry.Scope, name)
 			}
@@ -711,7 +711,7 @@ func loadCatalog() error {
 
 	schoolMethods = make(map[School]schoolEntry, len(table.Schools))
 	for _, entry := range table.Schools {
-		school, err := ParseSchool(entry.School)
+		school, err := EncodeSchool(entry.School)
 		if err != nil {
 			return fmt.Errorf("load catalog: %w", err)
 		}
@@ -725,21 +725,21 @@ func loadCatalog() error {
 			DoorMode: entry.DoorMode, SpiritFlight: entry.SpiritFlight,
 		}
 		for _, name := range entry.AllowedScopes {
-			allowedScope, err := ParseScope(name)
+			allowedScope, err := EncodeScope(name)
 			if err != nil || loadedSchool.allowsScope(allowedScope) {
 				return fmt.Errorf("load catalog: school %q has invalid scope %q", entry.School, name)
 			}
 			loadedSchool.AllowedScopes = append(loadedSchool.AllowedScopes, allowedScope)
 		}
 		for _, name := range entry.AllowedDingjuMethods {
-			method, err := ParseDingjuMethod(name)
+			method, err := EncodeDingjuMethod(name)
 			if err != nil || loadedSchool.allowsDingju(method) {
 				return fmt.Errorf("load catalog: school %q has invalid dingju method %q", entry.School, name)
 			}
 			loadedSchool.AllowedDingjuMethods = append(loadedSchool.AllowedDingjuMethods, method)
 		}
 		for _, name := range entry.AllowedQuarterRules {
-			rule, err := ParseQuarterRule(name)
+			rule, err := EncodeQuarterRule(name)
 			if err != nil || loadedSchool.allowsQuarterRule(rule) {
 				return fmt.Errorf("load catalog: school %q has invalid quarter rule %q", entry.School, name)
 			}
@@ -771,7 +771,7 @@ func loadCatalog() error {
 	if table.MonthDingju.Direction != "retreat" || !table.MonthDingju.YinDun || !table.YearDingju.YinDun {
 		return fmt.Errorf("load catalog: unsupported month/year dingju rule")
 	}
-	firstBranch, err := ganzhi.ParseZhi(table.MonthDingju.FirstMonthBranch)
+	firstBranch, err := ganzhi.EncodeZhi(table.MonthDingju.FirstMonthBranch)
 	if err != nil {
 		return fmt.Errorf("load catalog: month first branch: %w", err)
 	}
@@ -781,12 +781,12 @@ func loadCatalog() error {
 		if group.LeadingJu < 1 || group.LeadingJu > 9 || group.Yuan == "" {
 			return fmt.Errorf("load catalog: invalid month group")
 		}
-		yuan, ok := ParseYuan(group.Yuan)
+		yuan, ok := EncodeYuan(group.Yuan)
 		if !ok {
 			return fmt.Errorf("load catalog: invalid month yuan %q", group.Yuan)
 		}
 		for _, name := range group.Branches {
-			branch, err := ganzhi.ParseZhi(name)
+			branch, err := ganzhi.EncodeZhi(name)
 			if err != nil {
 				return fmt.Errorf("load catalog: month branch: %w", err)
 			}
@@ -806,7 +806,7 @@ func loadCatalog() error {
 		if entry.Ju < 1 || entry.Ju > 9 || entry.Yuan == "" {
 			return fmt.Errorf("load catalog: invalid year dingju entry")
 		}
-		yuan, ok := ParseYuan(entry.Yuan)
+		yuan, ok := EncodeYuan(entry.Yuan)
 		if !ok {
 			return fmt.Errorf("load catalog: invalid year yuan %q", entry.Yuan)
 		}
@@ -843,7 +843,7 @@ func loadQuarter() error {
 
 	quarterYangBranch = make(map[ganzhi.Zhi]bool, len(table.YangBranches))
 	for _, name := range table.YangBranches {
-		branch, err := ganzhi.ParseZhi(name)
+		branch, err := ganzhi.EncodeZhi(name)
 		if err != nil {
 			return fmt.Errorf("load quarter: yang branch: %w", err)
 		}
@@ -853,7 +853,7 @@ func loadQuarter() error {
 		quarterYangBranch[branch] = true
 	}
 	for _, name := range table.YinBranches {
-		branch, err := ganzhi.ParseZhi(name)
+		branch, err := ganzhi.EncodeZhi(name)
 		if err != nil {
 			return fmt.Errorf("load quarter: yin branch: %w", err)
 		}
@@ -868,7 +868,7 @@ func loadQuarter() error {
 
 	quarterRules = make(map[QuarterRule]quarterVariant, len(table.Methods))
 	for _, entry := range table.Methods {
-		rule, err := ParseQuarterRule(entry.Rule)
+		rule, err := EncodeQuarterRule(entry.Rule)
 		if err != nil {
 			return fmt.Errorf("load quarter: %w", err)
 		}
@@ -921,15 +921,15 @@ func loadTenMinuteQuarter(entry quarterJSONEntry) error {
 	quarterFuTouUnits = entry.DingjuRule.FuTouUnits
 	quarterStartIndex = make(map[ganzhi.Gan]int, len(entry.PillarRule.Starts))
 	for _, start := range entry.PillarRule.Starts {
-		hourGan, err := ganzhi.ParseGan(start.HourGan)
+		hourGan, err := ganzhi.EncodeGan(start.HourGan)
 		if err != nil {
 			return fmt.Errorf("load quarter: hour gan: %w", err)
 		}
 		if len([]rune(start.Start)) != 2 {
 			return fmt.Errorf("load quarter: invalid start pillar %q", start.Start)
 		}
-		startGan, err := ganzhi.ParseGan(string([]rune(start.Start)[0]))
-		startZhi, err2 := ganzhi.ParseZhi(string([]rune(start.Start)[1]))
+		startGan, err := ganzhi.EncodeGan(string([]rune(start.Start)[0]))
+		startZhi, err2 := ganzhi.EncodeZhi(string([]rune(start.Start)[1]))
 		if err != nil || err2 != nil || startZhi != ganzhi.ZhiZi {
 			return fmt.Errorf("load quarter: invalid start pillar %q", start.Start)
 		}
@@ -945,12 +945,12 @@ func loadTenMinuteQuarter(entry quarterJSONEntry) error {
 			group.YangJu < 1 || group.YangJu > 9 || group.YinJu < 1 || group.YinJu > 9 {
 			return fmt.Errorf("load quarter: invalid dingju group %+v", group)
 		}
-		yuan, ok := ParseYuan(group.Yuan)
+		yuan, ok := EncodeYuan(group.Yuan)
 		if !ok {
 			return fmt.Errorf("load quarter: invalid yuan %q", group.Yuan)
 		}
 		for _, name := range group.Branches {
-			branch, err := ganzhi.ParseZhi(name)
+			branch, err := ganzhi.EncodeZhi(name)
 			if err != nil {
 				return fmt.Errorf("load quarter: dingju branch: %w", err)
 			}
@@ -976,18 +976,18 @@ func loadTwelveMinuteQuarter(entry quarterJSONEntry, variant quarterVariant) (qu
 		entry.JuShift.Cycle != 9 || entry.JuShift.YangStep != 1 || entry.JuShift.YinStep != -1 {
 		return variant, fmt.Errorf("load quarter: invalid twelve-minute rule")
 	}
-	baseScope, err := ParseScope(entry.BaseScope)
+	baseScope, err := EncodeScope(entry.BaseScope)
 	if err != nil {
 		return variant, fmt.Errorf("load quarter: twelve-minute base scope: %w", err)
 	}
-	baseSchool, err := ParseSchool(entry.BaseSchool)
+	baseSchool, err := EncodeSchool(entry.BaseSchool)
 	if err != nil {
 		return variant, fmt.Errorf("load quarter: twelve-minute base school: %w", err)
 	}
 	variant.BaseScope, variant.BaseSchool = baseScope, baseSchool
 	variant.BaseDingjuMethods = make(map[DingjuMethod]bool, len(entry.BaseDingjuMethods))
 	for _, name := range entry.BaseDingjuMethods {
-		method, err := ParseDingjuMethod(name)
+		method, err := EncodeDingjuMethod(name)
 		if err != nil || variant.BaseDingjuMethods[method] {
 			return variant, fmt.Errorf("load quarter: invalid base dingju method %q", name)
 		}
@@ -1004,7 +1004,7 @@ func loadTwelveMinuteQuarter(entry quarterJSONEntry, variant quarterVariant) (qu
 	variant.DunSources = make(map[DunSource]bool, len(entry.DunSources))
 	defaultDunCount := 0
 	for _, option := range entry.DunSources {
-		ds, ok := ParseDunSource(option.Source)
+		ds, ok := EncodeDunSource(option.Source)
 		if !ok {
 			return variant, fmt.Errorf("load quarter: invalid dun source %q", option.Source)
 		}
@@ -1023,7 +1023,7 @@ func loadTwelveMinuteQuarter(entry quarterJSONEntry, variant quarterVariant) (qu
 	variant.HourBoundaries = make(map[HourBoundary]int, len(entry.HourBoundaries))
 	defaultBoundaryCount := 0
 	for _, option := range entry.HourBoundaries {
-		hb, ok := ParseHourBoundary(option.Boundary)
+		hb, ok := EncodeHourBoundary(option.Boundary)
 		if !ok {
 			return variant, fmt.Errorf("load quarter: invalid hour boundary %q", option.Boundary)
 		}
@@ -1122,35 +1122,35 @@ func loadPlate() error {
 	}
 
 	for i, name := range table.OuterRing {
-		palace, err := ParsePalaceIndex(name)
+		palace, err := EncodePalaceIndex(name)
 		if err != nil {
 			return err
 		}
 		outerRing[i] = palace
 	}
 	for i, name := range table.EarthGanOrder {
-		gan, err := ganzhi.ParseGan(name)
+		gan, err := ganzhi.EncodeGan(name)
 		if err != nil {
 			return err
 		}
 		earthGanOrder[i] = gan
 	}
 	for i, name := range table.StarOrder {
-		star, err := ParseStarIndex(name)
+		star, err := EncodeStarIndex(name)
 		if err != nil {
 			return err
 		}
 		starOrder8[i] = star
 	}
 	for i, name := range table.DoorOrder {
-		door, err := ParseDoorIndex(name)
+		door, err := EncodeDoorIndex(name)
 		if err != nil {
 			return err
 		}
 		doorOrder[i] = door
 	}
 	for i, name := range table.MingFaDoorOrder {
-		door, err := ParseDoorIndex(name)
+		door, err := EncodeDoorIndex(name)
 		if err != nil {
 			return fmt.Errorf("load plate: Ming Fa door %q: %w", name, err)
 		}
@@ -1176,7 +1176,7 @@ func loadPlate() error {
 		if name == "太常" {
 			spirit = SpiritTaiChang
 		} else {
-			parsed, err := ParseSpiritIndex(name)
+			parsed, err := EncodeSpiritIndex(name)
 			if err != nil {
 				return fmt.Errorf("load plate: fly spirit %q: %w", name, err)
 			}
@@ -1187,7 +1187,7 @@ func loadPlate() error {
 	}
 	for i, name := range table.MingFaSpiritOrder {
 		var spirit SpiritIndex
-		parsed, err := ParseSpiritIndex(name)
+		parsed, err := EncodeSpiritIndex(name)
 		if err != nil {
 			return fmt.Errorf("load plate: Ming Fa spirit %q: %w", name, err)
 		}
@@ -1196,28 +1196,28 @@ func loadPlate() error {
 		mingfaSpiritNames[int(spirit)] = name
 	}
 	for _, entry := range table.StarWuxing {
-		star, err := ParseStarIndex(entry.Star)
+		star, err := EncodeStarIndex(entry.Star)
 		if err != nil {
 			return err
 		}
 		if starWuxingTable[int(star)-1] != 0 {
 			return fmt.Errorf("load plate: duplicate star wuxing %q", entry.Star)
 		}
-		element, err := ganzhi.ParseWuxing(entry.Wuxing)
+		element, err := ganzhi.EncodeWuxing(entry.Wuxing)
 		if err != nil {
 			return err
 		}
 		starWuxingTable[int(star)-1] = element
 	}
 	for _, entry := range table.DoorWuxing {
-		door, err := ParseDoorIndex(entry.Door)
+		door, err := EncodeDoorIndex(entry.Door)
 		if err != nil {
 			return err
 		}
 		if doorWuxingTable[int(door)-1] != 0 {
 			return fmt.Errorf("load plate: duplicate door wuxing %q", entry.Door)
 		}
-		element, err := ganzhi.ParseWuxing(entry.Wuxing)
+		element, err := ganzhi.EncodeWuxing(entry.Wuxing)
 		if err != nil {
 			return err
 		}
@@ -1225,7 +1225,7 @@ func loadPlate() error {
 	}
 	wuxingRelations = make(map[WuxingRelation]wuxingRelationEntry, len(table.WuxingRelations))
 	for _, entry := range table.WuxingRelations {
-		rel, ok := ParseWuxingRelation(entry.Relation)
+		rel, ok := EncodeWuxingRelation(entry.Relation)
 		if !ok {
 			return fmt.Errorf("load plate: unknown wuxing relation %q", entry.Relation)
 		}
@@ -1238,7 +1238,7 @@ func loadPlate() error {
 	}
 	riShiRelations = make(map[WuxingRelation]string, len(table.RiShiRelations))
 	for _, entry := range table.RiShiRelations {
-		rel, ok := ParseWuxingRelation(entry.Relation)
+		rel, ok := EncodeWuxingRelation(entry.Relation)
 		if !ok {
 			return fmt.Errorf("load plate: unknown ri-shi relation %q", entry.Relation)
 		}
@@ -1248,23 +1248,23 @@ func loadPlate() error {
 		riShiRelations[rel] = entry.Name
 	}
 	for branch, palaceName := range table.ZhiGong {
-		zhi, err := ganzhi.ParseZhi(branch)
+		zhi, err := ganzhi.EncodeZhi(branch)
 		if err != nil {
 			return err
 		}
-		palace, err := ParsePalaceIndex(palaceName)
+		palace, err := EncodePalaceIndex(palaceName)
 		if err != nil {
 			return err
 		}
 		zhiPalaceTable[int(zhi)-1] = palace
 	}
 	for _, entry := range table.MaXing {
-		ma, err := ganzhi.ParseZhi(entry.Ma)
+		ma, err := ganzhi.EncodeZhi(entry.Ma)
 		if err != nil {
 			return err
 		}
 		for _, branch := range entry.Branches {
-			zhi, err := ganzhi.ParseZhi(branch)
+			zhi, err := ganzhi.EncodeZhi(branch)
 			if err != nil {
 				return err
 			}
@@ -1275,11 +1275,11 @@ func loadPlate() error {
 		}
 	}
 	for i, entry := range table.LiuJiaLiuYi {
-		zhi, err := ganzhi.ParseZhi(entry.Zhi)
+		zhi, err := ganzhi.EncodeZhi(entry.Zhi)
 		if err != nil {
 			return err
 		}
-		gan, err := ganzhi.ParseGan(entry.LiuYi)
+		gan, err := ganzhi.EncodeGan(entry.LiuYi)
 		if err != nil {
 			return err
 		}
@@ -1290,11 +1290,11 @@ func loadPlate() error {
 		if len(entry.Branches) != 2 {
 			return fmt.Errorf("load plate: invalid xun_kong %q", entry.Xun)
 		}
-		xunGan, err := ganzhi.ParseGan(string([]rune(entry.Xun)[:1]))
+		xunGan, err := ganzhi.EncodeGan(string([]rune(entry.Xun)[:1]))
 		if err != nil {
 			return err
 		}
-		xunZhi, err := ganzhi.ParseZhi(string([]rune(entry.Xun)[1:]))
+		xunZhi, err := ganzhi.EncodeZhi(string([]rune(entry.Xun)[1:]))
 		if err != nil {
 			return err
 		}
@@ -1309,7 +1309,7 @@ func loadPlate() error {
 			return fmt.Errorf("load plate: unknown xun_kong %q", entry.Xun)
 		}
 		for j, branch := range entry.Branches {
-			zhi, err := ganzhi.ParseZhi(branch)
+			zhi, err := ganzhi.EncodeZhi(branch)
 			if err != nil {
 				return err
 			}
@@ -1321,11 +1321,11 @@ func loadPlate() error {
 		if len([]rune(pair)) != 2 {
 			return fmt.Errorf("load plate: invalid wu_bu_yu_shi %q", pair)
 		}
-		day, err := ganzhi.ParseGan(string([]rune(pair)[0]))
+		day, err := ganzhi.EncodeGan(string([]rune(pair)[0]))
 		if err != nil {
 			return err
 		}
-		hour, err := ganzhi.ParseGan(string([]rune(pair)[1]))
+		hour, err := ganzhi.EncodeGan(string([]rune(pair)[1]))
 		if err != nil {
 			return err
 		}
@@ -1345,7 +1345,7 @@ func loadPlate() error {
 			return fmt.Errorf("load plate: invalid yuan %q", entry.Yuan)
 		}
 		for _, branch := range entry.Branches {
-			zhi, err := ganzhi.ParseZhi(branch)
+			zhi, err := ganzhi.EncodeZhi(branch)
 			if err != nil {
 				return err
 			}
@@ -1355,22 +1355,22 @@ func loadPlate() error {
 			fuTouYuanTable[zhi] = yuan
 		}
 	}
-	lodgingPalace, err := ParsePalaceIndex(table.TianQin.LodgingGong)
+	lodgingPalace, err := EncodePalaceIndex(table.TianQin.LodgingGong)
 	if err != nil {
 		return fmt.Errorf("load plate: tian_qin lodging_gong: %w", err)
 	}
 	if lodgingPalace == GongZhong {
 		return fmt.Errorf("load plate: tian_qin lodging_gong cannot be 中")
 	}
-	homePalace, err := ParsePalaceIndex(table.TianQin.HomeGong)
+	homePalace, err := EncodePalaceIndex(table.TianQin.HomeGong)
 	if err != nil {
 		return fmt.Errorf("load plate: tian_qin home_gong: %w", err)
 	}
-	follows, err := ParseStarIndex(table.TianQin.Follows)
+	follows, err := EncodeStarIndex(table.TianQin.Follows)
 	if err != nil {
 		return fmt.Errorf("load plate: tian_qin follows: %w", err)
 	}
-	star, err := ParseStarIndex(table.TianQin.Star)
+	star, err := EncodeStarIndex(table.TianQin.Star)
 	if err != nil {
 		return fmt.Errorf("load plate: tian_qin star: %w", err)
 	}
@@ -1573,7 +1573,7 @@ func decodePatternTable(raw []byte) ([]patternRule, error) {
 		var dsp DutyStarPosition
 		if rule.DutyStarPosition != "" {
 			var ok bool
-			dsp, ok = ParseDutyStarPosition(rule.DutyStarPosition)
+			dsp, ok = EncodeDutyStarPosition(rule.DutyStarPosition)
 			if !ok {
 				return nil, fmt.Errorf("load patterns: %q has invalid duty star position %q", rule.Name, rule.DutyStarPosition)
 			}
@@ -1610,7 +1610,7 @@ func decodePatternTable(raw []byte) ([]patternRule, error) {
 				return nil, fmt.Errorf("load patterns: %q has an empty condition", rule.Name)
 			}
 			for _, name := range condition.HeavenGan {
-				gan, err := ganzhi.ParseGan(name)
+				gan, err := ganzhi.EncodeGan(name)
 				if err != nil {
 					return nil, err
 				}
@@ -1620,7 +1620,7 @@ func decodePatternTable(raw []byte) ([]patternRule, error) {
 				loadedCondition.HeavenGan = append(loadedCondition.HeavenGan, gan)
 			}
 			for _, name := range condition.EarthGan {
-				gan, err := ganzhi.ParseGan(name)
+				gan, err := ganzhi.EncodeGan(name)
 				if err != nil {
 					return nil, err
 				}
@@ -1630,7 +1630,7 @@ func decodePatternTable(raw []byte) ([]patternRule, error) {
 				loadedCondition.EarthGan = append(loadedCondition.EarthGan, gan)
 			}
 			for _, name := range condition.Doors {
-				door, err := ParseDoorIndex(name)
+				door, err := EncodeDoorIndex(name)
 				if err != nil {
 					return nil, err
 				}
@@ -1640,7 +1640,7 @@ func decodePatternTable(raw []byte) ([]patternRule, error) {
 				loadedCondition.Doors = append(loadedCondition.Doors, door)
 			}
 			for _, name := range condition.Spirits {
-				spirit, err := ParseSpiritIndex(name)
+				spirit, err := EncodeSpiritIndex(name)
 				if err != nil {
 					return nil, err
 				}
@@ -1650,7 +1650,7 @@ func decodePatternTable(raw []byte) ([]patternRule, error) {
 				loadedCondition.Spirits = append(loadedCondition.Spirits, spirit)
 			}
 			for _, name := range condition.Palaces {
-				palace, err := ParsePalaceIndex(name)
+				palace, err := EncodePalaceIndex(name)
 				if err != nil {
 					return nil, err
 				}
@@ -1761,7 +1761,7 @@ func loadZhiRun() error {
 	zhiRunMaxIntervals = table.MaxTermIntervals
 	zhiRunRepeatTerms = make(map[tianwen.JieQi]bool, len(table.RepeatableTerms))
 	for _, name := range table.RepeatableTerms {
-		jq, ok := tianwen.ParseJieQi(name)
+		jq, ok := tianwen.EncodeJieQi(name)
 		if !ok {
 			return fmt.Errorf("load zhirun: unknown repeatable term %q", name)
 		}
@@ -1778,7 +1778,7 @@ func loadZhiRun() error {
 		if state.State == "" || state.Name == "" || state.Condition == "" {
 			return fmt.Errorf("load zhirun: incomplete state %+v", state)
 		}
-		zs, ok := ParseZhiRunState(state.State)
+		zs, ok := EncodeZhiRunState(state.State)
 		if !ok {
 			return fmt.Errorf("load zhirun: unknown state %q", state.State)
 		}
@@ -1887,7 +1887,7 @@ func loadJinhan() error {
 	}
 	doors := make([]DoorIndex, 0, len(table.DoorOrder))
 	for _, name := range table.DoorOrder {
-		door, err := ParseDoorIndex(name)
+		door, err := EncodeDoorIndex(name)
 		if err != nil || door == DoorZhong {
 			return fmt.Errorf("load jinhan: invalid door %q", name)
 		}
@@ -1898,7 +1898,7 @@ func loadJinhan() error {
 	}
 	spiritsByGan := make(map[ganzhi.Gan][12]string, len(table.DaySpirits))
 	for ganName, branches := range table.DaySpirits {
-		gan, err := ganzhi.ParseGan(ganName)
+		gan, err := ganzhi.EncodeGan(ganName)
 		if err != nil {
 			return fmt.Errorf("load jinhan: day spirit stem: %w", err)
 		}
@@ -1907,7 +1907,7 @@ func loadJinhan() error {
 		}
 		var row [12]string
 		for branchName, spirit := range branches {
-			branch, err := ganzhi.ParseZhi(branchName)
+			branch, err := ganzhi.EncodeZhi(branchName)
 			if err != nil || spirit == "" {
 				return fmt.Errorf("load jinhan: invalid day spirit %s/%s", ganName, branchName)
 			}
@@ -1938,7 +1938,7 @@ func parseJinhanPalaces(names []string, want int) ([]GongIndex, error) {
 	result := make([]GongIndex, 0, len(names))
 	seen := make(map[GongIndex]bool, len(names))
 	for _, name := range names {
-		palace, err := ParsePalaceIndex(name)
+		palace, err := EncodePalaceIndex(name)
 		if err != nil {
 			return nil, err
 		}

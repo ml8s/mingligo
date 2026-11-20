@@ -18,13 +18,13 @@ func chartForTest() Chart {
 
 func TestParseYongShen(t *testing.T) {
 	for _, name := range []string{"开门", "天禽", "太阴", "白虎", "太常", "戊"} {
-		if _, err := ParseYongShen(name); err != nil {
-			t.Errorf("ParseYongShen(%q): %v", name, err)
+		if _, err := EncodeYongShen(name); err != nil {
+			t.Errorf("EncodeYongShen(%q): %v", name, err)
 		}
 	}
 	for _, name := range []string{"火星", "甲"} {
-		if _, err := ParseYongShen(name); err == nil {
-			t.Errorf("ParseYongShen(%q) should reject", name)
+		if _, err := EncodeYongShen(name); err == nil {
+			t.Errorf("EncodeYongShen(%q) should reject", name)
 		}
 	}
 }
@@ -33,7 +33,7 @@ func TestComputeYongShenSymbols(t *testing.T) {
 	chart := chartForTest()
 	symbols := make([]YongShenSymbol, 0, 2)
 	for _, name := range []string{"生门", "戊"} {
-		sym, err := ParseYongShen(name)
+		sym, err := EncodeYongShen(name)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -70,7 +70,7 @@ func TestYongShenSpiritNameMatchesCurrentChart(t *testing.T) {
 			if chart.Board.YinDun {
 				inputName, displayName = spirit.YangName(), spirit.YinName()
 			}
-			symbol, err := ParseYongShen(inputName)
+			symbol, err := EncodeYongShen(inputName)
 			if err != nil {
 				t.Fatal(err)
 			}

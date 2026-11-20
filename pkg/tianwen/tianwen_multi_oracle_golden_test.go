@@ -104,7 +104,7 @@ func TestTianwenMultiOracleGolden_LunarMonthBoundaries(t *testing.T) {
 				t.Fatalf("round trip = %s, want %s", gotDate, parsed.Format("2006-01-02"))
 			}
 
-			wantZhi, err := ganzhi.ParseZhi(golden.Expected.JianYue)
+			wantZhi, err := ganzhi.EncodeZhi(golden.Expected.JianYue)
 			if err != nil {
 				t.Fatalf("parse jian yue: %v", err)
 			}
