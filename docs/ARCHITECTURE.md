@@ -79,6 +79,8 @@ MingliGo 只做**确定性排盘计算**：领域输出是符号空间上的**�
 
 经典原文自带的适用边界声明（如「客主吉凶须合局与用神另断」「断语两说并存」「须核元运与峦头」）是对固定映射的忠实转录，仍属直推事实，不是拟合。
 
+**命理逻辑落表**：客观命理知识（固定取象、属性、取用规则）以数据表承载，**由 MingliGo 权威持有**，不放分析层。例如奇门宫位人物/高低/内外、门星吉凶宜事落 `pkg/qimen/data/gong_facts.json`，以现有符号（GongIndex/DoorIndex/StarIndex）为 key、loader 经 `Encode*` 转符号、输出边界 decode 为文本；方位复用 `luoshu` 共享权威表。分析层（counsel）只读 chart 输出，不再自带镜像表。
+
 ## 8. 验证
 
 - 每个工具保留 domain 输出与 wire 的等价测试，`json.Marshal` 输出字节由 golden/schema 守护。
