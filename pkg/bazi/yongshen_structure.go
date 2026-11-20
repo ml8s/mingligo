@@ -85,17 +85,17 @@ func buildGeJuStructure(
 		Generator:  buildElementStructure(bz, generator, nil),
 		GuanXiLinks: relationLinks(buildTargetedRelationEvidence(relations,
 			func(pillar PillarIndex, gan ganzhi.Gan) []string {
-				return elementTargets(ganzhi.GanWuxing(gan), map[string]string{
-					ganzhi.DecodeWuxing(patternElem): "pattern",
-					ganzhi.DecodeWuxing(controller):  "controller",
-					ganzhi.DecodeWuxing(generator):   "generator",
+				return elementTargets(ganzhi.GanWuxing(gan), map[ganzhi.Wuxing]string{
+					patternElem: "pattern",
+					controller:  "controller",
+					generator:   "generator",
 				})
 			},
 			func(pillar PillarIndex) []string {
-				return branchElementTargets(bz, int(pillar), map[string]string{
-					ganzhi.DecodeWuxing(patternElem): "pattern",
-					ganzhi.DecodeWuxing(controller):  "controller",
-					ganzhi.DecodeWuxing(generator):   "generator",
+				return branchElementTargets(bz, int(pillar), map[ganzhi.Wuxing]string{
+					patternElem: "pattern",
+					controller:  "controller",
+					generator:   "generator",
 				})
 			},
 		)),
@@ -128,7 +128,7 @@ func buildFuYiBasis(
 				if pillar == pillarRi {
 					targets = append(targets, "day_branch")
 				}
-				if len(branchElementTargets(bz, int(pillar), map[string]string{ganzhi.DecodeWuxing(dayMaster): "day_master_root"})) > 0 {
+				if len(branchElementTargets(bz, int(pillar), map[ganzhi.Wuxing]string{dayMaster: "day_master_root"})) > 0 {
 					targets = append(targets, "day_master_root")
 				}
 				return targets
@@ -339,14 +339,14 @@ func buildTargetedRelationEvidence(
 	return dedupeTargetedRelationEvidence(facts)
 }
 
-func elementTargets(elem ganzhi.Wuxing, labels map[string]string) []string {
-	if label, ok := labels[ganzhi.DecodeWuxing(elem)]; ok {
+func elementTargets(elem ganzhi.Wuxing, labels map[ganzhi.Wuxing]string) []string {
+	if label, ok := labels[elem]; ok {
 		return []string{label}
 	}
 	return nil
 }
 
-func branchElementTargets(bz ganzhi.Bazi, pillar int, labels map[string]string) []string {
+func branchElementTargets(bz ganzhi.Bazi, pillar int, labels map[ganzhi.Wuxing]string) []string {
 	var branch ganzhi.Zhi
 	switch pillar {
 	case zhuNian:
@@ -371,7 +371,7 @@ func branchElementTargets(bz ganzhi.Bazi, pillar int, labels map[string]string) 
 	}
 	targets := make([]string, 0, len(labels))
 	for _, stem := range stems {
-		if label, ok := labels[ganzhi.DecodeWuxing(ganzhi.GanWuxing(stem))]; ok {
+		if label, ok := labels[ganzhi.GanWuxing(stem)]; ok {
 			targets = appendUniqueStrings(targets, label)
 		}
 	}
