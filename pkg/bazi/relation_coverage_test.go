@@ -54,7 +54,7 @@ func TestNatalRelationsCoverLegacyRelationArrays(t *testing.T) {
 				}
 				group := ganHeGroupLabel(relation.GanA, relation.GanB)
 				requireRelation(NatalRelationFact{
-					ID: kind + ":" + group, Kind: kind, Group: group,
+					ID: kind + ":" + group, Kind: mustEncodeNatalKind(kind), Group: group,
 					Members: []NatalRelationMember{
 						{Pillar: PillarIndex(relation.PillarA), Gan: ganzhi.GanName(relation.GanA)},
 						{Pillar: PillarIndex(relation.PillarB), Gan: ganzhi.GanName(relation.GanB)},
@@ -69,7 +69,7 @@ func TestNatalRelationsCoverLegacyRelationArrays(t *testing.T) {
 				}
 				group := ganChongGroupLabel(relation.GanA, relation.GanB)
 				requireRelation(NatalRelationFact{
-					ID: kind + ":" + group, Kind: kind, Group: group,
+					ID: kind + ":" + group, Kind: mustEncodeNatalKind(kind), Group: group,
 					Members: []NatalRelationMember{
 						{Pillar: PillarIndex(relation.PillarA), Gan: ganzhi.GanName(relation.GanA)},
 						{Pillar: PillarIndex(relation.PillarB), Gan: ganzhi.GanName(relation.GanB)},
@@ -84,10 +84,10 @@ func TestNatalRelationsCoverLegacyRelationArrays(t *testing.T) {
 				if kind == "liu_xing" {
 					group = canonicalXingGroup(zhiA, zhiB)
 				} else {
-					group = canonicalZhiPairGroup(kind, zhiA, zhiB)
+					group = canonicalZhiPairGroup(mustEncodeNatalKind(kind), zhiA, zhiB)
 				}
 				requireRelation(NatalRelationFact{
-					ID: kind + ":" + group, Kind: kind, Group: group,
+					ID: kind + ":" + group, Kind: mustEncodeNatalKind(kind), Group: group,
 					Members: []NatalRelationMember{
 						{Pillar: PillarIndex(pillarA), Zhi: ganzhi.ZhiName(zhiA)},
 						{Pillar: PillarIndex(pillarB), Zhi: ganzhi.ZhiName(zhiB)},
@@ -125,7 +125,7 @@ func TestNatalRelationsCoverLegacyRelationArrays(t *testing.T) {
 						})
 					}
 					requireRelation(NatalRelationFact{
-						ID: kind + ":" + group, Kind: kind, Group: group,
+						ID: kind + ":" + group, Kind: mustEncodeNatalKind(kind), Group: group,
 						Members: members, Wuxing: relation.Element.String(),
 					})
 				}
@@ -135,4 +135,10 @@ func TestNatalRelationsCoverLegacyRelationArrays(t *testing.T) {
 			triple("san_hui", detection.SanHui)
 		})
 	}
+}
+
+func mustEncodeNatalKind(k string) NatalRelationKind {
+	n, ok := EncodeNatalRelationKind(k)
+	if !ok { panic("bad kind: "+k) }
+	return n
 }

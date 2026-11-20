@@ -27,7 +27,7 @@ type NatalRelationMember struct {
 // presentation and is intentionally not part of the domain fact.
 type NatalRelationFact struct {
 	ID        string                `json:"id"`
-	Kind      string                `json:"relation_kind"`
+	Kind      NatalRelationKind     `json:"relation_kind"`
 	Group     string                `json:"group"`
 	Members   []NatalRelationMember `json:"members"`
 	Wuxing    string                `json:"wuxing,omitempty"`
@@ -298,7 +298,7 @@ func computeChartConclusions(c Chart) ChartConclusions {
 		}
 	}
 	for _, relation := range c.GuanXi {
-		if relation.Kind != "zhi_liu_he" && relation.Kind != "liu_chong" {
+		if relation.Kind != relationKindZhiLiuHe && relation.Kind != relationKindLiuChong {
 			continue
 		}
 		for _, member := range relation.Members {
@@ -333,12 +333,12 @@ func buildNatalRelationsFromDetection(bz ganzhi.Bazi, detection RelationDetectio
 	}
 
 	for _, relation := range detection.GanHe {
-		kind := "gan_he_candidate"
+		kind := relationKindGanHeCandidate
 		if relation.Position == positionAdjacent {
-			kind = "gan_he"
+			kind = relationKindGanHe
 		}
 		add(NatalRelationFact{
-			ID:    kind + ":" + ganHeGroupLabel(relation.GanA, relation.GanB),
+			ID:    DecodeNatalRelationKind(kind) + ":" + ganHeGroupLabel(relation.GanA, relation.GanB),
 			Kind:  kind,
 			Group: ganHeGroupLabel(relation.GanA, relation.GanB),
 			Members: []NatalRelationMember{
@@ -351,13 +351,13 @@ func buildNatalRelationsFromDetection(bz ganzhi.Bazi, detection RelationDetectio
 		})
 	}
 	for _, relation := range detection.GanChong {
-		kind := "gan_chong_candidate"
+		kind := relationKindGanChongCandidate
 		if relation.Position == positionAdjacent {
-			kind = "gan_chong"
+			kind = relationKindGanChong
 		}
 		group := ganChongGroupLabel(relation.GanA, relation.GanB)
 		add(NatalRelationFact{
-			ID:    kind + ":" + group,
+			ID:    DecodeNatalRelationKind(kind) + ":" + group,
 			Kind:  kind,
 			Group: group,
 			Members: []NatalRelationMember{
@@ -368,29 +368,29 @@ func buildNatalRelationsFromDetection(bz ganzhi.Bazi, detection RelationDetectio
 		})
 	}
 	for _, relation := range detection.ZhiLiuHe {
-		group := canonicalZhiPairGroup("zhi_liu_he", relation.ZhiA, relation.ZhiB)
-		add(newZhiPairFact("zhi_liu_he", group, relation.ZhiA, relation.PillarA, relation.ZhiB, relation.PillarB, relation.Element))
+		group := canonicalZhiPairGroup(relationKindZhiLiuHe, relation.ZhiA, relation.ZhiB)
+		add(newZhiPairFact(relationKindZhiLiuHe, group, relation.ZhiA, relation.PillarA, relation.ZhiB, relation.PillarB, relation.Element))
 	}
 	for _, relation := range detection.SanHe {
-		add(newTripleRelationFact("san_he", bz, relation))
+		add(newTripleRelationFact(relationKindSanHe, bz, relation))
 	}
 	for _, relation := range detection.SanHePartial {
-		add(newTripleRelationFact("san_he_partial", bz, relation))
+		add(newTripleRelationFact(relationKindSanHePartial, bz, relation))
 	}
 	for _, relation := range detection.SanHui {
-		add(newTripleRelationFact("san_hui", bz, relation))
+		add(newTripleRelationFact(relationKindSanHui, bz, relation))
 	}
 	for _, relation := range detection.LiuChong {
-		group := canonicalZhiPairGroup("liu_chong", relation.ZhiA, relation.ZhiB)
-		add(newZhiPairFact("liu_chong", group, relation.ZhiA, relation.PillarA, relation.ZhiB, relation.PillarB, relation.Element))
+		group := canonicalZhiPairGroup(relationKindLiuChong, relation.ZhiA, relation.ZhiB)
+		add(newZhiPairFact(relationKindLiuChong, group, relation.ZhiA, relation.PillarA, relation.ZhiB, relation.PillarB, relation.Element))
 	}
 	for _, relation := range detection.LiuHai {
-		group := canonicalZhiPairGroup("liu_hai", relation.ZhiA, relation.ZhiB)
-		add(newZhiPairFact("liu_hai", group, relation.ZhiA, relation.PillarA, relation.ZhiB, relation.PillarB, relation.Element))
+		group := canonicalZhiPairGroup(relationKindLiuHai, relation.ZhiA, relation.ZhiB)
+		add(newZhiPairFact(relationKindLiuHai, group, relation.ZhiA, relation.PillarA, relation.ZhiB, relation.PillarB, relation.Element))
 	}
 	for _, relation := range detection.LiuXing {
 		group := canonicalXingGroup(relation.ZhiA, relation.ZhiB)
-		add(newZhiPairFact("liu_xing", group, relation.ZhiA, relation.PillarA, relation.ZhiB, relation.PillarB, relation.Element))
+		add(newZhiPairFact(relationKindLiuXing, group, relation.ZhiA, relation.PillarA, relation.ZhiB, relation.PillarB, relation.Element))
 	}
 	// LiuXing detection keeps pairwise evidence. A complete three-branch 刑组
 	// is an additional canonical fact and must not be lost when the pairwise
@@ -412,20 +412,20 @@ func buildNatalRelationsFromDetection(bz ganzhi.Bazi, detection RelationDetectio
 			})
 		}
 		add(NatalRelationFact{
-			ID: "liu_xing:" + groupLabel, Kind: "liu_xing", Group: groupLabel, Members: members,
+			ID: "liu_xing:" + groupLabel, Kind: relationKindLiuXing, Group: groupLabel, Members: members,
 		})
 	}
 	for _, relation := range detection.LiuPo {
-		group := canonicalZhiPairGroup("liu_po", relation.ZhiA, relation.ZhiB)
-		add(newZhiPairFact("liu_po", group, relation.ZhiA, relation.PillarA, relation.ZhiB, relation.PillarB, relation.Element))
+		group := canonicalZhiPairGroup(relationKindLiuPo, relation.ZhiA, relation.ZhiB)
+		add(newZhiPairFact(relationKindLiuPo, group, relation.ZhiA, relation.PillarA, relation.ZhiB, relation.PillarB, relation.Element))
 	}
 	for _, relation := range detection.AnHe {
-		group := canonicalZhiPairGroup("an_he", relation.ZhiA, relation.ZhiB)
-		add(newZhiPairFact("an_he", group, relation.ZhiA, relation.PillarA, relation.ZhiB, relation.PillarB, relation.Element))
+		group := canonicalZhiPairGroup(relationKindAnHe, relation.ZhiA, relation.ZhiB)
+		add(newZhiPairFact(relationKindAnHe, group, relation.ZhiA, relation.PillarA, relation.ZhiB, relation.PillarB, relation.Element))
 	}
 	sort.Slice(facts, func(i, j int) bool {
 		if facts[i].Kind != facts[j].Kind {
-			return facts[i].Kind < facts[j].Kind
+			return DecodeNatalRelationKind(facts[i].Kind) < DecodeNatalRelationKind(facts[j].Kind)
 		}
 		if facts[i].Group != facts[j].Group {
 			return facts[i].Group < facts[j].Group
@@ -444,7 +444,7 @@ func natalRelationFactID(fact NatalRelationFact) string {
 		}
 		keys = append(keys, DecodePillarIndex(member.Pillar)+":"+value)
 	}
-	return fact.Kind + ":" + fact.Group + "@" + strings.Join(keys, "|")
+	return DecodeNatalRelationKind(fact.Kind) + ":" + fact.Group + "@" + strings.Join(keys, "|")
 }
 
 func wuxingOutput(w ganzhi.Wuxing) string {
@@ -454,9 +454,9 @@ func wuxingOutput(w ganzhi.Wuxing) string {
 	return ganzhi.DecodeWuxing(w)
 }
 
-func newZhiPairFact(kind, group string, zhiA ganzhi.Zhi, pillarA int, zhiB ganzhi.Zhi, pillarB int, wuxing ganzhi.Wuxing) NatalRelationFact {
+func newZhiPairFact(kind NatalRelationKind, group string, zhiA ganzhi.Zhi, pillarA int, zhiB ganzhi.Zhi, pillarB int, wuxing ganzhi.Wuxing) NatalRelationFact {
 	return NatalRelationFact{
-		ID:    kind + ":" + group,
+		ID:    DecodeNatalRelationKind(kind) + ":" + group,
 		Kind:  kind,
 		Group: group,
 		Members: []NatalRelationMember{
@@ -467,7 +467,7 @@ func newZhiPairFact(kind, group string, zhiA ganzhi.Zhi, pillarA int, zhiB ganzh
 	}
 }
 
-func newTripleRelationFact(kind string, bz ganzhi.Bazi, relation TripleRelationDetection) NatalRelationFact {
+func newTripleRelationFact(kind NatalRelationKind, bz ganzhi.Bazi, relation TripleRelationDetection) NatalRelationFact {
 	group := branchGroupLabel(relation.Branches)
 	members := make([]NatalRelationMember, 0, len(relation.Branches))
 	for _, branch := range relation.Branches {
@@ -477,7 +477,7 @@ func newTripleRelationFact(kind string, bz ganzhi.Bazi, relation TripleRelationD
 		})
 	}
 	return NatalRelationFact{
-		ID:      kind + ":" + group,
+		ID:      DecodeNatalRelationKind(kind) + ":" + group,
 		Kind:    kind,
 		Group:   group,
 		Members: members,
@@ -485,33 +485,33 @@ func newTripleRelationFact(kind string, bz ganzhi.Bazi, relation TripleRelationD
 	}
 }
 
-func canonicalZhiPairGroup(kind string, a, b ganzhi.Zhi) string {
+func canonicalZhiPairGroup(kind NatalRelationKind, a, b ganzhi.Zhi) string {
 	switch kind {
-	case "zhi_liu_he":
+	case relationKindZhiLiuHe:
 		for _, relation := range ganzhi.ZhiHes {
 			if (relation.A == a && relation.B == b) || (relation.A == b && relation.B == a) {
 				return ganzhi.ZhiName(relation.A) + ganzhi.ZhiName(relation.B)
 			}
 		}
-	case "liu_chong":
+	case relationKindLiuChong:
 		for _, relation := range ganzhi.ChongPairs {
 			if (relation.A == a && relation.B == b) || (relation.A == b && relation.B == a) {
 				return ganzhi.ZhiName(relation.A) + ganzhi.ZhiName(relation.B)
 			}
 		}
-	case "liu_hai":
+	case relationKindLiuHai:
 		for _, relation := range ganzhi.HaiPairs {
 			if (relation.A == a && relation.B == b) || (relation.A == b && relation.B == a) {
 				return ganzhi.ZhiName(relation.A) + ganzhi.ZhiName(relation.B)
 			}
 		}
-	case "liu_po":
+	case relationKindLiuPo:
 		for _, relation := range ganzhi.PoPairs {
 			if (relation.A == a && relation.B == b) || (relation.A == b && relation.B == a) {
 				return ganzhi.ZhiName(relation.A) + ganzhi.ZhiName(relation.B)
 			}
 		}
-	case "an_he":
+	case relationKindAnHe:
 		for _, relation := range ganzhi.AnHePairs {
 			if (relation.A == a && relation.B == b) || (relation.A == b && relation.B == a) {
 				return ganzhi.ZhiName(relation.A) + ganzhi.ZhiName(relation.B)

@@ -253,6 +253,7 @@ var relationKindCodes = [...]string{
 }
 
 func DecodeNatalRelationKind(r NatalRelationKind) string { return relationKindCodes[r] }
+func (r NatalRelationKind) MarshalJSON() ([]byte, error) { return []byte(`"`+DecodeNatalRelationKind(r)+`"`), nil }
 func EncodeNatalRelationKind(code string) (NatalRelationKind, bool) {
 	for i, c := range relationKindCodes {
 		if c != "" && c == code {

@@ -38,7 +38,7 @@ func TestDomainOracle_GuanXi(t *testing.T) {
 			gotSeen := map[relationKey]bool{}
 			got := make([]relationKey, 0, len(full.GuanXi))
 			for _, group := range full.GuanXi {
-				key := relationKey{Kind: group.Kind, Group: group.Group}
+				key := relationKey{Kind: DecodeNatalRelationKind(group.Kind), Group: group.Group}
 				if !gotSeen[key] {
 					gotSeen[key] = true
 					got = append(got, key)

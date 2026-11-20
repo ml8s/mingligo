@@ -37,7 +37,7 @@ type RelationLink struct {
 // Targets are supplied by the calling evidence projection (for example
 // pattern/controller/generator).
 type TargetedRelationEvidence struct {
-	Kind     string
+	Kind     NatalRelationKind
 	Group    string
 	Pillars  []PillarIndex
 	Branches []string
@@ -397,7 +397,7 @@ func dedupeTargetedRelationEvidence(values []TargetedRelationEvidence) []Targete
 	result := make([]TargetedRelationEvidence, 0, len(values))
 	seen := map[string]bool{}
 	for _, value := range values {
-		key := strings.Join([]string{value.Kind, value.Group, pillarIndexKeys(value.Pillars), strings.Join(value.Branches, ","), strings.Join(value.Targets, ",")}, "\x00")
+		key := strings.Join([]string{DecodeNatalRelationKind(value.Kind), value.Group, pillarIndexKeys(value.Pillars), strings.Join(value.Branches, ","), strings.Join(value.Targets, ",")}, "\x00")
 		if seen[key] {
 			continue
 		}
@@ -442,7 +442,7 @@ func canonicalRelationReference(value TargetedRelationEvidence) (NatalRelationFa
 	}
 	fact := NatalRelationFact{Kind: value.Kind}
 	switch value.Kind {
-	case "gan_he", "gan_he_candidate", "gan_chong", "gan_chong_candidate":
+	case relationKindGanHe, relationKindGanHeCandidate, relationKindGanChong, relationKindGanChongCandidate:
 		if len(value.Stems) != 2 || len(value.Pillars) != 2 {
 			return NatalRelationFact{}, false
 		}
@@ -451,10 +451,10 @@ func canonicalRelationReference(value TargetedRelationEvidence) (NatalRelationFa
 		if errA != nil || errB != nil {
 			return NatalRelationFact{}, false
 		}
-		if value.Kind == "gan_he" || value.Kind == "gan_he_candidate" {
+		if value.Kind == relationKindGanHe || value.Kind == relationKindGanHeCandidate {
 			fact.Group = ganHeGroupLabel(ganA, ganB)
 			if pillarDistance(value.Pillars[0], value.Pillars[1]) != 1 {
-				fact.Kind = "gan_he_candidate"
+				fact.Kind = relationKindGanHeCandidate
 			}
 		} else {
 			fact.Group = ganChongGroupLabel(ganA, ganB)
@@ -463,7 +463,7 @@ func canonicalRelationReference(value TargetedRelationEvidence) (NatalRelationFa
 			{Pillar: value.Pillars[0], Gan: value.Stems[0]},
 			{Pillar: value.Pillars[1], Gan: value.Stems[1]},
 		}
-	case "zhi_liu_he", "liu_chong", "liu_hai", "liu_po", "an_he":
+	case relationKindZhiLiuHe, relationKindLiuChong, relationKindLiuHai, relationKindLiuPo, relationKindAnHe:
 		if len(value.Branches) != 2 || len(value.Pillars) != 2 {
 			return NatalRelationFact{}, false
 		}
@@ -474,7 +474,7 @@ func canonicalRelationReference(value TargetedRelationEvidence) (NatalRelationFa
 		}
 		fact.Group = canonicalZhiPairGroup(value.Kind, zhiA, zhiB)
 		fact.Members = zhiMembers(value.Pillars, value.Branches)
-	case "liu_xing":
+	case relationKindLiuXing:
 		if len(value.Branches) != 2 || len(value.Pillars) != 2 {
 			return NatalRelationFact{}, false
 		}
@@ -485,7 +485,7 @@ func canonicalRelationReference(value TargetedRelationEvidence) (NatalRelationFa
 		}
 		fact.Group = canonicalXingGroup(zhiA, zhiB)
 		fact.Members = zhiMembers(value.Pillars, value.Branches)
-	case "san_he", "san_he_partial", "san_hui":
+	case relationKindSanHe, relationKindSanHePartial, relationKindSanHui:
 		fact.Group = branchGroupLabel(parseZhiNames(value.Branches))
 		fact.Members = zhiMembers(value.Pillars, value.Branches)
 	default:

@@ -72,7 +72,7 @@ func TestGanChong_GuanXiDistinguishTightPairs(t *testing.T) {
 	}
 	got := make(map[relationKey]bool, len(full.GuanXi))
 	for _, group := range full.GuanXi {
-		got[relationKey{Kind: group.Kind, Group: group.Group}] = true
+		got[relationKey{Kind: DecodeNatalRelationKind(group.Kind), Group: group.Group}] = true
 	}
 	for group := range want {
 		if !got[group] {
