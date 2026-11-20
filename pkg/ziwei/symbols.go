@@ -387,8 +387,3 @@ type ChangShengStage string
 type BoShiStage string
 type JiangQianStage string
 type SuiQianStage string
-
-func DecodeChangShengStage(s ChangShengStage) string { return string(s) }
-func DecodeBoShiStage(s BoShiStage) string           { return string(s) }
-func DecodeJiangQianStage(s JiangQianStage) string   { return string(s) }
-func DecodeSuiQianStage(s SuiQianStage) string       { return string(s) }

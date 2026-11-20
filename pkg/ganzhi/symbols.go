@@ -94,7 +94,6 @@ func EncodeGender(s string) (Gender, error) {
 	return "", fmt.Errorf("unknown gender: %q", s)
 }
 
-// EncodeYinYang converts a Chinese yin/yang name to a YinYang value.
 // -- WangShuai (五行旺衰) ------------------------------------------------------
 
 // WangShuai classifies the five-phase prosperity state.
@@ -247,13 +246,6 @@ func zhiSeason(z Zhi) (string, bool) {
 
 // ZhiSeasonLabel returns the season label ("春"/"夏"/"秋"/"冬") for a zhi.
 func ZhiSeasonLabel(z Zhi) string { s, ok := zhiSeason(z); return zhiLabel(s, ok) }
-
-var lunarMonths = [13]string{
-	"", "十一月", "十二月", "正月", "二月", "三月", "四月",
-	"五月", "六月", "七月", "八月", "九月", "十月",
-}
-
-// ZhiHourRangeLabel returns the two-hour range for a zhi, or "未知" if invalid.
 
 // -- ShiShen (十神) ----------------------------------------------------------
 

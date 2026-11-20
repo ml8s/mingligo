@@ -115,14 +115,6 @@ func flowStarKindOf(name string) FlowStarKind {
 }
 
 // flowStarList builds FlowStar values from display names (test/helper use).
-func flowStarList(names []string) []FlowStar {
-	out := make([]FlowStar, 0, len(names))
-	for _, name := range names {
-		out = append(out, FlowStar{Kind: flowStarKindOf(name), Name: name})
-	}
-	return out
-}
-
 // sortFlowStars gives the JSON contract a deterministic array order. The order
 // follows the conventional flow-star enumeration (禄羊陀魁钺马鸾喜昌曲), not a
 // new fortune ranking.

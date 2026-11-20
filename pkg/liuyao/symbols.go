@@ -333,13 +333,9 @@ const (
 	targetMoving   TargetRole = "moving"
 )
 
-func DecodeTargetRole(t TargetRole) string { return string(t) }
-
 // LifeStage is one of the twelve life-cycle stages (长生十二宫).
 // Backed by ganzhi's ChangShengTable index; value is the display name.
 type LifeStage string
-
-func DecodeLifeStage(s LifeStage) string { return string(s) }
 
 // PatternSubType is the specific kind of a 格局 pattern. Its value IS the
 // stable display text; the set is closed by the compute* producers.

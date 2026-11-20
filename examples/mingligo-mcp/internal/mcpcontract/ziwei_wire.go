@@ -251,17 +251,3 @@ type ZiweiStar struct {
 	Ming    *string            `json:"ming" jsonschema:"星曜名。"`
 	SiHua   *SiHuaNameNullable `json:"si_hua,omitempty" jsonschema:"四化。"`
 }
-
-// ── named natal series roots ──
-
-type ZiweiLiuYueSeries struct {
-	LiuYue []ziwei.LiuYue `json:"liu_yue" jsonschema:"流月数组，长度 = count。"`
-}
-
-type ZiweiLiuRiSeries struct {
-	LiuRi []ziwei.LiuRi `json:"liu_ri" jsonschema:"流日数组，长度 = count。"`
-}
-
-type ZiweiLiuShiSeries struct {
-	LiuShi []ziwei.LiuShi `json:"liu_shi" jsonschema:"流时数组，长度 = count。"`
-}

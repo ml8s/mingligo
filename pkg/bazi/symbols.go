@@ -301,7 +301,6 @@ const (
 	geJuJianLu    GeJuKind = "建禄格"
 )
 
-func DecodeGeJuKind(g GeJuKind) string { return string(g) }
 func EncodeGeJuKind(name string) (GeJuKind, bool) {
 	k := GeJuKind(name)
 	if k == geJuUnknown {
@@ -325,7 +324,6 @@ const (
 	congGeJiaEr   CongGeKind = "假从儿格"
 )
 
-func DecodeCongGeKind(c CongGeKind) string { return string(c) }
 func EncodeCongGeKind(name string) (CongGeKind, bool) {
 	k := CongGeKind(name)
 	if k == congGeUnknown {
@@ -347,8 +345,6 @@ const (
 	candidateMetal    CandidateWuxing = "金"
 	candidateWater    CandidateWuxing = "水"
 )
-
-func DecodeCandidateWuxing(c CandidateWuxing) string { return string(c) }
 
 func candidateFromWuxing(w ganzhi.Wuxing) CandidateWuxing {
 	switch w {

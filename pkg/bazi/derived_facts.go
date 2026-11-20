@@ -10,9 +10,9 @@ import (
 // LuRoot records a visible stem whose traditional Lu branch appears in one of
 // the four palaces. Hidden stems are not promoted to Lu roots.
 type LuRoot struct {
-	ShiShen string      `json:"shi_shen"`
-	Gan     ganzhi.Gan  `json:"gan"`
-	Zhi     ganzhi.Zhi  `json:"zhi"`
+	ShiShen string     `json:"shi_shen"`
+	Gan     ganzhi.Gan `json:"gan"`
+	Zhi     ganzhi.Zhi `json:"zhi"`
 }
 
 // NatalRelationMember locates one stem or branch participant in its palace.
@@ -553,18 +553,6 @@ func canonicalXingGroup(a, b ganzhi.Zhi) string {
 	return ""
 }
 
-func parseZhiNames(names []string) []ganzhi.Zhi {
-	values := make([]ganzhi.Zhi, 0, len(names))
-	for _, name := range names {
-		value, err := ganzhi.EncodeZhi(name)
-		if err != nil {
-			continue
-		}
-		values = append(values, value)
-	}
-	return values
-}
-
 func pillarWithZhi(bz ganzhi.Bazi, target ganzhi.Zhi) PillarIndex {
 	for index, pillar := range bz.Slice() {
 		if pillar.Zhi == target {
@@ -639,11 +627,11 @@ func patternGodTransparent(c Chart) bool {
 
 var patternTenGods = map[GeJuKind]ganzhi.ShiShen{
 	geJuZhengGuan: ganzhi.ShiShenZhengGuan,
-	geJuQiSha: ganzhi.ShiShenQiSha,
-	geJuZhengCai: ganzhi.ShiShenZhengCai,
-	geJuPianCai: ganzhi.ShiShenPianCai,
-	geJuZhengYin: ganzhi.ShiShenZhengYin,
-	geJuPianYin: ganzhi.ShiShenPianYin,
-	geJuShiShen: ganzhi.ShiShenShiShen,
+	geJuQiSha:     ganzhi.ShiShenQiSha,
+	geJuZhengCai:  ganzhi.ShiShenZhengCai,
+	geJuPianCai:   ganzhi.ShiShenPianCai,
+	geJuZhengYin:  ganzhi.ShiShenZhengYin,
+	geJuPianYin:   ganzhi.ShiShenPianYin,
+	geJuShiShen:   ganzhi.ShiShenShiShen,
 	geJuShangGuan: ganzhi.ShiShenShangGuan,
 }

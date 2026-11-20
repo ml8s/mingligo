@@ -573,8 +573,6 @@ const (
 	hourControlledBy HourRelation = "controlled_by"
 )
 
-func DecodeHourRelation(h HourRelation) string { return string(h) }
-
 // LeadPillarKind selects which pillar leads a chart.
 type LeadPillarKind string
 
@@ -604,9 +602,7 @@ const (
 	dayBoundaryLateZi DayBoundaryKind = "late_zi_rolls_day_pillar"
 )
 
-func DecodeLeadPillarKind(l LeadPillarKind) string     { return string(l) }
 func DecodeMethodSourceKind(m MethodSourceKind) string { return string(m) }
-func DecodeFeatureKind(f FeatureKind) string           { return string(f) }
 func DecodeDayBoundaryKind(d DayBoundaryKind) string   { return string(d) }
 
 // YingQiRuleType selects a 应期 date-match rule.
@@ -624,6 +620,3 @@ const (
 	yingQiMatchSame     YingQiMatchKind = "same"
 	yingQiMatchOpposite YingQiMatchKind = "opposite"
 )
-
-func DecodeYingQiRuleType(y YingQiRuleType) string  { return string(y) }
-func DecodeYingQiMatchKind(y YingQiMatchKind) string { return string(y) }
