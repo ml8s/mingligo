@@ -286,7 +286,7 @@ func TestComplete(t *testing.T) {
 					pass++
 				}
 				// 杂曜
-				if !setEq(got.ZaYao, ref.Adj) {
+				if !setEq(decodeShenShaList(got.ZaYao), ref.Adj) {
 					t.Errorf("[%s]杂曜: got%v want%v", nm, got.ZaYao, ref.Adj)
 					fail++
 				} else {
@@ -453,3 +453,9 @@ func parseLT(tc testCaseRef) tianwen.LunarTime {
 }
 
 // TestFlowYear validates流年 flow year horoscope components.
+
+func decodeShenShaList(values []ShenSha) []string {
+	out := make([]string, 0, len(values))
+	for _, v := range values { out = append(out, DecodeShenSha(v)) }
+	return out
+}

@@ -59,7 +59,7 @@ func TestXingJiJiaYinSameSideShouldNotMatch(t *testing.T) {
 	palaces := blankPalaces()
 	palaces[3].Stars = []StarInfo{makeStar(TianXiang, "天相", "")}
 	palaces[2].Stars = []StarInfo{makeStar(TianLiang, "天梁", "忌")}
-	palaces[2].ZaYao = []string{"天刑"}
+	palaces[2].ZaYao = encodeShenShaList([]string{"天刑"})
 	if hasPattern(findPatterns(palaces), "刑忌夹印") {
 		t.Error("刑忌夹印 should require 化忌 and 天刑 on opposite sides")
 	}

@@ -56,7 +56,7 @@ func buildPatternSemanticChart(t *testing.T, input []patternSemanticPalace) Char
 		}
 		palaces[index].Zhi = zhi
 		palaces[index].Stars = stars
-		palaces[index].ZaYao = item.ZaYao
+		palaces[index].ZaYao = encodeShenShaList(item.ZaYao)
 	}
 	return Chart{GongWei: palaces}
 }

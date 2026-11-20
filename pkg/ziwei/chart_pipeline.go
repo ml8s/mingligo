@@ -46,15 +46,15 @@ func fillZaYao(chart Chart) Chart {
 	)
 	for i := range chart.GongWei {
 		palaceZhi := chart.GongWei[i].Zhi
-		var names []string
+		var types []ShenSha
 		for st, zhiIdx := range stars {
 			if zhiIdx == int(palaceZhi)-1 {
-				names = append(names, DecodeShenSha(st))
+				types = append(types, st)
 			}
 		}
-		// map iteration is unordered; the published ZaYao order is canonical.
-		sort.Strings(names)
-		chart.GongWei[i].ZaYao = names
+		// map iteration is unordered; sort by display text to keep output order stable.
+		sort.Slice(types, func(a, b int) bool { return DecodeShenSha(types[a]) < DecodeShenSha(types[b]) })
+		chart.GongWei[i].ZaYao = types
 	}
 	return chart
 }

@@ -121,12 +121,12 @@ func findPatterns(palaces [12]Gong) []Pattern {
 
 	prevHasXing, nextHasXing := false, false
 	for _, zy := range prev.ZaYao {
-		if st, ok := EncodeShenSha(zy); ok && st == ssTianXing {
+		if zy == ssTianXing {
 			prevHasXing = true
 		}
 	}
 	for _, zy := range next.ZaYao {
-		if st, ok := EncodeShenSha(zy); ok && st == ssTianXing {
+		if zy == ssTianXing {
 			nextHasXing = true
 		}
 	}

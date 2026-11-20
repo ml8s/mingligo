@@ -47,7 +47,7 @@ type Gong struct {
 	BoShi        string     `json:"bo_shi,omitempty"`
 	JiangQian    string     `json:"jiang_qian,omitempty"`
 	SuiQian      string     `json:"sui_qian,omitempty"`
-	ZaYao        []string   `json:"za_yao,omitempty"`
+	ZaYao        []ShenSha  `json:"za_yao,omitempty"`
 }
 
 // StarInfo is one star entry in a gong.
