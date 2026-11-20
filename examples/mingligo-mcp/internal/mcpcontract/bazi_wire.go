@@ -23,8 +23,9 @@ type BaziPillarShiShensItem struct {
 
 // BaziPillarShenShaItem is the shared shen-sha projection item for all pillars.
 type BaziPillarShenShaItem struct {
-	Category *ShenShaCategoryNameNullable `json:"category" jsonschema:"类别。"`
-	Name     *string                      `json:"name" jsonschema:"名称。"`
+	Category    *ShenShaCategoryNameNullable `json:"category" jsonschema:"类别。"`
+	Description *string                      `json:"description" jsonschema:"说明。"`
+	Name        *string                      `json:"name" jsonschema:"名称。"`
 }
 
 // ── bazi.chart output ──
@@ -527,8 +528,9 @@ type BaziLiuNianOutput struct {
 }
 
 type BaziSeriesShenshaItem struct {
-	Name     ShenshaName         `json:"name" jsonschema:"名称。"`
-	Category ShenShaCategoryName `json:"category" jsonschema:"类别。"`
+	Name        ShenshaName         `json:"name" jsonschema:"名称。"`
+	Category    ShenShaCategoryName `json:"category" jsonschema:"类别。"`
+	Description *string             `json:"description,omitempty" jsonschema:"神煞取象说明。"`
 }
 
 type BaziLiuNianFuyinFanyinItem struct {

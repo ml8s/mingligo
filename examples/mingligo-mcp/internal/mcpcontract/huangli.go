@@ -70,6 +70,7 @@ type HuangliDayOutput struct {
 	Event       string                 `json:"event,omitempty" jsonschema:"查询事项。"`
 	EventLabel  string                 `json:"event_label,omitempty" jsonschema:"事项中文标签。"`
 	Suitability string                 `json:"suitability,omitempty" jsonschema:"事项适配结论。"`
+	EventReason string                 `json:"event_reason,omitempty" jsonschema:"事项适配依据。"`
 }
 
 // huangliDaysResult is the direct domain output; HuangliDaysOutput is only the
@@ -99,3 +100,4 @@ func HuangliDays(_ context.Context, input HuangliDaysInput) (huangliDaysResult, 
 	}
 	return huangliDaysResult{Days: days}, nil
 }
+

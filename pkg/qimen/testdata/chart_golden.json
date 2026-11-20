@@ -243,6 +243,7 @@
       "di_pan_gan": "庚",
       "tian_pan_gan": "辛",
       "name": "辛+庚",
+      "meaning": "白虎出力：刀刃相交，主客皆伤",
       "auspicious": false
     },
     {
@@ -250,6 +251,7 @@
       "di_pan_gan": "戊",
       "tian_pan_gan": "癸",
       "name": "癸+戊",
+      "meaning": "天乙会合：吉门宜求财，婚姻喜美",
       "auspicious": true
     },
     {
@@ -257,6 +259,7 @@
       "di_pan_gan": "乙",
       "tian_pan_gan": "丁",
       "name": "丁+乙",
+      "meaning": "人遁吉格：加官进禄，常人婚喜",
       "auspicious": true
     },
     {
@@ -264,6 +267,7 @@
       "di_pan_gan": "丙",
       "tian_pan_gan": "丙",
       "name": "丙+丙",
+      "meaning": "月奇悖师：文书逼迫，急迫之象",
       "auspicious": false
     },
     {
@@ -271,6 +275,7 @@
       "di_pan_gan": "丁",
       "tian_pan_gan": "乙",
       "name": "乙+丁",
+      "meaning": "奇仪相佐：文书喜事，求婚可成",
       "auspicious": true
     },
     {
@@ -278,6 +283,7 @@
       "di_pan_gan": "癸",
       "tian_pan_gan": "戊",
       "name": "戊+癸",
+      "meaning": "青龙华盖：门吉招福，门凶多乖",
       "auspicious": false
     },
     {
@@ -285,6 +291,7 @@
       "di_pan_gan": "壬",
       "tian_pan_gan": "己",
       "name": "己+壬",
+      "meaning": "地网高张：狡童佚女，奸情杀伤",
       "auspicious": false
     },
     {
@@ -292,6 +299,7 @@
       "di_pan_gan": "壬",
       "tian_pan_gan": "丙",
       "name": "丙+壬",
+      "meaning": "火入天罗：为客不利，是非颇多",
       "auspicious": false
     },
     {
@@ -299,6 +307,7 @@
       "di_pan_gan": "辛",
       "tian_pan_gan": "庚",
       "name": "庚+辛",
+      "meaning": "白虎干格：不宜远行，远行车折马伤，求财大凶",
       "auspicious": false
     }
   ],
@@ -306,32 +315,38 @@
     {
       "men": "景门",
       "gong": "坎",
-      "name": "景门加坎"
+      "name": "景门加坎",
+      "meaning": "文书水火之灾"
     },
     {
       "men": "生门",
       "gong": "坤",
-      "name": "生门加坤"
+      "name": "生门加坤",
+      "meaning": "田宅之利，内财之喜"
     },
     {
       "men": "惊门",
       "gong": "震",
-      "name": "惊门加震"
+      "name": "惊门加震",
+      "meaning": "争斗之象，出行惊恐"
     },
     {
       "men": "开门",
       "gong": "巽",
-      "name": "开门加巽"
+      "name": "开门加巽",
+      "meaning": "长女之利，入仕之吉"
     },
     {
       "men": "杜门",
       "gong": "乾",
-      "name": "杜门加乾"
+      "name": "杜门加乾",
+      "meaning": "公门不利，出行有阻"
     },
     {
       "men": "休门",
       "gong": "离",
-      "name": "休门加离"
+      "name": "休门加离",
+      "meaning": "和合得财，文书酒食"
     }
   ],
   "xing_interaction": [
@@ -339,18 +354,21 @@
       "xing": "天柱",
       "gong": "震",
       "name": "金星入木宫",
+      "meaning": "金能克木，征战得利",
       "auspicious": false
     },
     {
       "xing": "天心",
       "gong": "巽",
       "name": "金星入木宫",
+      "meaning": "金克木象，事宜谨慎",
       "auspicious": false
     },
     {
       "xing": "天蓬",
       "gong": "离",
       "name": "水星入火宫",
+      "meaning": "水火相激，多事之秋",
       "auspicious": false
     }
   ],
@@ -432,6 +450,7 @@
   "ge_ju": [
     {
       "name": "反吟",
+      "description": "值符星临对宫，凡事反复，动中求变",
       "basis": "值符星临本宫对冲之宫",
       "auspicious": false,
       "gong_wei": [

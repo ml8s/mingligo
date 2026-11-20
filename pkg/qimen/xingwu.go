@@ -7,6 +7,7 @@ type XingInteraction struct {
 	Star       string `json:"xing"`
 	Gong       string `json:"gong"`
 	Name       string `json:"name"`
+	Meaning    string `json:"meaning"`
 	Auspicious bool   `json:"auspicious"`
 }
 

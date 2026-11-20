@@ -430,10 +430,11 @@ type QimenChartPanDaySpiritsItem struct {
 }
 
 type QimenChartGeJuItem struct {
-	Name       PatternsName    `json:"name" jsonschema:"名称。"`
-	YiJu       string          `json:"basis" jsonschema:"格局依据。"`
-	Auspicious bool            `json:"auspicious" jsonschema:"是否为吉象。"`
-	GongWei    []QimenGongName `json:"gong_wei" jsonschema:"十二宫。"`
+	Name        PatternsName    `json:"name" jsonschema:"名称。"`
+	Description string          `json:"description" jsonschema:"说明。"`
+	YiJu        string          `json:"basis" jsonschema:"格局依据。"`
+	Auspicious  bool            `json:"auspicious" jsonschema:"是否为吉象。"`
+	GongWei     []QimenGongName `json:"gong_wei" jsonschema:"十二宫。"`
 }
 
 type QimenChartGanInteractionItem struct {
@@ -441,19 +442,22 @@ type QimenChartGanInteractionItem struct {
 	DiPanGan   DiPanGanName  `json:"di_pan_gan" jsonschema:"地盘干。"`
 	TianPanGan DiPanGanName  `json:"tian_pan_gan" jsonschema:"天盘干。"`
 	Name       string        `json:"name" jsonschema:"名称。"`
+	Meaning    string        `json:"meaning" jsonschema:"克应含义。"`
 	Auspicious bool          `json:"auspicious" jsonschema:"是否为吉象。"`
 }
 
 type QimenChartMenInteractionItem struct {
-	Door QimenDoorName `json:"men" jsonschema:"宫位八门；中宫无门时省略。"`
-	Gong QimenGongName `json:"gong" jsonschema:"宫位。"`
-	Name string        `json:"name" jsonschema:"名称。"`
+	Door    QimenDoorName `json:"men" jsonschema:"宫位八门；中宫无门时省略。"`
+	Gong    QimenGongName `json:"gong" jsonschema:"宫位。"`
+	Name    string        `json:"name" jsonschema:"名称。"`
+	Meaning string        `json:"meaning" jsonschema:"克应含义。"`
 }
 
 type QimenChartXingInteractionItem struct {
 	Xing       QimenStarName `json:"xing" jsonschema:"九星。"`
 	Gong       QimenGongName `json:"gong" jsonschema:"宫位。"`
 	Name       string        `json:"name" jsonschema:"名称。"`
+	Meaning    string        `json:"meaning" jsonschema:"克应含义。"`
 	Auspicious bool          `json:"auspicious" jsonschema:"是否为吉象。"`
 }
 

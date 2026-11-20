@@ -5,6 +5,7 @@ import "github.com/ml8s/mingligo/pkg/ganzhi"
 // ganEntry holds the named interaction data (without gan fields set at runtime).
 type ganEntry struct {
 	PatternName string
+	Meaning     string
 	Auspicious  bool
 }
 
@@ -21,6 +22,7 @@ func computeGanInteractions(board Board) []GanInteraction {
 					DiPanGan:   p.DiPanGan,
 					TianPanGan: heavenGan,
 					Name:       ganzhi.DecodeGan(heavenGan) + "+" + ganzhi.DecodeGan(p.DiPanGan),
+					Meaning:    entry.PatternName + "：" + entry.Meaning,
 					Auspicious: entry.Auspicious,
 				})
 			}
