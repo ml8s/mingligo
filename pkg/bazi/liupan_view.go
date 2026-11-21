@@ -50,9 +50,9 @@ type LiuNianFuyinFanyinItemView struct {
 }
 
 type LiuNianDayunInteractionsItemView struct {
-	GanRels     []LiuNianDayunInteractionsItemGanRelsItemView `json:"gan_rels" jsonschema:"天干关系列表。"`
-	PillarLabel *string                                       `json:"zhu_label" jsonschema:"命局柱位及干支标签。"`
-	ZhiRels     []LiuNianDayunInteractionsItemZhiRelsItemView `json:"zhi_rels" jsonschema:"地支关系列表。"`
+	GanRels  []LiuNianDayunInteractionsItemGanRelsItemView `json:"gan_rels" jsonschema:"天干关系列表。"`
+	ZhuLabel *string                                       `json:"zhu_label" jsonschema:"参照柱（命局/大运）标签。"`
+	ZhiRels  []LiuNianDayunInteractionsItemZhiRelsItemView `json:"zhi_rels" jsonschema:"地支关系列表。"`
 }
 
 type LiuNianDayunInteractionsItemGanRelsItemView struct {
@@ -70,9 +70,9 @@ type LiuNianDayunInteractionsItemZhiRelsItemView struct {
 }
 
 type LiuNianNatalInteractionsItemView struct {
-	GanRels     []SeriesGanRelationItemView `json:"gan_rels" jsonschema:"天干关系列表。"`
-	PillarLabel *string                     `json:"zhu_label" jsonschema:"命局柱位及干支标签。"`
-	ZhiRels     []SeriesZhiRelationItemView `json:"zhi_rels" jsonschema:"地支关系列表。"`
+	GanRels  []SeriesGanRelationItemView `json:"gan_rels" jsonschema:"天干关系列表。"`
+	ZhuLabel *string                     `json:"zhu_label" jsonschema:"参照柱（命局/大运）标签。"`
+	ZhiRels  []SeriesZhiRelationItemView `json:"zhi_rels" jsonschema:"地支关系列表。"`
 }
 
 type SeriesGanRelationItemView struct {

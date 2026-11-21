@@ -314,8 +314,6 @@ func containsLayer(layers []RecitationLayer, target RecitationLayer) bool {
 // 前十年寄坤（二为正神）、后十年寄艮（八为正神）。
 
 type shouShanChuSha struct {
-	ZhengShen  int    `json:"zheng_shen"`
-	LingShen   int    `json:"ling_shen"`
 	ShouShanOK bool   `json:"shou_shan"`
 	ChuShaOK   bool   `json:"chu_sha"`
 	Assessment string `json:"assessment"`
@@ -323,7 +321,6 @@ type shouShanChuSha struct {
 
 func (p *Chart) computeShouShanChuSha() shouShanChuSha {
 	zhengShen, lingShen := p.Yun.positiveZeroShen()
-
 	sitPalace := mountainPalace(p.SitMountain)
 	facePalace := mountainPalace(p.FaceMountain)
 
@@ -346,8 +343,6 @@ func (p *Chart) computeShouShanChuSha() shouShanChuSha {
 	}
 
 	return shouShanChuSha{
-		ZhengShen:  zhengShen,
-		LingShen:   lingShen,
 		ShouShanOK: shouShanOK,
 		ChuShaOK:   chuShaOK,
 		Assessment: assessment,

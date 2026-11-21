@@ -18,6 +18,8 @@ type SanYuanYun struct {
 	StartYear    int     `json:"start_year"` // this period's start year
 	EndYear      int     `json:"end_year"`   // this period's end year
 	YearBoundary string  `json:"year_boundary"`
+	ZhengShen    int     `json:"zheng_shen"` // 当运正神（运级基础量）
+	LingShen     int     `json:"ling_shen"`  // 当运零神
 }
 
 // ComputeSanYuanYun determines which 元 and 运 a given year belongs to.
@@ -44,6 +46,7 @@ func ComputeSanYuanYun(year int) SanYuanYun {
 	startYear := baseYear + yunIdx*periodLength
 	endYear := startYear + periodLength - 1
 
+	zheng, ling := SanYuanYun{Year: year, YunNumber: yunNum, StartYear: startYear}.positiveZeroShen()
 	return SanYuanYun{
 		Year:         year,
 		Yuan:         yuanName,
@@ -52,6 +55,8 @@ func ComputeSanYuanYun(year int) SanYuanYun {
 		StartYear:    startYear,
 		EndYear:      endYear,
 		YearBoundary: "lichun",
+		ZhengShen:    zheng,
+		LingShen:     ling,
 	}
 }
 

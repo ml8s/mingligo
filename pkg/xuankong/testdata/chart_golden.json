@@ -6,7 +6,9 @@
     "yun_name": "九运",
     "start_year": 2024,
     "end_year": 2043,
-    "year_boundary": "lichun"
+    "year_boundary": "lichun",
+    "zheng_shen": 9,
+    "ling_shen": 1
   },
   "zuo_shan": 1,
   "xiang_shan": 13,
@@ -251,8 +253,6 @@
     "山星反吟"
   ],
   "shou_shan_chu_sha": {
-    "zheng_shen": 9,
-    "ling_shen": 1,
     "shou_shan": true,
     "chu_sha": false,
     "assessment": "收山得宜（坐宫山星当令）；拨水入零堂未得，向首零神不见水"

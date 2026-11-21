@@ -41,9 +41,9 @@ func TestShouShanChuSha_LiQi_Anchors(t *testing.T) {
 				t.Fatal(err)
 			}
 			ss := chart.ShouShanChuSha
-			if ss.ZhengShen != c.wantZheng || ss.LingShen != c.wantLing {
+			if chart.Yun.ZhengShen != c.wantZheng || chart.Yun.LingShen != c.wantLing {
 				t.Errorf("正零神 = (%d,%d), want (%d,%d)（三元九运表）",
-					ss.ZhengShen, ss.LingShen, c.wantZheng, c.wantLing)
+					chart.Yun.ZhengShen, chart.Yun.LingShen, c.wantZheng, c.wantLing)
 			}
 			if ss.ShouShanOK != c.wantShouShanOK || ss.ChuShaOK != c.wantChuShaOK {
 				t.Errorf("收山=%v 拨水入零堂=%v, want (%v,%v)",

@@ -24,8 +24,8 @@ type DoorStoveInfo struct {
 	Wuxing    string       `json:"wuxing"`
 	YouXing   YouXing      `json:"youxing"`
 	Rating    Rating       `json:"rating"`
-	Group     TrigramGroup `json:"group"` // 东四卦/西四卦
-	Match     Match        `json:"match"` // 吉/凶(与命卦同组不同组)
+	GuaGroup  TrigramGroup `json:"gua_group"` // 东四卦/西四卦（命卦侧 Group 为 LifeGroup，故区分）
+	Match     Match        `json:"match"`     // 吉/凶(与命卦同组不同组)
 }
 
 // ComputeLayout analyzes 门主灶 in八宅风水. Trigram inputs are domain symbols;
@@ -75,7 +75,7 @@ func evalPosition(guaNum, mingGua int) DoorStoveInfo {
 		Wuxing:    ganzhi.DecodeWuxing(luoshu.PalaceTable[guaNum].Element),
 		YouXing:   youxing,
 		Rating:    rating,
-		Group:     group,
+		GuaGroup:  group,
 		Match:     match,
 	}
 }

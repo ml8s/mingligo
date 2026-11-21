@@ -37,8 +37,26 @@ func pairStatus(palace GongIndex, aStars, bStars []StarIndex) string {
 		return spouseStatus(aStars, bStars)
 	case gongZiNv:
 		return childStatus(aStars, bStars)
+	case gongMing:
+		return mingStatus(aStars, bStars)
 	}
 	return ""
+}
+
+// mingStatus describes both sides' 命宫 major-star presence — a classical
+// first lens in Ziwei 合婚 (命宫为主，夫妻宫为应). It is a direct fact statement,
+// not an auspiciousness verdict.
+func mingStatus(aStars, bStars []StarIndex) string {
+	switch {
+	case len(aStars) == 0 && len(bStars) == 0:
+		return "双方命宫皆无主星，按紫微通例借对宫主星观察"
+	case len(bStars) == 0:
+		return "A方命宫有主星，B方命宫无主星，按通例借对宫"
+	case len(aStars) == 0:
+		return "A方命宫无主星，按通例借对宫；B方命宫有主星"
+	default:
+		return "双方命宫皆有主星"
+	}
 }
 
 func spouseStatus(aStars, bStars []StarIndex) string {

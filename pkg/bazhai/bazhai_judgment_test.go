@@ -50,8 +50,8 @@ func TestBazhaiJudgment_EastWestGroups(t *testing.T) {
 				t.Errorf("group=%q, want %q", result.Group, tt.wantGroup)
 			}
 			for _, item := range []DoorStoveInfo{result.Door, result.Master, result.Stove} {
-				if item.Group != "东四卦" && item.Group != "西四卦" {
-					t.Fatalf("item group=%q, want East/Four trigram group", item.Group)
+				if item.GuaGroup != "东四卦" && item.GuaGroup != "西四卦" {
+					t.Fatalf("item group=%q, want East/Four trigram group", item.GuaGroup)
 				}
 			}
 			if string(result.Door.Match) != tt.wantDong {
