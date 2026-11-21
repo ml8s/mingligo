@@ -35,9 +35,10 @@ func TestMetaSplitRelocation(t *testing.T) {
 	if !ok {
 		t.Fatal("baseline meta not object")
 	}
-	moves := []struct{ key, to string }{
-		{"kong_gong", "palace_relations"}, {"san_fang_si_zheng", "palace_relations"},
-		{"ge_ju", "patterns"}, {"da_xian", "cycles"}, {"ming_zhu", "soul_body"}, {"shen_zhu", "soul_body"},
+	moves := []struct{ key, to, nestedKey string }{
+		{"kong_gong", "kong_gong_san_fang", "kong_gong"}, {"san_fang_si_zheng", "kong_gong_san_fang", "san_fang_si_zheng"},
+		{"ge_ju", "ge_ju", "candidates"}, {"da_xian", "da_xian", "da_xian"},
+		{"ming_zhu", "ming_zhu_shen_zhu", "ming_zhu"}, {"shen_zhu", "ming_zhu_shen_zhu", "shen_zhu"},
 	}
 	for _, m := range moves {
 		ov, had := bm[m.key]
@@ -48,7 +49,7 @@ func TestMetaSplitRelocation(t *testing.T) {
 			}
 			continue
 		}
-		nv, has := target[m.key]
+		nv, has := target[m.nestedKey]
 		if had != has {
 			t.Errorf("meta.%s presence changed", m.key)
 			continue
@@ -58,8 +59,8 @@ func TestMetaSplitRelocation(t *testing.T) {
 		}
 	}
 	for key, ov := range base {
-		if key == "meta" {
-			continue
+		if key == "meta" || key == "calendar" || key == "school" {
+			continue // renamed to li_fa_kou_jing / pai_pan_kou_jing
 		}
 		if !reflect.DeepEqual(ov, got[key]) {
 			t.Errorf("top-level %s changed", key)
