@@ -223,7 +223,7 @@ func hiddenTenGodLabels(entries []TenGodProjection) []string {
 
 func dayMasterTrendLabel(full Chart, zhi ganzhi.Zhi) string {
 	for _, stage := range full.ChangSheng {
-		if stage.Index == zhi {
+		if stage.Zhi == zhi {
 			return stage.Name
 		}
 	}

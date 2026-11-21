@@ -45,7 +45,7 @@ type AnnualStarView struct {
 type YearStarsView struct {
 	Year         int              `json:"year" jsonschema:"立春年份。"`
 	RuZhong      string           `json:"ru_zhong" jsonschema:"入中紫白星。"`
-	YearBoundary string           `json:"year_boundary" jsonschema:"年界：立春。"`
+	YearBoundary string           `json:"year_boundary" jsonschema:"年界：立春（与命卦层同源，契约保留）。"`
 	Palaces      []AnnualStarView `json:"gong_wei" jsonschema:"九宫紫白星。"`
 }
 

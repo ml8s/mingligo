@@ -13,8 +13,8 @@ type NayinRelEntry struct {
 
 // ChangShengStage describes one of the 12 life stages.
 type ChangShengStage struct {
-	Name  string     `json:"name"`
-	Index ganzhi.Zhi `json:"index"`
+	Name string     `json:"name"`
+	Zhi  ganzhi.Zhi `json:"index" jsonschema:"地支符号（json key 沿用 index 以兼容消费端）。"`
 }
 
 func withChartExtraFields(chart Chart, core Core) Chart {
@@ -24,8 +24,8 @@ func withChartExtraFields(chart Chart, core Core) Chart {
 	zhi := ganzhi.ChangShengTable[bz.Ri.Gan]
 	for i := 0; i < 12; i++ {
 		stages[i] = ChangShengStage{
-			Name:  ganzhi.StageNamesZH[i],
-			Index: zhi[i],
+			Name: ganzhi.StageNamesZH[i],
+			Zhi:  zhi[i],
 		}
 	}
 
