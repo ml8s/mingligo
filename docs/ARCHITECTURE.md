@@ -72,7 +72,7 @@ decode: 符号 → 文本   （系统解码出人类语言；输出边界）
 - MCP 等适配器**只透传 View 对象**，输出 schema 由消费者从 View 类型反射生成（`jsonschema.For[XxxView]()`）——不再有手写 wire DTO 第二套模型。符号类型通过 `TypeSchemas` 注册为 string enum，符号的 `MarshalJSON` 负责边界 decode。
 - **View 与 Chart 解耦**：Chart 保持最适计算的形态（可平行数组/内部符号），View 定义稳定的输出契约（可读字段、领域聚合）。填充分次序自由，但同一实体的碎片必须归位到同一对象。
 - **适配器不约束 domain**：schema 推断所需的符号枚举在适配器侧注册，绝不回退 domain 的符号化。
-- 注：bond（合婚）工具、time_now/city_info 信息工具的输出契约尚未 View 化，为已知遗留。
+- 注：bond（合婚）工具已 View 化（`bazi.BondView`/`ziwei.BondView`）。time_now/city_info 是纯 MCP 适配层的信息工具（当前时间、地点候选），无领域对象映射，其输出 DTO 属于适配器产物，不属于领域 View。
 
 ## 7. 事实层与分析层的边界
 
