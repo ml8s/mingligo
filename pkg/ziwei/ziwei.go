@@ -137,10 +137,10 @@ type LiuNianJie struct {
 
 // LiuNian is the annual fate analysis.
 type LiuNian struct {
-	MingGong     GongIndex            `json:"ming_gong"`
-	MingGongName string               `json:"ming_gong_name"` // 流年命宫名
-	Zhi          Zhi                  `json:"zhi"`            // 流年地支
-	SiHua        []FlowTransformation `json:"si_hua"`
-	GongWei      [12]FlowPalace       `json:"gong_wei"` // 流年盘（地支坐标 12 宫）
-	NianJie      LiuNianJie           `json:"nian_jie"`
+	MingGong   GongIndex            `json:"ming_gong"`
+	LiuMingZhi Zhi                  `json:"liu_ming_zhi"`
+	Zhi        Zhi                  `json:"zhi"` // 流年地支
+	SiHua      []FlowTransformation `json:"si_hua"`
+	GongWei    [12]FlowPalace       `json:"gong_wei"` // 流年盘（地支坐标 12 宫）
+	NianJie    LiuNianJie           `json:"nian_jie"`
 }

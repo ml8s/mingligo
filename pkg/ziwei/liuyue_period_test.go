@@ -135,8 +135,8 @@ func TestComputeLiuYue_LeapHalfMatchesFlowMonth(t *testing.T) {
 func assertSameLiuYueChart(t *testing.T, got, want LiuYue) {
 	t.Helper()
 	got, want = liuYueWithSortedStars(got), liuYueWithSortedStars(want)
-	if got.MingGong != want.MingGong || got.MingGongName != want.MingGongName || got.Zhi != want.Zhi {
-		t.Fatalf("core = %d/%s/%s, want %d/%s/%s", got.MingGong, got.MingGongName, got.Zhi, want.MingGong, want.MingGongName, want.Zhi)
+	if got.MingGong != want.MingGong || got.Zhi != want.Zhi {
+		t.Fatalf("core = %d/%s, want %d/%s", got.MingGong, got.Zhi, want.MingGong, want.Zhi)
 	}
 	if !reflect.DeepEqual(got.SiHua, want.SiHua) {
 		t.Fatalf("si hua = %#v, want %#v", got.SiHua, want.SiHua)

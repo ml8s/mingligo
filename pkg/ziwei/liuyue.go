@@ -30,12 +30,12 @@ type LiuYueJie struct {
 }
 
 type LiuYue struct {
-	MingGong     GongIndex            `json:"ming_gong"`
-	MingGongName string               `json:"ming_gong_name"`
-	Zhi          Zhi                  `json:"zhi"`
-	SiHua        []FlowTransformation `json:"si_hua"`
-	GongWei      [12]FlowPalace       `json:"gong_wei"`
-	YueJie       LiuYueJie            `json:"yue_jie"`
+	MingGong   GongIndex            `json:"ming_gong"`
+	LiuMingZhi Zhi                  `json:"liu_ming_zhi"`
+	Zhi        Zhi                  `json:"zhi"`
+	SiHua      []FlowTransformation `json:"si_hua"`
+	GongWei    [12]FlowPalace       `json:"gong_wei"`
+	YueJie     LiuYueJie            `json:"yue_jie"`
 }
 
 // FlowMonthPeriod separates calendar truth from the Ziwei flow-month choice.
@@ -97,11 +97,11 @@ func computeLiuYueWithPeriod(ctx FlowContext, target tianwen.LunarDate, period F
 		starByAnXingIdx[anXingIdx] = append(starByAnXingIdx[anXingIdx], flowStarOf(sid, name))
 	}
 	return LiuYue{
-		MingGong:     0,
-		MingGongName: "命宫",
-		Zhi:          yueZhi,
-		SiHua:        newFlowTransformations(computeSiHua(monthGan), ctx.SiHuaPalaces),
-		GongWei:      buildFlowPalaces(mi, starByAnXingIdx),
+		MingGong:   0,
+		LiuMingZhi: flowMingZhi(mi),
+		Zhi:        yueZhi,
+		SiHua:      newFlowTransformations(computeSiHua(monthGan), ctx.SiHuaPalaces),
+		GongWei:    buildFlowPalaces(mi, monthGan, starByAnXingIdx),
 	}, nil
 }
 
@@ -214,12 +214,12 @@ type LiuRiJie struct {
 }
 
 type LiuRi struct {
-	MingGong     GongIndex            `json:"ming_gong"`
-	MingGongName string               `json:"ming_gong_name"`
-	Zhi          Zhi                  `json:"zhi"`
-	SiHua        []FlowTransformation `json:"si_hua"`
-	GongWei      [12]FlowPalace       `json:"gong_wei"`
-	RiJie        LiuRiJie             `json:"ri_jie"`
+	MingGong   GongIndex            `json:"ming_gong"`
+	LiuMingZhi Zhi                  `json:"liu_ming_zhi"`
+	Zhi        Zhi                  `json:"zhi"`
+	SiHua      []FlowTransformation `json:"si_hua"`
+	GongWei    [12]FlowPalace       `json:"gong_wei"`
+	RiJie      LiuRiJie             `json:"ri_jie"`
 }
 
 // ComputeLiuRiAt computes the flow day directly from a standard time. It
@@ -280,11 +280,11 @@ func ComputeLiuRiWith(ctx FlowContext, target tianwen.LunarDate, p tianwen.Lunar
 		starByAnXingIdx[anXingIdx] = append(starByAnXingIdx[anXingIdx], flowStarOf(sid, name))
 	}
 	return LiuRi{
-		MingGong:     0,
-		MingGongName: "命宫",
-		Zhi:          riZhi,
-		SiHua:        newFlowTransformations(computeSiHua(riGan), ctx.SiHuaPalaces),
-		GongWei:      buildFlowPalaces(di, starByAnXingIdx),
+		MingGong:   0,
+		LiuMingZhi: flowMingZhi(di),
+		Zhi:        riZhi,
+		SiHua:      newFlowTransformations(computeSiHua(riGan), ctx.SiHuaPalaces),
+		GongWei:    buildFlowPalaces(di, riGan, starByAnXingIdx),
 	}, nil
 }
 
@@ -300,12 +300,12 @@ type LiuShiChen struct {
 }
 
 type LiuShi struct {
-	MingGong     GongIndex            `json:"ming_gong"`
-	MingGongName string               `json:"ming_gong_name"`
-	Zhi          Zhi                  `json:"zhi"`
-	SiHua        []FlowTransformation `json:"si_hua"`
-	GongWei      [12]FlowPalace       `json:"gong_wei"`
-	ShiChen      LiuShiChen           `json:"shi_chen"`
+	MingGong   GongIndex            `json:"ming_gong"`
+	LiuMingZhi Zhi                  `json:"liu_ming_zhi"`
+	Zhi        Zhi                  `json:"zhi"`
+	SiHua      []FlowTransformation `json:"si_hua"`
+	GongWei    [12]FlowPalace       `json:"gong_wei"`
+	ShiChen    LiuShiChen           `json:"shi_chen"`
 }
 
 // ComputeLiuShiAt computes the flow hour directly from a standard time. It
@@ -371,11 +371,11 @@ func ComputeLiuShiWith(ctx FlowContext, target tianwen.LunarDate, shiZhi Zhi, p 
 		starByAnXingIdx[anXingIdx] = append(starByAnXingIdx[anXingIdx], flowStarOf(sid, name))
 	}
 	return LiuShi{
-		MingGong:     0,
-		MingGongName: "命宫",
-		Zhi:          shiZhi,
-		SiHua:        newFlowTransformations(computeSiHua(shiGan), ctx.SiHuaPalaces),
-		GongWei:      buildFlowPalaces(hi, starByAnXingIdx),
+		MingGong:   0,
+		LiuMingZhi: flowMingZhi(hi),
+		Zhi:        shiZhi,
+		SiHua:      newFlowTransformations(computeSiHua(shiGan), ctx.SiHuaPalaces),
+		GongWei:    buildFlowPalaces(hi, shiGan, starByAnXingIdx),
 	}, nil
 }
 

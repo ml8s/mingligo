@@ -98,13 +98,13 @@ func ComputeLiuNian(ctx FlowContext, liuNian int) LiuNian {
 	njAnXingIdx := zhiIdxToAnXingIdx(nianJiePos(liuYearZhi))
 	starByAnXingIdx[njAnXingIdx] = append(starByAnXingIdx[njAnXingIdx], FlowStar{Kind: fskNone, Name: "年解"})
 	yearlyIndex := zhiIdxToAnXingIdx(zhiToZhiIdx(liuYearZhi))
-	FlowPalaces := buildFlowPalaces(yearlyIndex, starByAnXingIdx)
+	FlowPalaces := buildFlowPalaces(yearlyIndex, liuYearGan, starByAnXingIdx)
 
 	return LiuNian{
-		MingGong:     flowMing,
-		MingGongName: ctx.MingGongName,
-		Zhi:          liuYearZhi,
-		SiHua:        transformations,
-		GongWei:      FlowPalaces,
+		MingGong:   flowMing,
+		LiuMingZhi: flowMingZhi(yearlyIndex),
+		Zhi:        liuYearZhi,
+		SiHua:      transformations,
+		GongWei:    FlowPalaces,
 	}
 }

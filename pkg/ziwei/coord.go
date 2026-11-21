@@ -41,6 +41,7 @@ func zhiIdxToAnXingIdx(zhiIdx int) int {
 // expressed in earth-zhi coordinates.
 type FlowPalace struct {
 	Zhi    Zhi        `json:"zhi"`         // 地支
+	Gan    Gan        `json:"gan"`         // 宫干（五虎遁，流期干遁出）
 	Name   string     `json:"name"`        // 宫名（命盘标签）
 	Stars  []FlowStar `json:"xing"`        // 流曜星名（无则为空）
 	IsMing bool       `json:"is_liu_ming"` // 是否流盘命宫
@@ -50,7 +51,7 @@ type FlowPalace struct {
 // 真相源：宫名 = 地支 → GongIndex → 标签，顺逆由公式表达，不存宫名顺序数组。
 // liuPanIdx 是流盘索引（流年/月/日/时），用于确定流盘命宫（IsMing 标记）。
 // liuPanIdx 是流盘起点（安星索引），用于宫名推导。
-func buildFlowPalaces(liuPanIdx int, starByAnXingIdx map[int][]FlowStar) [12]FlowPalace {
+func buildFlowPalaces(liuPanIdx int, flowGan Gan, starByAnXingIdx map[int][]FlowStar) [12]FlowPalace {
 	var out [12]FlowPalace
 	for i := 0; i < 12; i++ {
 		zhiIdx := anXingIdxToZhiIdx(i)
@@ -65,6 +66,7 @@ func buildFlowPalaces(liuPanIdx int, starByAnXingIdx map[int][]FlowStar) [12]Flo
 		stars = sortFlowStars(stars)
 		out[i] = FlowPalace{
 			Zhi:    zhiIdxToZhi(zhiIdx),
+			Gan:    flowPalaceGan(flowGan, i),
 			Name:   name,
 			Stars:  stars,
 			IsMing: palIdx == int(gongMing),

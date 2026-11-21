@@ -3,6 +3,7 @@ package ziwei
 import (
 	"bytes"
 	"encoding/json"
+	"github.com/ml8s/mingligo/pkg/ganzhi"
 	"reflect"
 	"testing"
 )
@@ -37,8 +38,8 @@ func TestBuildFlowPalacesHasDeterministicStarOrder(t *testing.T) {
 		8: flowStarListOf([]string{"流喜", "流禄", "流陀"}),
 	}
 
-	first := buildFlowPalaces(0, stars)
-	second := buildFlowPalaces(0, stars)
+	first := buildFlowPalaces(0, ganzhi.GanJia, stars)
+	second := buildFlowPalaces(0, ganzhi.GanJia, stars)
 	firstJSON, err := json.Marshal(first)
 	if err != nil {
 		t.Fatal(err)
@@ -62,7 +63,7 @@ func TestBuildFlowPalacesHasDeterministicStarOrder(t *testing.T) {
 }
 
 func TestBuildFlowPalacesEmitsEmptyStarArrays(t *testing.T) {
-	palaces := buildFlowPalaces(0, map[int][]FlowStar{})
+	palaces := buildFlowPalaces(0, ganzhi.GanJia, map[int][]FlowStar{})
 	for _, palace := range palaces {
 		if palace.Stars == nil || !reflect.DeepEqual(palace.Stars, []FlowStar{}) {
 			t.Fatalf("palace %s stars = %#v, want non-nil empty array", palace.Name, palace.Stars)

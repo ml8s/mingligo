@@ -6,12 +6,12 @@ import "encoding/json"
 // inert metadata read only when a consumer reflects the type for its schema.
 
 type LiuNianOutputView struct {
-	MingGong     GongIndex                `json:"ming_gong" jsonschema:"命宫。"`
-	MingGongName string                   `json:"ming_gong_name" jsonschema:"流年命宫名。"`
-	Zhi          Zhi                      `json:"zhi" jsonschema:"流年地支"`
-	SiHua        []FlowTransformationView `json:"si_hua" jsonschema:"四化事实：星、化、落宫。"`
-	GongWei      []FlowPalaceView         `json:"gong_wei" jsonschema:"流年十二宫盘。"`
-	NianJie      LiuNianResolvedView      `json:"nian_jie" jsonschema:"流年农历年界。"`
+	MingGong   GongIndex                `json:"ming_gong" jsonschema:"命宫。"`
+	LiuMingZhi Zhi                      `json:"liu_ming_zhi" jsonschema:"流命所在地支（与 is_liu_ming 宫一致）。"`
+	Zhi        Zhi                      `json:"zhi" jsonschema:"流年地支"`
+	SiHua      []FlowTransformationView `json:"si_hua" jsonschema:"四化事实：星、化、落宫。"`
+	GongWei    []FlowPalaceView         `json:"gong_wei" jsonschema:"流年十二宫盘。"`
+	NianJie    LiuNianResolvedView      `json:"nian_jie" jsonschema:"流年农历年界。"`
 }
 
 type LiuNianResolvedView struct {
@@ -31,6 +31,7 @@ type FlowTransformationView struct {
 
 type FlowPalaceView struct {
 	Zhi       Zhi       `json:"zhi" jsonschema:"地支。"`
+	Gan       Gan       `json:"gan" jsonschema:"宫干（五虎遁）。"`
 	Name      GongIndex `json:"name" jsonschema:"宫名。"`
 	Stars     []string  `json:"xing" jsonschema:"流曜。"`
 	IsLiuMing bool      `json:"is_liu_ming" jsonschema:"是否流盘命宫。"`
@@ -55,12 +56,12 @@ type YueJieView struct {
 }
 
 type LiuYueOutputView struct {
-	YueJie       YueJieView               `json:"yue_jie" jsonschema:"流月农历月界与月令。"`
-	MingGong     GongIndex                `json:"ming_gong" jsonschema:"命宫。"`
-	MingGongName string                   `json:"ming_gong_name" jsonschema:"流月命宫名。"`
-	Zhi          Zhi                      `json:"zhi" jsonschema:"流月地支"`
-	SiHua        []FlowTransformationView `json:"si_hua" jsonschema:"四化事实：星、化、落宫。"`
-	GongWei      []FlowPalaceView         `json:"gong_wei" jsonschema:"流月十二宫盘。"`
+	YueJie     YueJieView               `json:"yue_jie" jsonschema:"流月农历月界与月令。"`
+	MingGong   GongIndex                `json:"ming_gong" jsonschema:"命宫。"`
+	LiuMingZhi Zhi                      `json:"liu_ming_zhi" jsonschema:"流命所在地支（与 is_liu_ming 宫一致）。"`
+	Zhi        Zhi                      `json:"zhi" jsonschema:"流月地支"`
+	SiHua      []FlowTransformationView `json:"si_hua" jsonschema:"四化事实：星、化、落宫。"`
+	GongWei    []FlowPalaceView         `json:"gong_wei" jsonschema:"流月十二宫盘。"`
 }
 
 type LiuYueResolvedPeriodCalendarPeriodView struct {
@@ -85,12 +86,12 @@ type LiuRiJieView struct {
 }
 
 type LiuRiOutputView struct {
-	RiJie        LiuRiJieView             `json:"ri_jie" jsonschema:"流日日界。"`
-	MingGong     GongIndex                `json:"ming_gong" jsonschema:"命宫。"`
-	MingGongName string                   `json:"ming_gong_name" jsonschema:"流日命宫名。"`
-	Zhi          Zhi                      `json:"zhi" jsonschema:"流日地支"`
-	SiHua        []FlowTransformationView `json:"si_hua" jsonschema:"四化事实：星、化、落宫。"`
-	GongWei      []FlowPalaceView         `json:"gong_wei" jsonschema:"流日十二宫盘。"`
+	RiJie      LiuRiJieView             `json:"ri_jie" jsonschema:"流日日界。"`
+	MingGong   GongIndex                `json:"ming_gong" jsonschema:"命宫。"`
+	LiuMingZhi Zhi                      `json:"liu_ming_zhi" jsonschema:"流命所在地支（与 is_liu_ming 宫一致）。"`
+	Zhi        Zhi                      `json:"zhi" jsonschema:"流日地支"`
+	SiHua      []FlowTransformationView `json:"si_hua" jsonschema:"四化事实：星、化、落宫。"`
+	GongWei    []FlowPalaceView         `json:"gong_wei" jsonschema:"流日十二宫盘。"`
 }
 
 type LiuShiChenView struct {
@@ -101,12 +102,12 @@ type LiuShiChenView struct {
 }
 
 type LiuShiOutputView struct {
-	MingGong     GongIndex                `json:"ming_gong" jsonschema:"命宫。"`
-	MingGongName string                   `json:"ming_gong_name" jsonschema:"流时命宫名。"`
-	Zhi          Zhi                      `json:"zhi" jsonschema:"流时地支"`
-	SiHua        []FlowTransformationView `json:"si_hua" jsonschema:"四化事实：星、化、落宫。"`
-	GongWei      []FlowPalaceView         `json:"gong_wei" jsonschema:"流时十二宫盘。"`
-	ShiChen      LiuShiChenView           `json:"shi_chen" jsonschema:"流时时辰定位。"`
+	MingGong   GongIndex                `json:"ming_gong" jsonschema:"命宫。"`
+	LiuMingZhi Zhi                      `json:"liu_ming_zhi" jsonschema:"流命所在地支（与 is_liu_ming 宫一致）。"`
+	Zhi        Zhi                      `json:"zhi" jsonschema:"流时地支"`
+	SiHua      []FlowTransformationView `json:"si_hua" jsonschema:"四化事实：星、化、落宫。"`
+	GongWei    []FlowPalaceView         `json:"gong_wei" jsonschema:"流时十二宫盘。"`
+	ShiChen    LiuShiChenView           `json:"shi_chen" jsonschema:"流时时辰定位。"`
 }
 
 func liupanView[T any](src any, dst *T) T {
