@@ -36,8 +36,12 @@ func TestBaziBondDomainMatchesWire(t *testing.T) {
 	domain := bazi.ComputeBond(coreA, coreB)
 	domainRaw, _ := json.Marshal(domain)
 	var a, b any
-	json.Unmarshal(raw, &a)
-	json.Unmarshal(domainRaw, &b)
+	if err := json.Unmarshal(raw, &a); err != nil {
+		t.Fatal(err)
+	}
+	if err := json.Unmarshal(domainRaw, &b); err != nil {
+		t.Fatal(err)
+	}
 	if !reflect.DeepEqual(a, b) {
 		t.Errorf("domain/wire mismatch\ndomain: %s\nwire:   %s", domainRaw, raw)
 	}

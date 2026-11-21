@@ -60,7 +60,7 @@ func main() {
 	selfTestCst := time.FixedZone("CST", 8*3600)
 	selfTestWhen := time.Date(1984, 2, 4, 6, 0, 0, 0, selfTestCst)
 	selfTestChart := bazi.ComputeChartAt(selfTestWhen, 120, ganzhi.Male)
-	selfTestOK := selfTestChart.Ri.Gan == ganzhi.GanWu
+	selfTestOK := selfTestChart.Ri.Gan == ganzhi.GanWu && selfTestChart.Ri.Zhi == ganzhi.ZhiChen
 
 	mux := http.NewServeMux()
 	// The aggregate endpoint is the canonical MingliGo surface for local tests,

@@ -425,3 +425,38 @@ func EncodeBrightness(s string) (Brightness, bool) {
 	}
 	return Miao, false
 }
+
+func (v *ShenSha) UnmarshalJSON(data []byte) error {
+	var name string
+	if err := json.Unmarshal(data, &name); err != nil {
+		return err
+	}
+	decoded, ok := EncodeShenSha(name)
+	if !ok || DecodeShenSha(decoded) != name {
+		return fmt.Errorf("unknown ziwei shensha %q", name)
+	}
+	*v = decoded
+	return nil
+}
+
+func (v *Brightness) UnmarshalJSON(data []byte) error {
+	var name string
+	if err := json.Unmarshal(data, &name); err != nil {
+		return err
+	}
+	decoded, ok := EncodeBrightness(name)
+	if !ok || DecodeBrightness(decoded) != name {
+		return fmt.Errorf("unknown brightness %q", name)
+	}
+	*v = decoded
+	return nil
+}
+
+func (f *FlowStar) UnmarshalJSON(data []byte) error {
+	var name string
+	if err := json.Unmarshal(data, &name); err != nil {
+		return err
+	}
+	*f = FlowStar{Kind: flowStarKindOf(name), Name: name}
+	return nil
+}

@@ -114,6 +114,10 @@ func TestXingJiJiaYinNoTianXing(t *testing.T) {
 
 func encodeShenShaList(names []string) []ShenSha {
 	out := make([]ShenSha, 0, len(names))
-	for _, n := range names { if v, ok := EncodeShenSha(n); ok { out = append(out, v) } }
+	for _, n := range names {
+		if v, ok := EncodeShenSha(n); ok {
+			out = append(out, v)
+		}
+	}
 	return out
 }

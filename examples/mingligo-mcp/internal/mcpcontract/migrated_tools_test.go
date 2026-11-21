@@ -518,61 +518,6 @@ func TestMigratedBaziChartTrueSolarChain(t *testing.T) {
 }
 
 // outputProperties returns a tool's declared output schema properties.
-func outputProperties(t *testing.T, registry *ContractServer, name string) map[string]any {
-	t.Helper()
-	properties, _ := outputPropertiesAndDefs(t, registry, name)
-	if properties == nil {
-		t.Fatalf("%s output schema has no properties", name)
-	}
-	return properties
-}
-
-// outputPropertiesAndDefs returns published output properties plus root
-// definitions so callers can resolve schemas compacted into shared $defs.
-func outputPropertiesAndDefs(t *testing.T, registry *ContractServer, name string) (map[string]any, map[string]any) {
-	t.Helper()
-	definition, err := registry.Definition(name)
-	if err != nil {
-		t.Fatalf("%s: %v", name, err)
-	}
-	if len(definition.OutputSchema) == 0 {
-		t.Fatalf("%s declares no output schema", name)
-	}
-	var schema map[string]any
-	decode(t, definition.OutputSchema, &schema)
-	definitions, _ := schema["$defs"].(map[string]any)
-	// Series tools root at a named domain array; the array's item schema
-	// carries the single-output properties.
-	for _, key := range []string{"anyOf", "oneOf"} {
-		if branches, ok := schema[key].([]any); ok && len(branches) > 0 {
-			if first, ok := branches[0].(map[string]any); ok {
-				resolved, ok := resolveSchemaRef(t, first, definitions).(map[string]any)
-				if !ok {
-					t.Fatalf("%s output root branch is not an object: %#v", name, first)
-				}
-				schema = resolved
-				break
-			}
-		}
-	}
-	if seriesProperties, ok := schema["properties"].(map[string]any); ok {
-		for _, root := range namedSeriesRoots {
-			if items, ok := seriesProperties[root].(map[string]any); ok {
-				if itemSchema, ok := items["items"].(map[string]any); ok {
-					resolved, ok := resolveSchemaRef(t, itemSchema, definitions).(map[string]any)
-					if !ok {
-						t.Fatalf("%s output item is not an object: %#v", name, itemSchema)
-					}
-					schema = resolved
-				}
-				break
-			}
-		}
-	}
-	properties, _ := schema["properties"].(map[string]any)
-	return properties, definitions
-}
-
 func liupanOutputProperties(t *testing.T, registry *ContractServer, domain, root string) (map[string]any, map[string]any) {
 	t.Helper()
 	definition, err := registry.Definition(domain + "_liupan")
@@ -602,12 +547,6 @@ func liupanOutputProperties(t *testing.T, registry *ContractServer, domain, root
 
 // enumAt walks a property path and returns the declared enum values. The "[ ]"
 // segment descends into array items.
-func enumAt(t *testing.T, properties map[string]any, path ...string) []string {
-	t.Helper()
-	return enumAtDefs(t, properties, nil, path...)
-}
-
-// enumAtDefs walks a property path and resolves shared enum definitions.
 func enumAtDefs(t *testing.T, properties, defs map[string]any, path ...string) []string {
 	t.Helper()
 	var node any = properties

@@ -150,7 +150,7 @@ func liuYueWithSortedStars(value LiuYue) LiuYue {
 	for i := range value.GongWei {
 		stars := flowStarNames(value.GongWei[i].Stars)
 		sort.Strings(stars)
-		
+
 	}
 	return value
 }

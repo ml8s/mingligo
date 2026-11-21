@@ -1,6 +1,7 @@
 package bazi
 
 import (
+	"encoding/json"
 	"fmt"
 	"strings"
 
@@ -494,4 +495,17 @@ func EncodeShenShaName(s string) (ShenShaName, bool) {
 		return name, true
 	}
 	return "", false
+}
+
+func (v *NatalRelationKind) UnmarshalJSON(data []byte) error {
+	var name string
+	if err := json.Unmarshal(data, &name); err != nil {
+		return err
+	}
+	decoded, ok := EncodeNatalRelationKind(name)
+	if !ok || DecodeNatalRelationKind(decoded) != name {
+		return fmt.Errorf("unknown natal relation kind %q", name)
+	}
+	*v = decoded
+	return nil
 }

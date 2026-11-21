@@ -217,13 +217,6 @@ func pairTripleHuiRelation(a, b ganzhi.Zhi) (ZhiRelation, bool) {
 	return ZhiRelation{}, false
 }
 
-const (
-	xingWuLi   = "无礼之刑"
-	xingWuEn   = "无恩之刑"
-	xingShiShi = "恃势之刑"
-	xingZi     = "自刑"
-)
-
 // analyzeZhuWithBazi analyzes one pillar against all 4 bazi chart pillars.
 func analyzeZhuWithBazi(zhu ganzhi.Zhu, bz ganzhi.Bazi) ([]GanRelation, []ZhiRelation) {
 	ganRels := make([]GanRelation, 4)

@@ -6,7 +6,7 @@ import (
 )
 
 func TestDayBranchType_TombBranch(t *testing.T) {
-	ganzhi.Load()
+	_ = ganzhi.Load()
 	for _, zhi := range []ganzhi.Zhi{ganzhi.ZhiChen, ganzhi.ZhiXu, ganzhi.ZhiChou, ganzhi.ZhiWei} {
 		chart := Chart{Ri: Pillar{Zhu: ganzhi.Zhu{Gan: ganzhi.GanJia, Zhi: zhi}}}
 		if got := dayBranchType(chart); got != "墓库" {
@@ -16,7 +16,7 @@ func TestDayBranchType_TombBranch(t *testing.T) {
 }
 
 func TestDayBranchType_ShenShaPriority(t *testing.T) {
-	ganzhi.Load()
+	_ = ganzhi.Load()
 	chart := Chart{Ri: Pillar{
 		Zhu:     ganzhi.Zhu{Gan: ganzhi.GanJia, Zhi: ganzhi.ZhiZi},
 		ShenSha: []ShenShaProjection{{Name: "桃花"}, {Name: "驿马"}},
@@ -27,7 +27,7 @@ func TestDayBranchType_ShenShaPriority(t *testing.T) {
 }
 
 func TestSpousePalaceState_AllStatesAndPriority(t *testing.T) {
-	ganzhi.Load()
+	_ = ganzhi.Load()
 	// Each relation kind involving the day pillar maps to its state.
 	cases := []struct {
 		kind NatalRelationKind

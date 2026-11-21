@@ -26,8 +26,12 @@ func TestBaziLiuNianDomainMatchesView(t *testing.T) {
 	dj, _ := json.Marshal(domain)
 	vj, _ := json.Marshal(domain.View())
 	var a, b any
-	json.Unmarshal(dj, &a)
-	json.Unmarshal(vj, &b)
+	if err := json.Unmarshal(dj, &a); err != nil {
+		t.Fatal(err)
+	}
+	if err := json.Unmarshal(vj, &b); err != nil {
+		t.Fatal(err)
+	}
 	if !reflect.DeepEqual(a, b) {
 		t.Errorf("domain/view mismatch\ndomain: %s\nview:   %s", dj, vj)
 	}

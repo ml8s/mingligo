@@ -586,20 +586,7 @@ type FeatureKind string
 type DayBoundaryKind string
 
 const (
-	leadPillarDay     LeadPillarKind = "day"
-	leadPillarHour    LeadPillarKind = "hour"
-	leadPillarMonth   LeadPillarKind = "month"
-	leadPillarQuarter LeadPillarKind = "quarter"
-	leadPillarYear    LeadPillarKind = "year"
-
-	methodSourceMonthCycle  MethodSourceKind = "month_cycle"
-	methodSourceQuarterRule MethodSourceKind = "quarter_rule"
-	methodSourceSolarTerm   MethodSourceKind = "solar_term"
-	methodSourceYearCycle   MethodSourceKind = "year_cycle"
-
 	featureWuBuYuShi FeatureKind = "wu_bu_yu_shi"
-
-	dayBoundaryLateZi DayBoundaryKind = "late_zi_rolls_day_pillar"
 )
 
 func DecodeMethodSourceKind(m MethodSourceKind) string { return string(m) }
@@ -612,11 +599,45 @@ type YingQiRuleType string
 type YingQiMatchKind string
 
 const (
-	yingQiRuleMaXing   YingQiRuleType = "ma_xing"
-	yingQiRuleKongWang YingQiRuleType = "kong_wang"
-	yingQiRuleDutyStar YingQiRuleType = "duty_star"
-	yingQiRuleDutyDoor YingQiRuleType = "duty_door"
-
 	yingQiMatchSame     YingQiMatchKind = "same"
 	yingQiMatchOpposite YingQiMatchKind = "opposite"
 )
+
+func (v *DunSource) UnmarshalJSON(data []byte) error {
+	var name string
+	if err := json.Unmarshal(data, &name); err != nil {
+		return err
+	}
+	decoded, ok := EncodeDunSource(name)
+	if !ok || DecodeDunSource(decoded) != name {
+		return fmt.Errorf("unknown dun source %q", name)
+	}
+	*v = decoded
+	return nil
+}
+
+func (v *HourBoundary) UnmarshalJSON(data []byte) error {
+	var name string
+	if err := json.Unmarshal(data, &name); err != nil {
+		return err
+	}
+	decoded, ok := EncodeHourBoundary(name)
+	if !ok || DecodeHourBoundary(decoded) != name {
+		return fmt.Errorf("unknown hour boundary %q", name)
+	}
+	*v = decoded
+	return nil
+}
+
+func (v *PillarLevel) UnmarshalJSON(data []byte) error {
+	var name string
+	if err := json.Unmarshal(data, &name); err != nil {
+		return err
+	}
+	decoded, ok := EncodePillarLevel(name)
+	if !ok || DecodePillarLevel(decoded) != name {
+		return fmt.Errorf("unknown pillar level %q", name)
+	}
+	*v = decoded
+	return nil
+}

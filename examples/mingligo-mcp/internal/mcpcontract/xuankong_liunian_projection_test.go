@@ -20,8 +20,12 @@ func TestXuankongLiuNianDomainMatchesView(t *testing.T) {
 	var domain, view any
 	dj, _ := json.Marshal(result)
 	vj, _ := json.Marshal(xuankong.LiuNianResult(result).View())
-	json.Unmarshal(dj, &domain)
-	json.Unmarshal(vj, &view)
+	if err := json.Unmarshal(dj, &domain); err != nil {
+		t.Fatal(err)
+	}
+	if err := json.Unmarshal(vj, &view); err != nil {
+		t.Fatal(err)
+	}
 	if !reflect.DeepEqual(domain, view) {
 		t.Errorf("domain/view mismatch\ndomain: %s\nview:   %s", dj, vj)
 	}

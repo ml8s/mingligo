@@ -5,14 +5,14 @@ package luoshu
 type Trigram string
 
 const (
-	TrigramQian  Trigram = "乾"
-	TrigramDui   Trigram = "兑"
-	TrigramLi    Trigram = "离"
-	TrigramZhen  Trigram = "震"
-	TrigramXun   Trigram = "巽"
-	TrigramKan   Trigram = "坎"
-	TrigramGen   Trigram = "艮"
-	TrigramKun   Trigram = "坤"
+	TrigramQian Trigram = "乾"
+	TrigramDui  Trigram = "兑"
+	TrigramLi   Trigram = "离"
+	TrigramZhen Trigram = "震"
+	TrigramXun  Trigram = "巽"
+	TrigramKan  Trigram = "坎"
+	TrigramGen  Trigram = "艮"
+	TrigramKun  Trigram = "坤"
 )
 
 var trigramSet = map[Trigram]bool{

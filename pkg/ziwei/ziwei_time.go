@@ -11,30 +11,30 @@ import (
 // LiuNianTime is the resolved lunar-year period for 流年. Start is the civil
 // date of 正月初一; End is the next lunar year's 正月初一 (exclusive).
 type LiuNianTime struct {
-	LunarYear   int               `json:"lunar_year"`
+	LunarYear   int          `json:"lunar_year"`
 	Start       tianwen.Date `json:"start"`
 	End         tianwen.Date `json:"end"`
-	BoundaryDay bool              `json:"boundary_day"`
+	BoundaryDay bool         `json:"boundary_day"`
 }
 
 // LiuYueTime is the resolved lunar-month period for 流月. It keeps the target
 // lunar date because the flow-month projection distinguishes month halves.
 type LiuYueTime struct {
-	Date        tianwen.Date `json:"date"`
+	Date        tianwen.Date      `json:"date"`
 	Lunar       tianwen.LunarDate `json:"lunar"`
-	Start       tianwen.Date `json:"start"`
-	End         tianwen.Date `json:"end"`
+	Start       tianwen.Date      `json:"start"`
+	End         tianwen.Date      `json:"end"`
 	BoundaryDay bool              `json:"boundary_day"`
 }
 
 // LiuRiTime is the resolved lunar day for 流日. Date is the selector date for
 // the chosen basis; StandardDate is echoed projection.
 type LiuRiTime struct {
-	Standard  time.Time         `json:"-"`
-	Location  *time.Location    `json:"-"`
-	Date      tianwen.Date `json:"date"`
-	StandardDate tianwen.Date `json:"standard_date"`
-	Lunar     tianwen.LunarDate `json:"lunar"`
+	Standard     time.Time         `json:"-"`
+	Location     *time.Location    `json:"-"`
+	Date         tianwen.Date      `json:"date"`
+	StandardDate tianwen.Date      `json:"standard_date"`
+	Lunar        tianwen.LunarDate `json:"lunar"`
 }
 
 // ResolveLiuNianTime resolves the lunar year containing date. The 正月初一
@@ -140,9 +140,9 @@ func ResolveLiuRiTimeWith(p tianwen.LunarProjector, date tianwen.Date) (LiuRiTim
 		return LiuRiTime{}, err
 	}
 	return LiuRiTime{
-		Date:      date,
+		Date:         date,
 		StandardDate: date,
-		Lunar:     p.SolarDateToLunar(date),
+		Lunar:        p.SolarDateToLunar(date),
 	}, nil
 }
 
@@ -155,11 +155,11 @@ func ResolveLiuRiTimeAtWith(p tianwen.LunarProjector, standard time.Time, loc *t
 	standardDate := tianwen.StandardDateAt(standard, loc)
 	selectorDate := p.SelectorDate(standard)
 	return LiuRiTime{
-		Standard:  standard,
-		Location:  loc,
-		Date:      selectorDate,
+		Standard:     standard,
+		Location:     loc,
+		Date:         selectorDate,
 		StandardDate: standardDate,
-		Lunar:     p.SolarDateToLunar(selectorDate),
+		Lunar:        p.SolarDateToLunar(selectorDate),
 	}, nil
 }
 
@@ -198,12 +198,12 @@ func lunarDayDateWith(p tianwen.LunarProjector, year, month, day int, leap bool)
 // LiuShiTime is the resolved hour-level time for 流时. Standard, Location and
 // Longitude are retained so the series can advance one 时辰 at a time.
 type LiuShiTime struct {
-	Standard  time.Time         `json:"-"`
-	Location  *time.Location    `json:"-"`
-	Longitude float64           `json:"longitude"`
-	StandardDate tianwen.Date `json:"standard_date"`
-	Lunar     tianwen.LunarDate `json:"lunar"`
-	Shichen   ganzhi.Zhi        `json:"shichen"`
+	Standard     time.Time         `json:"-"`
+	Location     *time.Location    `json:"-"`
+	Longitude    float64           `json:"longitude"`
+	StandardDate tianwen.Date      `json:"standard_date"`
+	Lunar        tianwen.LunarDate `json:"lunar"`
+	Shichen      ganzhi.Zhi        `json:"shichen"`
 }
 
 // ResolveLiuShiTime derives the lunar day and LAST shichen from a standard time.
@@ -216,12 +216,12 @@ func ResolveLiuShiTimeWith(p tianwen.LunarProjector, standard time.Time, loc *ti
 	}
 	shichen := tianwen.ShichenFromStandard(standard, longitude)
 	return LiuShiTime{
-		Standard:  standard,
-		Location:  loc,
-		Longitude: longitude,
+		Standard:     standard,
+		Location:     loc,
+		Longitude:    longitude,
 		StandardDate: tianwen.StandardDateAt(standard, loc),
-		Lunar:     p.LunarAt(standard),
-		Shichen:   shichen,
+		Lunar:        p.LunarAt(standard),
+		Shichen:      shichen,
 	}, nil
 }
 

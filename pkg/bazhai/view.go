@@ -98,8 +98,5 @@ func (c Chart) View() ChartView {
 
 // View produces the domain-aggregated layout assessment output.
 func (r LayoutResult) View() LayoutView {
-	return LayoutView{
-		Group: r.Group, MingGua: r.MingGua,
-		Door: r.Door, Master: r.Master, Stove: r.Stove,
-	}
+	return LayoutView(r)
 }

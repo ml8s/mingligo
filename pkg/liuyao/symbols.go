@@ -343,3 +343,55 @@ type PatternSubType string
 
 // BranchRelationType is a zhi-zhi relation (六冲/六合/六害/自刑/成组刑).
 type BranchRelationType string
+
+func (v *MuKuSource) UnmarshalJSON(data []byte) error {
+	var name string
+	if err := json.Unmarshal(data, &name); err != nil {
+		return err
+	}
+	decoded := EncodeMuKuSource(name)
+	if DecodeMuKuSource(decoded) != name {
+		return fmt.Errorf("unknown mu-ku source %q", name)
+	}
+	*v = decoded
+	return nil
+}
+
+func (v *ShiYing) UnmarshalJSON(data []byte) error {
+	var name string
+	if err := json.Unmarshal(data, &name); err != nil {
+		return err
+	}
+	decoded := EncodeShiYing(name)
+	if DecodeShiYing(decoded) != name {
+		return fmt.Errorf("unknown shi-ying %q", name)
+	}
+	*v = decoded
+	return nil
+}
+
+func (v *DayRelationType) UnmarshalJSON(data []byte) error {
+	var name string
+	if err := json.Unmarshal(data, &name); err != nil {
+		return err
+	}
+	decoded := EncodeDayRelationType(name)
+	if DecodeDayRelationType(decoded) != name {
+		return fmt.Errorf("unknown day relation %q", name)
+	}
+	*v = decoded
+	return nil
+}
+
+func (v *FeiFuRelation) UnmarshalJSON(data []byte) error {
+	var name string
+	if err := json.Unmarshal(data, &name); err != nil {
+		return err
+	}
+	decoded := EncodeFeiFuRelation(name)
+	if DecodeFeiFuRelation(decoded) != name {
+		return fmt.Errorf("unknown fei-fu relation %q", name)
+	}
+	*v = decoded
+	return nil
+}

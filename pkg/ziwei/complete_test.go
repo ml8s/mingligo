@@ -456,6 +456,8 @@ func parseLT(tc testCaseRef) tianwen.LunarTime {
 
 func decodeShenShaList(values []ShenSha) []string {
 	out := make([]string, 0, len(values))
-	for _, v := range values { out = append(out, DecodeShenSha(v)) }
+	for _, v := range values {
+		out = append(out, DecodeShenSha(v))
+	}
 	return out
 }

@@ -31,10 +31,17 @@ func TestZiweiBondDomainMatchesView(t *testing.T) {
 		t.Fatal(err)
 	}
 	domain := ziwei.ComputeBond(chartA.BondSideFacts(), chartB.BondSideFacts())
-	viewRaw, _ := json.Marshal(domain.View())
+	viewRaw, err := json.Marshal(domain.View())
+	if err != nil {
+		t.Fatal(err)
+	}
 	var a, b any
-	json.Unmarshal(raw, &a)
-	json.Unmarshal(viewRaw, &b)
+	if err := json.Unmarshal(raw, &a); err != nil {
+		t.Fatal(err)
+	}
+	if err := json.Unmarshal(viewRaw, &b); err != nil {
+		t.Fatal(err)
+	}
 	if !reflect.DeepEqual(a, b) {
 		t.Errorf("domain/view mismatch\ndomain: %s\nwire:   %s", viewRaw, raw)
 	}

@@ -95,7 +95,7 @@ func TestCore64Golden_JingFangEightPalaces(t *testing.T) {
 				if line.Position != golden.ShiPos && line.Position != wantYing {
 					continue
 				}
-				want := ShiYingNone
+				var want ShiYing
 				if line.Position == golden.ShiPos {
 					want = ShiYingShi
 				} else {
