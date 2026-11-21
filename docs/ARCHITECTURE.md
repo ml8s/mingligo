@@ -68,8 +68,11 @@ decode: 符号 → 文本   （系统解码出人类语言；输出边界）
 
 - MCP 是**官方 Go SDK 的 typed 示例适配器**，不是内核：内核是领域事实层，传输层只是它的一个消费者。换 REST 等其他适配器不需要改领域层。
 - domain 输出**结构化 object**，字段该 string 就 string、该 int 就 int，**不产出 JSON**。
-- MCP 等适配器只做两件事：透传 domain 结果、从 wire DTO 生成 schema。wire DTO 只承载 schema 标签，不是第二套数据模型。
-- **适配器不约束 domain**：若 domain 字段符号化与适配器的 schema 推断冲突，在适配器侧用独立 wire struct / 注册 schema 适配，绝不回退 domain 的符号化。
+- 每个领域提供 `XxxView`（Go struct，按命理子域聚合 + `json` 字段名 + `jsonschema` 描述惰性元数据）和 `Chart.View()` 方法：把计算形态（Chart）的碎片按领域语义归位到输出契约。View 是唯一的领域输出模型。
+- MCP 等适配器**只透传 View 对象**，输出 schema 由消费者从 View 类型反射生成（`jsonschema.For[XxxView]()`）——不再有手写 wire DTO 第二套模型。符号类型通过 `TypeSchemas` 注册为 string enum，符号的 `MarshalJSON` 负责边界 decode。
+- **View 与 Chart 解耦**：Chart 保持最适计算的形态（可平行数组/内部符号），View 定义稳定的输出契约（可读字段、领域聚合）。填充分次序自由，但同一实体的碎片必须归位到同一对象。
+- **适配器不约束 domain**：schema 推断所需的符号枚举在适配器侧注册，绝不回退 domain 的符号化。
+- 注：bond（合婚）工具、time_now/city_info 信息工具的输出契约尚未 View 化，为已知遗留。
 
 ## 7. 事实层与分析层的边界
 
