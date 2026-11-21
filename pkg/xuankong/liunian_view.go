@@ -6,11 +6,11 @@ import "encoding/json"
 // are inert metadata read only when a consumer reflects the type for its schema.
 
 type LiuNianJieView struct {
-	string      string `json:"standard_time" jsonschema:"流年选择器时区标准时间（无 DST）。"`
-	LichunYear  int    `json:"lichun_year" jsonschema:"该瞬间所在的立春年。"`
-	LichunStart string `json:"lichun_start" jsonschema:"立春年起始公历日（含）。"`
-	LichunEnd   string `json:"lichun_end" jsonschema:"下一立春日（不含）。"`
-	BoundaryDay bool   `json:"boundary_day" jsonschema:"输入瞬间的当地日期是否为立春边界日。"`
+	StandardTime string `json:"standard_time" jsonschema:"流年选择器时区标准时间（无 DST）。"`
+	LichunYear   int    `json:"lichun_year" jsonschema:"该瞬间所在的立春年。"`
+	LichunStart  string `json:"lichun_start" jsonschema:"立春年起始公历日（含）。"`
+	LichunEnd    string `json:"lichun_end" jsonschema:"下一立春日（不含）。"`
+	BoundaryDay  bool   `json:"boundary_day" jsonschema:"输入瞬间的当地日期是否为立春边界日。"`
 }
 
 type AnnualStarView struct {
