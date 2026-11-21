@@ -90,7 +90,15 @@ decode: 符号 → 文本   （系统解码出人类语言；输出边界）
 
 **已知流派口径差异（不改计算，仅标注）**：紫微流时干支按当日日柱起五鼠遁（随 iztro，晚子时不换日干）；八字 `HourPillar` 则按真太阳时 ≥23:00 取次日日干起时干。二者是紫微与八字两体系各自的传统口径，同仓库并存但**不得混用**——消费者不可把八字流时干支代入紫微四化，反之亦然。
 
-**同名字段分属不同子域**：流期干支用 `period_gan`/`zhi`（周期层），流宫干支用 `gong_wei[].gan`/`zhi`（宫位层）——两者同名不同义，以字段名和子域区分，避免消费者混淆。`si_hua[].gong` 是本命宫序坐标，`gong_wei[].name` 是流盘宫名（以流命为命宫），二者同型不同坐标系，在 jsonschema 中明确标注。`ming_gong` 四层统一由 `flowMingGongIndex`（流命落本命宫序）计算，消除月/日/时恒 0 的零信息。
+**同名字段分属不同子域**：流期干支用 `period_gan`/`zhi`（周期层），流宫干支用 `gong_wei[].gan`/`zhi`（宫位层）——两者同名不同义，以字段名和子域区分，避免消费者混淆。
+
+**View 子域划分原则（评审后定稿）**：
+
+- 子域按"事实源 + 命理层次"切分：事实 / 派生结论 / 口径元数据 / 时间轴分列
+- 八字 ChartView 的 `structure`（结构事实）与 `conclusions`（确定性结论）分离；`birth_year`/`shen_sha_school` 归 `calendar`
+- 紫微 ChartView 把原 `meta` 抽屉拆为 `palace_relations`/`patterns`/`cycles`/`soul_body` 四域
+- 保留聚合对象的例外：六爻 `analysis`、奇门 `palace_facts` 因消费端（counsel）深度依赖其路径，采用 jsonschema 分层标注而非物理拆分——"尊重业务"优先于形式内聚
+- 同名字段以字段名或子域区分：`period_gan`(流期) vs `gan`(流宫)、`gua_group`(卦组) vs `group`(命组)、`huang_dao_suitable`(时辰黄道) vs `suitability`(建除事项)`si_hua[].gong` 是本命宫序坐标，`gong_wei[].name` 是流盘宫名（以流命为命宫），二者同型不同坐标系，在 jsonschema 中明确标注。`ming_gong` 四层统一由 `flowMingGongIndex`（流命落本命宫序）计算，消除月/日/时恒 0 的零信息。
 
 正确性由分层验证保证：纯函数穷举/oracle → 逐阶段差分不变性基线（原字段逐字节相同，只放行白名单变更）→ 接线 oracle → golden 人工审查 → make gate。
 
