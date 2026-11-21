@@ -24,38 +24,8 @@ type XuankongLiunianInput struct {
 	LiuNianCount *SeriesCount  `json:"count,omitempty" jsonschema:"连续查询年数。"`
 }
 
-type XuankongLiuNianJie struct {
-	StandardTime StandardTime `json:"standard_time" jsonschema:"流年选择器时区标准时间（无 DST）。"`
-	LichunYear   int          `json:"lichun_year" jsonschema:"该瞬间所在的立春年。"`
-	LichunStart  DateString   `json:"lichun_start" jsonschema:"立春年起始公历日（含）。"`
-	LichunEnd    DateString   `json:"lichun_end" jsonschema:"下一立春日（不含）。"`
-	BoundaryDay  bool         `json:"boundary_day" jsonschema:"输入瞬间的当地日期是否为立春边界日。"`
-}
-
-type XuankongAnnualStarOutput struct {
-	GongNum  GuaNumber        `json:"gong_num" jsonschema:"洛书宫数。"`
-	Xing     FlyingStarNumber `json:"xing" jsonschema:"紫白星数。"`
-	XingName FlyingStarName   `json:"xing_name" jsonschema:"紫白星名。"`
-	Wuxing   ElementName      `json:"wuxing" jsonschema:"星五行。"`
-	RuZhong  bool             `json:"ru_zhong" jsonschema:"是否入中。"`
-}
-
-type XuankongHouseOverlayOutput struct {
-	GongNum     GuaNumber      `json:"gong_num" jsonschema:"洛书宫数。"`
-	Star        FlyingStarName `json:"xing" jsonschema:"流年星名。"`
-	PalaceStars string         `json:"gong_stars" jsonschema:"宅盘该宫运星/山星/向星。"`
-}
-
-type XuankongLiunianOutput struct {
-	Year         XuankongYear                 `json:"year" jsonschema:"立春年份。"`
-	RuZhong      FlyingStarName               `json:"ru_zhong" jsonschema:"入中紫白星。"`
-	GongWei      [9]XuankongAnnualStarOutput  `json:"gong_wei" jsonschema:"九宫流年紫白星。"`
-	HouseOverlay []XuankongHouseOverlayOutput `json:"house_overlay,omitempty" jsonschema:"全部流年星落宫对照宅盘该宫三星；不预设星曜固有吉凶。"`
-	NianJie      XuankongLiuNianJie           `json:"nian_jie" jsonschema:"玄空流年立春年界。"`
-}
-
 type XuankongLiuNianSeries struct {
-	LiuNian []xuankong.LiuNianResult `json:"liu_nian" jsonschema:"玄空流年数组，长度 = count。"`
+	LiuNian []xuankong.LiuNianOutputView `json:"liu_nian" jsonschema:"玄空流年数组，长度 = count。"`
 }
 
 func XuankongChartCompute(_ context.Context, input XuankongChartInput) (xuankong.ChartView, error) {
@@ -72,8 +42,12 @@ func XuankongChartCompute(_ context.Context, input XuankongChartInput) (xuankong
 
 func XuankongLiunian(_ context.Context, input XuankongLiunianInput) (XuankongLiuNianSeries, error) {
 	items, err := runSeries(input, seriesCountValue(input.LiuNianCount), MaxSeriesCount,
-		func(in XuankongLiunianInput) (xuankong.LiuNianResult, error) {
-			return computeXuankongLiunian(in)
+		func(in XuankongLiunianInput) (xuankong.LiuNianOutputView, error) {
+			result, err := computeXuankongLiunian(in)
+			if err != nil {
+				return xuankong.LiuNianOutputView{}, err
+			}
+			return result.View(), nil
 		},
 		func(in XuankongLiunianInput) (XuankongLiunianInput, error) {
 			at, loc, err := parseStandardTime(in.StandardTime)

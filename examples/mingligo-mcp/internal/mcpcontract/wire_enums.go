@@ -27,7 +27,6 @@ func registerWireEnums(options *jsonschema.ForOptions) {
 	registerWireEnum[MethodQuarterRuleName](options, "ten_minute_sanyuan", "twelve_minute_ten_division")
 	registerWireEnum[MethodSchoolName](options, "jinhan_yujing", "luoshu_feipan", "mingfa_feipan", "zhuanpan")
 	registerWireEnum[MethodScopeName](options, "day", "hour", "month", "quarter", "year")
-	registerWireEnum[XingName](options, "咸池", "天乙", "天符", "太乙", "太阴", "招摇", "摄提", "轩辕", "青龙")
 	registerWireEnum[ZiweiPalaceName](options, "仆役", "兄弟", "命宫", "夫妻", "子女", "官禄", "父母", "田宅", "疾厄", "福德", "财帛", "迁移")
 }
 
@@ -44,8 +43,6 @@ type MethodQuarterRuleName string
 type MethodSchoolName string
 
 type MethodScopeName string
-
-type XingName string
 
 type ZiweiPalaceName string
 

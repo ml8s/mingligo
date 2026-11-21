@@ -152,7 +152,7 @@ func RegisterTools(server *mcp.Server) error {
 		return fmt.Errorf("xuankong_liunian input schema: %w", err)
 	}
 	xuankongLiunianOutput := mustSchema("xuankong_liunian output", func() (json.RawMessage, error) {
-		return seriesOutputSchema[XuankongLiunianOutput](options, "liu_nian")
+		return seriesOutputSchema[xuankong.LiuNianOutputView](options, "liu_nian")
 	})
 	registerTyped(server,
 		mcp.Tool{

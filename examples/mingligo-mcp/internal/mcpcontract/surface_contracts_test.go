@@ -564,7 +564,7 @@ func TestMingliContractCalls(t *testing.T) {
 		t.Fatalf("xuankong.liunian output contract: %v", err)
 	}
 	var liunianDocument struct {
-		LiuNian []XuankongLiunianOutput `json:"liu_nian"`
+		LiuNian []xuankong.LiuNianOutputView `json:"liu_nian"`
 	}
 	if err := json.Unmarshal(liunianRaw, &liunianDocument); err != nil {
 		t.Fatal(err)
