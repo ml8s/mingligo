@@ -80,12 +80,14 @@ func computeLiuYueWithPeriod(ctx FlowContext, target tianwen.LunarDate, period F
 	monthGan := yueGanByWuHuDun(flowYearGan, yueZhi)
 	stars := liuMinorStars(monthGan, yueZhi)
 
-	// 盘起点 = monthlyIndex（iztro 公式，命主相关）
+	// 盘起点 = monthlyIndex（iztro 公式，命主相关）。
+	// 年份/月份与月干支同源用 period.FlowMonth：闰月下半月跳次月（如闰十二月
+	// 下半月跳次年正月）时，流年支与月干支必须同步，否则同一输出内分叉。
 	mi := computeMonthlyIndex(ctx, flowTarget{
-		Year:        target.Year,
-		LunarMonth:  target.Month,
+		Year:        flowYear,
+		LunarMonth:  flowMonth,
 		LunarDay:    target.Day,
-		IsLeapMonth: target.Leap,
+		IsLeapMonth: period.FlowMonth.Leap,
 	})
 	short := liuMinorShort("月")
 	starByAnXingIdx := make(map[int][]FlowStar)

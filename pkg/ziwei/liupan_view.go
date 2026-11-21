@@ -101,7 +101,7 @@ type LiuShiChenView struct {
 	LiuShiStandardTime string        `json:"standard_time" jsonschema:"流时选择器时区标准时间（无 DST）。"`
 	LiuShiStandardDate string        `json:"standard_date" jsonschema:"流时选择器的时区标准日（无 DST）。"`
 	Lunar              LunarDateView `json:"lunar" jsonschema:"该日期对应的农历日期。"`
-	Shichen            Zhi           `json:"shichen" jsonschema:"真太阳时时辰。"`
+	Shichen            Zhi           `json:"shichen" jsonschema:"真太阳时时辰；流时干支按当日日柱起五鼠遁（iztro 口径，晚子时不换日干），与八字 HourPillar 的晚子时次日口径不同。"`
 }
 
 type LiuShiOutputView struct {

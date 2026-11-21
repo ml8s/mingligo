@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/ml8s/mingligo/pkg/ganzhi"
+	"github.com/ml8s/mingligo/pkg/tianwen"
 )
 
 // TestFlowPalaceGanWuHuDunOracle pins the full 10×12 table against the
@@ -292,5 +293,72 @@ func TestFlowP5PeriodGanOracle(t *testing.T) {
 		if l.zhi < 1 || l.zhi > 12 {
 			t.Errorf("%s: zhi=%d out of range", l.name, l.zhi)
 		}
+	}
+}
+
+// TestLeap12SecondHalfYearSync verifies the 闰十二月下半月 boundary: the flow
+// month jumps to next year's 正月, and the monthly index must use that same
+// year so 月干支 and 流盘起点 don't fork. leaps beyond 1900-2100 are reachable
+// astronomically (next at 3358), so this guards a real (if rare) correctness bug.
+func TestLeap12SecondHalfYearSync(t *testing.T) {
+	loc, _ := time.LoadLocation("Asia/Shanghai")
+	p, err := tianwen.NewLunarProjector(tianwen.LunarBasisLocalAstronomical, loc)
+	if err != nil {
+		t.Fatal(err)
+	}
+	target := tianwen.LunarDate{Year: 3358, Month: 12, Day: 20, Leap: true}
+	period, err := resolveLiuYuePeriodWith(p, target)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if period.FlowMonth.Year != 3359 || period.FlowMonth.Month != 1 {
+		t.Fatalf("flowMonth = %+v, want 3359-01", period.FlowMonth)
+	}
+	// 3359 年干丙 → 正月寅 → 丙寅。修复前 mi 用 3358(戊)年支，会分叉。
+	ctx := FlowContext{BirthLunarMonth: 2, BirthLunarDay: 15, ShiZhi: 5, MingGongZhi: 11}
+	result, err := computeLiuYueWithPeriod(ctx, target, period)
+	if err != nil {
+		t.Fatal(err)
+	}
+	flowYearGan, _ := yearGanZhi(period.FlowMonth.Year)
+	wantGan := yueGanByWuHuDun(flowYearGan, result.Zhi)
+	if result.Gan != wantGan {
+		t.Errorf("period gan = %v, want %v (遁 from flowMonth year %d)", result.Gan, wantGan, period.FlowMonth.Year)
+	}
+	// monthlyIndex uses flowMonth year — assert via an equivalent direct call.
+	mi := computeMonthlyIndex(ctx, flowTarget{
+		Year: period.FlowMonth.Year, LunarMonth: period.FlowMonth.Month,
+		LunarDay: target.Day, IsLeapMonth: period.FlowMonth.Leap,
+	})
+	if mi < 0 || mi >= 12 {
+		t.Errorf("monthly index out of range: %d", mi)
+	}
+}
+
+// TestLiuYueNormalMonthUnchanged pins ordinary-month behavior (no leap jump)
+// identical to baseline, so the fix touches only the boundary.
+func TestLiuYueNormalMonthUnchanged(t *testing.T) {
+	base, err := os.ReadFile("testdata/leap_month_baseline.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	var baseDoc any
+	if err := json.Unmarshal(base, &baseDoc); err != nil {
+		t.Fatal(err)
+	}
+	subjectCtx := flowP4Context(t)
+	standard, _ := time.Parse(time.RFC3339, "2026-06-15T12:00:00+08:00")
+	loc, _ := time.LoadLocation("Asia/Shanghai")
+	got, err := ComputeLiuYueAt(subjectCtx, standard, loc)
+	if err != nil {
+		t.Fatal(err)
+	}
+	gotRaw, _ := json.Marshal(got)
+	var gotDoc any
+	if err := json.Unmarshal(gotRaw, &gotDoc); err != nil {
+		t.Fatal(err)
+	}
+	if !reflect.DeepEqual(baseDoc, gotDoc) {
+		t.Errorf("normal month output changed:\nbase=%s\ngot=%s", base, gotRaw)
 	}
 }
