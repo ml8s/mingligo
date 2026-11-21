@@ -110,12 +110,15 @@ func withDaYunRoots(chart Chart, bz ganzhi.Bazi) Chart {
 		return chart
 	}
 	natalHidden := natalHiddenStems(bz)
-	for index := range chart.DaYun.Steps {
-		step := &chart.DaYun.Steps[index]
+	daYun := *chart.DaYun
+	daYun.Steps = append([]DaYunStep(nil), chart.DaYun.Steps...)
+	for index := range daYun.Steps {
+		step := &daYun.Steps[index]
 		step.RootRefs = daYunRootRefs(ganzhi.Zhu{Gan: step.Gan, Zhi: step.Zhi}, natalHidden)
 		rooted := len(step.RootRefs) > 0
 		step.Rooted = &rooted
 	}
+	chart.DaYun = &daYun
 	return chart
 }
 

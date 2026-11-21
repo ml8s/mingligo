@@ -22,7 +22,7 @@ func TestShiChen_KnownDates_HuangDaoSequence(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			day, err := QueryDate(tt.date)
+			day, err := QueryDate(mustDate(tt.date))
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -52,14 +52,14 @@ func TestShiChen_KnownDates_HuangDaoSequence(t *testing.T) {
 
 func TestShiChen_DifferentDays_DifferentPattern(t *testing.T) {
 	// 命理: 不同日期(不同日支)的时辰吉凶分布不同
-	day1, err := QueryDate("2026-07-20")
+	day1, err := QueryDate(mustDate("2026-07-20"))
 	if err != nil {
 		t.Fatal(err)
 	}
 	if err != nil {
 		t.Fatal(err)
 	}
-	day2, err := QueryDate("2026-07-21")
+	day2, err := QueryDate(mustDate("2026-07-21"))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -95,7 +95,7 @@ func TestShiChen_DifferentDays_DifferentPattern(t *testing.T) {
 
 func TestShiChen_JianChuAlignsWithDay(t *testing.T) {
 	// 命理: 子时的建除应与本日建除相同(起建)
-	day, err := QueryDate("2026-07-20")
+	day, err := QueryDate(mustDate("2026-07-20"))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -111,7 +111,7 @@ func TestShiChen_JianChuAlignsWithDay(t *testing.T) {
 	}
 
 	// 12时辰建除应覆盖12个不同的建除神
-	seen := make(map[string]bool)
+	seen := make(map[JianChu]bool)
 	for _, sc := range day.ShiChen {
 		seen[sc.JianChu] = true
 	}
@@ -123,7 +123,7 @@ func TestShiChen_JianChuAlignsWithDay(t *testing.T) {
 func TestShiChen_GoodHoursForTravel(t *testing.T) {
 	// 命理: 出行宜开日(建除=开)或青龙黄道时辰
 	// 2026-07-20日支卯, 建除=开(宜出行)
-	day, err := QueryDate("2026-07-20")
+	day, err := QueryDate(mustDate("2026-07-20"))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -145,7 +145,7 @@ func TestShiChen_GoodHoursForTravel(t *testing.T) {
 
 func TestShiChen_TimeRanges_Correct(t *testing.T) {
 	// 命理: 时辰时间范围应正确
-	day, err := QueryDate("2026-07-20")
+	day, err := QueryDate(mustDate("2026-07-20"))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -164,11 +164,11 @@ func TestShiChen_TimeRanges_Correct(t *testing.T) {
 func TestShiChen_DifferentMonths_DifferentPattern(t *testing.T) {
 	// 不同月份的青龙起始不同→时辰吉凶分布不同
 	// 2026-02-01(寅月, 青龙起子) vs 2026-06-01(巳月, 青龙起午)
-	day1, err := QueryDate("2026-02-01")
+	day1, err := QueryDate(mustDate("2026-02-01"))
 	if err != nil {
 		t.Fatal(err)
 	}
-	day2, err := QueryDate("2026-06-01")
+	day2, err := QueryDate(mustDate("2026-06-01"))
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -31,9 +31,9 @@ func TestGoldenComputeChart(t *testing.T) {
 		t.Fatalf("center stars = %d/%d/%d, want 9/5/4", got.PeriodStar.Number, got.MountainStar.Number, got.FacingStar.Number)
 	}
 
-	got, marshalErr := json.MarshalIndent(chart, "", "  ")
+	got, err := json.MarshalIndent(chart, "", "  ")
 	if err != nil {
-		t.Fatalf("marshal: %v", marshalErr)
+		t.Fatalf("marshal: %v", err)
 	}
 
 	golden := filepath.Join("testdata", "chart_golden.json")

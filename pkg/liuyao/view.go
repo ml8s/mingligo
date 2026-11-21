@@ -95,7 +95,7 @@ type ChartView struct {
 	RiChenZhi  string        `json:"ri_chen_zhi" jsonschema:"日辰地支。"`
 	YueJianGan string        `json:"yue_jian_gan" jsonschema:"月建天干。"`
 	YueJianZhi string        `json:"yue_jian_zhi" jsonschema:"月建地支。"`
-	XunKong    []string      `json:"xun_kong" jsonschema:"是否旬空。"`
+	XunKong    []string      `json:"xun_kong" jsonschema:"旬空地支（两字）。"`
 	Patterns   []PatternView `json:"ge_ju" jsonschema:"格局。"`
 	YongShen   YongShenView  `json:"yong_shen" jsonschema:"用神。"`
 	GuaCi      *GuaCiView    `json:"gua_ci,omitempty" jsonschema:"卦辞。"`

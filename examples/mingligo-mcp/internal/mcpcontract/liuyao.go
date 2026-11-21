@@ -131,10 +131,6 @@ type LiuyaoCastingOutput struct {
 	DongYao        LiuyaoPositions        `json:"dong_yao" jsonschema:"动爻位置列表，1-6。"`
 }
 
-type LiuyaoQiguaOutput struct {
-	Event LiuyaoCastingEvent `json:"event" jsonschema:"一次起卦创建的不可变卦象事件。"`
-}
-
 type LiuyaoCoinsCastingReceipt struct {
 	Mode           LiuyaoCastMode         `json:"mode" jsonschema:"起卦方式。"`
 	Order          LiuyaoOrderName        `json:"order" jsonschema:"爻序。"`
@@ -460,7 +456,7 @@ func liuyaoStrictArraySchema[T any](options *jsonschema.ForOptions) (json.RawMes
 }
 
 func liuyaoQiguaOutputSchema(options *jsonschema.ForOptions) (json.RawMessage, error) {
-	raw, err := outputSchemaFor[LiuyaoQiguaOutput](options)
+	raw, err := outputSchemaFor[liuyao.QiguaView](options)
 	if err != nil {
 		return nil, err
 	}
@@ -595,40 +591,31 @@ func liuyaoResolveFocus(focus LiuyaoFocusInput) (LiuyaoYongShenName, error) {
 	}
 }
 
-// liuyaoQiguaResult carries the domain casting directly; LiuyaoQiguaOutput is
-// the published schema carrier with enum constraints. Their JSON shapes match.
-type liuyaoQiguaResult struct {
-	Event struct {
-		Casting        liuyao.Casting       `json:"casting"`
-		CastingContext LiuyaoCastingContext `json:"casting_context"`
-	} `json:"event"`
-}
-
-func LiuyaoQigua(_ context.Context, input LiuyaoQiguaInput) (liuyaoQiguaResult, error) {
+func LiuyaoQigua(_ context.Context, input LiuyaoQiguaInput) (liuyao.QiguaView, error) {
 	yongShen, err := liuyaoResolveFocus(input.CastingContext.Focus)
 	if err != nil {
-		return liuyaoQiguaResult{}, fmt.Errorf("liuyao_qigua: invalid focus: %w", err)
+		return liuyao.QiguaView{}, fmt.Errorf("liuyao_qigua: invalid focus: %w", err)
 	}
 	if _, _, err := parseStandardTime(input.CastingContext.StandardTime); err != nil {
-		return liuyaoQiguaResult{}, fmt.Errorf("liuyao_qigua: %w", err)
+		return liuyao.QiguaView{}, fmt.Errorf("liuyao_qigua: %w", err)
 	}
 	if float64(input.CastingContext.Longitude) < -180 || float64(input.CastingContext.Longitude) > 180 {
-		return liuyaoQiguaResult{}, fmt.Errorf("liuyao_qigua: longitude must be within [-180,180], got %v", float64(input.CastingContext.Longitude))
+		return liuyao.QiguaView{}, fmt.Errorf("liuyao_qigua: longitude must be within [-180,180], got %v", float64(input.CastingContext.Longitude))
 	}
 	var casting liuyao.Casting
 	request := input.Origin
 	switch request.Mode {
 	case "auto":
 		if request.Rounds != nil || request.Yaos != nil {
-			return liuyaoQiguaResult{}, fmt.Errorf("liuyao_qigua: auto mode does not accept rounds or yaos")
+			return liuyao.QiguaView{}, fmt.Errorf("liuyao_qigua: auto mode does not accept rounds or yaos")
 		}
 		casting, err = liuyao.SecureQigua()
 	case "coins":
 		if request.Yaos != nil {
-			return liuyaoQiguaResult{}, fmt.Errorf("liuyao_qigua: coins mode accepts rounds only")
+			return liuyao.QiguaView{}, fmt.Errorf("liuyao_qigua: coins mode accepts rounds only")
 		}
 		if len(request.Rounds) != 6 {
-			return liuyaoQiguaResult{}, fmt.Errorf("liuyao_qigua: casting.coins requires exactly 6 rounds, got %d", len(request.Rounds))
+			return liuyao.QiguaView{}, fmt.Errorf("liuyao_qigua: casting.coins requires exactly 6 rounds, got %d", len(request.Rounds))
 		}
 		rounds := make([][]liuyao.CoinFace, 0, 6)
 		for _, round := range request.Rounds {
@@ -641,10 +628,10 @@ func LiuyaoQigua(_ context.Context, input LiuyaoQiguaInput) (liuyaoQiguaResult, 
 		casting, err = liuyao.NewCoinsCasting(rounds)
 	case "yaos":
 		if request.Rounds != nil {
-			return liuyaoQiguaResult{}, fmt.Errorf("liuyao_qigua: yaos mode accepts yaos only")
+			return liuyao.QiguaView{}, fmt.Errorf("liuyao_qigua: yaos mode accepts yaos only")
 		}
 		if len(request.Yaos) != 6 {
-			return liuyaoQiguaResult{}, fmt.Errorf("liuyao_qigua: casting.yaos requires exactly 6 values, got %d", len(request.Yaos))
+			return liuyao.QiguaView{}, fmt.Errorf("liuyao_qigua: casting.yaos requires exactly 6 values, got %d", len(request.Yaos))
 		}
 		var values [6]int
 		for i, value := range request.Yaos {
@@ -652,17 +639,17 @@ func LiuyaoQigua(_ context.Context, input LiuyaoQiguaInput) (liuyaoQiguaResult, 
 		}
 		casting, err = liuyao.NewValuesCasting(values)
 	default:
-		return liuyaoQiguaResult{}, fmt.Errorf("liuyao_qigua: casting.mode unsupported %q", string(request.Mode))
+		return liuyao.QiguaView{}, fmt.Errorf("liuyao_qigua: casting.mode unsupported %q", string(request.Mode))
 	}
 	if err != nil {
-		return liuyaoQiguaResult{}, fmt.Errorf("liuyao_qigua: %w", err)
+		return liuyao.QiguaView{}, fmt.Errorf("liuyao_qigua: %w", err)
 	}
-	var result liuyaoQiguaResult
-	result.Event.Casting = casting
-	result.Event.CastingContext = LiuyaoCastingContext{
-		StandardTime: input.CastingContext.StandardTime,
-		Longitude:    input.CastingContext.Longitude,
-		YongShen:     yongShen,
+	var result liuyao.QiguaView
+	result.Event.Casting = casting.QiguaCastingView()
+	result.Event.CastingContext = liuyao.QiguaCastingContextView{
+		StandardTime: string(input.CastingContext.StandardTime),
+		Longitude:    float64(input.CastingContext.Longitude),
+		YongShen:     string(yongShen),
 	}
 	return result, nil
 }

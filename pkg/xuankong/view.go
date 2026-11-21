@@ -13,14 +13,14 @@ type MountainView struct {
 
 // ChartView is the domain-aggregated output of an XuanKong chart.
 type ChartView struct {
-	Yun            SanYuanYun      `json:"yun" jsonschema:"三元九运。"`
-	SitMountain    MountainView    `json:"zuo_shan" jsonschema:"坐山。"`
-	FaceMountain   MountainView    `json:"xiang_shan" jsonschema:"向首。"`
-	GongWei        [9]xuanKongStar `json:"gong_wei" jsonschema:"九宫运星山星向星。"`
-	FourSituation  FourSituation   `json:"four_situation" jsonschema:"四大局。"`
-	FuYinLayers    []string        `json:"fu_yin_layers" jsonschema:"伏吟层。"`
-	FanYinLayers   []string        `json:"fan_yin_layers" jsonschema:"反吟层。"`
-	ShouShanChuSha shouShanChuSha  `json:"shou_shan_chu_sha" jsonschema:"收山出煞判断。"`
+	Yun            SanYuanYun        `json:"yun" jsonschema:"三元九运。"`
+	SitMountain    MountainView      `json:"zuo_shan" jsonschema:"坐山。"`
+	FaceMountain   MountainView      `json:"xiang_shan" jsonschema:"向首。"`
+	GongWei        [9]xuanKongStar   `json:"gong_wei" jsonschema:"九宫运星山星向星。"`
+	FourSituation  FourSituation     `json:"four_situation" jsonschema:"四大局。"`
+	FuYinLayers    []RecitationLayer `json:"fu_yin_layers" jsonschema:"伏吟层。"`
+	FanYinLayers   []RecitationLayer `json:"fan_yin_layers" jsonschema:"反吟层。"`
+	ShouShanChuSha shouShanChuSha    `json:"shou_shan_chu_sha" jsonschema:"收山出煞判断。"`
 }
 
 // View produces the domain-aggregated output from the computed chart.

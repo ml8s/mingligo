@@ -39,10 +39,10 @@ func TestComputeSanYuanYun(t *testing.T) {
 			if got.YunNumber != tt.wantYunNum {
 				t.Errorf("YunNumber = %d, want %d", got.YunNumber, tt.wantYunNum)
 			}
-			if got.Yuan != tt.wantYuan {
+			if got.Yuan != Yuan(tt.wantYuan) {
 				t.Errorf("Yuan = %s, want %s", got.Yuan, tt.wantYuan)
 			}
-			if got.YunName != tt.wantYunName {
+			if got.YunName != YunName(tt.wantYunName) {
 				t.Errorf("YunName = %s, want %s", got.YunName, tt.wantYunName)
 			}
 			if got.Year != tt.year {
@@ -266,7 +266,7 @@ func TestComputeSanYuanYun_Beyond2044(t *testing.T) {
 	}
 	for _, tt := range tests {
 		yun := ComputeSanYuanYun(tt.year)
-		if yun.YunNumber != tt.wantYunNum || yun.Yuan != tt.wantYuan {
+		if yun.YunNumber != tt.wantYunNum || yun.Yuan != Yuan(tt.wantYuan) {
 			t.Errorf("%d: got %d运 %s, want %d运 %s",
 				tt.year, yun.YunNumber, yun.Yuan, tt.wantYunNum, tt.wantYuan)
 		}

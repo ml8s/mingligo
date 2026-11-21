@@ -24,7 +24,7 @@ type DirectionsView struct {
 
 // JianChuHuangDaoView groups建除黄道 facts.
 type JianChuHuangDaoView struct {
-	JianChu  string       `json:"jian_chu" jsonschema:"建除。"`
+	JianChu  JianChu      `json:"jian_chu" jsonschema:"建除。"`
 	HuangDao huangDaoStar `json:"huangdao" jsonschema:"黄道黑道十二神。"`
 }
 

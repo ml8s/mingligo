@@ -34,6 +34,8 @@
 | `liuyao` | 六亲、六神、爻标、格局子类 |
 | `ziwei` | 星曜、亮度 `Brightness`/分组 `BrightnessGroup`、主星态 `MajorStarState`、四化、宫位 |
 | `bazhai` | 命卦组 `LifeGroup`、卦组 `TrigramGroup`、游星 `YouXing`、吉凶 `Rating`、匹配 `Match` |
+| `huangli` | 建除 `JianChu`（十二建除神） |
+| `xuankong` | 元 `Yuan`、运名 `YunName`、伏吟/反吟层 `RecitationLayer` |
 
 符号在归属域定义、跨包复用（如 `GongIndex`/`Trigram`/`ganzhi.YinYang`），不重复造。**所有命运算子都在符号空间内计算**——全局扫描确认零中文字符串参与运算；文本只在输出边界 decode 出来（string 底层符号直接输出文本，bool 符号经 MarshalJSON）。
 
@@ -72,7 +74,7 @@ decode: 符号 → 文本   （系统解码出人类语言；输出边界）
 - MCP 等适配器**只透传 View 对象**，输出 schema 由消费者从 View 类型反射生成（`jsonschema.For[XxxView]()`）——不再有手写 wire DTO 第二套模型。符号类型通过 `TypeSchemas` 注册为 string enum，符号的 `MarshalJSON` 负责边界 decode。
 - **View 与 Chart 解耦**：Chart 保持最适计算的形态（可平行数组/内部符号），View 定义稳定的输出契约（可读字段、领域聚合）。填充分次序自由，但同一实体的碎片必须归位到同一对象。
 - **适配器不约束 domain**：schema 推断所需的符号枚举在适配器侧注册，绝不回退 domain 的符号化。
-- 注：bond（合婚）与 liupan（流盘序列）工具均已 View 化——合婚用 `bazi.BondView`/`ziwei.BondView`，流盘用 `bazi.LiuNianOutputView` 等系列 View（domain 系列对象 `View()` 以 JSON roundtrip 映射到带 `jsonschema` tag 的输出契约，schema 从 View 反射）。time_now/city_info 是纯 MCP 适配层的信息工具（当前时间、地点候选），无领域对象映射，其输出 DTO 属于适配器产物，不属于领域 View。
+- 注：bond（合婚）、liupan（流盘序列）、liuyao_qigua（起卦）工具均已 View 化——合婚用 `bazi.BondView`/`ziwei.BondView`，流盘用 `bazi.LiuNianOutputView` 等系列 View，起卦用 `liuyao.QiguaView`（domain 系列/事件对象以 JSON roundtrip 映射到带 `jsonschema` tag 的输出契约，schema 从 View 反射；enum 约束在适配器侧 patch）。time_now/city_info 是纯 MCP 适配层的信息工具（当前时间、地点候选），无领域对象映射，其输出 DTO 属于适配器产物，不属于领域 View。
 
 ## 7. 事实层与分析层的边界
 

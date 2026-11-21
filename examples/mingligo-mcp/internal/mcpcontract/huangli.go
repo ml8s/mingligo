@@ -31,7 +31,7 @@ func HuangliDays(_ context.Context, input HuangliDaysInput) (huangliDaysResult, 
 
 	days := make([]huangli.DayView, 0, count)
 	for i := 0; i < count; i++ {
-		date := start.AddDays(i).String()
+		date := start.AddDays(i)
 		entry, err := huangli.QueryDate(date, string(input.Event))
 		if err != nil {
 			return huangliDaysResult{}, fmt.Errorf("huangli.days: %w", err)

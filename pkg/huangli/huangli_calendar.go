@@ -21,16 +21,16 @@ type riZhuInfo struct {
 // eventRule maps a life event to its suitable and forbidden jianchu gods.
 type eventRule struct {
 	Label     string
-	Suitable  []string
-	Forbidden []string
+	Suitable  []JianChu
+	Forbidden []JianChu
 }
 
 // JianChuConfig holds the parsed jianchu (建除) calendar rules: sequences,
 // suitable/forbidden activities, event-type rules, and shensha (神煞) data.
 type jianchuConfig struct {
-	Sequence   []string
-	Suitable   map[string][]string
-	Forbidden  map[string][]string
+	Sequence   []JianChu
+	Suitable   map[JianChu][]string
+	Forbidden  map[JianChu][]string
 	EventRules map[string]eventRule
 	ShenSha    map[string]map[string][]string
 }
@@ -44,7 +44,7 @@ func lookupRiZhu(t time.Time) riZhuInfo {
 }
 
 // lookupJianChu returns the JianChu (建除) god for a given date.
-func lookupJianChu(t time.Time) string {
+func lookupJianChu(t time.Time) JianChu {
 	mp := yueZhuForDate(t)
 	yueZhi := mp.Zhi
 

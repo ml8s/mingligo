@@ -24,16 +24,16 @@ type xuanKongStar struct {
 
 // Chart is the complete 玄空飞星排盘 for a given坐向 and 运.
 type Chart struct {
-	Yun            SanYuanYun      `json:"yun"`
-	SitMountain    int             `json:"zuo_shan"`   // 0-23,坐山 index
-	FaceMountain   int             `json:"xiang_shan"` // 0-23,朝向 index
-	ZuoShanName    string          `json:"zuo_shan_name"`
-	XiangShanName  string          `json:"xiang_shan_name"`
-	Palaces        [9]xuanKongStar `json:"gong_wei"`
-	FourSituation  FourSituation   `json:"four_situation"`
-	FuYinLayers    []string        `json:"fu_yin_layers"`
-	FanYinLayers   []string        `json:"fan_yin_layers"`
-	ShouShanChuSha shouShanChuSha  `json:"shou_shan_chu_sha"`
+	Yun            SanYuanYun        `json:"yun"`
+	SitMountain    int               `json:"zuo_shan"`   // 0-23,坐山 index
+	FaceMountain   int               `json:"xiang_shan"` // 0-23,朝向 index
+	ZuoShanName    string            `json:"zuo_shan_name"`
+	XiangShanName  string            `json:"xiang_shan_name"`
+	Palaces        [9]xuanKongStar   `json:"gong_wei"`
+	FourSituation  FourSituation     `json:"four_situation"`
+	FuYinLayers    []RecitationLayer `json:"fu_yin_layers"`
+	FanYinLayers   []RecitationLayer `json:"fan_yin_layers"`
+	ShouShanChuSha shouShanChuSha    `json:"shou_shan_chu_sha"`
 }
 
 // FourSituation records the classical situation name and its four position facts.
@@ -238,16 +238,17 @@ func withXingJiaHui(p Chart) Chart {
 	return p
 }
 
-func (p *Chart) recitationLayers() (fuYin, fanYin []string) {
-	fuYin = []string{}
-	fanYin = []string{}
+func (p *Chart) recitationLayers() (fuYin, fanYin []RecitationLayer) {
+	fuYin = []RecitationLayer{}
+	fanYin = []RecitationLayer{}
 	layers := []struct {
-		name  string
-		stars [9]fengshui.FlyingStar
+		fuYin  RecitationLayer
+		fanYin RecitationLayer
+		stars  [9]fengshui.FlyingStar
 	}{
-		{"运盘", p.periodStars()},
-		{"山星", p.mountainStars()},
-		{"向星", p.facingStars()},
+		{RecitationPeriodFuYin, RecitationPeriodFanYin, p.periodStars()},
+		{RecitationMountainFuYin, RecitationMountainFanYin, p.mountainStars()},
+		{RecitationFacingFuYin, RecitationFacingFanYin, p.facingStars()},
 	}
 	for _, layer := range layers {
 		layerFu, layerFan := true, true
@@ -261,14 +262,14 @@ func (p *Chart) recitationLayers() (fuYin, fanYin []string) {
 			}
 		}
 		if layerFu {
-			fuYin = append(fuYin, layer.name+"伏吟")
+			fuYin = append(fuYin, layer.fuYin)
 		}
 		if layerFan {
-			fanYin = append(fanYin, layer.name+"反吟")
+			fanYin = append(fanYin, layer.fanYin)
 		}
 	}
-	if containsLayer(fuYin, "山星伏吟") && containsLayer(fuYin, "向星伏吟") {
-		fuYin = append(fuYin, "全盘伏吟")
+	if containsLayer(fuYin, RecitationMountainFuYin) && containsLayer(fuYin, RecitationFacingFuYin) {
+		fuYin = append(fuYin, RecitationAllFuYin)
 	}
 	return fuYin, fanYin
 }
@@ -297,7 +298,7 @@ func (p *Chart) facingStars() [9]fengshui.FlyingStar {
 	return out
 }
 
-func containsLayer(layers []string, target string) bool {
+func containsLayer(layers []RecitationLayer, target RecitationLayer) bool {
 	return slices.Contains(layers, target)
 }
 

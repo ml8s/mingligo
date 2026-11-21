@@ -1,6 +1,8 @@
 package bazi
 
 import (
+	"sort"
+
 	"github.com/ml8s/mingligo/pkg/ganzhi"
 )
 
@@ -48,6 +50,19 @@ func computeGongJia(bz ganzhi.Bazi) []GongJia {
 			})
 		}
 	}
+	sort.Slice(results, func(i, j int) bool {
+		a, b := results[i], results[j]
+		if a.ZhuA != b.ZhuA {
+			return a.ZhuA < b.ZhuA
+		}
+		if a.ZhuB != b.ZhuB {
+			return a.ZhuB < b.ZhuB
+		}
+		if a.Kind != b.Kind {
+			return a.Kind < b.Kind
+		}
+		return a.Zhi < b.Zhi
+	})
 	return results
 }
 

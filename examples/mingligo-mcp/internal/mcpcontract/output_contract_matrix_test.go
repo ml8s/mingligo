@@ -8,6 +8,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/ml8s/mingligo/pkg/liuyao"
 	"github.com/ml8s/mingligo/pkg/xuankong"
 )
 
@@ -53,10 +54,10 @@ func TestEveryMingliGoToolActualOutputMatchesSchema(t *testing.T) {
 	},
 		CastingContext: testCastingContext(t),
 	})
-	var qigua LiuyaoQiguaOutput
+	var qigua liuyao.QiguaView
 	decode(t, qiguaRaw, &qigua)
 	call("liuyao_chart", LiuyaoChartInput{
-		Event: liuyaoCastingEventInput(qigua.Event),
+		Event: liuyaoCastingEventInput(castingEventFromView(t, qigua.Event)),
 	})
 
 	// Captured legacy fixtures cover the migrated high-volume bazi, ziwei, and

@@ -302,20 +302,20 @@ func TestLiuyaoQiguaReceiptFeedsChartForAutoAndCoins(t *testing.T) {
 	if err := registry.ValidateOutput("liuyao_qigua", autoRaw); err != nil {
 		t.Fatalf("liuyao_qigua auto output contract: %v", err)
 	}
-	var auto LiuyaoQiguaOutput
+	var auto liuyao.QiguaView
 	if err := json.Unmarshal(autoRaw, &auto); err != nil {
 		t.Fatal(err)
 	}
 	if auto.Event.Casting.Mode != "coins" || auto.Event.Casting.CoinConvention == nil {
 		t.Fatalf("auto casting is not a coins receipt: %#v", auto.Event.Casting)
 	}
-	if *auto.Event.Casting.CoinConvention != (LiuyaoCoinConvention{
-		Heads: LiuyaoHeadsScore(liuyao.CoinHeadsScore),
-		Tails: LiuyaoTailsScore(liuyao.CoinTailsScore),
+	if *auto.Event.Casting.CoinConvention != (liuyao.CoinConvention{
+		Heads: liuyao.CoinHeadsScore,
+		Tails: liuyao.CoinTailsScore,
 	}) {
 		t.Fatalf("unexpected coin convention: %#v", auto.Event.Casting.CoinConvention)
 	}
-	callChart(t, auto.Event)
+	callChart(t, castingEventFromView(t, auto.Event))
 
 	coinsRaw, err := registry.Call(context.Background(), "liuyao_qigua", mustJSON(t, LiuyaoQiguaInput{
 		Origin: LiuyaoCastingRequestInput{
@@ -337,14 +337,14 @@ func TestLiuyaoQiguaReceiptFeedsChartForAutoAndCoins(t *testing.T) {
 	if err := registry.ValidateOutput("liuyao_qigua", coinsRaw); err != nil {
 		t.Fatalf("liuyao_qigua coins output contract: %v", err)
 	}
-	var coins LiuyaoQiguaOutput
+	var coins liuyao.QiguaView
 	if err := json.Unmarshal(coinsRaw, &coins); err != nil {
 		t.Fatal(err)
 	}
 	if len(coins.Event.Casting.Rounds) != 6 || !equalYaoValues(coins.Event.Casting.Yaos, [6]int{8, 7, 6, 9, 7, 8}) {
 		t.Fatalf("unexpected coins receipt: %#v", coins.Event.Casting)
 	}
-	callChart(t, coins.Event)
+	callChart(t, castingEventFromView(t, coins.Event))
 }
 
 func TestLiuyaoChartUsesEventYongShen(t *testing.T) {
@@ -393,16 +393,21 @@ func TestLiuyaoQiguaRejectsEmptyModeWithoutLegacyDefault(t *testing.T) {
 	}
 }
 
-func equalYaoValues(values LiuyaoYaoValuesOutput, want [6]int) bool {
-	if len(values) != len(want) {
-		return false
+func equalYaoValues(values [6]int, want [6]int) bool {
+	return values == want
+}
+
+func castingEventFromView(t *testing.T, view liuyao.QiguaEventView) LiuyaoCastingEvent {
+	t.Helper()
+	raw, err := json.Marshal(view)
+	if err != nil {
+		t.Fatal(err)
 	}
-	for i, value := range values {
-		if int(value) != want[i] {
-			return false
-		}
+	var event LiuyaoCastingEvent
+	if err := json.Unmarshal(raw, &event); err != nil {
+		t.Fatal(err)
 	}
-	return true
+	return event
 }
 
 func testCastingContext(t *testing.T) LiuyaoCastingContextInput {

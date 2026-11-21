@@ -71,13 +71,39 @@ func loadJianchu() error {
 
 	cfg := raw.Jianchu
 	c := &jianChuCfg
-	c.Sequence = cfg.Sequence
-	c.Suitable = cfg.Suitable
-	c.Forbidden = cfg.Forbidden
+	seq, err := encodeJianChuList(cfg.Sequence)
+	if err != nil {
+		return err
+	}
+	c.Sequence = seq
+	c.Suitable = make(map[JianChu][]string, len(cfg.Suitable))
+	for k, v := range cfg.Suitable {
+		jc, err := EncodeJianChu(k)
+		if err != nil {
+			return err
+		}
+		c.Suitable[jc] = v
+	}
+	c.Forbidden = make(map[JianChu][]string, len(cfg.Forbidden))
+	for k, v := range cfg.Forbidden {
+		jc, err := EncodeJianChu(k)
+		if err != nil {
+			return err
+		}
+		c.Forbidden[jc] = v
+	}
 
 	c.EventRules = make(map[string]eventRule, len(cfg.EventRules)*2)
 	for k, v := range cfg.EventRules {
-		r := eventRule{Label: v.Label, Suitable: v.Suitable, Forbidden: v.Forbidden}
+		suitable, err := encodeJianChuList(v.Suitable)
+		if err != nil {
+			return err
+		}
+		forbidden, err := encodeJianChuList(v.Forbidden)
+		if err != nil {
+			return err
+		}
+		r := eventRule{Label: v.Label, Suitable: suitable, Forbidden: forbidden}
 		c.EventRules[k] = r
 		c.EventRules[v.Label] = r
 	}
@@ -87,6 +113,18 @@ func loadJianchu() error {
 		c.ShenSha[k] = v
 	}
 	return nil
+}
+
+func encodeJianChuList(values []string) ([]JianChu, error) {
+	out := make([]JianChu, 0, len(values))
+	for _, v := range values {
+		jc, err := EncodeJianChu(v)
+		if err != nil {
+			return nil, err
+		}
+		out = append(out, jc)
+	}
+	return out, nil
 }
 
 func loadHuangdao() error {

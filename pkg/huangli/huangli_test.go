@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/ml8s/mingligo/pkg/ganzhi"
+	"github.com/ml8s/mingligo/pkg/tianwen"
 )
 
 // =============================================================================
@@ -89,7 +90,7 @@ func TestQueryDate_KnownDates(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.dateStr, func(t *testing.T) {
-			got, err := QueryDate(tt.dateStr)
+			got, err := QueryDate(mustDate(tt.dateStr))
 			if err != nil {
 				t.Fatalf("QueryDate: %v", err)
 			}
@@ -112,7 +113,7 @@ func TestQueryDate_KnownDates(t *testing.T) {
 }
 
 func TestQueryDate_WithEvent(t *testing.T) {
-	got, err := QueryDate("2024-02-10")
+	got, err := QueryDate(mustDate("2024-02-10"))
 	if err != nil {
 		t.Fatalf("QueryDate: %v", err)
 	}
@@ -123,7 +124,7 @@ func TestQueryDate_WithEvent(t *testing.T) {
 
 func TestQueryDate_NotEmpty(t *testing.T) {
 	// Verify key fields are always populated.
-	got, err := QueryDate("2024-06-15")
+	got, err := QueryDate(mustDate("2024-06-15"))
 	if err != nil {
 		t.Fatalf("QueryDate: %v", err)
 	}
@@ -148,7 +149,7 @@ func TestQueryDate_NotEmpty(t *testing.T) {
 }
 
 func TestQueryDate_InvalidDate(t *testing.T) {
-	_, err := QueryDate("not-a-date")
+	_, err := QueryDate(tianwen.Date{Year: 2026, Month: 2, Day: 30})
 	if err == nil {
 		t.Fatal("expected error for invalid date")
 	}

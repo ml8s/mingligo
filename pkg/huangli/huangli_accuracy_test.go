@@ -37,7 +37,7 @@ func TestQueryDate_WithOtherEvents(t *testing.T) {
 	events := []string{"wedding", "travel", "opening", "medical", "funeral"}
 	for _, ev := range events {
 		t.Run("event="+ev, func(t *testing.T) {
-			got, err := QueryDate("2024-06-15")
+			got, err := QueryDate(mustDate("2024-06-15"))
 			if err != nil {
 				t.Fatalf("QueryDate: %v", err)
 			}
@@ -97,7 +97,7 @@ func TestJianChuOffset(t *testing.T) {
 			}
 			if offset < len(jianChuCfg.Sequence) {
 				god := jianChuCfg.Sequence[offset]
-				if god != tt.wantGod {
+				if god != JianChu(tt.wantGod) {
 					t.Errorf("god = %s, want %s", god, tt.wantGod)
 				}
 			}
@@ -201,7 +201,7 @@ func TestQueryDate_Golden_JianChu(t *testing.T) {
 	// 2024-06-15: 午月(月支=午), 庚戌日(日支=戌)
 	// 午月起午日为建 → 午=建,未=除,申=满,酉=平,戌=定
 	// 戌日 → 定日
-	got, err := QueryDate("2024-06-15")
+	got, err := QueryDate(mustDate("2024-06-15"))
 	if err != nil {
 		t.Fatalf("QueryDate: %v", err)
 	}
@@ -212,7 +212,7 @@ func TestQueryDate_Golden_JianChu(t *testing.T) {
 	// 2024-02-10: 寅月(月支=寅), 甲辰日(日支=辰)
 	// 寅月起寅日为建 → 寅=建,卯=除,辰=满
 	// 辰日 → 满日
-	got2, err := QueryDate("2024-02-10")
+	got2, err := QueryDate(mustDate("2024-02-10"))
 	if err != nil {
 		t.Fatalf("QueryDate: %v", err)
 	}
@@ -225,7 +225,7 @@ func TestQueryDate_Golden_MarksWarnings(t *testing.T) {
 	// Verify that event type filtering produces marks/warnings.
 	for _, ev := range []string{"wedding", "travel", "opening"} {
 		t.Run(ev, func(t *testing.T) {
-			got, err := QueryDate("2024-06-15")
+			got, err := QueryDate(mustDate("2024-06-15"))
 			if err != nil {
 				t.Fatalf("QueryDate: %v", err)
 			}

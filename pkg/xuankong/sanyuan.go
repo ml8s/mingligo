@@ -11,13 +11,13 @@ const periodLength = 20
 
 // SanYuanYun holds the 三元九运 classification for a given year.
 type SanYuanYun struct {
-	Year         int    `json:"year"`
-	Yuan         string `json:"yuan"`       // "上元"/"中元"/"下元"
-	YunNumber    int    `json:"yun_number"` // 1-9
-	YunName      string `json:"yun_name"`   // "一运"..."九运"
-	StartYear    int    `json:"start_year"` // this period's start year
-	EndYear      int    `json:"end_year"`   // this period's end year
-	YearBoundary string `json:"year_boundary"`
+	Year         int     `json:"year"`
+	Yuan         Yuan    `json:"yuan"`       // 上元/中元/下元
+	YunNumber    int     `json:"yun_number"` // 1-9
+	YunName      YunName `json:"yun_name"`   // 一运...九运
+	StartYear    int     `json:"start_year"` // this period's start year
+	EndYear      int     `json:"end_year"`   // this period's end year
+	YearBoundary string  `json:"year_boundary"`
 }
 
 // ComputeSanYuanYun determines which 元 and 运 a given year belongs to.
@@ -29,22 +29,20 @@ func ComputeSanYuanYun(year int) SanYuanYun {
 	yunNum := (yunIdx % 9) + 1
 
 	yuanIdx := yunIdx / 3
-	var yuanName string
+	var yuanName Yuan
 	switch yuanIdx % 3 {
 	case 0:
-		yuanName = "上元"
+		yuanName = YuanShang
 	case 1:
-		yuanName = "中元"
+		yuanName = YuanZhong
 	case 2:
-		yuanName = "下元"
+		yuanName = YuanXia
 	default: // beyond 180 years, cycle repeats
-		yuanName = "上元"
+		yuanName = YuanShang
 	}
 
 	startYear := baseYear + yunIdx*periodLength
 	endYear := startYear + periodLength - 1
-
-	yunNames := [10]string{"", "一运", "二运", "三运", "四运", "五运", "六运", "七运", "八运", "九运"}
 
 	return SanYuanYun{
 		Year:         year,

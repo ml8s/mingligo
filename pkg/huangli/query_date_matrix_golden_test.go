@@ -53,7 +53,7 @@ func TestQueryDateMatrixGolden_TwoOracleCalendarAndEventRules(t *testing.T) {
 	seenJianchu := make(map[string]bool)
 	for _, golden := range doc.Cases {
 		t.Run(golden.Date+"-"+golden.Event, func(t *testing.T) {
-			got, err := QueryDate(golden.Date, golden.Event)
+			got, err := QueryDate(mustDate(golden.Date), golden.Event)
 			if err != nil {
 				t.Fatalf("QueryDate: %v", err)
 			}
@@ -75,7 +75,7 @@ func TestQueryDateMatrixGolden_TwoOracleCalendarAndEventRules(t *testing.T) {
 			if monthZhi := yueZhuForDate(mustParseDate(t, golden.Date)).Zhi; monthZhi != wantYueZhi {
 				t.Fatalf("yue zhi = %s, want %s", ganzhi.ZhiName(monthZhi), golden.Expected.YueZhi)
 			}
-			if got.JianChu != golden.Expected.JianChu {
+			if got.JianChu != JianChu(golden.Expected.JianChu) {
 				t.Fatalf("jianchu = %s, want %s", got.JianChu, golden.Expected.JianChu)
 			}
 			if got.HuangDao.Name != golden.Expected.HuangdaoName || got.HuangDao.Path != golden.Expected.HuangdaoPath {

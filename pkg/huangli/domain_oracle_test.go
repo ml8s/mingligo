@@ -37,7 +37,7 @@ func TestDomainOracle_HuangliCore(t *testing.T) {
 		t.Fatalf("oracle coverage invalid: seq=%d qinglong=%d events=%d", len(doc.Sequence), len(doc.QingLong), len(doc.EventRules))
 	}
 	for i, name := range doc.Sequence {
-		if jianChuCfg.Sequence[i] != name {
+		if jianChuCfg.Sequence[i] != JianChu(name) {
 			t.Errorf("jianchu[%d] = %s, want %s", i, jianChuCfg.Sequence[i], name)
 		}
 	}
@@ -63,23 +63,23 @@ func TestDomainOracle_HuangliCore(t *testing.T) {
 			t.Fatalf("event %s rules differ: %+v, want %+v", event, got, want)
 		}
 		for i, name := range want.Suitable {
-			if got.Suitable[i] != name {
+			if got.Suitable[i] != JianChu(name) {
 				t.Errorf("event %s suitable[%d] = %s, want %s", event, i, got.Suitable[i], name)
 			}
 		}
 		for i, name := range want.Forbidden {
-			if got.Forbidden[i] != name {
+			if got.Forbidden[i] != JianChu(name) {
 				t.Errorf("event %s forbidden[%d] = %s, want %s", event, i, got.Forbidden[i], name)
 			}
 		}
 	}
 	for _, want := range doc.KnownDates {
-		got, err := QueryDate(want.Date)
+		got, err := QueryDate(mustDate(want.Date))
 		if err != nil {
 			t.Fatalf("%s: %v", want.Date, err)
 		}
 		if ganzhi.GanName(got.RiZhu.Gan) != want.DayGan || ganzhi.ZhiName(got.RiZhu.Zhi) != want.DayZhi ||
-			got.JianChu != want.JianChu || got.HuangDao.Name != want.HuangDaoName || got.HuangDao.Path != want.HuangDaoPath {
+			got.JianChu != JianChu(want.JianChu) || got.HuangDao.Name != want.HuangDaoName || got.HuangDao.Path != want.HuangDaoPath {
 			t.Fatalf("%s hard facts = %+v, want %+v", want.Date, got, want)
 		}
 		if want.Mansion != "" && got.Mansion.Name != want.Mansion {
@@ -89,7 +89,7 @@ func TestDomainOracle_HuangliCore(t *testing.T) {
 }
 
 func TestQueryDate_EventClassificationComesFromEngineTable(t *testing.T) {
-	got, err := QueryDate("2024-06-15", "sign")
+	got, err := QueryDate(mustDate("2024-06-15"), "sign")
 	if err != nil {
 		t.Fatalf("QueryDate event: %v", err)
 	}

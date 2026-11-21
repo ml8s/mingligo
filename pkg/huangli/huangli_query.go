@@ -3,25 +3,25 @@ package huangli
 import (
 	"fmt"
 	"slices"
-	"time"
 
 	"github.com/ml8s/mingligo/pkg/ganzhi"
+	"github.com/ml8s/mingligo/pkg/tianwen"
 )
 
 // Day is the huangli query result for one day.
 type ShiChenFortune struct {
-	Zhi         string `json:"zhi"`
-	Time        string `json:"clock_range"` // e.g. "23:00-01:00"
-	HuangDaoStr string `json:"huangdao"`
-	JianChu     string `json:"jian_chu"`
-	Suitable    bool   `json:"suitable"`
+	Zhi         string  `json:"zhi"`
+	Time        string  `json:"clock_range"` // e.g. "23:00-01:00"
+	HuangDaoStr string  `json:"huangdao"`
+	JianChu     JianChu `json:"jian_chu"`
+	Suitable    bool    `json:"suitable"`
 }
 
 type Day struct {
 	Date        string           `json:"date"`
 	RiZhu       riZhuInfo        `json:"ri_zhu"`
 	Wuxing      string           `json:"wuxing"`
-	JianChu     string           `json:"jian_chu"`
+	JianChu     JianChu          `json:"jian_chu"`
 	HuangDao    huangDaoStar     `json:"huangdao"`
 	XiShen      string           `json:"xi_shen"`
 	CaiShen     string           `json:"cai_shen"`
@@ -47,12 +47,12 @@ func renYuanName(ry renYuanSiLing) string {
 	return ry.Current.GanName
 }
 
-// QueryDate returns huangli info for a single date.
-func QueryDate(dateStr string, event ...string) (Day, error) {
-	t, err := time.Parse("2006-01-02", dateStr)
-	if err != nil {
-		return Day{}, fmt.Errorf("huangli: parse date %s: %w", dateStr, err)
+// QueryDate returns huangli info for a single civil date.
+func QueryDate(date tianwen.Date, event ...string) (Day, error) {
+	if err := date.Validate(); err != nil {
+		return Day{}, fmt.Errorf("huangli: %w", err)
 	}
+	t := date.Time()
 
 	dpi := lookupRiZhu(t)
 	yueZhi := yueZhuForDate(t).Zhi
@@ -60,7 +60,7 @@ func QueryDate(dateStr string, event ...string) (Day, error) {
 	ry := computeRenYuanSiLingForDate(yueZhi, jq.DaysIn)
 
 	entry := Day{
-		Date:        dateStr,
+		Date:        date.String(),
 		RiZhu:       dpi,
 		JianChu:     lookupJianChu(t),
 		HuangDao:    huangDaoForDay(yueZhi, dpi.Zhi),
@@ -103,17 +103,17 @@ func withEventRule(entry Day, event string) (Day, error) {
 	switch {
 	case containsJianChu(rule.Suitable, entry.JianChu):
 		entry.Suitability = "recommended"
-		entry.EventReason = "建除「" + entry.JianChu + "」适合" + rule.Label + "。"
+		entry.EventReason = "建除「" + DecodeJianChu(entry.JianChu) + "」适合" + rule.Label + "。"
 	case containsJianChu(rule.Forbidden, entry.JianChu):
 		entry.Suitability = "unsuitable"
-		entry.EventReason = "建除「" + entry.JianChu + "」忌" + rule.Label + "。"
+		entry.EventReason = "建除「" + DecodeJianChu(entry.JianChu) + "」忌" + rule.Label + "。"
 	default:
 		entry.Suitability = "possible"
-		entry.EventReason = "建除「" + entry.JianChu + "」无明确适配或冲突。"
+		entry.EventReason = "建除「" + DecodeJianChu(entry.JianChu) + "」无明确适配或冲突。"
 	}
 	return entry, nil
 }
 
-func containsJianChu(values []string, target string) bool {
+func containsJianChu(values []JianChu, target JianChu) bool {
 	return slices.Contains(values, target)
 }

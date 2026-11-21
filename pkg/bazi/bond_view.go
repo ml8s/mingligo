@@ -141,8 +141,8 @@ type SpouseStarView struct {
 
 type SpouseStarSideView struct {
 	Gender    string                  `json:"gender" jsonschema:"性别。"`
-	Primary   SpouseStarCandidateView `json:"primary" jsonschema:"主调候。"`
-	Secondary SpouseStarCandidateView `json:"secondary" jsonschema:"辅调候。"`
+	Primary   SpouseStarCandidateView `json:"primary" jsonschema:"主配偶星候选。"`
+	Secondary SpouseStarCandidateView `json:"secondary" jsonschema:"次配偶星候选。"`
 }
 
 type SpouseStarOccurrenceView struct {

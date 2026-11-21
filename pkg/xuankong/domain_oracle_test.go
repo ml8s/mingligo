@@ -36,7 +36,7 @@ func TestDomainOracle_XuankongCore(t *testing.T) {
 	}
 	for _, want := range doc.Periods {
 		got := ComputeSanYuanYun(want.Year)
-		if got.Yuan != want.Yuan || got.YunNumber != want.YunNumber || got.StartYear != want.StartYear || got.EndYear != want.EndYear {
+		if got.Yuan != Yuan(want.Yuan) || got.YunNumber != want.YunNumber || got.StartYear != want.StartYear || got.EndYear != want.EndYear {
 			t.Errorf("year %d = %s/%d/%d-%d, want %s/%d/%d-%d", want.Year, got.Yuan, got.YunNumber, got.StartYear, got.EndYear, want.Yuan, want.YunNumber, want.StartYear, want.EndYear)
 		}
 	}

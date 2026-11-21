@@ -10,6 +10,7 @@ import (
 	"testing"
 
 	"github.com/ml8s/mingligo/pkg/bazhai"
+	"github.com/ml8s/mingligo/pkg/liuyao"
 	"github.com/ml8s/mingligo/pkg/tables"
 	"github.com/ml8s/mingligo/pkg/xuankong"
 )
@@ -601,7 +602,7 @@ func TestMingliContractCalls(t *testing.T) {
 	if _, exists := castingDocument["casting_digest"]; exists {
 		t.Fatal("liuyao casting must not publish casting_digest")
 	}
-	var qigua LiuyaoQiguaOutput
+	var qigua liuyao.QiguaView
 	if err := json.Unmarshal(qiguaRaw, &qigua); err != nil {
 		t.Fatal(err)
 	}
@@ -628,7 +629,7 @@ func TestMingliContractCalls(t *testing.T) {
 	}
 
 	liuyaoChartRaw, err := registry.Call(context.Background(), "liuyao_chart", mustJSON(t, LiuyaoChartInput{
-		Event: liuyaoCastingEventInput(qigua.Event),
+		Event: liuyaoCastingEventInput(castingEventFromView(t, qigua.Event)),
 	}))
 	if err != nil {
 		t.Fatalf("liuyao.chart: %v", err)
@@ -649,7 +650,7 @@ func TestMingliContractCalls(t *testing.T) {
 	tamperedEvent := qigua.Event
 	tamperedEvent.Casting.Yaos[0] = 9
 	if _, err := registry.Call(context.Background(), "liuyao_chart", mustJSON(t, LiuyaoChartInput{
-		Event: liuyaoCastingEventInput(tamperedEvent),
+		Event: liuyaoCastingEventInput(castingEventFromView(t, tamperedEvent)),
 	})); err == nil || !strings.Contains(err.Error(), "dong_yao mismatch") {
 		t.Fatalf("expected tampered casting rejection, got %v", err)
 	}

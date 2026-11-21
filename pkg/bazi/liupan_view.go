@@ -154,10 +154,6 @@ type LiuShiOutputView struct {
 	ShiChen    LiuShiChenView               `json:"shi_chen" jsonschema:"流时时辰定位。"`
 }
 
-type XiaoYunOutputView struct {
-	XiaoYun []XiaoYunItemView `json:"xiao_yun" jsonschema:"各学派小运列表；长度 = count。"`
-}
-
 type XiaoYunItemView struct {
 	Method string                    `json:"method" jsonschema:"流派标识"`
 	Basis  string                    `json:"basis" jsonschema:"起法依据"`
