@@ -6,6 +6,7 @@ package tables
 import (
 	"github.com/ml8s/mingligo/pkg/bazhai"
 	"github.com/ml8s/mingligo/pkg/bazi"
+	"github.com/ml8s/mingligo/pkg/fengshui"
 	"github.com/ml8s/mingligo/pkg/ganzhi"
 	"github.com/ml8s/mingligo/pkg/huangli"
 	"github.com/ml8s/mingligo/pkg/liuyao"
@@ -20,6 +21,7 @@ import (
 func Load() error {
 	for _, load := range []func() error{
 		ganzhi.Load,
+		fengshui.Load,
 		bazi.Load,
 		ziwei.Load,
 		liuyao.Load,

@@ -11,5 +11,8 @@ func TestMain(m *testing.M) {
 	if err := luoshu.Load(); err != nil {
 		panic(err)
 	}
+	if err := Load(); err != nil {
+		panic(err)
+	}
 	os.Exit(m.Run())
 }

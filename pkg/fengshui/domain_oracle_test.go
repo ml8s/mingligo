@@ -5,6 +5,9 @@ import (
 	"os"
 	"strconv"
 	"testing"
+
+	"github.com/ml8s/mingligo/pkg/ganzhi"
+	"github.com/ml8s/mingligo/pkg/luoshu"
 )
 
 func loadFengshuiOracle(t *testing.T) struct {
@@ -57,8 +60,11 @@ func TestDomainOracle_Mountains24(t *testing.T) {
 	}
 	for _, want := range doc.Mountains {
 		got := Mountains24Table[want.Index]
-		if got.Name != want.Name || got.Angle != want.Angle || got.Trigram != want.Trigram ||
-			got.YuanLong != want.YuanLong || got.YinYang != want.YinYang || got.Element.String() != want.Wuxing {
+		wantTrigram, _ := luoshu.EncodeTrigram(want.Trigram)
+		wantYuanLong, _ := EncodeYuanLong(want.YuanLong)
+		wantYinYang, _ := ganzhi.EncodeYinYang(want.YinYang)
+		if got.Name != want.Name || got.Angle != want.Angle || got.Trigram != wantTrigram ||
+			got.YuanLong != wantYuanLong || got.YinYang != wantYinYang || got.Element.String() != want.Wuxing {
 			t.Fatalf("mount %d = %+v, want %+v", want.Index, got, want)
 		}
 	}

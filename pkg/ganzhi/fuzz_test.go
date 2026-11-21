@@ -1,7 +1,6 @@
 package ganzhi
 
 import (
-	"fmt"
 	"testing"
 )
 
@@ -234,14 +233,4 @@ func FuzzZhiUnmarshalJSON(f *testing.F) {
 			}
 		}
 	})
-}
-
-func EncodeYinYang(s string) (YinYang, error) {
-	switch s {
-	case "阳":
-		return Yang, nil
-	case "阴":
-		return Yin, nil
-	}
-	return false, fmt.Errorf("unknown yin yang: %q", s)
 }

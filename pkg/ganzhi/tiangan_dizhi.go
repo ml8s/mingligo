@@ -68,6 +68,17 @@ const (
 	Yang YinYang = true
 )
 
+// EncodeYinYang converts a display name ("阳"/"阴") to its YinYang symbol.
+func EncodeYinYang(s string) (YinYang, error) {
+	switch s {
+	case "阳":
+		return Yang, nil
+	case "阴":
+		return Yin, nil
+	}
+	return Yin, fmt.Errorf("unknown yin yang: %q", s)
+}
+
 // Zhu is one heavenly-gan / earthly-zhi pair (一柱).
 type Zhu struct {
 	Gan Gan `json:"gan"`

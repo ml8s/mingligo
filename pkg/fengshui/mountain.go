@@ -1,43 +1,93 @@
 package fengshui
 
-import "github.com/ml8s/mingligo/pkg/ganzhi"
+import (
+	_ "embed"
+	"encoding/json"
+	"fmt"
+	"sync"
+
+	"github.com/ml8s/mingligo/pkg/ganzhi"
+	"github.com/ml8s/mingligo/pkg/luoshu"
+)
 
 // Mountain24 represents one of the 24 directional mountains (二十四山).
 // Each mountain spans 15° of the compass (360° / 24 = 15°).
+// Attribute fields are domain symbols; text is produced only at the boundary.
 type Mountain24 struct {
-	Index    int           `json:"index"` // 0-23, starting from 子=0°
-	Name     string        `json:"name"`  // e.g. "子", "癸", "丑"
-	Angle    int           `json:"angle"` // degrees, 0-345 in 15° steps
-	Element  ganzhi.Wuxing `json:"wuxing"`
-	YinYang  string        `json:"yin_yang"`  // "阳" or "阴"
-	Trigram  string        `json:"gua"`   // Bagua trigram name
-	YuanLong string        `json:"yuan_long"` // "天元龙"/"地元龙"/"人元龙"
+	Index    int            `json:"index"` // 0-23, starting from 子=0°
+	Name     string         `json:"name"`  // 24山标识（查表 key，不参与运算）
+	Angle    int            `json:"angle"` // degrees, 0-345 in 15° steps
+	Element  ganzhi.Wuxing  `json:"wuxing"`
+	YinYang  ganzhi.YinYang `json:"-"`
+	Trigram  luoshu.Trigram `json:"-"`
+	YuanLong YuanLong       `json:"-"`
 }
 
-// Mountains24Table holds all 24 mountains in order, starting from 子=0°(North).
-var Mountains24Table = [24]Mountain24{
-	{0, "子", 0, ganzhi.WxShui, "阴", "坎", "天元龙"},
-	{1, "癸", 15, ganzhi.WxShui, "阴", "坎", "人元龙"},
-	{2, "丑", 30, ganzhi.WxTu, "阴", "艮", "地元龙"},
-	{3, "艮", 45, ganzhi.WxTu, "阳", "艮", "天元龙"},
-	{4, "寅", 60, ganzhi.WxMu, "阳", "艮", "人元龙"},
-	{5, "甲", 75, ganzhi.WxMu, "阳", "震", "地元龙"},
-	{6, "卯", 90, ganzhi.WxMu, "阴", "震", "天元龙"},
-	{7, "乙", 105, ganzhi.WxMu, "阴", "震", "人元龙"},
-	{8, "辰", 120, ganzhi.WxTu, "阴", "巽", "地元龙"},
-	{9, "巽", 135, ganzhi.WxMu, "阳", "巽", "天元龙"},
-	{10, "巳", 150, ganzhi.WxHuo, "阳", "巽", "人元龙"},
-	{11, "丙", 165, ganzhi.WxHuo, "阳", "离", "地元龙"},
-	{12, "午", 180, ganzhi.WxHuo, "阴", "离", "天元龙"},
-	{13, "丁", 195, ganzhi.WxHuo, "阴", "离", "人元龙"},
-	{14, "未", 210, ganzhi.WxTu, "阴", "坤", "地元龙"},
-	{15, "坤", 225, ganzhi.WxTu, "阳", "坤", "天元龙"},
-	{16, "申", 240, ganzhi.WxJin, "阳", "坤", "人元龙"},
-	{17, "庚", 255, ganzhi.WxJin, "阳", "兑", "地元龙"},
-	{18, "酉", 270, ganzhi.WxJin, "阴", "兑", "天元龙"},
-	{19, "辛", 285, ganzhi.WxJin, "阴", "兑", "人元龙"},
-	{20, "戌", 300, ganzhi.WxTu, "阴", "乾", "地元龙"},
-	{21, "乾", 315, ganzhi.WxJin, "阳", "乾", "天元龙"},
-	{22, "亥", 330, ganzhi.WxShui, "阳", "乾", "人元龙"},
-	{23, "壬", 345, ganzhi.WxShui, "阳", "坎", "地元龙"},
+//go:embed data/mountains24.json
+var mountains24JSON []byte
+
+var (
+	mountains24Once sync.Once
+	mountains24Err  error
+	// Mountains24Table holds all 24 mountains in order, from 子=0° (North).
+	Mountains24Table [24]Mountain24
+)
+
+// Load parses the embedded 24-mountain table (idempotent, fail-closed).
+func Load() error {
+	mountains24Once.Do(func() {
+		var rows []struct {
+			Index    int    `json:"index"`
+			Name     string `json:"name"`
+			Angle    int    `json:"angle"`
+			Wuxing   string `json:"wuxing"`
+			YinYang  string `json:"yin_yang"`
+			Gua      string `json:"gua"`
+			YuanLong string `json:"yuan_long"`
+		}
+		if err := json.Unmarshal(mountains24JSON, &rows); err != nil {
+			mountains24Err = fmt.Errorf("fengshui: parse mountains24: %w", err)
+			return
+		}
+		if len(rows) != 24 {
+			mountains24Err = fmt.Errorf("fengshui: mountains24 has %d rows, want 24", len(rows))
+			return
+		}
+		for _, row := range rows {
+			if row.Index < 0 || row.Index >= 24 {
+				mountains24Err = fmt.Errorf("fengshui: mountain index %d out of range", row.Index)
+				return
+			}
+			elem, err := ganzhi.EncodeWuxing(row.Wuxing)
+			if err != nil {
+				mountains24Err = fmt.Errorf("fengshui: mountain %s unknown wuxing %q", row.Name, row.Wuxing)
+				return
+			}
+			yinYang, err := ganzhi.EncodeYinYang(row.YinYang)
+			if err != nil {
+				mountains24Err = fmt.Errorf("fengshui: mountain %s: %w", row.Name, err)
+				return
+			}
+			trigram, ok := luoshu.EncodeTrigram(row.Gua)
+			if !ok {
+				mountains24Err = fmt.Errorf("fengshui: mountain %s unknown gua %q", row.Name, row.Gua)
+				return
+			}
+			yuanLong, ok := EncodeYuanLong(row.YuanLong)
+			if !ok {
+				mountains24Err = fmt.Errorf("fengshui: mountain %s unknown yuan_long %q", row.Name, row.YuanLong)
+				return
+			}
+			Mountains24Table[row.Index] = Mountain24{
+				Index:    row.Index,
+				Name:     row.Name,
+				Angle:    row.Angle,
+				Element:  elem,
+				YinYang:  yinYang,
+				Trigram:  trigram,
+				YuanLong: yuanLong,
+			}
+		}
+	})
+	return mountains24Err
 }

@@ -3,63 +3,56 @@ package fengshui
 import (
 	"testing"
 
+	"github.com/ml8s/mingligo/pkg/ganzhi"
 	"github.com/ml8s/mingligo/pkg/luoshu"
 )
 
 func Test24MountainsYinYang(t *testing.T) {
-	// Build index of天元龙 by trigram.
-	tianYinYang := make(map[string]string)
+	// Build index of 天元龙 yin-yang by trigram (symbol keys).
+	tianYinYang := make(map[luoshu.Trigram]ganzhi.YinYang)
 	for _, m := range Mountains24Table {
-		if m.YuanLong == "天元龙" {
+		if m.YuanLong == YuanLongTian {
 			tianYinYang[m.Trigram] = m.YinYang
 		}
 	}
 
-	// Verify天元龙 follows四正阴/四隅阳.
+	// Verify 天元龙 follows 四正阴/四隅阳.
 	for _, m := range Mountains24Table {
-		if m.YuanLong != "天元龙" {
+		if m.YuanLong != YuanLongTian {
 			continue
 		}
-		var expected string
+		var expected ganzhi.YinYang
 		switch m.Trigram {
-		case "坎", "震", "离", "兑":
-			expected = "阴" // 四正卦天元=阴
+		case luoshu.TrigramKan, luoshu.TrigramZhen, luoshu.TrigramLi, luoshu.TrigramDui:
+			expected = ganzhi.Yin // 四正卦天元=阴
 		default:
-			expected = "阳" // 四隅卦(乾坤艮巽)天元=阳
+			expected = ganzhi.Yang // 四隅卦(乾坤艮巽)天元=阳
 		}
 		if m.YinYang != expected {
-			t.Errorf("%s(%s 天元): yinyang=%s, want %s",
-				m.Name, m.Trigram, m.YinYang, expected)
+			t.Errorf("%s(%s 天元): yinyang=%v, want %v", m.Name, m.Trigram, m.YinYang, expected)
 		}
 	}
 
-	// Verify人元龙 = 天元龙 (same yin-yang).
+	// Verify 人元龙 = 天元龙 (same yin-yang).
 	for _, m := range Mountains24Table {
-		if m.YuanLong != "人元龙" {
+		if m.YuanLong != YuanLongRen {
 			continue
 		}
 		expected := tianYinYang[m.Trigram]
 		if m.YinYang != expected {
-			t.Errorf("%s(%s 人元): yinyang=%s, want %s (应同天元)",
-				m.Name, m.Trigram, m.YinYang, expected)
+			t.Errorf("%s(%s 人元): yinyang=%v, want %v (应同天元)", m.Name, m.Trigram, m.YinYang, expected)
 		}
 	}
 
-	// Verify地元龙 = 天元龙 reversed.
+	// Verify 地元龙 = 天元龙 reversed.
 	for _, m := range Mountains24Table {
-		if m.YuanLong != "地元龙" {
+		if m.YuanLong != YuanLongDi {
 			continue
 		}
 		tianYY := tianYinYang[m.Trigram]
-		var expected string
-		if tianYY == "阳" {
-			expected = "阴"
-		} else {
-			expected = "阳"
-		}
+		expected := !tianYY
 		if m.YinYang != expected {
-			t.Errorf("%s(%s 地元): yinyang=%s, want %s (应反天元)",
-				m.Name, m.Trigram, m.YinYang, expected)
+			t.Errorf("%s(%s 地元): yinyang=%v, want %v (应反天元)", m.Name, m.Trigram, m.YinYang, expected)
 		}
 	}
 }

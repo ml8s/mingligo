@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"sync"
 
+	"github.com/ml8s/mingligo/pkg/fengshui"
 	"github.com/ml8s/mingligo/pkg/luoshu"
 )
 
@@ -23,6 +24,10 @@ var (
 func Load() error {
 	loadOnce.Do(func() {
 		if err := luoshu.Load(); err != nil {
+			loadErr = err
+			return
+		}
+		if err := fengshui.Load(); err != nil {
 			loadErr = err
 			return
 		}

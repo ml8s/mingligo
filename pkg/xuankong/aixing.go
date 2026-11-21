@@ -1,9 +1,11 @@
 package xuankong
 
 import (
-	"github.com/ml8s/mingligo/pkg/fengshui"
-	"github.com/ml8s/mingligo/pkg/luoshu"
 	"slices"
+
+	"github.com/ml8s/mingligo/pkg/fengshui"
+	"github.com/ml8s/mingligo/pkg/ganzhi"
+	"github.com/ml8s/mingligo/pkg/luoshu"
 )
 
 // xuanKongStar holds the three stars (运星, 山星, 向星) for one palace.
@@ -110,14 +112,17 @@ func computeChart(sitMountain, faceMountain int, year int) Chart {
 // 入中星为 5（五黄无卦）时，按坐山/向首自身三元龙阴阳（5 落其宫）。
 func shanXiangForward(centerNum int, mountainIdx int) bool {
 	if centerNum == 5 {
-		return fengshui.Mountains24Table[mountainIdx].YinYang == "阳"
+		return fengshui.Mountains24Table[mountainIdx].YinYang == ganzhi.Yang
 	}
-	trigram := luoshu.PalaceTable[centerNum].Name
+	trigram, ok := luoshu.EncodeTrigram(luoshu.PalaceTable[centerNum].Name)
+	if !ok {
+		return false
+	}
 	target := fengshui.Mountains24Table[mountainIdx]
 	for i := 0; i < 24; i++ {
 		m := fengshui.Mountains24Table[i]
 		if m.Trigram == trigram && m.YuanLong == target.YuanLong {
-			return m.YinYang == "阳"
+			return m.YinYang == ganzhi.Yang
 		}
 	}
 	return false

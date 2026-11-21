@@ -106,7 +106,7 @@ func Test24Mountains_TianYuanLong(t *testing.T) {
 		"乾": true, "坤": true, "艮": true, "巽": true,
 	}
 	for _, m := range Mountains24Table {
-		if m.YuanLong == "天元龙" {
+		if m.YuanLong == YuanLongTian {
 			if !tianNames[m.Name] {
 				t.Errorf("%s is marked 天元龙 but should not be", m.Name)
 			}
@@ -121,7 +121,7 @@ func Test24Mountains_TianYuanLong(t *testing.T) {
 func Test24Mountains_TrigramAssignment(t *testing.T) {
 	// 每卦三山: 壬子癸→坎, 丑艮寅→艮, 甲卯乙→震, 辰巽巳→巽,
 	//           丙午丁→离, 未坤申→坤, 庚酉辛→兑, 戌乾亥→乾
-	trigramMountains := map[string][]string{
+	trigramMountains := map[luoshu.Trigram][]string{
 		"坎": {"壬", "子", "癸"},
 		"艮": {"丑", "艮", "寅"},
 		"震": {"甲", "卯", "乙"},
@@ -152,7 +152,7 @@ func Test24Mountains_TrigramYuanLong(t *testing.T) {
 	// 四正卦(坎震离兑): 地元在左(顺时针方向),天元在中,人元在右
 	// 四隅卦(乾坤艮巽): 地元在逆时针方向,天元在中,人元在顺时针
 	// 实际排列: 壬(地)子(天)癸(人), 丑(地)艮(天)寅(人), ...
-	expected := map[string]string{
+	expected := map[string]YuanLong{
 		"壬": "地元龙", "子": "天元龙", "癸": "人元龙", // 坎
 		"丑": "地元龙", "艮": "天元龙", "寅": "人元龙", // 艮
 		"甲": "地元龙", "卯": "天元龙", "乙": "人元龙", // 震
@@ -211,19 +211,19 @@ func Test24Mountains_WuxingAssignment(t *testing.T) {
 
 func Test24Mountains_DiTianRenYinYang(t *testing.T) {
 	// 四正卦(坎震离兑): 天元=阴
-	zhengGua := map[string]bool{"坎": true, "震": true, "离": true, "兑": true}
+	zhengGua := map[luoshu.Trigram]bool{"坎": true, "震": true, "离": true, "兑": true}
 	for _, m := range Mountains24Table {
-		if m.YuanLong != "天元龙" {
+		if m.YuanLong != YuanLongTian {
 			continue
 		}
 		if zhengGua[m.Trigram] {
-			if m.YinYang != "阴" {
-				t.Errorf("%s(%s 天元): 四正卦天元应为阴, got %s",
+			if m.YinYang != ganzhi.Yin {
+				t.Errorf("%s(%s 天元): 四正卦天元应为阴, got %v",
 					m.Name, m.Trigram, m.YinYang)
 			}
 		} else {
-			if m.YinYang != "阳" {
-				t.Errorf("%s(%s 天元): 四隅卦天元应为阳, got %s",
+			if m.YinYang != ganzhi.Yang {
+				t.Errorf("%s(%s 天元): 四隅卦天元应为阳, got %v",
 					m.Name, m.Trigram, m.YinYang)
 			}
 		}
