@@ -29,8 +29,13 @@ type StemsView struct {
 	DayStemPalace  StemPalace    `json:"ri_gan_gong" jsonschema:"日干落宫。"`
 	HourStemPalace StemPalace    `json:"shi_gan_gong" jsonschema:"时干落宫。"`
 	RiShiRelation  RiShiRelation `json:"ri_shi_relation" jsonschema:"日时宫关系。"`
-	DutyStarPalace GongIndex     `json:"zhi_fu_xing_gong" jsonschema:"值符星落宫。"`
-	DutyDoorPalace GongIndex     `json:"zhi_shi_men_gong" jsonschema:"值使门落宫。"`
+}
+
+// FuShiView groups 值符(星)/值使(门)落宫 facts — the pivot of the 神盘,
+// distinct from stem palaces.
+type FuShiView struct {
+	DutyStarPalace GongIndex `json:"zhi_fu_xing_gong" jsonschema:"值符星落宫。"`
+	DutyDoorPalace GongIndex `json:"zhi_shi_men_gong" jsonschema:"值使门落宫。"`
 }
 
 // MarkerView groups 神煞/格局 facts.
@@ -47,6 +52,7 @@ type ChartView struct {
 	Interactions InteractionsView   `json:"interactions" jsonschema:"克应事实。"`
 	PalaceFacts  PalaceFactsView    `json:"palace_facts" jsonschema:"宫位属性与静态关系。"`
 	Stems        StemsView          `json:"stems" jsonschema:"干落宫事实。"`
+	FuShi        FuShiView          `json:"fu_shi" jsonschema:"值符值使落宫。"`
 	Markers      MarkerView         `json:"markers" jsonschema:"神煞格局事实。"`
 	YingQi       YingQi             `json:"ying_qi" jsonschema:"应期候选。"`
 	YongShen     *YongShenResult    `json:"yong_shen,omitempty" jsonschema:"用神落宫事实。"`
@@ -70,9 +76,9 @@ func (c Chart) View() ChartView {
 		},
 		Stems: StemsView{
 			DayStemPalace: c.DayStemPalace, HourStemPalace: c.HourStemPalace,
-			RiShiRelation:  c.RiShiRelation,
-			DutyStarPalace: c.DutyStarPalace, DutyDoorPalace: c.DutyDoorPalace,
+			RiShiRelation: c.RiShiRelation,
 		},
+		FuShi: FuShiView{DutyStarPalace: c.DutyStarPalace, DutyDoorPalace: c.DutyDoorPalace},
 		Markers: MarkerView{
 			KongWangAffected: c.KongWangAffected, MaXingAffected: c.MaXingAffected,
 			Patterns: c.Patterns,

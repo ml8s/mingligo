@@ -1552,6 +1552,7 @@ func loadPatterns() error {
 
 func decodePatternTable(raw []byte) ([]patternRule, error) {
 	var rules []struct {
+		Kind             string `json:"kind"`
 		Name             string `json:"name"`
 		Description      string `json:"description"`
 		YiJu             string `json:"basis"`
@@ -1592,7 +1593,7 @@ func decodePatternTable(raw []byte) ([]patternRule, error) {
 			return nil, fmt.Errorf("load patterns: %q requires conditions", rule.Name)
 		}
 		loadedRule := patternRule{
-			Name: rule.Name, Description: rule.Description, YiJu: rule.YiJu,
+			Kind: rule.Kind, Name: rule.Name, Description: rule.Description, YiJu: rule.YiJu,
 			Auspicious: rule.Auspicious, RequiresDutyDoor: rule.RequiresDutyDoor,
 			DutyStarPosition: dsp,
 		}

@@ -143,6 +143,7 @@ type MenInteraction struct {
 
 // Pattern represents a detected 格局 in the board.
 type Pattern struct {
+	Kind        string      `json:"kind,omitempty" jsonschema:"格局类别：liu_yi_ji_xing/san_qi_ru_mu/you_hun_ru_mu 等；general 可省略。"`
 	Name        string      `json:"name"`
 	Description string      `json:"description"`
 	YiJu        string      `json:"basis,omitempty"`
@@ -151,6 +152,7 @@ type Pattern struct {
 }
 
 type patternRule struct {
+	Kind             string
 	Name             string
 	Description      string
 	YiJu             string

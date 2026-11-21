@@ -150,18 +150,31 @@
     "auspicious": false,
     "conditions": [
       {
-        "heaven_gan": ["乙"],
-        "palaces": ["坤"]
+        "heaven_gan": [
+          "乙"
+        ],
+        "palaces": [
+          "坤"
+        ]
       },
       {
-        "heaven_gan": ["丙"],
-        "palaces": ["乾"]
+        "heaven_gan": [
+          "丙"
+        ],
+        "palaces": [
+          "乾"
+        ]
       },
       {
-        "heaven_gan": ["丁"],
-        "palaces": ["艮"]
+        "heaven_gan": [
+          "丁"
+        ],
+        "palaces": [
+          "艮"
+        ]
       }
-    ]
+    ],
+    "kind": "san_qi_ru_mu"
   },
   {
     "name": "六仪击刑",
@@ -170,29 +183,54 @@
     "auspicious": false,
     "conditions": [
       {
-        "heaven_gan": ["戊"],
-        "palaces": ["震"]
+        "heaven_gan": [
+          "戊"
+        ],
+        "palaces": [
+          "震"
+        ]
       },
       {
-        "heaven_gan": ["己"],
-        "palaces": ["坤"]
+        "heaven_gan": [
+          "己"
+        ],
+        "palaces": [
+          "坤"
+        ]
       },
       {
-        "heaven_gan": ["庚"],
-        "palaces": ["艮"]
+        "heaven_gan": [
+          "庚"
+        ],
+        "palaces": [
+          "艮"
+        ]
       },
       {
-        "heaven_gan": ["辛"],
-        "palaces": ["离"]
+        "heaven_gan": [
+          "辛"
+        ],
+        "palaces": [
+          "离"
+        ]
       },
       {
-        "heaven_gan": ["壬"],
-        "palaces": ["巽"]
+        "heaven_gan": [
+          "壬"
+        ],
+        "palaces": [
+          "巽"
+        ]
       },
       {
-        "heaven_gan": ["癸"],
-        "palaces": ["巽"]
+        "heaven_gan": [
+          "癸"
+        ],
+        "palaces": [
+          "巽"
+        ]
       }
-    ]
+    ],
+    "kind": "liu_yi_ji_xing"
   }
 ]

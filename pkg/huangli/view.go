@@ -15,9 +15,13 @@ type CalendarView struct {
 
 // DirectionsView groups方位神煞 facts.
 type DirectionsView struct {
-	XiShen      string `json:"xi_shen" jsonschema:"喜神方位。"`
-	CaiShen     string `json:"cai_shen" jsonschema:"财神方位。"`
-	FuShen      string `json:"fu_shen" jsonschema:"福神方位。"`
+	XiShen  string `json:"xi_shen" jsonschema:"喜神方位。"`
+	CaiShen string `json:"cai_shen" jsonschema:"财神方位。"`
+	FuShen  string `json:"fu_shen" jsonschema:"福神方位。"`
+}
+
+// TaboosView groups 彭祖百忌 facts (day-stem/branch prohibitions).
+type TaboosView struct {
 	StemTaboo   string `json:"gan_ji" jsonschema:"干忌。"`
 	BranchTaboo string `json:"zhi_ji" jsonschema:"支忌。"`
 }
@@ -42,6 +46,7 @@ type DayView struct {
 	RiZhu           riZhuInfo           `json:"ri_zhu" jsonschema:"日柱。"`
 	Wuxing          string              `json:"wuxing" jsonschema:"日支五行。"`
 	Directions      DirectionsView      `json:"directions" jsonschema:"方位神煞。"`
+	Taboos          TaboosView          `json:"taboos" jsonschema:"彭祖百忌。"`
 	JianChuHuangDao JianChuHuangDaoView `json:"jian_chu_huangdao" jsonschema:"建除黄道。"`
 	Mansion         dayMansion          `json:"xiu" jsonschema:"二十八宿。"`
 	ShiChen         []ShiChenFortune    `json:"shi_chen,omitempty" jsonschema:"十二时辰宜忌。"`
@@ -58,8 +63,8 @@ func (d Day) View() DayView {
 		Wuxing: d.Wuxing,
 		Directions: DirectionsView{
 			XiShen: d.XiShen, CaiShen: d.CaiShen, FuShen: d.FuShen,
-			StemTaboo: d.StemTaboo, BranchTaboo: d.BranchTaboo,
 		},
+		Taboos:          TaboosView{StemTaboo: d.StemTaboo, BranchTaboo: d.BranchTaboo},
 		JianChuHuangDao: JianChuHuangDaoView{JianChu: d.JianChu, HuangDao: d.HuangDao},
 		Mansion:         d.Mansion,
 		ShiChen:         d.ShiChen,

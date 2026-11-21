@@ -12,14 +12,15 @@ import (
 // output model that every transport adapter (MCP, REST) transmits unchanged.
 
 type LineFlags struct {
-	Moving      bool   `json:"moving" jsonschema:"是否发动。"`
-	YuePo       bool   `json:"yue_po" jsonschema:"是否月破。"`
-	XunKong     bool   `json:"xun_kong" jsonschema:"是否旬空。"`
-	MuKu        bool   `json:"mu_ku" jsonschema:"是否墓库。"`
-	MuKuBranch  string `json:"mu_ku_zhi,omitempty" jsonschema:"墓库地支。"`
-	MuKuElement string `json:"mu_ku_wuxing,omitempty" jsonschema:"墓库五行。"`
-	DongSheng   bool   `json:"dong_sheng" jsonschema:"动爻生。"`
-	DongKe      bool   `json:"dong_ke" jsonschema:"动爻克。"`
+	Moving      bool     `json:"moving" jsonschema:"是否发动。"`
+	YuePo       bool     `json:"yue_po" jsonschema:"是否月破。"`
+	XunKong     bool     `json:"xun_kong" jsonschema:"是否旬空。"`
+	MuKu        bool     `json:"mu_ku" jsonschema:"是否墓库。"`
+	MuKuBranch  string   `json:"mu_ku_zhi,omitempty" jsonschema:"墓库地支。"`
+	MuKuElement string   `json:"mu_ku_wuxing,omitempty" jsonschema:"墓库五行。"`
+	MuKuTypes   []string `json:"mu_ku_types,omitempty" jsonschema:"入墓来源：日墓/动墓/化墓。"`
+	DongSheng   bool     `json:"dong_sheng" jsonschema:"动爻生。"`
+	DongKe      bool     `json:"dong_ke" jsonschema:"动爻克。"`
 }
 
 type LineView struct {
@@ -107,6 +108,9 @@ func (c Chart) lineView(line Line, rel DayRelation, wangShuai ganzhi.WangShuai) 
 		Moving: line.DongSelf, YuePo: line.YuePo, XunKong: line.XunKong,
 		MuKu: line.MuKu, MuKuBranch: line.MuKuBranch, MuKuElement: line.MuKuElement,
 		DongSheng: line.DongSheng, DongKe: line.DongKe,
+	}
+	for _, source := range line.MuKuTypes {
+		flags.MuKuTypes = append(flags.MuKuTypes, DecodeMuKuSource(source))
 	}
 	v := LineView{
 		Position: line.Position, YaoValue: int(line.Type),

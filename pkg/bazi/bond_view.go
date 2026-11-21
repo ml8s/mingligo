@@ -50,7 +50,7 @@ type ExplainedRelationView struct {
 }
 
 type ZhuCrossView struct {
-	Pairs []ZhuCrossPairsItemView `json:"pairs" jsonschema:"四柱配对；按年、月、日、时对齐。"`
+	Pairs []ZhuCrossPairsItemView `json:"pairs" jsonschema:"双方四柱两两全交叉（4×4）；按双方各柱 a→b 配对。"`
 }
 
 type ZhuCrossPairsItemView struct {
@@ -114,7 +114,7 @@ type FuYiInOtherSideView struct {
 }
 
 type NaYinCrossView struct {
-	Pairs        []NaYinCrossPairsItemView  `json:"pairs" jsonschema:"四柱配对；按年、月、日、时对齐。"`
+	Pairs        []NaYinCrossPairsItemView  `json:"pairs" jsonschema:"双方四柱两两全交叉（4×4）；按双方各柱 a→b 配对。"`
 	WuxingCounts NaYinCrossWuxingCountsView `json:"wuxing_counts" jsonschema:"双方纳音五行计数。"`
 }
 
