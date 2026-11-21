@@ -311,7 +311,7 @@ func TestMigratedShiShenEnumMatchesTenGodClosure(t *testing.T) {
 	}
 	for _, scope := range []string{"liu_nian", "liu_yue", "liu_ri", "liu_shi"} {
 		properties, defs := liupanOutputProperties(t, registry, "bazi", scope)
-		allowed := enumAtDefs(t, properties, defs, "shi_shen")
+		allowed := enumAtDefs(t, properties, defs, "liu_qi", "shi_shen")
 		if len(allowed) != len(want) {
 			t.Fatalf("%s: shi_shen enum = %v, want the %d-value 十神 closure", scope, allowed, len(want))
 		}

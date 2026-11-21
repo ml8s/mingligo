@@ -144,7 +144,7 @@ func TestMigratedBaziLiuNianShiShen(t *testing.T) {
 			"scope": "liu_nian", "standard_time": fmt.Sprintf("%04d-06-15T12:00:00+08:00", year), "subject": chart,
 		})
 		item := firstSeriesItem(t, document)
-		if shiShen, _ := item["shi_shen"].(string); shiShen == "" {
+		if shiShen, _ := (item["liu_qi"].(map[string]any))["shi_shen"].(string); shiShen == "" {
 			t.Errorf("bazi.liupan liu_nian(%d) shi_shen is empty", year)
 		}
 	}

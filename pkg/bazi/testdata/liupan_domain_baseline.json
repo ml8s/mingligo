@@ -1,0 +1,514 @@
+{
+  "liu_nian": {
+    "liu_nian": [
+      {
+        "da_yun_interactions": [
+          {
+            "gan_rels": [
+              {
+                "gan_a": "庚",
+                "gan_b": "甲",
+                "relation": "庚克甲",
+                "relation_kind": "相克"
+              },
+              {
+                "gan_a": "庚",
+                "gan_b": "丙",
+                "relation": "丙克庚",
+                "relation_kind": "相克"
+              },
+              {
+                "gan_a": "庚",
+                "gan_b": "己",
+                "relation": "己生庚",
+                "relation_kind": "相生"
+              },
+              {
+                "gan_a": "庚",
+                "gan_b": "戊",
+                "relation": "戊生庚",
+                "relation_kind": "相生"
+              }
+            ],
+            "zhi_rels": [
+              {
+                "relation_explanation": "午子相冲",
+                "relation_kind": "六冲",
+                "zhi_a": "午",
+                "zhi_b": "子"
+              },
+              {
+                "relation_explanation": "午寅半合火局，缺戌",
+                "relation_kind": "半合",
+                "zhi_a": "午",
+                "zhi_b": "寅"
+              },
+              {
+                "relation_explanation": "午卯相破",
+                "relation_kind": "破",
+                "zhi_a": "午",
+                "zhi_b": "卯"
+              },
+              {
+                "relation_explanation": "无特殊关系",
+                "relation_kind": "无",
+                "zhi_a": "午",
+                "zhi_b": "辰"
+              }
+            ],
+            "zhu_label": "伤官运(庚午)"
+          }
+        ],
+        "fu_yin_fan_yin": [
+          {
+            "natal_index": 3,
+            "relation_explanation": "辰地支伏吟",
+            "relation_kind": "伏吟"
+          }
+        ],
+        "gan": "甲",
+        "gan_wuxing": "木",
+        "ke_ri": 1,
+        "na_yin": "覆灯火",
+        "natal_interactions": [
+          {
+            "gan_rels": [
+              {
+                "gan_a": "甲",
+                "gan_b": "甲",
+                "relation": "甲甲同气",
+                "relation_kind": "相同"
+              },
+              {
+                "gan_a": "甲",
+                "gan_b": "丙",
+                "relation": "甲生丙",
+                "relation_kind": "相生"
+              },
+              {
+                "gan_a": "甲",
+                "gan_b": "己",
+                "relation": "甲己合化土",
+                "relation_kind": "天干五合"
+              },
+              {
+                "gan_a": "甲",
+                "gan_b": "戊",
+                "relation": "甲克戊",
+                "relation_kind": "相克"
+              }
+            ],
+            "zhi_rels": [
+              {
+                "relation_explanation": "辰子半合水局，缺申",
+                "relation_kind": "半合",
+                "zhi_a": "辰",
+                "zhi_b": "子"
+              },
+              {
+                "relation_explanation": "辰寅拱卯，木方候选",
+                "relation_kind": "三会拱",
+                "zhi_a": "辰",
+                "zhi_b": "寅"
+              },
+              {
+                "relation_explanation": "辰卯相害",
+                "relation_kind": "六害",
+                "zhi_a": "辰",
+                "zhi_b": "卯"
+              },
+              {
+                "relation_explanation": "辰辰自刑",
+                "relation_kind": "相刑",
+                "zhi_a": "辰",
+                "zhi_b": "辰"
+              }
+            ],
+            "zhu_label": "甲辰"
+          }
+        ],
+        "nian_jie": {
+          "boundary_day": false,
+          "lichun_end": "2025-02-03",
+          "lichun_start": "2024-02-04",
+          "lichun_year": 2024,
+          "standard_time": "2024-06-15T12:00:00+08:00",
+          "start_date": "2024-06-15"
+        },
+        "shen_sha": [
+          {
+            "category": "中性",
+            "description": "流运华盖，宜静思",
+            "name": "华盖"
+          },
+          {
+            "category": "凶",
+            "description": "流运病符临命，主病灾",
+            "name": "病符"
+          },
+          {
+            "category": "凶",
+            "description": "流运吊客临命，主吊丧/孝服",
+            "name": "吊客"
+          }
+        ],
+        "sheng_ri": 0,
+        "shi_shen": "正官",
+        "year": 2024,
+        "zhi": "辰"
+      }
+    ]
+  },
+  "liu_ri": {
+    "liu_ri": [
+      {
+        "da_yun_interaction": {
+          "gan_rels": [
+            {
+              "gan_a": "庚",
+              "gan_b": "庚",
+              "relation": "庚庚同气",
+              "relation_kind": "相同"
+            }
+          ],
+          "zhi_rels": [
+            {
+              "relation_explanation": "戌午半合火局，缺寅",
+              "relation_kind": "半合",
+              "zhi_a": "戌",
+              "zhi_b": "午"
+            }
+          ],
+          "zhu_label": "庚午"
+        },
+        "date": "2024-06-15",
+        "gan": "庚",
+        "gan_rels": [
+          {
+            "gan_a": "庚",
+            "gan_b": "甲",
+            "relation": "庚克甲",
+            "relation_kind": "相克"
+          },
+          {
+            "gan_a": "庚",
+            "gan_b": "丙",
+            "relation": "丙克庚",
+            "relation_kind": "相克"
+          },
+          {
+            "gan_a": "庚",
+            "gan_b": "己",
+            "relation": "己生庚",
+            "relation_kind": "相生"
+          },
+          {
+            "gan_a": "庚",
+            "gan_b": "戊",
+            "relation": "戊生庚",
+            "relation_kind": "相生"
+          }
+        ],
+        "ke_ri": 1,
+        "liu_nian_interaction": {
+          "gan_rels": [
+            {
+              "gan_a": "庚",
+              "gan_b": "甲",
+              "relation": "庚克甲",
+              "relation_kind": "相克"
+            }
+          ],
+          "zhi_rels": [
+            {
+              "relation_explanation": "戌辰相冲",
+              "relation_kind": "六冲",
+              "zhi_a": "戌",
+              "zhi_b": "辰"
+            }
+          ],
+          "zhu_label": "甲辰"
+        },
+        "na_yin": "钗钏金",
+        "ri_jie": {
+          "standard_date": "2024-06-15",
+          "standard_time": "2024-06-15T12:00:00+08:00"
+        },
+        "shen_sha": [],
+        "sheng_ri": 0,
+        "shi_shen": "伤官",
+        "zhi": "戌",
+        "zhi_rels": [
+          {
+            "relation_explanation": "戌子暗合",
+            "relation_kind": "暗合",
+            "zhi_a": "戌",
+            "zhi_b": "子"
+          },
+          {
+            "relation_explanation": "戌寅拱午，火局候选",
+            "relation_kind": "三合拱",
+            "zhi_a": "戌",
+            "zhi_b": "寅"
+          },
+          {
+            "relation_explanation": "戌卯合化火",
+            "relation_kind": "六合",
+            "zhi_a": "戌",
+            "zhi_b": "卯"
+          },
+          {
+            "relation_explanation": "戌辰相冲",
+            "relation_kind": "六冲",
+            "zhi_a": "戌",
+            "zhi_b": "辰"
+          }
+        ]
+      }
+    ]
+  },
+  "liu_shi": {
+    "liu_shi": [
+      {
+        "da_yun_interaction": {
+          "gan_rels": [
+            {
+              "gan_a": "壬",
+              "gan_b": "庚",
+              "relation": "庚生壬",
+              "relation_kind": "相生"
+            }
+          ],
+          "zhi_rels": [
+            {
+              "relation_explanation": "午午自刑",
+              "relation_kind": "相刑",
+              "zhi_a": "午",
+              "zhi_b": "午"
+            }
+          ],
+          "zhu_label": "庚午"
+        },
+        "gan": "壬",
+        "gan_rels": [
+          {
+            "gan_a": "壬",
+            "gan_b": "甲",
+            "relation": "壬生甲",
+            "relation_kind": "相生"
+          },
+          {
+            "gan_a": "壬",
+            "gan_b": "丙",
+            "relation": "壬克丙",
+            "relation_kind": "相克"
+          },
+          {
+            "gan_a": "壬",
+            "gan_b": "己",
+            "relation": "己克壬",
+            "relation_kind": "相克"
+          },
+          {
+            "gan_a": "壬",
+            "gan_b": "戊",
+            "relation": "戊克壬",
+            "relation_kind": "相克"
+          }
+        ],
+        "hour_range": "11:00-13:00",
+        "ke_ri": 0,
+        "liu_nian_interaction": {
+          "gan_rels": [
+            {
+              "gan_a": "壬",
+              "gan_b": "甲",
+              "relation": "壬生甲",
+              "relation_kind": "相生"
+            }
+          ],
+          "zhi_rels": [
+            {
+              "relation_explanation": "无特殊关系",
+              "relation_kind": "无",
+              "zhi_a": "午",
+              "zhi_b": "辰"
+            }
+          ],
+          "zhu_label": "甲辰"
+        },
+        "liu_ri_interaction": {
+          "gan_rels": [
+            {
+              "gan_a": "壬",
+              "gan_b": "庚",
+              "relation": "庚生壬",
+              "relation_kind": "相生"
+            }
+          ],
+          "zhi_rels": [
+            {
+              "relation_explanation": "午戌半合火局，缺寅",
+              "relation_kind": "半合",
+              "zhi_a": "午",
+              "zhi_b": "戌"
+            }
+          ],
+          "zhu_label": "庚戌"
+        },
+        "sheng_ri": 1,
+        "shi_chen": {
+          "shichen": "午",
+          "standard_date": "2024-06-15",
+          "standard_time": "2024-06-15T12:00:00+08:00"
+        },
+        "shi_shen": "正财",
+        "zhi": "午",
+        "zhi_rels": [
+          {
+            "relation_explanation": "午子相冲",
+            "relation_kind": "六冲",
+            "zhi_a": "午",
+            "zhi_b": "子"
+          },
+          {
+            "relation_explanation": "午寅半合火局，缺戌",
+            "relation_kind": "半合",
+            "zhi_a": "午",
+            "zhi_b": "寅"
+          },
+          {
+            "relation_explanation": "午卯相破",
+            "relation_kind": "破",
+            "zhi_a": "午",
+            "zhi_b": "卯"
+          },
+          {
+            "relation_explanation": "无特殊关系",
+            "relation_kind": "无",
+            "zhi_a": "午",
+            "zhi_b": "辰"
+          }
+        ]
+      }
+    ]
+  },
+  "liu_yue": {
+    "liu_yue": [
+      {
+        "da_yun_interaction": {
+          "gan_rels": [
+            {
+              "gan_a": "庚",
+              "gan_b": "庚",
+              "relation": "庚庚同气",
+              "relation_kind": "相同"
+            }
+          ],
+          "zhi_rels": [
+            {
+              "relation_explanation": "午午自刑",
+              "relation_kind": "相刑",
+              "zhi_a": "午",
+              "zhi_b": "午"
+            }
+          ],
+          "zhu_label": "庚午"
+        },
+        "gan": "庚",
+        "gan_rels": [
+          {
+            "gan_a": "庚",
+            "gan_b": "甲",
+            "relation": "庚克甲",
+            "relation_kind": "相克"
+          },
+          {
+            "gan_a": "庚",
+            "gan_b": "丙",
+            "relation": "丙克庚",
+            "relation_kind": "相克"
+          },
+          {
+            "gan_a": "庚",
+            "gan_b": "己",
+            "relation": "己生庚",
+            "relation_kind": "相生"
+          },
+          {
+            "gan_a": "庚",
+            "gan_b": "戊",
+            "relation": "戊生庚",
+            "relation_kind": "相生"
+          }
+        ],
+        "gan_wuxing": "金",
+        "jie_qi": {
+          "boundary_day": false,
+          "jieqi_end": "2024-07-06",
+          "jieqi_start": "2024-06-05",
+          "standard_time": "2024-06-15T12:00:00+08:00",
+          "start_date": "2024-06-15"
+        },
+        "ke_ri": 1,
+        "liu_nian_interaction": {
+          "gan_rels": [
+            {
+              "gan_a": "庚",
+              "gan_b": "甲",
+              "relation": "庚克甲",
+              "relation_kind": "相克"
+            }
+          ],
+          "zhi_rels": [
+            {
+              "relation_explanation": "无特殊关系",
+              "relation_kind": "无",
+              "zhi_a": "午",
+              "zhi_b": "辰"
+            }
+          ],
+          "zhu_label": "甲辰"
+        },
+        "month": 6,
+        "shen_sha": [
+          {
+            "category": "凶",
+            "description": "流运灾煞，防意外灾祸",
+            "name": "灾煞"
+          }
+        ],
+        "sheng_ri": 0,
+        "shi_shen": "伤官",
+        "year": 2024,
+        "zhi": "午",
+        "zhi_rels": [
+          {
+            "relation_explanation": "午子相冲",
+            "relation_kind": "六冲",
+            "zhi_a": "午",
+            "zhi_b": "子"
+          },
+          {
+            "relation_explanation": "午寅半合火局，缺戌",
+            "relation_kind": "半合",
+            "zhi_a": "午",
+            "zhi_b": "寅"
+          },
+          {
+            "relation_explanation": "午卯相破",
+            "relation_kind": "破",
+            "zhi_a": "午",
+            "zhi_b": "卯"
+          },
+          {
+            "relation_explanation": "无特殊关系",
+            "relation_kind": "无",
+            "zhi_a": "午",
+            "zhi_b": "辰"
+          }
+        ]
+      }
+    ]
+  }
+}

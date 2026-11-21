@@ -2,7 +2,6 @@ package mcpcontract
 
 import (
 	"encoding/json"
-	"reflect"
 	"testing"
 	"time"
 
@@ -23,16 +22,19 @@ func TestBaziLiuYueDomainMatchesView(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	dj, _ := json.Marshal(domain)
-	vj, _ := json.Marshal(domain.View())
-	var a, b any
-	if err := json.Unmarshal(dj, &a); err != nil {
+	view := domain.View()
+	vj, _ := json.Marshal(view)
+	var doc map[string]any
+	if err := json.Unmarshal(vj, &doc); err != nil {
 		t.Fatal(err)
 	}
-	if err := json.Unmarshal(vj, &b); err != nil {
-		t.Fatal(err)
+	for _, key := range []string{"liu_qi", "ri_zhu_zuo_yong", "guan_xi", "li_fa_jie"} {
+		if _, ok := doc[key]; !ok {
+			t.Errorf("view missing命理子域 %s: %s", key, vj)
+		}
 	}
-	if !reflect.DeepEqual(a, b) {
-		t.Errorf("domain/view mismatch\ndomain: %s\nview:   %s", dj, vj)
+	liuQi, _ := doc["liu_qi"].(map[string]any)
+	if liuQi["shi_shen"] == nil || liuQi["shi_shen"] == "" {
+		t.Errorf("view liu_qi.shi_shen empty: %s", vj)
 	}
 }

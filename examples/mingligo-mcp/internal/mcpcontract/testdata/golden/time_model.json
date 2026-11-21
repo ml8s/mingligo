@@ -58,10 +58,10 @@
         "count": 1
       },
       "expect": {
-        "liu_ri.0.date": "2026-06-01",
-        "liu_ri.0.gan": "丙",
-        "liu_ri.0.zhi": "午",
-        "liu_ri.0.ri_jie.standard_date": "2026-06-01"
+        "liu_ri.0.li_fa_jie.date": "2026-06-01",
+        "liu_ri.0.liu_qi.gan": "丙",
+        "liu_ri.0.liu_qi.zhi": "午",
+        "liu_ri.0.li_fa_jie.ri_jie.standard_date": "2026-06-01"
       }
     },
     {
@@ -113,9 +113,9 @@
         "count": 3
       },
       "expect": {
-        "liu_nian.0.nian_jie.lichun_year": 2023,
-        "liu_nian.1.nian_jie.lichun_year": 2024,
-        "liu_nian.2.nian_jie.lichun_year": 2025
+        "liu_nian.0.li_fa_jie.nian_jie.lichun_year": 2023,
+        "liu_nian.1.li_fa_jie.nian_jie.lichun_year": 2024,
+        "liu_nian.2.li_fa_jie.nian_jie.lichun_year": 2025
       }
     },
     {
@@ -129,9 +129,9 @@
         "count": 3
       },
       "expect": {
-        "liu_yue.0.jie_qi.jieqi_start": "2024-01-05",
-        "liu_yue.1.jie_qi.jieqi_start": "2024-02-04",
-        "liu_yue.2.jie_qi.jieqi_start": "2024-03-04"
+        "liu_yue.0.li_fa_jie.jie_qi.jieqi_start": "2024-01-05",
+        "liu_yue.1.li_fa_jie.jie_qi.jieqi_start": "2024-02-04",
+        "liu_yue.2.li_fa_jie.jie_qi.jieqi_start": "2024-03-04"
       }
     },
     {
@@ -264,8 +264,8 @@
         "count": 1
       },
       "expect": {
-        "liu_nian.0.nian_jie.lichun_year": 2023,
-        "liu_nian.0.nian_jie.start_date": "2024-02-04"
+        "liu_nian.0.li_fa_jie.nian_jie.lichun_year": 2023,
+        "liu_nian.0.li_fa_jie.nian_jie.start_date": "2024-02-04"
       }
     },
     {
@@ -279,8 +279,8 @@
         "count": 1
       },
       "expect": {
-        "liu_nian.0.nian_jie.lichun_year": 2024,
-        "liu_nian.0.nian_jie.start_date": "2024-02-04"
+        "liu_nian.0.li_fa_jie.nian_jie.lichun_year": 2024,
+        "liu_nian.0.li_fa_jie.nian_jie.start_date": "2024-02-04"
       }
     },
     {
@@ -294,7 +294,7 @@
         "count": 1
       },
       "expect": {
-        "liu_yue.0.jie_qi.jieqi_start": "2024-02-04"
+        "liu_yue.0.li_fa_jie.jie_qi.jieqi_start": "2024-02-04"
       }
     },
     {
@@ -308,7 +308,7 @@
         "count": 1
       },
       "expect": {
-        "liu_yue.0.jie_qi.jieqi_start": "2024-03-04"
+        "liu_yue.0.li_fa_jie.jie_qi.jieqi_start": "2024-03-04"
       }
     },
     {
