@@ -5,23 +5,23 @@ package huangli
 // output model that every transport adapter transmits unchanged. jsonschema
 // tags are inert metadata read only when a consumer reflects the type.
 
-// CalendarView groups日历/节气 facts.
-type CalendarView struct {
+// LiFaView groups日历/节气 facts.
+type LiFaView struct {
 	Date      string `json:"date" jsonschema:"公历日期。"`
 	JieQi     string `json:"jie_qi" jsonschema:"节气。"`
 	JieQiDays int    `json:"jie_qi_days" jsonschema:"距节气天数。"`
 	RenYuan   string `json:"ren_yuan" jsonschema:"人元。"`
 }
 
-// DirectionsView groups方位神煞 facts.
-type DirectionsView struct {
+// FangWeiShenShaView groups方位神煞 facts.
+type FangWeiShenShaView struct {
 	XiShen  string `json:"xi_shen" jsonschema:"喜神方位。"`
 	CaiShen string `json:"cai_shen" jsonschema:"财神方位。"`
 	FuShen  string `json:"fu_shen" jsonschema:"福神方位。"`
 }
 
-// TaboosView groups 彭祖百忌 facts (day-stem/branch prohibitions).
-type TaboosView struct {
+// PengZuBaiJiView groups 彭祖百忌 facts (day-stem/branch prohibitions).
+type PengZuBaiJiView struct {
 	StemTaboo   string `json:"gan_ji" jsonschema:"干忌。"`
 	BranchTaboo string `json:"zhi_ji" jsonschema:"支忌。"`
 }
@@ -32,8 +32,8 @@ type JianChuHuangDaoView struct {
 	HuangDao huangDaoStar `json:"huangdao" jsonschema:"黄道黑道十二神。"`
 }
 
-// EventView groups事项适配结论 facts.
-type EventView struct {
+// YiJiView groups事项适配结论 facts.
+type YiJiView struct {
 	Event       string `json:"event,omitempty" jsonschema:"事项。"`
 	EventLabel  string `json:"event_label,omitempty" jsonschema:"事项中文标签。"`
 	Suitability string `json:"suitability,omitempty" jsonschema:"事项适配结论。"`
@@ -42,33 +42,33 @@ type EventView struct {
 
 // DayView is the domain-aggregated output of a Huangli day.
 type DayView struct {
-	Calendar        CalendarView        `json:"calendar" jsonschema:"日历与节气。"`
+	LiFa            LiFaView            `json:"li_fa" jsonschema:"历法与节气。"`
 	RiZhu           riZhuInfo           `json:"ri_zhu" jsonschema:"日柱。"`
 	Wuxing          string              `json:"wuxing" jsonschema:"日支五行。"`
-	FangWeiShenSha  DirectionsView      `json:"fang_wei_shen_sha" jsonschema:"方位神煞。"`
-	PengZuBaiJi     TaboosView          `json:"peng_zu_bai_ji" jsonschema:"彭祖百忌。"`
+	FangWeiShenSha  FangWeiShenShaView  `json:"fang_wei_shen_sha" jsonschema:"方位神煞。"`
+	PengZuBaiJi     PengZuBaiJiView     `json:"peng_zu_bai_ji" jsonschema:"彭祖百忌。"`
 	JianChuHuangDao JianChuHuangDaoView `json:"jian_chu_huangdao" jsonschema:"建除黄道。"`
 	Mansion         dayMansion          `json:"xiu" jsonschema:"二十八宿。"`
 	ShiChen         []ShiChenFortune    `json:"shi_chen,omitempty" jsonschema:"十二时辰宜忌。"`
-	YiJi            EventView           `json:"yi_ji" jsonschema:"事项宜忌。"`
+	YiJi            YiJiView            `json:"yi_ji" jsonschema:"事项宜忌。"`
 }
 
 // View produces the domain-aggregated output from the computed day.
 func (d Day) View() DayView {
 	return DayView{
-		Calendar: CalendarView{
+		LiFa: LiFaView{
 			Date: d.Date, JieQi: d.JieQi, JieQiDays: d.JieQiDays, RenYuan: d.RenYuan,
 		},
 		RiZhu:  d.RiZhu,
 		Wuxing: d.Wuxing,
-		FangWeiShenSha: DirectionsView{
+		FangWeiShenSha: FangWeiShenShaView{
 			XiShen: d.XiShen, CaiShen: d.CaiShen, FuShen: d.FuShen,
 		},
-		PengZuBaiJi:     TaboosView{StemTaboo: d.StemTaboo, BranchTaboo: d.BranchTaboo},
+		PengZuBaiJi:     PengZuBaiJiView{StemTaboo: d.StemTaboo, BranchTaboo: d.BranchTaboo},
 		JianChuHuangDao: JianChuHuangDaoView{JianChu: d.JianChu, HuangDao: d.HuangDao},
 		Mansion:         d.Mansion,
 		ShiChen:         d.ShiChen,
-		YiJi: EventView{
+		YiJi: YiJiView{
 			Event: d.Event, EventLabel: d.EventLabel,
 			Suitability: d.Suitability, EventReason: d.EventReason,
 		},

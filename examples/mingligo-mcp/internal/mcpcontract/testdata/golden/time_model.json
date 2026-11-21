@@ -230,7 +230,7 @@
         "event": "sign"
       },
       "expect": {
-        "days.0.calendar.date": "2026-06-01"
+        "days.0.li_fa.date": "2026-06-01"
       }
     },
     {
