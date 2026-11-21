@@ -15,67 +15,8 @@ type XuankongChartInput struct {
 	XiangShan    MountainIndex `json:"xiang_shan" jsonschema:"朝向；必须与坐山相对。"`
 }
 
-type XuankongYunOutput struct {
-	Year         XuankongYear     `json:"year" jsonschema:"立春年份。"`
-	YearBoundary YearBoundaryName `json:"year_boundary" jsonschema:"年界：立春。"`
-	Yuan         XuankongYuanName `json:"yuan" jsonschema:"三元元运。"`
-	YunNumber    FlyingStarNumber `json:"yun_number" jsonschema:"运数。"`
-	YunName      YunName          `json:"yun_name" jsonschema:"运名。"`
-	StartYear    int              `json:"start_year" jsonschema:"运起始公历年份。"`
-	EndYear      int              `json:"end_year" jsonschema:"运结束公历年份。"`
-}
-
-type XuankongStarOutput struct {
-	Number FlyingStarNumber `json:"number" jsonschema:"紫白星数。"`
-	Color  StarColorName    `json:"color" jsonschema:"紫白星颜色。"`
-	Name   FlyingStarName   `json:"name" jsonschema:"紫白星名。"`
-	Wuxing ElementName      `json:"wuxing" jsonschema:"星五行。"`
-}
-
-type XuankongPalaceOutput struct {
-	GongNum   GuaNumber          `json:"gong_num" jsonschema:"洛书宫数。"`
-	YunXing   XuankongStarOutput `json:"yun_xing" jsonschema:"运星。"`
-	ShanXing  XuankongStarOutput `json:"shan_xing" jsonschema:"山星。"`
-	XiangXing XuankongStarOutput `json:"xiang_xing" jsonschema:"向星。"`
-	JiaHui    XuankongJiaHuiOutput `json:"jia_hui" jsonschema:"该宫双星加会。"`
-}
-
-type XuankongFourSituationOutput struct {
-	Name               XuankongSituationName `json:"name" jsonschema:"四大局名称。"`
-	SitMountainTimely  bool                  `json:"sit_mountain_timely" jsonschema:"坐宫山星是否当令。"`
-	FaceFacingTimely   bool                  `json:"face_facing_timely" jsonschema:"向宫向星是否当令。"`
-	SitFacingTimely    bool                  `json:"sit_facing_timely" jsonschema:"坐宫向星是否当令。"`
-	FaceMountainTimely bool                  `json:"face_mountain_timely" jsonschema:"向宫山星是否当令。"`
-}
-
-type XuankongJiaHuiOutput struct {
-	Name    string `json:"name" jsonschema:"星曜加会名称。"`
-	Meaning string `json:"meaning" jsonschema:"星曜加会通则含义。"`
-}
-
-type XuankongShouShanOutput struct {
-	ZhengShen  FlyingStarNumber   `json:"zheng_shen" jsonschema:"当运正神星数。"`
-	LingShen   FlyingStarNumber   `json:"ling_shen" jsonschema:"当运零神星数。"`
-	ShouShan   bool               `json:"shou_shan" jsonschema:"理气收山是否得宜。"`
-	ChuSha     bool               `json:"chu_sha" jsonschema:"理气出煞是否得宜。"`
-	Assessment XuankongAssessment `json:"assessment" jsonschema:"收山出煞理气评估。"`
-}
-
 // XuankongChart is the chart tool's public output. It is not a reusable method
 // input; callers pass standard_time and zuo/xiang again for another fact.
-type XuankongChart struct {
-	Yun            XuankongYunOutput           `json:"yun" jsonschema:"三元九运。"`
-	GongWei        [9]XuankongPalaceOutput     `json:"gong_wei" jsonschema:"九宫运星/山星/向星。"`
-	FourSituation  XuankongFourSituationOutput `json:"four_situation" jsonschema:"四大局。"`
-	FuYinLayers    []XuankongFuYinLayer        `json:"fu_yin_layers" jsonschema:"伏吟层。"`
-	FanYinLayers   []XuankongFanYinLayer       `json:"fan_yin_layers" jsonschema:"反吟层。"`
-	ZuoShan        MountainIndex               `json:"zuo_shan" jsonschema:"坐山(0-23)。"`
-	ZuoShanName    MountainName                `json:"zuo_shan_name" jsonschema:"坐山名。"`
-	XiangShan      MountainIndex               `json:"xiang_shan" jsonschema:"向山(0-23)。"`
-	XiangShanName  MountainName                `json:"xiang_shan_name" jsonschema:"向山名。"`
-	ShouShanChuSha XuankongShouShanOutput      `json:"shou_shan_chu_sha" jsonschema:"收山出煞理气判断。"`
-}
-
 type XuankongLiunianInput struct {
 	StandardTime StandardTime  `json:"standard_time" jsonschema:"流年选择地标准时间（无 DST），RFC3339 带 offset。"`
 	ZuoShan      MountainIndex `json:"zuo_shan" jsonschema:"坐山，二十四山 index。"`
@@ -117,16 +58,16 @@ type XuankongLiuNianSeries struct {
 	LiuNian []xuankong.LiuNianResult `json:"liu_nian" jsonschema:"玄空流年数组，长度 = count。"`
 }
 
-func XuankongChartCompute(_ context.Context, input XuankongChartInput) (xuankong.Chart, error) {
+func XuankongChartCompute(_ context.Context, input XuankongChartInput) (xuankong.ChartView, error) {
 	at, _, err := parseStandardTime(input.StandardTime)
 	if err != nil {
-		return xuankong.Chart{}, fmt.Errorf("xuankong.chart: %w", err)
+		return xuankong.ChartView{}, fmt.Errorf("xuankong.chart: %w", err)
 	}
 	chart, err := xuankongComputeChart(at, input.ZuoShan, input.XiangShan)
 	if err != nil {
-		return xuankong.Chart{}, fmt.Errorf("xuankong.chart: %w", err)
+		return xuankong.ChartView{}, fmt.Errorf("xuankong.chart: %w", err)
 	}
-	return chart, nil
+	return chart.View(), nil
 }
 
 func XuankongLiunian(_ context.Context, input XuankongLiunianInput) (XuankongLiuNianSeries, error) {
@@ -181,4 +122,3 @@ func xuankongComputeChart(at time.Time, zuoShan MountainIndex, xiangShan Mountai
 	}
 	return xuankong.ComputeChartAt(at, int(zuoShan), int(xiangShan))
 }
-

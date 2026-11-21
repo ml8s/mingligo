@@ -11,7 +11,9 @@ import (
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 
 	"github.com/ml8s/mingligo/examples/mingligo-mcp/internal/observability"
+	"github.com/ml8s/mingligo/pkg/bazhai"
 	"github.com/ml8s/mingligo/pkg/bazi"
+	"github.com/ml8s/mingligo/pkg/xuankong"
 	"github.com/ml8s/mingligo/pkg/ziwei"
 )
 
@@ -112,7 +114,7 @@ func RegisterTools(server *mcp.Server) error {
 		},
 		toolAnnotations("bazi_chart"), BaziChart)
 
-	bazhaiChartInput, bazhaiChartOutput, err := typedSchemas[BazhaiChartInput, BazhaiChartOutput](options)
+	bazhaiChartInput, bazhaiChartOutput, err := typedSchemas[BazhaiChartInput, bazhai.ChartView](options)
 	if err != nil {
 		return fmt.Errorf("bazhai_chart schema: %w", err)
 	}
@@ -120,7 +122,7 @@ func RegisterTools(server *mcp.Server) error {
 		mcp.Tool{Name: "bazhai_chart", Description: toolDescription("bazhai_chart"), InputSchema: bazhaiChartInput, OutputSchema: bazhaiChartOutput},
 		toolAnnotations("bazhai_chart"), BazhaiChart)
 
-	bazhaiLayoutInput, bazhaiLayoutOutput, err := typedSchemas[BazhaiLayoutInput, BazhaiLayoutOutput](options)
+	bazhaiLayoutInput, bazhaiLayoutOutput, err := typedSchemas[BazhaiLayoutInput, bazhai.LayoutView](options)
 	if err != nil {
 		return fmt.Errorf("bazhai_layout schema: %w", err)
 	}
@@ -128,7 +130,7 @@ func RegisterTools(server *mcp.Server) error {
 		mcp.Tool{Name: "bazhai_layout", Description: toolDescription("bazhai_layout"), InputSchema: bazhaiLayoutInput, OutputSchema: bazhaiLayoutOutput},
 		toolAnnotations("bazhai_layout"), BazhaiLayout)
 
-	xuankongChartInput, xuankongChartOutput, err := typedSchemas[XuankongChartInput, XuankongChart](options)
+	xuankongChartInput, xuankongChartOutput, err := typedSchemas[XuankongChartInput, xuankong.ChartView](options)
 	if err != nil {
 		return fmt.Errorf("xuankong_chart schema: %w", err)
 	}

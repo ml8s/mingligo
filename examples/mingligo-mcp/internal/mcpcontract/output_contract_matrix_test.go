@@ -7,6 +7,8 @@ import (
 	"path/filepath"
 	"strings"
 	"testing"
+
+	"github.com/ml8s/mingligo/pkg/xuankong"
 )
 
 func TestEveryMingliGoToolActualOutputMatchesSchema(t *testing.T) {
@@ -41,7 +43,7 @@ func TestEveryMingliGoToolActualOutputMatchesSchema(t *testing.T) {
 	xuankongRaw := call("xuankong_chart", XuankongChartInput{
 		StandardTime: standardInputFromInstant(t, "2026-07-31T04:00:00Z", "Asia/Shanghai"), ZuoShan: 2, XiangShan: 14,
 	})
-	var xuankongChart XuankongChart
+	var xuankongChart xuankong.ChartView
 	decode(t, xuankongRaw, &xuankongChart)
 	call("xuankong_liunian", XuankongLiunianInput{
 		StandardTime: standardInputFromInstant(t, "2026-06-15T04:00:00Z", "Asia/Shanghai"), ZuoShan: 2, XiangShan: 14,

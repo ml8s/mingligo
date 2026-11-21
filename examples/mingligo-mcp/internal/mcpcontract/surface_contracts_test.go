@@ -9,7 +9,9 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/ml8s/mingligo/pkg/bazhai"
 	"github.com/ml8s/mingligo/pkg/tables"
+	"github.com/ml8s/mingligo/pkg/xuankong"
 )
 
 func TestMain(m *testing.M) {
@@ -502,7 +504,7 @@ func TestMingliContractCalls(t *testing.T) {
 	if err := registry.ValidateOutput("bazhai_chart", bazhaiRaw); err != nil {
 		t.Fatalf("bazhai.chart output contract: %v", err)
 	}
-	var bazhaiOutput BazhaiChartOutput
+	var bazhaiOutput bazhai.ChartView
 	if err := json.Unmarshal(bazhaiRaw, &bazhaiOutput); err != nil {
 		t.Fatal(err)
 	}
@@ -523,7 +525,7 @@ func TestMingliContractCalls(t *testing.T) {
 	if err := registry.ValidateOutput("bazhai_layout", layoutRaw); err != nil {
 		t.Fatalf("bazhai.layout output contract: %v", err)
 	}
-	var layoutOutput BazhaiLayoutOutput
+	var layoutOutput bazhai.LayoutView
 	if err := json.Unmarshal(layoutRaw, &layoutOutput); err != nil {
 		t.Fatal(err)
 	}
@@ -542,11 +544,11 @@ func TestMingliContractCalls(t *testing.T) {
 	if err := registry.ValidateOutput("xuankong_chart", chartRaw); err != nil {
 		t.Fatalf("xuankong.chart output contract: %v", err)
 	}
-	var chart XuankongChart
+	var chart xuankong.ChartView
 	if err := json.Unmarshal(chartRaw, &chart); err != nil {
 		t.Fatal(err)
 	}
-	if len(chart.GongWei) != 9 || chart.ZuoShanName == "" || chart.XiangShanName == "" {
+	if len(chart.GongWei) != 9 || chart.SitMountain.Name == "" || chart.FaceMountain.Name == "" {
 		t.Fatalf("incomplete xuankong chart: %#v", chart)
 	}
 
