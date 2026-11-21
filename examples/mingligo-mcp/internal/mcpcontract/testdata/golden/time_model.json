@@ -94,7 +94,7 @@
         "count": 1
       },
       "expect": {
-        "liu_shi.0.zhi": "亥",
+        "liu_shi.0.liu_qi_zhi": "亥",
         "liu_shi.0.shi_chen.shichen": "亥",
         "liu_shi.0.shi_chen.standard_date": "2026-06-01",
         "liu_shi.0.shi_chen.lunar.year": 2026,

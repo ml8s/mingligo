@@ -25,15 +25,15 @@ type LiuYueJie struct {
 	LunarMonthStart string            `json:"lunar_month_start"`
 	LunarMonthEnd   string            `json:"lunar_month_end"`
 	BoundaryDay     bool              `json:"boundary_day"`
-	CalendarPeriod  LunarMonthPeriod  `json:"calendar_period"`
-	FlowMonth       LunarMonth        `json:"flow_month"`
+	CalendarPeriod  LunarMonthPeriod  `json:"li_fa_month"`
+	FlowMonth       LunarMonth        `json:"liu_yue_choice"`
 }
 
 type LiuYue struct {
 	MingGong   GongIndex            `json:"ming_gong"`
 	LiuMingZhi Zhi                  `json:"liu_ming_zhi"`
-	Gan        Gan                  `json:"period_gan"`
-	Zhi        Zhi                  `json:"zhi"`
+	Gan        Gan                  `json:"liu_qi_gan"`
+	Zhi        Zhi                  `json:"liu_qi_zhi"`
 	SiHua      []FlowTransformation `json:"si_hua"`
 	GongWei    [12]FlowPalace       `json:"gong_wei"`
 	YueJie     LiuYueJie            `json:"yue_jie"`
@@ -220,8 +220,8 @@ type LiuRiJie struct {
 type LiuRi struct {
 	MingGong   GongIndex            `json:"ming_gong"`
 	LiuMingZhi Zhi                  `json:"liu_ming_zhi"`
-	Gan        Gan                  `json:"period_gan"`
-	Zhi        Zhi                  `json:"zhi"`
+	Gan        Gan                  `json:"liu_qi_gan"`
+	Zhi        Zhi                  `json:"liu_qi_zhi"`
 	SiHua      []FlowTransformation `json:"si_hua"`
 	GongWei    [12]FlowPalace       `json:"gong_wei"`
 	RiJie      LiuRiJie             `json:"ri_jie"`
@@ -308,8 +308,8 @@ type LiuShiChen struct {
 type LiuShi struct {
 	MingGong   GongIndex            `json:"ming_gong"`
 	LiuMingZhi Zhi                  `json:"liu_ming_zhi"`
-	Gan        Gan                  `json:"period_gan"`
-	Zhi        Zhi                  `json:"zhi"`
+	Gan        Gan                  `json:"liu_qi_gan"`
+	Zhi        Zhi                  `json:"liu_qi_zhi"`
 	SiHua      []FlowTransformation `json:"si_hua"`
 	GongWei    [12]FlowPalace       `json:"gong_wei"`
 	ShiChen    LiuShiChen           `json:"shi_chen"`

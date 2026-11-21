@@ -1,8 +1,6 @@
 {
   "ming_gong": "官禄",
   "liu_ming_zhi": "寅",
-  "period_gan": "甲",
-  "zhi": "午",
   "si_hua": [
     {
       "xing": "太阳",
@@ -140,7 +138,7 @@
     "lunar_month_start": "2026-06-15",
     "lunar_month_end": "2026-07-14",
     "boundary_day": true,
-    "calendar_period": {
+    "li_fa_month": {
       "year": 2026,
       "month": 5,
       "leap": false,
@@ -148,10 +146,12 @@
       "day_start": 1,
       "day_end": 29
     },
-    "flow_month": {
+    "liu_yue_choice": {
       "year": 2026,
       "month": 5,
       "leap": false
     }
-  }
+  },
+  "liu_qi_gan": "甲",
+  "liu_qi_zhi": "午"
 }

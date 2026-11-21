@@ -79,9 +79,9 @@ func TestFlowP4LegacyVsNew(t *testing.T) {
 	if err := json.Unmarshal(gotRaw, &gotDoc); err != nil {
 		t.Fatal(err)
 	}
-	removed := map[string]bool{"ming_gong_name": true}
-	changed := map[string]bool{"ming_gong": true} // P5: now real value on all layers
-	allowedNew := map[string]bool{"liu_ming_zhi": true, "gan": true, "period_gan": true}
+	removed := map[string]bool{"ming_gong_name": true, "zhi": true}
+	changed := map[string]bool{"ming_gong": true, "yue_jie": true}
+	allowedNew := map[string]bool{"liu_ming_zhi": true, "gan": true, "period_gan": true, "liu_qi_gan": true, "liu_qi_zhi": true}
 	for layer, fields := range baseDoc {
 		for key, old := range fields {
 			if removed[key] || changed[key] {
@@ -245,10 +245,14 @@ func TestFlowP5LegacyVsNew(t *testing.T) {
 	if err := json.Unmarshal(gotRaw, &gotDoc); err != nil {
 		t.Fatal(err)
 	}
-	changed := map[string]bool{"ming_gong": true} // intentional (T1)
-	added := map[string]bool{"period_gan": true}  // intentional (T2)
+	removed := map[string]bool{"zhi": true}
+	changed := map[string]bool{"ming_gong": true, "yue_jie": true}
+	added := map[string]bool{"period_gan": true, "liu_qi_gan": true, "liu_qi_zhi": true}
 	for layer, fields := range baseDoc {
 		for key, old := range fields {
+			if removed[key] {
+				continue
+			}
 			nv, ok := gotDoc[layer][key]
 			if !ok {
 				t.Errorf("%s.%s disappeared", layer, key)

@@ -8,8 +8,8 @@ import "encoding/json"
 type LiuNianOutputView struct {
 	MingGong   GongIndex                `json:"ming_gong" jsonschema:"命宫。"`
 	LiuMingZhi Zhi                      `json:"liu_ming_zhi" jsonschema:"流命所在地支（与 is_liu_ming 宫一致）。"`
-	Gan        Gan                      `json:"period_gan" jsonschema:"流期天干（与 zhi 构成流期干支；非流宫宫干）。"`
-	Zhi        Zhi                      `json:"zhi" jsonschema:"流年地支"`
+	Gan        Gan                      `json:"liu_qi_gan" jsonschema:"流期天干（与 zhi 构成流期干支；非流宫宫干）。"`
+	Zhi        Zhi                      `json:"liu_qi_zhi" jsonschema:"流年地支"`
 	SiHua      []FlowTransformationView `json:"si_hua" jsonschema:"四化事实：星、化、落宫（落宫为本命宫序坐标）。"`
 	GongWei    []FlowPalaceView         `json:"gong_wei" jsonschema:"流年十二宫盘。"`
 	NianJie    LiuNianResolvedView      `json:"nian_jie" jsonschema:"流年农历年界。"`
@@ -52,16 +52,16 @@ type YueJieView struct {
 	LunarMonthStart    string                                 `json:"lunar_month_start" jsonschema:"农历月初一公历日（含）。"`
 	LunarMonthEnd      string                                 `json:"lunar_month_end" jsonschema:"下一农历月初一公历日（不含）。"`
 	BoundaryDay        bool                                   `json:"boundary_day" jsonschema:"输入日期是否为农历月初一边界日（归入新月）。"`
-	CalendarPeriod     LiuYueResolvedPeriodCalendarPeriodView `json:"calendar_period" jsonschema:"流月所在日历区间。"`
-	FlowMonth          LiuYueResolvedPeriodFlowMonthView      `json:"flow_month" jsonschema:"流月农历年月。"`
+	CalendarPeriod     LiuYueResolvedPeriodCalendarPeriodView `json:"li_fa_month" jsonschema:"流月所在日历区间。"`
+	FlowMonth          LiuYueResolvedPeriodFlowMonthView      `json:"liu_yue_choice" jsonschema:"流月农历年月。"`
 }
 
 type LiuYueOutputView struct {
 	YueJie     YueJieView               `json:"yue_jie" jsonschema:"流月农历月界与月令。"`
 	MingGong   GongIndex                `json:"ming_gong" jsonschema:"命宫。"`
 	LiuMingZhi Zhi                      `json:"liu_ming_zhi" jsonschema:"流命所在地支（与 is_liu_ming 宫一致）。"`
-	Gan        Gan                      `json:"period_gan" jsonschema:"流期天干（与 zhi 构成流期干支；非流宫宫干）。"`
-	Zhi        Zhi                      `json:"zhi" jsonschema:"流月地支"`
+	Gan        Gan                      `json:"liu_qi_gan" jsonschema:"流期天干（与 zhi 构成流期干支；非流宫宫干）。"`
+	Zhi        Zhi                      `json:"liu_qi_zhi" jsonschema:"流月地支"`
 	SiHua      []FlowTransformationView `json:"si_hua" jsonschema:"四化事实：星、化、落宫（落宫为本命宫序坐标）。"`
 	GongWei    []FlowPalaceView         `json:"gong_wei" jsonschema:"流月十二宫盘。"`
 }
@@ -91,8 +91,8 @@ type LiuRiOutputView struct {
 	RiJie      LiuRiJieView             `json:"ri_jie" jsonschema:"流日日界。"`
 	MingGong   GongIndex                `json:"ming_gong" jsonschema:"命宫。"`
 	LiuMingZhi Zhi                      `json:"liu_ming_zhi" jsonschema:"流命所在地支（与 is_liu_ming 宫一致）。"`
-	Gan        Gan                      `json:"period_gan" jsonschema:"流期天干（与 zhi 构成流期干支；非流宫宫干）。"`
-	Zhi        Zhi                      `json:"zhi" jsonschema:"流日地支"`
+	Gan        Gan                      `json:"liu_qi_gan" jsonschema:"流期天干（与 zhi 构成流期干支；非流宫宫干）。"`
+	Zhi        Zhi                      `json:"liu_qi_zhi" jsonschema:"流日地支"`
 	SiHua      []FlowTransformationView `json:"si_hua" jsonschema:"四化事实：星、化、落宫（落宫为本命宫序坐标）。"`
 	GongWei    []FlowPalaceView         `json:"gong_wei" jsonschema:"流日十二宫盘。"`
 }
@@ -107,8 +107,8 @@ type LiuShiChenView struct {
 type LiuShiOutputView struct {
 	MingGong   GongIndex                `json:"ming_gong" jsonschema:"命宫。"`
 	LiuMingZhi Zhi                      `json:"liu_ming_zhi" jsonschema:"流命所在地支（与 is_liu_ming 宫一致）。"`
-	Gan        Gan                      `json:"period_gan" jsonschema:"流期天干（与 zhi 构成流期干支；非流宫宫干）。"`
-	Zhi        Zhi                      `json:"zhi" jsonschema:"流时地支"`
+	Gan        Gan                      `json:"liu_qi_gan" jsonschema:"流期天干（与 zhi 构成流期干支；非流宫宫干）。"`
+	Zhi        Zhi                      `json:"liu_qi_zhi" jsonschema:"流时地支"`
 	SiHua      []FlowTransformationView `json:"si_hua" jsonschema:"四化事实：星、化、落宫（落宫为本命宫序坐标）。"`
 	GongWei    []FlowPalaceView         `json:"gong_wei" jsonschema:"流时十二宫盘。"`
 	ShiChen    LiuShiChenView           `json:"shi_chen" jsonschema:"流时时辰定位。"`

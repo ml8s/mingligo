@@ -139,8 +139,8 @@ type LiuNianJie struct {
 type LiuNian struct {
 	MingGong   GongIndex            `json:"ming_gong"`
 	LiuMingZhi Zhi                  `json:"liu_ming_zhi"`
-	Gan        Gan                  `json:"period_gan"`
-	Zhi        Zhi                  `json:"zhi"` // 流年地支
+	Gan        Gan                  `json:"liu_qi_gan"`
+	Zhi        Zhi                  `json:"liu_qi_zhi"` // 流年地支
 	SiHua      []FlowTransformation `json:"si_hua"`
 	GongWei    [12]FlowPalace       `json:"gong_wei"` // 流年盘（地支坐标 12 宫）
 	NianJie    LiuNianJie           `json:"nian_jie"`

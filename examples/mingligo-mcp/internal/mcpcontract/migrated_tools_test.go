@@ -392,7 +392,7 @@ func TestMigratedZiweiLiuYueTargetLunarContract(t *testing.T) {
 	if !ok {
 		t.Fatalf("yue_jie = %#v", item)
 	}
-	flowMonth := yueJie["flow_month"].(map[string]any)
+	flowMonth := yueJie["liu_yue_choice"].(map[string]any)
 	if flowMonth["year"] != float64(2025) || flowMonth["month"] != float64(7) || flowMonth["leap"] != false {
 		t.Fatalf("flow_month = %#v, want 2025 month 7 non-leap", flowMonth)
 	}
