@@ -930,6 +930,413 @@
       "domain": "inner"
     }
   ],
+  "gong_relations": [
+    {
+      "from": "坎",
+      "to": "坎",
+      "relation": "same"
+    },
+    {
+      "from": "坎",
+      "to": "坤",
+      "relation": "controlled_by"
+    },
+    {
+      "from": "坎",
+      "to": "震",
+      "relation": "generates"
+    },
+    {
+      "from": "坎",
+      "to": "巽",
+      "relation": "generates"
+    },
+    {
+      "from": "坎",
+      "to": "中",
+      "relation": "controlled_by"
+    },
+    {
+      "from": "坎",
+      "to": "乾",
+      "relation": "generated_by"
+    },
+    {
+      "from": "坎",
+      "to": "兑",
+      "relation": "generated_by"
+    },
+    {
+      "from": "坎",
+      "to": "艮",
+      "relation": "controlled_by"
+    },
+    {
+      "from": "坎",
+      "to": "离",
+      "relation": "controls"
+    },
+    {
+      "from": "坤",
+      "to": "坎",
+      "relation": "controls"
+    },
+    {
+      "from": "坤",
+      "to": "坤",
+      "relation": "same"
+    },
+    {
+      "from": "坤",
+      "to": "震",
+      "relation": "controlled_by"
+    },
+    {
+      "from": "坤",
+      "to": "巽",
+      "relation": "controlled_by"
+    },
+    {
+      "from": "坤",
+      "to": "中",
+      "relation": "same"
+    },
+    {
+      "from": "坤",
+      "to": "乾",
+      "relation": "generates"
+    },
+    {
+      "from": "坤",
+      "to": "兑",
+      "relation": "generates"
+    },
+    {
+      "from": "坤",
+      "to": "艮",
+      "relation": "same"
+    },
+    {
+      "from": "坤",
+      "to": "离",
+      "relation": "generated_by"
+    },
+    {
+      "from": "震",
+      "to": "坎",
+      "relation": "generated_by"
+    },
+    {
+      "from": "震",
+      "to": "坤",
+      "relation": "controls"
+    },
+    {
+      "from": "震",
+      "to": "震",
+      "relation": "same"
+    },
+    {
+      "from": "震",
+      "to": "巽",
+      "relation": "same"
+    },
+    {
+      "from": "震",
+      "to": "中",
+      "relation": "controls"
+    },
+    {
+      "from": "震",
+      "to": "乾",
+      "relation": "controlled_by"
+    },
+    {
+      "from": "震",
+      "to": "兑",
+      "relation": "controlled_by"
+    },
+    {
+      "from": "震",
+      "to": "艮",
+      "relation": "controls"
+    },
+    {
+      "from": "震",
+      "to": "离",
+      "relation": "generates"
+    },
+    {
+      "from": "巽",
+      "to": "坎",
+      "relation": "generated_by"
+    },
+    {
+      "from": "巽",
+      "to": "坤",
+      "relation": "controls"
+    },
+    {
+      "from": "巽",
+      "to": "震",
+      "relation": "same"
+    },
+    {
+      "from": "巽",
+      "to": "巽",
+      "relation": "same"
+    },
+    {
+      "from": "巽",
+      "to": "中",
+      "relation": "controls"
+    },
+    {
+      "from": "巽",
+      "to": "乾",
+      "relation": "controlled_by"
+    },
+    {
+      "from": "巽",
+      "to": "兑",
+      "relation": "controlled_by"
+    },
+    {
+      "from": "巽",
+      "to": "艮",
+      "relation": "controls"
+    },
+    {
+      "from": "巽",
+      "to": "离",
+      "relation": "generates"
+    },
+    {
+      "from": "中",
+      "to": "坎",
+      "relation": "controls"
+    },
+    {
+      "from": "中",
+      "to": "坤",
+      "relation": "same"
+    },
+    {
+      "from": "中",
+      "to": "震",
+      "relation": "controlled_by"
+    },
+    {
+      "from": "中",
+      "to": "巽",
+      "relation": "controlled_by"
+    },
+    {
+      "from": "中",
+      "to": "中",
+      "relation": "same"
+    },
+    {
+      "from": "中",
+      "to": "乾",
+      "relation": "generates"
+    },
+    {
+      "from": "中",
+      "to": "兑",
+      "relation": "generates"
+    },
+    {
+      "from": "中",
+      "to": "艮",
+      "relation": "same"
+    },
+    {
+      "from": "中",
+      "to": "离",
+      "relation": "generated_by"
+    },
+    {
+      "from": "乾",
+      "to": "坎",
+      "relation": "generates"
+    },
+    {
+      "from": "乾",
+      "to": "坤",
+      "relation": "generated_by"
+    },
+    {
+      "from": "乾",
+      "to": "震",
+      "relation": "controls"
+    },
+    {
+      "from": "乾",
+      "to": "巽",
+      "relation": "controls"
+    },
+    {
+      "from": "乾",
+      "to": "中",
+      "relation": "generated_by"
+    },
+    {
+      "from": "乾",
+      "to": "乾",
+      "relation": "same"
+    },
+    {
+      "from": "乾",
+      "to": "兑",
+      "relation": "same"
+    },
+    {
+      "from": "乾",
+      "to": "艮",
+      "relation": "generated_by"
+    },
+    {
+      "from": "乾",
+      "to": "离",
+      "relation": "controlled_by"
+    },
+    {
+      "from": "兑",
+      "to": "坎",
+      "relation": "generates"
+    },
+    {
+      "from": "兑",
+      "to": "坤",
+      "relation": "generated_by"
+    },
+    {
+      "from": "兑",
+      "to": "震",
+      "relation": "controls"
+    },
+    {
+      "from": "兑",
+      "to": "巽",
+      "relation": "controls"
+    },
+    {
+      "from": "兑",
+      "to": "中",
+      "relation": "generated_by"
+    },
+    {
+      "from": "兑",
+      "to": "乾",
+      "relation": "same"
+    },
+    {
+      "from": "兑",
+      "to": "兑",
+      "relation": "same"
+    },
+    {
+      "from": "兑",
+      "to": "艮",
+      "relation": "generated_by"
+    },
+    {
+      "from": "兑",
+      "to": "离",
+      "relation": "controlled_by"
+    },
+    {
+      "from": "艮",
+      "to": "坎",
+      "relation": "controls"
+    },
+    {
+      "from": "艮",
+      "to": "坤",
+      "relation": "same"
+    },
+    {
+      "from": "艮",
+      "to": "震",
+      "relation": "controlled_by"
+    },
+    {
+      "from": "艮",
+      "to": "巽",
+      "relation": "controlled_by"
+    },
+    {
+      "from": "艮",
+      "to": "中",
+      "relation": "same"
+    },
+    {
+      "from": "艮",
+      "to": "乾",
+      "relation": "generates"
+    },
+    {
+      "from": "艮",
+      "to": "兑",
+      "relation": "generates"
+    },
+    {
+      "from": "艮",
+      "to": "艮",
+      "relation": "same"
+    },
+    {
+      "from": "艮",
+      "to": "离",
+      "relation": "generated_by"
+    },
+    {
+      "from": "离",
+      "to": "坎",
+      "relation": "controlled_by"
+    },
+    {
+      "from": "离",
+      "to": "坤",
+      "relation": "generates"
+    },
+    {
+      "from": "离",
+      "to": "震",
+      "relation": "generated_by"
+    },
+    {
+      "from": "离",
+      "to": "巽",
+      "relation": "generated_by"
+    },
+    {
+      "from": "离",
+      "to": "中",
+      "relation": "generates"
+    },
+    {
+      "from": "离",
+      "to": "乾",
+      "relation": "controls"
+    },
+    {
+      "from": "离",
+      "to": "兑",
+      "relation": "controls"
+    },
+    {
+      "from": "离",
+      "to": "艮",
+      "relation": "generates"
+    },
+    {
+      "from": "离",
+      "to": "离",
+      "relation": "same"
+    }
+  ],
   "men_ji_xiong": [
     {
       "men": "休门",

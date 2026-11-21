@@ -27,6 +27,7 @@ type Chart struct {
 	MaXingAffected   []AffectedSymbol   `json:"ma_xing_affected"`
 	GongWangShuai    []GongWangShuai    `json:"gong_wang_shuai"`
 	GongProfiles     [9]GongProfile     `json:"gong_profiles"`
+	GongRelations    []GongRelation     `json:"gong_relations"`
 	MenJiXiong       []MenJiXiong       `json:"men_ji_xiong"`
 	XingJiXiong      []XingJiXiong      `json:"xing_ji_xiong"`
 	DutyStarPalace   GongIndex          `json:"zhi_fu_xing_gong"`    // 值符星落宫（排盘固有）
@@ -125,6 +126,7 @@ func buildChart(bz ganzhi.Bazi, termTime, chartTime time.Time, method Method) Ch
 		MaXingAffected:   affectedHorseSymbols(p, riGanP, shiGanP, leadP),
 		GongWangShuai:    wangShuaiList,
 		GongProfiles:     computeGongProfiles(ju.YinDun),
+		GongRelations:    computeGongRelations(),
 		MenJiXiong:       computeMenJiXiong(),
 		XingJiXiong:      computeXingJiXiong(),
 		DutyStarPalace:   findStarPalace(p, p.DutyStar),

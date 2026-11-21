@@ -306,6 +306,7 @@ type QimenStandardChartOutput struct {
 	MaXingAffected   *[]QimenChartMaXingAffectedItem   `json:"ma_xing_affected,omitempty" jsonschema:"ma_xing_affected列表。"`
 	GongWangShuai    *[]QimenGongWangShuaiFact         `json:"gong_wang_shuai,omitempty" jsonschema:"gong_wang_shuai列表。"`
 	GongProfiles     *[]QimenGongProfile               `json:"gong_profiles,omitempty" jsonschema:"九宫固有事实：方位/人物/范围/内外盘。"`
+	GongRelations    *[]QimenGongRelation              `json:"gong_relations,omitempty" jsonschema:"九宫两两五行关系矩阵。"`
 	MenJiXiong       *[]QimenMenJiXiong                `json:"men_ji_xiong,omitempty" jsonschema:"八门固有吉凶与宜事。"`
 	XingJiXiong      *[]QimenXingJiXiong               `json:"xing_ji_xiong,omitempty" jsonschema:"九星固有吉凶与宜事。"`
 	ZhiFuXingGong    *QimenGongName                    `json:"zhi_fu_xing_gong,omitempty" jsonschema:"值符星落宫。"`
@@ -531,6 +532,12 @@ type QimenGongProfile struct {
 	Person    string        `json:"person,omitempty" jsonschema:"八卦人物取象。"`
 	Range     string        `json:"range" jsonschema:"宫位高低范围（low/high）。"`
 	Domain    string        `json:"domain" jsonschema:"内外盘（inner/outer/center），依阴阳遁而定。"`
+}
+
+type QimenGongRelation struct {
+	From     QimenGongName        `json:"from" jsonschema:"关系源宫。"`
+	To       QimenGongName        `json:"to" jsonschema:"关系目标宫。"`
+	Relation QimenElementRelation `json:"relation" jsonschema:"五行关系。"`
 }
 
 type QimenMenJiXiong struct {

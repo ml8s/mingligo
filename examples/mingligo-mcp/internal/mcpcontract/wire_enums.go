@@ -84,6 +84,7 @@ func registerWireEnums(options *jsonschema.ForOptions) {
 	registerWireEnum[QimenGongName](options, "中", "乾", "兑", "坎", "坤", "巽", "离", "艮", "震")
 	registerWireEnum[QimenSpiritName](options, "九地", "九天", "值符", "六合", "勾陈", "太常", "太阴", "朱雀", "玄武", "白虎", "螣蛇")
 	registerWireEnum[QimenSpiritKeyName](options, "gouchen", "jiudi", "jiutian", "liuhe", "taichang", "taiyin", "tengshe", "zhuque", "zhifu")
+	registerWireEnum[QimenElementRelation](options, "same", "generates", "controls", "generated_by", "controlled_by")
 	registerWireEnum[QimenStarName](options, "天任", "天冲", "天心", "天柱", "天禽", "天芮", "天英", "天蓬", "天辅")
 	registerWireEnum[RelatedToRoleName](options, "duty", "lead", "pillar", "yong_shen")
 	registerWireEnum[RelationKindName](options, "三合拱", "三会拱", "an_he", "gan_chong", "gan_chong_candidate", "gan_he", "gan_he_candidate", "liu_chong", "liu_hai", "liu_po", "liu_xing", "san_he", "san_he_partial", "san_hui", "zhi_liu_he")
@@ -213,6 +214,8 @@ type QimenGongName string
 type QimenSpiritName string
 
 type QimenSpiritKeyName string
+
+type QimenElementRelation string
 
 type QimenStarName string
 
