@@ -60,11 +60,13 @@ func QimenChart(_ context.Context, input QimenChartInput) (QimenChartOutput, err
 		if err != nil {
 			return QimenChartOutput{}, fmt.Errorf("qimen.chart: %w", err)
 		}
-		return QimenChartOutput{Standard: &result}, nil
+		view := result.View()
+		return QimenChartOutput{Standard: &view}, nil
 	}
 	result, err := qimen.ComputeChartWithMethodAt(at, float64(input.Longitude), method)
 	if err != nil {
 		return QimenChartOutput{}, fmt.Errorf("qimen.chart: %w", err)
 	}
-	return QimenChartOutput{Standard: &result}, nil
+	view := result.View()
+	return QimenChartOutput{Standard: &view}, nil
 }

@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"reflect"
 	"slices"
 	"sort"
 	"strings"
@@ -343,11 +342,37 @@ func TestMigratedQimenPatternEnumMatchesTable(t *testing.T) {
 	}
 	sort.Strings(want)
 
+	// Pattern names are data-driven (sourced from patterns.json) and flow to the
+	// View as plain strings; the schema no longer duplicates them as an enum.
+	// Verify the engine table itself is complete and non-duplicated instead.
+	if len(want) == 0 {
+		t.Fatal("engine pattern table is empty")
+	}
+	seen := make(map[string]bool, len(want))
+	for _, name := range want {
+		if name == "" {
+			t.Fatal("engine pattern table has empty name")
+		}
+		if seen[name] {
+			t.Fatalf("engine pattern table has duplicate name %q", name)
+		}
+		seen[name] = true
+	}
+
+	// The View's格局 facts must draw from this table: call the tool and assert
+	// emitted pattern names belong to the engine set.
 	registry := testContractServer()
-	got := enumAt(t, outputProperties(t, registry, "qimen_chart"), "ge_ju", "[]", "name")
-	sort.Strings(got)
-	if !reflect.DeepEqual(got, want) {
-		t.Fatalf("patterns name enum = %v, want engine table %v", got, want)
+	doc := callQimenChart(t, registry, map[string]any{
+		"standard_time": "2024-06-28T12:00:00+08:00", "longitude": 116.4,
+		"scope": "hour", "school": "zhuanpan", "dingju_method": "chaibu",
+	})
+	markers, _ := doc["markers"].(map[string]any)
+	patterns, _ := markers["ge_ju"].([]any)
+	for _, raw := range patterns {
+		name, _ := raw.(map[string]any)["name"].(string)
+		if name != "" && !seen[name] {
+			t.Errorf("emitted pattern %q is not in engine table", name)
+		}
 	}
 }
 

@@ -165,6 +165,30 @@ func buildStaticSchemaOptions() map[reflect.Type]*jsonschema.Schema {
 		reflect.TypeFor[qimen.JinhanSpirit](): {
 			Type: "string", Enum: []any{"diyao", "liuze", "wufu", "tiancao", "difu", "fengbo", "leigong", "yushi", "fengyun", "tangfu", "guoyin", "tianguan"},
 		},
+		reflect.TypeFor[qimen.GongIndex](): {
+			Type: "string", Enum: []any{"坎", "坤", "震", "巽", "中", "乾", "兑", "艮", "离"},
+		},
+		reflect.TypeFor[qimen.DoorIndex](): {
+			Type: "string", Enum: []any{"中门", "休门", "生门", "伤门", "杜门", "景门", "死门", "惊门", "开门"},
+		},
+		reflect.TypeFor[qimen.StarIndex](): {
+			Type: "string", Enum: []any{"天蓬", "天芮", "天冲", "天辅", "天禽", "天心", "天柱", "天任", "天英"},
+		},
+		reflect.TypeFor[qimen.DunSource](): {
+			Type: "string", Enum: []any{"hour_branch", "solar_term"},
+		},
+		reflect.TypeFor[qimen.HourBoundary](): {
+			Type: "string", Enum: []any{"late_zi", "zi_zheng"},
+		},
+		reflect.TypeFor[qimen.PillarLevel](): {
+			Type: "string", Enum: []any{"year", "month", "day", "hour"},
+		},
+		reflect.TypeFor[qimen.ElementRelation](): {
+			Type: "string", Enum: []any{"same", "generates", "controls", "generated_by", "controlled_by"},
+		},
+		reflect.TypeFor[qimen.YingQiMatchKind](): {
+			Type: "string", Enum: []any{"same", "opposite"},
+		},
 		reflect.TypeFor[GanName](): {
 			Type: "string", Enum: []any{"甲", "乙", "丙", "丁", "戊", "己", "庚", "辛", "壬", "癸"},
 		},
