@@ -12,94 +12,94 @@ import (
 // output model that every transport adapter (MCP, REST) transmits unchanged.
 
 type LineFlags struct {
-	Moving      bool   `json:"moving"`
-	YuePo       bool   `json:"yue_po"`
-	XunKong     bool   `json:"xun_kong"`
-	MuKu        bool   `json:"mu_ku"`
-	MuKuBranch  string `json:"mu_ku_zhi,omitempty"`
-	MuKuElement string `json:"mu_ku_wuxing,omitempty"`
-	DongSheng   bool   `json:"dong_sheng"`
-	DongKe      bool   `json:"dong_ke"`
+	Moving      bool   `json:"moving" jsonschema:"是否发动。"`
+	YuePo       bool   `json:"yue_po" jsonschema:"是否月破。"`
+	XunKong     bool   `json:"xun_kong" jsonschema:"是否旬空。"`
+	MuKu        bool   `json:"mu_ku" jsonschema:"是否墓库。"`
+	MuKuBranch  string `json:"mu_ku_zhi,omitempty" jsonschema:"墓库地支。"`
+	MuKuElement string `json:"mu_ku_wuxing,omitempty" jsonschema:"墓库五行。"`
+	DongSheng   bool   `json:"dong_sheng" jsonschema:"动爻生。"`
+	DongKe      bool   `json:"dong_ke" jsonschema:"动爻克。"`
 }
 
 type LineView struct {
-	Position        int                 `json:"position"`
-	YaoValue        int                 `json:"yao_value"`
-	GanZhi          string              `json:"gan_zhi"`
-	Wuxing          string              `json:"wuxing"`
-	LiuQin          string              `json:"liu_qin"`
-	ShiYing         string              `json:"shi_ying,omitempty"`
-	LiuShou         string              `json:"liu_shou"`
-	RiChenRelations map[string][]string `json:"ri_chen_relations,omitempty"`
-	WangShuai       string              `json:"wang_shuai,omitempty"`
-	ChangShengYue   string              `json:"chang_sheng_yue,omitempty"`
-	Flags           LineFlags           `json:"flags"`
+	Position        int                 `json:"position" jsonschema:"爻位。"`
+	YaoValue        int                 `json:"yao_value" jsonschema:"爻值。"`
+	GanZhi          string              `json:"gan_zhi" jsonschema:"干支。"`
+	Wuxing          string              `json:"wuxing" jsonschema:"五行。"`
+	LiuQin          string              `json:"liu_qin" jsonschema:"六亲。"`
+	ShiYing         string              `json:"shi_ying,omitempty" jsonschema:"世应。"`
+	LiuShou         string              `json:"liu_shou" jsonschema:"六神。"`
+	RiChenRelations map[string][]string `json:"ri_chen_relations,omitempty" jsonschema:"日辰关系。"`
+	WangShuai       string              `json:"wang_shuai,omitempty" jsonschema:"旺衰。"`
+	ChangShengYue   string              `json:"chang_sheng_yue,omitempty" jsonschema:"月令长生。"`
+	Flags           LineFlags           `json:"flags" jsonschema:"爻状态标志。"`
 }
 
 type PatternView struct {
-	ID          string `json:"id"`
-	PatternKind string `json:"ge_ju_kind"`
-	SubType     string `json:"sub_type"`
-	Position    int    `json:"position"`
-	IsTrue      bool   `json:"is_true"`
+	ID          string `json:"id" jsonschema:"标识。"`
+	PatternKind string `json:"ge_ju_kind" jsonschema:"格局类型。"`
+	SubType     string `json:"sub_type" jsonschema:"格局子类。"`
+	Position    int    `json:"position" jsonschema:"爻位。"`
+	IsTrue      bool   `json:"is_true" jsonschema:"是否真格局。"`
 }
 
 type GuaCiView struct {
-	Name  string   `json:"name"`
-	Text  string   `json:"text"`
-	YaoCi []string `json:"yao_ci"`
+	Name  string   `json:"name" jsonschema:"名称。"`
+	Text  string   `json:"text" jsonschema:"卦辞文本。"`
+	YaoCi []string `json:"yao_ci" jsonschema:"爻辞。"`
 }
 
 type FuShenView struct {
-	Position int    `json:"position"`
-	LiuQin   string `json:"liu_qin"`
-	Zhi      string `json:"zhi"`
+	Position int    `json:"position" jsonschema:"爻位。"`
+	LiuQin   string `json:"liu_qin" jsonschema:"六亲。"`
+	Zhi      string `json:"zhi" jsonschema:"地支。"`
 }
 
 type YongShenView struct {
-	Name             string       `json:"name"`
-	Position         int          `json:"position"`
-	IsHidden         bool         `json:"is_hidden,omitempty"`
-	WangShuai        string       `json:"wang_shuai"`
-	YuePo            bool         `json:"yue_po,omitempty"`
-	XunKong          bool         `json:"xun_kong,omitempty"`
-	MuKu             bool         `json:"mu_ku,omitempty"`
-	LiuShou          string       `json:"liu_shou,omitempty"`
-	ChangSheng       string       `json:"chang_sheng,omitempty"`
-	FuShen           *FuShenView  `json:"fu_shen,omitempty"`
-	FuShenCandidates []FuShenView `json:"fu_shen_candidates,omitempty"`
+	Name             string       `json:"name" jsonschema:"名称。"`
+	Position         int          `json:"position" jsonschema:"爻位。"`
+	IsHidden         bool         `json:"is_hidden,omitempty" jsonschema:"是否伏藏。"`
+	WangShuai        string       `json:"wang_shuai" jsonschema:"旺衰。"`
+	YuePo            bool         `json:"yue_po,omitempty" jsonschema:"是否月破。"`
+	XunKong          bool         `json:"xun_kong,omitempty" jsonschema:"是否旬空。"`
+	MuKu             bool         `json:"mu_ku,omitempty" jsonschema:"是否墓库。"`
+	LiuShou          string       `json:"liu_shou,omitempty" jsonschema:"六神。"`
+	ChangSheng       string       `json:"chang_sheng,omitempty" jsonschema:"长生。"`
+	FuShen           *FuShenView  `json:"fu_shen,omitempty" jsonschema:"伏神。"`
+	FuShenCandidates []FuShenView `json:"fu_shen_candidates,omitempty" jsonschema:"伏神候选。"`
 }
 
 type AnalysisView struct {
-	TimingCandidates      []TimingCandidate      `json:"timing_candidates,omitempty"`
-	DongYaoRelations      []DongYaoRelation      `json:"dong_yao_relations,omitempty"`
-	HiddenLines           []HiddenLine           `json:"hidden_lines,omitempty"`
-	BranchRelationFacts   []BranchRelationFact   `json:"zhi_relation_facts,omitempty"`
-	TombSchool            TombSchool             `json:"tomb_school"`
-	DayClashFacts         []DayClashFact         `json:"day_clash_facts,omitempty"`
-	MovingTransformations []MovingTransformation `json:"moving_transformations,omitempty"`
-	SanHeCandidates       []SanHeCandidate       `json:"san_he_candidates,omitempty"`
-	ForceChain            *ForceChain            `json:"yong_shen_force_chain,omitempty"`
-	YongShenCandidates    []YongShenCandidate    `json:"yong_shen_candidates,omitempty"`
-	Conflicts             []Conflict             `json:"conflicts,omitempty"`
+	TimingCandidates      []TimingCandidate      `json:"timing_candidates,omitempty" jsonschema:"应期候选。"`
+	DongYaoRelations      []DongYaoRelation      `json:"dong_yao_relations,omitempty" jsonschema:"动爻关系。"`
+	HiddenLines           []HiddenLine           `json:"hidden_lines,omitempty" jsonschema:"伏神。"`
+	BranchRelationFacts   []BranchRelationFact   `json:"zhi_relation_facts,omitempty" jsonschema:"地支关系事实。"`
+	TombSchool            TombSchool             `json:"tomb_school" jsonschema:"墓库流派。"`
+	DayClashFacts         []DayClashFact         `json:"day_clash_facts,omitempty" jsonschema:"日冲事实。"`
+	MovingTransformations []MovingTransformation `json:"moving_transformations,omitempty" jsonschema:"动爻变化。"`
+	SanHeCandidates       []SanHeCandidate       `json:"san_he_candidates,omitempty" jsonschema:"三合候选。"`
+	ForceChain            *ForceChain            `json:"yong_shen_force_chain,omitempty" jsonschema:"用神力量链。"`
+	YongShenCandidates    []YongShenCandidate    `json:"yong_shen_candidates,omitempty" jsonschema:"用神候选。"`
+	Conflicts             []Conflict             `json:"conflicts,omitempty" jsonschema:"冲突信号。"`
 }
 
 type ChartView struct {
-	GuaName    string        `json:"gua_name"`
-	BianGua    *string       `json:"bian_gua"`
-	Gong       string        `json:"gong"`
-	GongWuxing string        `json:"gong_wuxing"`
-	Lines      []LineView    `json:"lines"`
-	BianLines  []LineView    `json:"bian_lines"`
-	RiChenGan  string        `json:"ri_chen_gan"`
-	RiChenZhi  string        `json:"ri_chen_zhi"`
-	YueJianGan string        `json:"yue_jian_gan"`
-	YueJianZhi string        `json:"yue_jian_zhi"`
-	XunKong    []string      `json:"xun_kong"`
-	Patterns   []PatternView `json:"ge_ju"`
-	YongShen   YongShenView  `json:"yong_shen"`
-	GuaCi      *GuaCiView    `json:"gua_ci,omitempty"`
-	Analysis   AnalysisView  `json:"analysis"`
+	GuaName    string        `json:"gua_name" jsonschema:"卦名。"`
+	BianGua    *string       `json:"bian_gua" jsonschema:"变卦。"`
+	Gong       string        `json:"gong" jsonschema:"宫位。"`
+	GongWuxing string        `json:"gong_wuxing" jsonschema:"宫位五行。"`
+	Lines      []LineView    `json:"lines" jsonschema:"本卦六爻。"`
+	BianLines  []LineView    `json:"bian_lines" jsonschema:"变卦六爻。"`
+	RiChenGan  string        `json:"ri_chen_gan" jsonschema:"日辰天干。"`
+	RiChenZhi  string        `json:"ri_chen_zhi" jsonschema:"日辰地支。"`
+	YueJianGan string        `json:"yue_jian_gan" jsonschema:"月建天干。"`
+	YueJianZhi string        `json:"yue_jian_zhi" jsonschema:"月建地支。"`
+	XunKong    []string      `json:"xun_kong" jsonschema:"是否旬空。"`
+	Patterns   []PatternView `json:"ge_ju" jsonschema:"格局。"`
+	YongShen   YongShenView  `json:"yong_shen" jsonschema:"用神。"`
+	GuaCi      *GuaCiView    `json:"gua_ci,omitempty" jsonschema:"卦辞。"`
+	Analysis   AnalysisView  `json:"analysis" jsonschema:"领域聚合分析事实。"`
 }
 
 func (c Chart) lineView(line Line, rel DayRelation, wangShuai ganzhi.WangShuai) LineView {
