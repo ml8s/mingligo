@@ -52,7 +52,7 @@ func TestDomainOracle_BazhaiCore(t *testing.T) {
 		if got.YearBoundary != "lichun" {
 			t.Fatalf("%s %d year_boundary = %s", want.Gender, want.Year, got.YearBoundary)
 		}
-		if got.Gua.Name != want.Gua || got.Group != want.Group {
+		if got.Gua.Name != want.Gua || got.Group != LifeGroup(want.Group) {
 			t.Errorf("%s %d = %s/%s, want %s/%s", want.Gender, want.Year, got.Gua.Name, got.Group, want.Gua, want.Group)
 		}
 	}

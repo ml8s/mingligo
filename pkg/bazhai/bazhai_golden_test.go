@@ -51,7 +51,7 @@ func assertChartAnchors(t *testing.T, chart Chart) {
 	if chart.MingGua.Gua.Name != "兑" {
 		t.Errorf("ming_gua = %s, want 兑（(100-84)%%9=7）", chart.MingGua.Gua.Name)
 	}
-	if chart.MingGua.Group != "西四命" {
+	if chart.MingGua.Group != LifeGroupWest {
 		t.Errorf("group = %s, want 西四命", chart.MingGua.Group)
 	}
 	// 兑命（西四）：生气在西北。

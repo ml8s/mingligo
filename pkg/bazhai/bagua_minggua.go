@@ -27,9 +27,9 @@ func buildGuaTable() {
 
 // MingGua is the 命卦 result.
 type MingGua struct {
-	Gua          gua    `json:"gua"`
-	Group        string `json:"group"`
-	YearBoundary string `json:"year_boundary"`
+	Gua          gua       `json:"gua"`
+	Group        LifeGroup `json:"group"`
+	YearBoundary string    `json:"year_boundary"`
 }
 
 // ComputeMingGua computes the 命卦 from gender and birth year.
@@ -66,9 +66,9 @@ func ComputeMingGua(gender ganzhi.Gender, birthYear int) MingGua {
 		}
 	}
 	g := guaTable[n]
-	group := "东四命"
+	group := LifeGroupEast
 	if westGroup[n] {
-		group = "西四命"
+		group = LifeGroupWest
 	}
 	return MingGua{Gua: g, Group: group, YearBoundary: "lichun"}
 }

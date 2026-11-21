@@ -16,6 +16,7 @@ var bazhaiJSON []byte
 var (
 	eightMansionPatterns map[int]dirPattern
 	westGroup            map[int]bool
+	youxingRatings       map[YouXing]Rating
 )
 
 var (
@@ -56,7 +57,8 @@ func loadBazhai() error {
 			LiuSha  int `json:"liu_sha"`
 			JueMing int `json:"jue_ming"`
 		} `json:"eight_mansion_patterns"`
-		WestGroup []int `json:"west_group"`
+		WestGroup      []int             `json:"west_group"`
+		YouXingRatings map[string]string `json:"youxing_ratings"`
 	}
 	if err := json.Unmarshal(bazhaiJSON, &data); err != nil {
 		return err
@@ -64,9 +66,13 @@ func loadBazhai() error {
 
 	eightMansionPatterns = make(map[int]dirPattern, 8)
 	for name, p := range data.Patterns {
-		num := luoshu.TrigramNumber(name)
-		if num == 0 {
+		trigram, ok := luoshu.EncodeTrigram(name)
+		if !ok {
 			return fmt.Errorf("bazhai: unknown gua name %q", name)
+		}
+		num := luoshu.TrigramNumber(trigram)
+		if num == 0 {
+			return fmt.Errorf("bazhai: gua %q has no palace", name)
 		}
 		eightMansionPatterns[num] = dirPattern{
 			shengQi: p.ShengQi, tianYi: p.TianYi, yanNian: p.YanNian, fuWei: p.FuWei,
@@ -77,6 +83,14 @@ func loadBazhai() error {
 	westGroup = make(map[int]bool, len(data.WestGroup))
 	for _, v := range data.WestGroup {
 		westGroup[v] = true
+	}
+
+	if len(data.YouXingRatings) != 8 {
+		return fmt.Errorf("bazhai: youxing_ratings has %d entries, want 8", len(data.YouXingRatings))
+	}
+	youxingRatings = make(map[YouXing]Rating, len(data.YouXingRatings))
+	for name, rating := range data.YouXingRatings {
+		youxingRatings[YouXing(name)] = Rating(rating)
 	}
 
 	return nil

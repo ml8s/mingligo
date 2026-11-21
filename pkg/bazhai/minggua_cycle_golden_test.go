@@ -53,7 +53,7 @@ func TestMingGuaCycleGolden_AllYearsAndGenders(t *testing.T) {
 			if got.YearBoundary != "lichun" {
 				t.Fatalf("year boundary = %q", got.YearBoundary)
 			}
-			if got.Gua.Name != golden.Gua || got.Group != golden.Group {
+			if got.Gua.Name != golden.Gua || got.Group != LifeGroup(golden.Group) {
 				t.Fatalf("%d %s = %s/%s, want %s/%s", golden.Year, golden.Gender, got.Gua.Name, got.Group, golden.Gua, golden.Group)
 			}
 		})

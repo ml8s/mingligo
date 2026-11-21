@@ -10,7 +10,7 @@ import (
 // ── 门主灶判断 ──
 
 type LayoutResult struct {
-	Group   string        `json:"group"` // 东四命/西四命
+	Group   LifeGroup     `json:"group"` // 东四命/西四命
 	MingGua string        `json:"ming_gua"`
 	Door    DoorStoveInfo `json:"men"`
 	Master  DoorStoveInfo `json:"zhu"`
@@ -19,60 +19,54 @@ type LayoutResult struct {
 
 // DoorStoveInfo is one door/master/stove position assessment.
 type DoorStoveInfo struct {
-	Direction string `json:"direction"`
-	GuaName   string `json:"gua_name"`
-	Wuxing    string `json:"wuxing"`
-	YouXing   string `json:"youxing"`
-	Rating    string `json:"rating"`
-	Group     string `json:"group"` // 东四卦/西四卦
-	Match     string `json:"match"` // 吉/凶(与命卦同组不同组)
+	Direction string       `json:"direction"`
+	GuaName   string       `json:"gua_name"`
+	Wuxing    string       `json:"wuxing"`
+	YouXing   YouXing      `json:"youxing"`
+	Rating    Rating       `json:"rating"`
+	Group     TrigramGroup `json:"group"` // 东四卦/西四卦
+	Match     Match        `json:"match"` // 吉/凶(与命卦同组不同组)
 }
 
-var dongSiGua = map[int]bool{1: true, 3: true, 4: true, 9: true} // 坎震巽离
-var xiSiGua = map[int]bool{2: true, 6: true, 7: true, 8: true}   // 坤乾兑艮
-
-// ComputeLayout analyzes 门主灶 in八宅风水.
-func ComputeLayout(mingGua, doorGua, masterGua, stoveGua string) (LayoutResult, error) {
-	mg := luoshu.TrigramNumber(mingGua)
-	if mg == 0 {
-		return LayoutResult{}, fmt.Errorf("invalid ming_gua %q", mingGua)
+// ComputeLayout analyzes 门主灶 in八宅风水. Trigram inputs are domain symbols;
+// display text is only produced at the boundary.
+func ComputeLayout(mingGua, doorGua, masterGua, stoveGua luoshu.Trigram) (LayoutResult, error) {
+	inputs := []struct {
+		name    string
+		trigram luoshu.Trigram
+	}{
+		{"ming_gua", mingGua}, {"door_gua", doorGua},
+		{"master_gua", masterGua}, {"stove_gua", stoveGua},
 	}
-	for slot, gua := range map[string]string{
-		"door_gua":   doorGua,
-		"master_gua": masterGua,
-		"stove_gua":  stoveGua,
-	} {
-		if luoshu.TrigramNumber(gua) == 0 {
-			return LayoutResult{}, fmt.Errorf("invalid %s %q", slot, gua)
+	nums := make([]int, len(inputs))
+	for i, in := range inputs {
+		nums[i] = luoshu.TrigramNumber(in.trigram)
+		if nums[i] == 0 {
+			return LayoutResult{}, fmt.Errorf("invalid %s %q", in.name, in.trigram)
 		}
 	}
-	mgGroup := "东四命"
-	if xiSiGua[mg] {
-		mgGroup = "西四命"
+	mg := nums[0]
+	mgGroup := LifeGroupEast
+	if westGroup[mg] {
+		mgGroup = LifeGroupWest
 	}
-
-	door := evalPosition(luoshu.TrigramNumber(doorGua), mg)
-	master := evalPosition(luoshu.TrigramNumber(masterGua), mg)
-	stove := evalPosition(luoshu.TrigramNumber(stoveGua), mg)
-
 	return LayoutResult{
 		Group:   mgGroup,
-		MingGua: luoshu.PalaceTable[mg].Name,
-		Door:    door,
-		Master:  master,
-		Stove:   stove,
+		MingGua: string(mingGua),
+		Door:    evalPosition(nums[1], mg),
+		Master:  evalPosition(nums[2], mg),
+		Stove:   evalPosition(nums[3], mg),
 	}, nil
 }
 
 func evalPosition(guaNum, mingGua int) DoorStoveInfo {
-	group := "东四卦"
-	if xiSiGua[guaNum] {
-		group = "西四卦"
+	group := TrigramGroupEast
+	if westGroup[guaNum] {
+		group = TrigramGroupWest
 	}
-	isMatch := dongSiGua[guaNum] == dongSiGua[mingGua]
-	match := "凶"
-	if isMatch {
-		match = "吉"
+	match := MatchBad
+	if westGroup[guaNum] == westGroup[mingGua] {
+		match = MatchLucky
 	}
 	youxing, rating := youxingForGua(mingGua, guaNum)
 	return DoorStoveInfo{
@@ -86,29 +80,31 @@ func evalPosition(guaNum, mingGua int) DoorStoveInfo {
 	}
 }
 
-func youxingForGua(mingGua, guaNum int) (string, string) {
+func youxingForGua(mingGua, guaNum int) (YouXing, Rating) {
 	p, ok := eightMansionPatterns[mingGua]
 	if !ok {
 		return "", ""
 	}
+	var youxing YouXing
 	switch guaNum {
 	case p.shengQi:
-		return "生气", "大吉"
+		youxing = YouXingShengQi
 	case p.tianYi:
-		return "天医", "吉"
+		youxing = YouXingTianYi
 	case p.yanNian:
-		return "延年", "吉"
+		youxing = YouXingYanNian
 	case p.fuWei:
-		return "伏位", "平"
+		youxing = YouXingFuWei
 	case p.huoHai:
-		return "祸害", "凶"
+		youxing = YouXingHuoHai
 	case p.wuGui:
-		return "五鬼", "凶"
+		youxing = YouXingWuGui
 	case p.liuSha:
-		return "六煞", "凶"
+		youxing = YouXingLiuSha
 	case p.jueMing:
-		return "绝命", "大凶"
+		youxing = YouXingJueMing
 	default:
 		return "", ""
 	}
+	return youxing, youxingRatings[youxing]
 }

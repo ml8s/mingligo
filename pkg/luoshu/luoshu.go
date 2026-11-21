@@ -90,10 +90,10 @@ func ByNumber(n int) Palace {
 	return Palace{}
 }
 
-// TrigramNumber returns the palace number for a trigram name, or 0 if unknown.
-func TrigramNumber(name string) int {
+// TrigramNumber returns the palace number for a Trigram symbol, or 0 if unknown.
+func TrigramNumber(trigram Trigram) int {
 	for _, palace := range PalaceTable {
-		if palace.Name == name {
+		if Trigram(palace.Name) == trigram {
 			return palace.Number
 		}
 	}

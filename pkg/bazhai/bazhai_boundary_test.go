@@ -16,7 +16,7 @@ func TestComputeChartAtUsesLichunYear(t *testing.T) {
 		t.Fatal(err)
 	}
 	want := ComputeMingGua(ganzhi.Male, 1983)
-	if chart.MingGua.Gua.Name != want.Gua.Name || chart.MingGua.Group != want.Group {
+	if chart.MingGua.Gua.Name != want.Gua.Name || chart.MingGua.Group != LifeGroup(want.Group) {
 		t.Fatalf("命卦 = %s/%s, want 1983 %s/%s",
 			chart.MingGua.Gua.Name, chart.MingGua.Group, want.Gua.Name, want.Group)
 	}
@@ -32,7 +32,7 @@ func TestComputeChartAtUsesLichunYear(t *testing.T) {
 		t.Fatal(err)
 	}
 	want = ComputeMingGua(ganzhi.Female, 2023)
-	if chart.MingGua.Gua.Name != want.Gua.Name || chart.MingGua.Group != want.Group {
+	if chart.MingGua.Gua.Name != want.Gua.Name || chart.MingGua.Group != LifeGroup(want.Group) {
 		t.Fatalf("立春 before term 命卦 = %s/%s, want 2023 %s/%s",
 			chart.MingGua.Gua.Name, chart.MingGua.Group, want.Gua.Name, want.Group)
 	}
@@ -43,7 +43,7 @@ func TestComputeChartAtUsesLichunYear(t *testing.T) {
 		t.Fatal(err)
 	}
 	want = ComputeMingGua(ganzhi.Female, 2024)
-	if chart.MingGua.Gua.Name != want.Gua.Name || chart.MingGua.Group != want.Group {
+	if chart.MingGua.Gua.Name != want.Gua.Name || chart.MingGua.Group != LifeGroup(want.Group) {
 		t.Fatalf("立春 after term 命卦 = %s/%s, want 2024 %s/%s",
 			chart.MingGua.Gua.Name, chart.MingGua.Group, want.Gua.Name, want.Group)
 	}

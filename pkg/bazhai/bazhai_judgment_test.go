@@ -1,6 +1,7 @@
 package bazhai
 
 import (
+	"github.com/ml8s/mingligo/pkg/luoshu"
 	"strings"
 	"testing"
 )
@@ -41,11 +42,11 @@ func TestBazhaiJudgment_EastWestGroups(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			result, err := ComputeLayout(tt.mingGua, tt.doorGua, tt.masterGua, tt.stoveGua)
+			result, err := ComputeLayout(luoshu.Trigram(tt.mingGua), luoshu.Trigram(tt.doorGua), luoshu.Trigram(tt.masterGua), luoshu.Trigram(tt.stoveGua))
 			if err != nil {
 				t.Fatalf("ComputeLayout() error = %v", err)
 			}
-			if result.Group != tt.wantGroup {
+			if string(result.Group) != tt.wantGroup {
 				t.Errorf("group=%q, want %q", result.Group, tt.wantGroup)
 			}
 			for _, item := range []DoorStoveInfo{result.Door, result.Master, result.Stove} {
@@ -53,13 +54,13 @@ func TestBazhaiJudgment_EastWestGroups(t *testing.T) {
 					t.Fatalf("item group=%q, want East/Four trigram group", item.Group)
 				}
 			}
-			if result.Door.Match != tt.wantDong {
+			if string(result.Door.Match) != tt.wantDong {
 				t.Errorf("door.match=%q, want %q", result.Door.Match, tt.wantDong)
 			}
-			if result.Master.Match != tt.wantZhu {
+			if string(result.Master.Match) != tt.wantZhu {
 				t.Errorf("master.match=%q, want %q", result.Master.Match, tt.wantZhu)
 			}
-			if result.Stove.Match != tt.wantZao {
+			if string(result.Stove.Match) != tt.wantZao {
 				t.Errorf("stove.match=%q, want %q", result.Stove.Match, tt.wantZao)
 			}
 		})
@@ -77,12 +78,12 @@ func TestBazhaiJudgment_YouXing(t *testing.T) {
 		{"坎", "巽", "生气", "大吉"},
 	}
 	for _, tt := range tests {
-		result, err := ComputeLayout(tt.mingGua, tt.target, tt.target, tt.target)
+		result, err := ComputeLayout(luoshu.Trigram(tt.mingGua), luoshu.Trigram(tt.target), luoshu.Trigram(tt.target), luoshu.Trigram(tt.target))
 		if err != nil {
 			t.Fatalf("ComputeLayout() error = %v", err)
 		}
 		for _, item := range []DoorStoveInfo{result.Door, result.Master, result.Stove} {
-			if item.YouXing != tt.youxing || item.Rating != tt.rating {
+			if item.YouXing != YouXing(tt.youxing) || item.Rating != Rating(tt.rating) {
 				t.Fatalf("%s命见%s: got %s(%s), want %s(%s)", tt.mingGua, tt.target, item.YouXing, item.Rating, tt.youxing, tt.rating)
 			}
 		}

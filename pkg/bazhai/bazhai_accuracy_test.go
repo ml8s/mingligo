@@ -68,7 +68,7 @@ func TestComputeMingGua_FormulaAnchors(t *testing.T) {
 	}
 	for _, c := range cases {
 		mg := ComputeMingGua(c.gender, c.year)
-		if mg.Gua.Name != c.name || mg.Group != c.group {
+		if mg.Gua.Name != c.name || mg.Group != LifeGroup(c.group) {
 			t.Errorf("%d年%v: got %s(%s), want %s(%s)", c.year, c.gender, mg.Gua.Name, mg.Group, c.name, c.group)
 		}
 	}
@@ -167,7 +167,7 @@ func TestComputeMingGua(t *testing.T) {
 			if mg.Gua.Index != tt.wantNum {
 				t.Errorf("Gua.Index = %d, want %d", mg.Gua.Index, tt.wantNum)
 			}
-			if mg.Group != tt.wantGroup {
+			if mg.Group != LifeGroup(tt.wantGroup) {
 				t.Errorf("Group = %s, want %s", mg.Group, tt.wantGroup)
 			}
 		})

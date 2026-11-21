@@ -6,6 +6,7 @@ import (
 
 	"github.com/ml8s/mingligo/pkg/bazhai"
 	"github.com/ml8s/mingligo/pkg/ganzhi"
+	"github.com/ml8s/mingligo/pkg/luoshu"
 )
 
 // BazhaiSubjectInput is the minimal calibrated identity used by Bazhai. It does
@@ -107,13 +108,16 @@ func BazhaiChart(_ context.Context, input BazhaiChartInput) (bazhai.Chart, error
 }
 
 func BazhaiLayout(_ context.Context, input BazhaiLayoutInput) (bazhai.LayoutResult, error) {
-	layout, err := bazhai.ComputeLayout(
-		string(input.MingGua), string(input.DoorGua),
-		string(input.MasterGua), string(input.StoveGua),
-	)
+	mingGua, ok1 := luoshu.EncodeTrigram(string(input.MingGua))
+	doorGua, ok2 := luoshu.EncodeTrigram(string(input.DoorGua))
+	masterGua, ok3 := luoshu.EncodeTrigram(string(input.MasterGua))
+	stoveGua, ok4 := luoshu.EncodeTrigram(string(input.StoveGua))
+	if !ok1 || !ok2 || !ok3 || !ok4 {
+		return bazhai.LayoutResult{}, fmt.Errorf("bazhai.layout: invalid trigram input")
+	}
+	layout, err := bazhai.ComputeLayout(mingGua, doorGua, masterGua, stoveGua)
 	if err != nil {
 		return bazhai.LayoutResult{}, err
 	}
 	return layout, nil
 }
-
