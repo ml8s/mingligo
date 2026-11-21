@@ -14,19 +14,19 @@ type LiuRiJie struct {
 // LiuRi holds the daily flow (流日) analysis: today's pillar
 // and its interactions with the bazi chart, current dayun, and current liunian.
 type LiuRi struct {
-	Date        string              `json:"date"`
-	RiGan       ganzhi.Gan          `json:"gan"`
-	RiZhi       ganzhi.Zhi          `json:"zhi"`
-	DayNaYin    string              `json:"na_yin"`
-	ShiShen     string              `json:"shi_shen"`
-	ShengRi     int                 `json:"sheng_ri"`
-	KeRi        int                 `json:"ke_ri"`
-	GanRels     []GanRelation       `json:"gan_rels"`
-	ZhiRels     []ZhiRelation       `json:"zhi_rels"`
-	DaYunRels   []ZhiRelation       `json:"da_yun_rels"`
-	LiuNianRels []ZhiRelation       `json:"liu_nian_rels"`
-	ShenSha     []ShenShaProjection `json:"shen_sha"`
-	RiJie       LiuRiJie            `json:"ri_jie"`
+	Date               string              `json:"date"`
+	RiGan              ganzhi.Gan          `json:"gan"`
+	RiZhi              ganzhi.Zhi          `json:"zhi"`
+	DayNaYin           string              `json:"na_yin"`
+	ShiShen            string              `json:"shi_shen"`
+	ShengRi            int                 `json:"sheng_ri"`
+	KeRi               int                 `json:"ke_ri"`
+	GanRels            []GanRelation       `json:"gan_rels"`
+	ZhiRels            []ZhiRelation       `json:"zhi_rels"`
+	DaYunInteraction   zhuInteraction      `json:"da_yun_interaction"`
+	LiuNianInteraction zhuInteraction      `json:"liu_nian_interaction"`
+	ShenSha            []ShenShaProjection `json:"shen_sha"`
+	RiJie              LiuRiJie            `json:"ri_jie"`
 }
 
 // ComputeLiuRi computes the day pillar for the resolved date and its full
@@ -41,16 +41,13 @@ func computeLiuRi(bz ganzhi.Bazi, t LiuRiTime, daYunZhu *ganzhi.Zhu, liuNianZhu 
 	// Day vs bazi (gan + zhi relations) — all 4 pillars, consistent with liunian.
 	ganRels, zhiRels := analyzeZhuWithBazi(dp, bz)
 
-	// Day vs dayun.
-	DaYunRels := make([]ZhiRelation, 0)
+	// Day vs dayun / liunian: two-layer (gan+zhi) via the shared pure function.
+	var daYunRel, liuNianRel zhuInteraction
 	if daYunZhu != nil {
-		DaYunRels = append(DaYunRels, analyzeZhiRelation(dp.Zhi, daYunZhu.Zhi))
+		daYunRel = analyzeFlowAgainstRef(dp, *daYunZhu)
 	}
-
-	// Day vs liunian.
-	liunianRels := make([]ZhiRelation, 0)
 	if liuNianZhu != nil {
-		liunianRels = append(liunianRels, analyzeZhiRelation(dp.Zhi, liuNianZhu.Zhi))
+		liuNianRel = analyzeFlowAgainstRef(dp, *liuNianZhu)
 	}
 
 	// Na yin.
@@ -100,17 +97,17 @@ func computeLiuRi(bz ganzhi.Bazi, t LiuRiTime, daYunZhu *ganzhi.Zhu, liuNianZhu 
 		shensha = []ShenShaProjection{}
 	}
 	return &LiuRi{
-		Date:        t.Date.String(),
-		RiGan:       dp.Gan,
-		RiZhi:       dp.Zhi,
-		DayNaYin:    naYin,
-		ShiShen:     tgName,
-		ShengRi:     gen,
-		KeRi:        rest,
-		GanRels:     ganRels,
-		ZhiRels:     zhiRels,
-		DaYunRels:   DaYunRels,
-		LiuNianRels: liunianRels,
-		ShenSha:     shensha,
+		Date:               t.Date.String(),
+		RiGan:              dp.Gan,
+		RiZhi:              dp.Zhi,
+		DayNaYin:           naYin,
+		ShiShen:            tgName,
+		ShengRi:            gen,
+		KeRi:               rest,
+		GanRels:            ganRels,
+		ZhiRels:            zhiRels,
+		DaYunInteraction:   daYunRel,
+		LiuNianInteraction: liuNianRel,
+		ShenSha:            shensha,
 	}, nil
 }

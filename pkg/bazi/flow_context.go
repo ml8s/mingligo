@@ -14,3 +14,14 @@ func flowDayMasterFacts(flowGan, dayMaster ganzhi.Gan) (sheng, ke int, shiShen s
 	gen, rest := countGenRest(flowElem, dmElem)
 	return gen, rest, ganzhi.DecodeShiShen(ganzhi.ShiShenFromGan(dayMaster, flowGan))
 }
+
+// analyzeFlowAgainstRef computes the two-layer (gan + zhi) interaction of a
+// flow pillar against a single reference pillar. Pure; ref==nil yields zero
+// value. This is the single entry point used by every flow layer when it
+// relates itself to 大运/流年/流月/流日.
+func analyzeFlowAgainstRef(flow, ref ganzhi.Zhu) zhuInteraction {
+	label := ganzhi.GanName(ref.Gan) + ganzhi.ZhiName(ref.Zhi)
+	ganRels := []GanRelation{analyzeGanRelation(flow.Gan, ref.Gan)}
+	zhiRels := []ZhiRelation{analyzeZhiRelation(flow.Zhi, ref.Zhi)}
+	return zhuInteraction{ZhuLabel: label, GanRels: ganRels, ZhiRels: zhiRels}
+}

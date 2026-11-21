@@ -47,3 +47,21 @@ func TestFlowDayMasterFactsKnownCases(t *testing.T) {
 		}
 	}
 }
+
+// TestAnalyzeFlowAgainstRefEquivalence verifies the composed function equals
+// the primitive relation analyzers for all 60×60 pillar pairs.
+func TestAnalyzeFlowAgainstRefEquivalence(t *testing.T) {
+	for f := 1; f <= 60; f++ {
+		for r := 1; r <= 60; r++ {
+			flow := ganzhi.SixtyToZhu(f)
+			ref := ganzhi.SixtyToZhu(r)
+			got := analyzeFlowAgainstRef(flow, ref)
+			if len(got.GanRels) != 1 || got.GanRels[0] != analyzeGanRelation(flow.Gan, ref.Gan) {
+				t.Fatalf("flow=%d ref=%d gan mismatch", f, r)
+			}
+			if len(got.ZhiRels) != 1 || got.ZhiRels[0] != analyzeZhiRelation(flow.Zhi, ref.Zhi) {
+				t.Fatalf("flow=%d ref=%d zhi mismatch", f, r)
+			}
+		}
+	}
+}
