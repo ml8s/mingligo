@@ -2,24 +2,25 @@ package qimen
 
 // GongRelation is the five-element relation between two palaces of the board.
 // It is a deterministic chart fact computed by the engine; the relation value
-// is a symbol (HourRelation) emitted as its stable code at the output boundary.
+// is a symbol (ElementRelation) emitted as its stable code at the output boundary.
 type GongRelation struct {
-	From     GongIndex    `json:"from"`
-	To       GongIndex    `json:"to"`
-	Relation HourRelation `json:"relation"`
+	From     GongIndex       `json:"from"`
+	To       GongIndex       `json:"to"`
+	Relation ElementRelation `json:"relation"`
 }
 
-// computeGongRelations emits the full 9x9 palace-relation matrix. Relations
-// depend only on the palaces' fixed five-elements (luoshu), computed via ganzhi
-// Sheng/Ke — no local knowledge table is needed by consumers.
+// computeGongRelations emits the full palace-relation matrix over the nine
+// GongIndex symbols. Relations depend only on the palaces' fixed five-elements
+// (luoshu), computed via ganzhi Sheng/Ke — no local knowledge table is needed.
 func computeGongRelations() []GongRelation {
-	out := make([]GongRelation, 0, 81)
-	for from := GongIndex(1); from <= 9; from++ {
-		for to := GongIndex(1); to <= 9; to++ {
+	n := int(GongLi)
+	out := make([]GongRelation, 0, n*n)
+	for from := GongKan; from <= GongLi; from++ {
+		for to := GongKan; to <= GongLi; to++ {
 			out = append(out, GongRelation{
 				From:     from,
 				To:       to,
-				Relation: elementRelationToHour(palaceWuxing(from), palaceWuxing(to)),
+				Relation: elementRelation(palaceWuxing(from), palaceWuxing(to)),
 			})
 		}
 	}

@@ -560,16 +560,17 @@ func EncodePillarLevel(name string) (PillarLevel, bool) {
 	return 0, false
 }
 
-// HourRelation is the five-element relation of a symbol to the hour palace.
-// Its value is the stable output code.
-type HourRelation string
+// ElementRelation is the five-element relation between two elements (same /
+// generates / controls / generated_by / controlled_by). Its value is the
+// stable output code. Shared by hour-palace facts and palace-pair relations.
+type ElementRelation string
 
 const (
-	hourSame         HourRelation = "same"
-	hourGenerates    HourRelation = "generates"
-	hourControls     HourRelation = "controls"
-	hourGeneratedBy  HourRelation = "generated_by"
-	hourControlledBy HourRelation = "controlled_by"
+	elementSame         ElementRelation = "same"
+	elementGenerates    ElementRelation = "generates"
+	elementControls     ElementRelation = "controls"
+	elementGeneratedBy  ElementRelation = "generated_by"
+	elementControlledBy ElementRelation = "controlled_by"
 )
 
 // LeadPillarKind selects which pillar leads a chart.

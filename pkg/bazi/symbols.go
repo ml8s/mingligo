@@ -389,15 +389,6 @@ const (
 	palaceStateHai   PalaceState = "害"
 )
 
-func EncodePalaceState(s string) (PalaceState, bool) {
-	state := PalaceState(s)
-	switch state {
-	case palaceStateQuiet, palaceStateChong, palaceStateHe, palaceStateXing, palaceStateHai:
-		return state, true
-	}
-	return palaceStateQuiet, false
-}
-
 // BranchImageKind is the 日支取象 classification. Its value IS the stable text.
 type BranchImageKind string
 
@@ -407,12 +398,3 @@ const (
 	branchImageTravel BranchImageKind = "驿马"
 	branchImageTomb   BranchImageKind = "墓库"
 )
-
-func EncodeBranchImageKind(s string) (BranchImageKind, bool) {
-	kind := BranchImageKind(s)
-	switch kind {
-	case branchImageNone, branchImagePeach, branchImageTravel, branchImageTomb:
-		return kind, true
-	}
-	return branchImageNone, false
-}
