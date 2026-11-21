@@ -78,7 +78,9 @@ func QueryDate(dateStr string, event ...string) (Day, error) {
 
 	entry.ShiChen = computeShiChen(dpi.Zhi, yueZhi, entry.JianChu)
 	if len(event) > 0 {
-		if err := applyEventRule(&entry, event[0]); err != nil {
+		var err error
+		entry, err = withEventRule(entry, event[0])
+		if err != nil {
 			return Day{}, err
 		}
 	}
@@ -86,15 +88,15 @@ func QueryDate(dateStr string, event ...string) (Day, error) {
 	return entry, nil
 }
 
-func applyEventRule(entry *Day, event string) error {
+func withEventRule(entry Day, event string) (Day, error) {
 	if event == "" {
 		entry.Suitability = "unspecified"
 		entry.EventReason = "未指定事项，仅列黄历事实。"
-		return nil
+		return entry, nil
 	}
 	rule, ok := jianChuCfg.EventRules[event]
 	if !ok {
-		return fmt.Errorf("huangli: unknown event %q", event)
+		return Day{}, fmt.Errorf("huangli: unknown event %q", event)
 	}
 	entry.Event = event
 	entry.EventLabel = rule.Label
@@ -109,7 +111,7 @@ func applyEventRule(entry *Day, event string) error {
 		entry.Suitability = "possible"
 		entry.EventReason = "建除「" + entry.JianChu + "」无明确适配或冲突。"
 	}
-	return nil
+	return entry, nil
 }
 
 func containsJianChu(values []string, target string) bool {

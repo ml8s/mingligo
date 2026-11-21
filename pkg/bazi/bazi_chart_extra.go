@@ -6,9 +6,9 @@ import (
 
 // NayinRelEntry describes a nayin relation between two pillars.
 type NayinRelEntry struct {
-	A        string `json:"a"`
-	B        string `json:"b"`
-	Relation string `json:"relation"`
+	A        string             `json:"a"`
+	B        string             `json:"b"`
+	Relation GanZhiRelationKind `json:"relation"`
 }
 
 // ChangShengStage describes one of the 12 life stages.
@@ -35,12 +35,12 @@ func withChartExtraFields(chart Chart, core Core) Chart {
 		for j := i + 1; j < 4; j++ {
 			ae := ganzhi.NayinWuxing(nayins[i])
 			be := ganzhi.NayinWuxing(nayins[j])
-			rel := "相同"
+			rel := relSame
 			if ae != 0 && be != 0 && ae != be {
 				if ganzhi.Sheng(ae, be) || ganzhi.Sheng(be, ae) {
-					rel = "相生"
+					rel = relSheng
 				} else {
-					rel = "相克"
+					rel = relKe
 				}
 			}
 			nayinRels = append(nayinRels, NayinRelEntry{

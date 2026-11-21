@@ -94,10 +94,10 @@ func computeChart(sitMountain, faceMountain int, year int) Chart {
 	}
 
 	// 5. Evaluate 旺山旺向/上山下水/伏吟.
-	pan.evaluate()
+	pan = withFourSituation(pan)
 
 	// 6. 双星加会（填入各宫） + 收山出煞.
-	pan.computeXingJiaHui()
+	pan = withXingJiaHui(pan)
 	pan.ShouShanChuSha = pan.computeShouShanChuSha()
 
 	return pan
@@ -180,7 +180,7 @@ func mountainPalace(idx int) int {
 //	上山下水   : 向宫山星=当令（山星下水）且 坐宫向星=当令（向星上山）
 //
 // 伏吟（运盘）：五运运盘顺飞与地盘全盘重合（入中=宫序恒等）；运盘恒顺飞，
-func (p *Chart) evaluate() {
+func withFourSituation(p Chart) Chart {
 	sitPalace := mountainPalace(p.SitMountain)
 	facePalace := mountainPalace(p.FaceMountain)
 	yunNum := p.Yun.YunNumber
@@ -209,8 +209,8 @@ func (p *Chart) evaluate() {
 		Name: name, SitMountainTimely: sitM, FaceFacingTimely: faceF,
 		SitFacingTimely: sitF, FaceMountainTimely: faceM,
 	}
-
 	p.FuYinLayers, p.FanYinLayers = p.recitationLayers()
+	return p
 }
 
 // -- 双星加会 (Double Star Combination) --------------------------------
@@ -222,7 +222,7 @@ type xingJiaHui struct {
 	Meaning  string `json:"meaning"`
 }
 
-func (p *Chart) computeXingJiaHui() {
+func withXingJiaHui(p Chart) Chart {
 	for i := range p.Palaces {
 		pal := &p.Palaces[i]
 		key := [2]int{pal.MountainStar.Number, pal.FacingStar.Number}
@@ -235,6 +235,7 @@ func (p *Chart) computeXingJiaHui() {
 			}
 		}
 	}
+	return p
 }
 
 func (p *Chart) recitationLayers() (fuYin, fanYin []string) {

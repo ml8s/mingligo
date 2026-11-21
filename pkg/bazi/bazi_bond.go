@@ -60,9 +60,9 @@ type shiShenCross struct {
 }
 
 type naYinPairEntry struct {
-	A        bondNaYinSide `json:"a"`
-	B        bondNaYinSide `json:"b"`
-	Relation string        `json:"relation"`
+	A        bondNaYinSide      `json:"a"`
+	B        bondNaYinSide      `json:"b"`
+	Relation GanZhiRelationKind `json:"relation"`
 }
 
 type bondNaYinSide struct {
@@ -366,12 +366,12 @@ func computeNaYinCross(a, b Core) nayinCross {
 		ae := ganzhi.NayinWuxing(aNy[i])
 		for j := 0; j < 4; j++ {
 			be := ganzhi.NayinWuxing(bNy[j])
-			rel := "相同"
+			rel := relSame
 			if ae != be {
 				if ganzhi.Sheng(ae, be) || ganzhi.Sheng(be, ae) {
-					rel = "相生"
+					rel = relSheng
 				} else {
-					rel = "相克"
+					rel = relKe
 				}
 			}
 			pairs = append(pairs, naYinPairEntry{
