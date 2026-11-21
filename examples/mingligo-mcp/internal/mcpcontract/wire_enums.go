@@ -100,7 +100,7 @@ func registerWireEnums(options *jsonschema.ForOptions) {
 	registerWireEnum[ShenShaCategoryName](options, "中性", "凶", "吉")
 	registerWireNullableEnum[ShenShaCategoryNameNullable](options, "中性", "凶", "吉")
 	registerWireEnum[ShenShaSchoolPolicyName](options, "union_of_year_and_day_references")
-	registerWireEnum[ShenshaName](options, "丧门", "劫煞", "文昌", "华盖", "吊客", "大耗", "天乙贵人", "天喜", "桃花", "灾煞", "病符", "红鸾", "羊刃", "驿马")
+	registerWireEnum[ShenshaName](options, "亡神", "元辰", "劫煞", "勾神", "十恶大败", "华盖", "四废", "国印", "地网", "天乙贵人", "天厨贵人", "天喜", "天德", "天德合", "天罗", "天赦", "太极贵人", "孤辰", "寡宿", "将星", "德秀贵人", "文昌", "月德", "月恩", "桃花", "灾煞", "禄神", "福星贵人", "童子煞", "红鸾", "绞神", "羊刃", "血刃", "金舆", "阴差阳错", "飞刃", "驿马", "病符", "丧门", "吊客", "大耗")
 	registerWireEnum[SiHuaName](options, "忌", "权", "禄", "科")
 	registerWireNullableEnum[SiHuaNameNullable](options, "忌", "权", "禄", "科")
 	registerWireEnum[SpousePalaceStateName](options, "冲", "刑", "合", "害", "静")

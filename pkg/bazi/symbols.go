@@ -398,3 +398,100 @@ const (
 	branchImageTravel BranchImageKind = "驿马"
 	branchImageTomb   BranchImageKind = "墓库"
 )
+
+// ShenShaName is a closed-set symbol for a 神煞 name. Its value IS the stable display text.
+type ShenShaName string
+
+const (
+	shenShaWangShen      ShenShaName = "亡神"
+	shenShaYuanChen      ShenShaName = "元辰"
+	shenShaJieSha        ShenShaName = "劫煞"
+	shenShaGouShen       ShenShaName = "勾神"
+	shenShaShiEDaBai     ShenShaName = "十恶大败"
+	shenShaHuaGai        ShenShaName = "华盖"
+	shenShaSiFei         ShenShaName = "四废"
+	shenShaGuoYin        ShenShaName = "国印"
+	shenShaDiWang        ShenShaName = "地网"
+	shenShaTianYi        ShenShaName = "天乙贵人"
+	shenShaTianChu       ShenShaName = "天厨贵人"
+	shenShaTianXi        ShenShaName = "天喜"
+	shenShaTianDe        ShenShaName = "天德"
+	shenShaTianDeHe      ShenShaName = "天德合"
+	shenShaTianLuo       ShenShaName = "天罗"
+	shenShaTianShe       ShenShaName = "天赦"
+	shenShaTaiJi         ShenShaName = "太极贵人"
+	shenShaGuChen        ShenShaName = "孤辰"
+	shenShaGuaSu         ShenShaName = "寡宿"
+	shenShaJiangXing     ShenShaName = "将星"
+	shenShaDeXiu         ShenShaName = "德秀贵人"
+	shenShaWenChang      ShenShaName = "文昌"
+	shenShaYueDe         ShenShaName = "月德"
+	shenShaYueEn         ShenShaName = "月恩"
+	shenShaTaoHua        ShenShaName = "桃花"
+	shenShaZaiSha        ShenShaName = "灾煞"
+	shenShaLuShen        ShenShaName = "禄神"
+	shenShaFuXing        ShenShaName = "福星贵人"
+	shenShaTongZi        ShenShaName = "童子煞"
+	shenShaHongLuan      ShenShaName = "红鸾"
+	shenShaJiaoShen      ShenShaName = "绞神"
+	shenShaYangRen       ShenShaName = "羊刃"
+	shenShaXueRen        ShenShaName = "血刃"
+	shenShaJinYu         ShenShaName = "金舆"
+	shenShaYinChaYangCuo ShenShaName = "阴差阳错"
+	shenShaFeiRen        ShenShaName = "飞刃"
+	shenShaYiMa          ShenShaName = "驿马"
+	shenShaBingFu        ShenShaName = "病符"
+	shenShaSangMen       ShenShaName = "丧门"
+	shenShaDiaoKe        ShenShaName = "吊客"
+	shenShaDaHao         ShenShaName = "大耗"
+)
+
+// EncodeShenShaName converts a display name to its ShenShaName symbol (boundary helper).
+func EncodeShenShaName(s string) (ShenShaName, bool) {
+	name := ShenShaName(s)
+	switch name {
+	case shenShaWangShen,
+		shenShaYuanChen,
+		shenShaJieSha,
+		shenShaGouShen,
+		shenShaShiEDaBai,
+		shenShaHuaGai,
+		shenShaSiFei,
+		shenShaGuoYin,
+		shenShaDiWang,
+		shenShaTianYi,
+		shenShaTianChu,
+		shenShaTianXi,
+		shenShaTianDe,
+		shenShaTianDeHe,
+		shenShaTianLuo,
+		shenShaTianShe,
+		shenShaTaiJi,
+		shenShaGuChen,
+		shenShaGuaSu,
+		shenShaJiangXing,
+		shenShaDeXiu,
+		shenShaWenChang,
+		shenShaYueDe,
+		shenShaYueEn,
+		shenShaTaoHua,
+		shenShaZaiSha,
+		shenShaLuShen,
+		shenShaFuXing,
+		shenShaTongZi,
+		shenShaHongLuan,
+		shenShaJiaoShen,
+		shenShaYangRen,
+		shenShaXueRen,
+		shenShaJinYu,
+		shenShaYinChaYangCuo,
+		shenShaFeiRen,
+		shenShaYiMa,
+		shenShaBingFu,
+		shenShaSangMen,
+		shenShaDiaoKe,
+		shenShaDaHao:
+		return name, true
+	}
+	return "", false
+}

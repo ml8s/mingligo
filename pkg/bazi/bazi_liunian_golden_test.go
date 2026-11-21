@@ -70,12 +70,12 @@ func TestLiuNian_Golden(t *testing.T) {
 				t.Errorf("shi_shen = %q, want %q", ln.ShiShen, gc.ShiShen)
 			}
 			// 流年神煞（name 集合，忽略顺序）
-			got := map[string]bool{}
+			got := map[ShenShaName]bool{}
 			for _, s := range ln.ShenSha {
 				got[s.Name] = true
 			}
 			for _, want := range gc.ShenSha {
-				if !got[want] {
+				if !got[ShenShaName(want)] {
 					t.Errorf("%d 缺神煞 %q, got %v", gc.Year, want, ln.ShenSha)
 				}
 			}

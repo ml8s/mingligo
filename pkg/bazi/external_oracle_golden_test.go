@@ -239,7 +239,7 @@ func ganzhiZhuLabel(pillar ganzhi.Zhu) string {
 func shenshaNames(entries []ShenShaProjection) []string {
 	out := make([]string, 0, len(entries))
 	for _, entry := range entries {
-		out = append(out, entry.Name)
+		out = append(out, string(entry.Name))
 	}
 	return out
 }

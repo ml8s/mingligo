@@ -40,7 +40,7 @@ func TestDomainOracle_AnnualShenShaPositions(t *testing.T) {
 				pillar := ganzhi.Zhu{Gan: gan, Zhi: target}
 				bz := ganzhi.Bazi{Nian: pillar, Yue: pillar, Ri: pillar, Shi: pillar}
 				got := computeAnnualShenSha(year, bz)
-				if len(got) != 1 || got[0].Name != name {
+				if len(got) != 1 || string(got[0].Name) != name {
 					t.Fatalf("%s年%s位=%s：got %v, want only [%s]", yearText, name, targetText, got, name)
 				}
 			})

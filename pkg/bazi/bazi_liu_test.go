@@ -247,7 +247,7 @@ func TestComputeLiuYue_ShenSha(t *testing.T) {
 	if err != nil {
 		t.Fatalf("ComputeLiuYue: %v", err)
 	}
-	names := map[string]bool{}
+	names := map[ShenShaName]bool{}
 	for _, s := range ly.ShenSha {
 		names[s.Name] = true
 	}
@@ -259,7 +259,7 @@ func TestComputeLiuYue_ShenSha(t *testing.T) {
 		t.Errorf("流月午不应命中羊刃（己羊刃=巳）：got %v", ly.ShenSha)
 	}
 	// 流月不应含值年煞（病符/丧门/吊客/大耗——流年概念）
-	for _, annual := range []string{"病符", "丧门", "吊客", "大耗"} {
+	for _, annual := range []ShenShaName{"病符", "丧门", "吊客", "大耗"} {
 		if names[annual] {
 			t.Errorf("流月不应含值年煞 %s：got %v", annual, ly.ShenSha)
 		}
@@ -285,7 +285,7 @@ func TestComputeLiuRi_ShenSha(t *testing.T) {
 		t.Fatalf("ComputeLiuRi: %v", err)
 	}
 	// 流日支=子（2026-06-04）：年支子桃花酉≠子、日支卯桃花子=子✓（日支双查生效）
-	names := map[string]bool{}
+	names := map[ShenShaName]bool{}
 	for _, s := range lr.ShenSha {
 		names[s.Name] = true
 	}
@@ -293,7 +293,7 @@ func TestComputeLiuRi_ShenSha(t *testing.T) {
 		t.Errorf("流日子缺桃花（日支卯桃花子）：got %v", lr.ShenSha)
 	}
 	// 流日不应含值年煞
-	for _, annual := range []string{"病符", "丧门", "吊客", "大耗"} {
+	for _, annual := range []ShenShaName{"病符", "丧门", "吊客", "大耗"} {
 		if names[annual] {
 			t.Errorf("流日不应含值年煞 %s：got %v", annual, lr.ShenSha)
 		}

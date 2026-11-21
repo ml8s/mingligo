@@ -66,7 +66,7 @@ func TestLiuNian_AnnualBingFu(t *testing.T) {
 	if err != nil {
 		t.Fatalf("ComputeLiuNian(2021): %v", err)
 	}
-	names := map[string]bool{}
+	names := map[ShenShaName]bool{}
 	for _, s := range ln.ShenSha {
 		names[s.Name] = true
 	}
@@ -93,7 +93,7 @@ func TestLiuNian_AnnualSangMen(t *testing.T) {
 	if err != nil {
 		t.Fatalf("ComputeLiuNian(2022): %v", err)
 	}
-	names := map[string]bool{}
+	names := map[ShenShaName]bool{}
 	for _, s := range ln.ShenSha {
 		names[s.Name] = true
 	}
@@ -119,7 +119,7 @@ func TestLiuNian_AnnualDiaoKe(t *testing.T) {
 	if err != nil {
 		t.Fatalf("ComputeLiuNian(2020): %v", err)
 	}
-	names := map[string]bool{}
+	names := map[ShenShaName]bool{}
 	for _, s := range ln.ShenSha {
 		names[s.Name] = true
 	}
@@ -145,7 +145,7 @@ func TestLiuNian_AnnualDaHao(t *testing.T) {
 	if err != nil {
 		t.Fatalf("ComputeLiuNian(2026): %v", err)
 	}
-	names := map[string]bool{}
+	names := map[ShenShaName]bool{}
 	for _, s := range ln.ShenSha {
 		names[s.Name] = true
 	}
@@ -183,7 +183,7 @@ func TestLiuNian_AnnualAndDynamicCoexist(t *testing.T) {
 	if err != nil {
 		t.Fatalf("ComputeLiuNian 2022: %v", err)
 	}
-	names := map[string]bool{}
+	names := map[ShenShaName]bool{}
 	for _, s := range ln.ShenSha {
 		names[s.Name] = true
 	}
@@ -224,7 +224,7 @@ func TestLiuNian_ShenSha_DynamicEmpty(t *testing.T) {
 	if err != nil {
 		t.Fatalf("ComputeLiuNian 2006: %v", err)
 	}
-	names := map[string]bool{}
+	names := map[ShenShaName]bool{}
 	for _, s := range ln.ShenSha {
 		names[s.Name] = true
 	}
@@ -232,7 +232,7 @@ func TestLiuNian_ShenSha_DynamicEmpty(t *testing.T) {
 		t.Errorf("2006 值年神煞应为[大耗]而非[吊客 大耗]，got %v", ln.ShenSha)
 	}
 	// 动态神煞不应出现（桃花/驿马/华盖/劫煞/灾煞/红鸾/天喜/羊刃/天乙）
-	for _, dyn := range []string{"桃花", "驿马", "华盖", "劫煞", "灾煞", "红鸾", "天喜", "羊刃", "天乙贵人"} {
+	for _, dyn := range []ShenShaName{"桃花", "驿马", "华盖", "劫煞", "灾煞", "红鸾", "天喜", "羊刃", "天乙贵人"} {
 		if names[dyn] {
 			t.Errorf("2006 动态神煞 %s 不应命中（神煞位均非戌），got %v", dyn, ln.ShenSha)
 		}

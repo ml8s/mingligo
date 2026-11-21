@@ -84,14 +84,14 @@ func TestOracleComparison_19810826(t *testing.T) {
 		"福星贵人": true, "绞神": true, "童子煞": true, "飞刃": true,
 		"天喜": true, "国印": true, "华盖": true,
 	}
-	engineGods := make(map[string]bool)
+	engineGods := make(map[ShenShaName]bool)
 	for _, p := range pillars {
 		for _, s := range p.ShenSha {
 			engineGods[s.Name] = true
 		}
 	}
 	for name := range oracleGods {
-		if !engineGods[name] {
+		if !engineGods[ShenShaName(name)] {
 			t.Errorf("missing shensha %q (oracle has it)", name)
 		}
 	}

@@ -39,9 +39,9 @@ func dayBranchType(chart Chart) BranchImageKind {
 	dayPillar := chart.Ri
 	for _, sha := range dayPillar.ShenSha {
 		switch sha.Name {
-		case "桃花":
+		case shenShaTaoHua:
 			return branchImagePeach
-		case "驿马":
+		case shenShaYiMa:
 			return branchImageTravel
 		}
 	}

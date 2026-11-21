@@ -38,7 +38,7 @@ func TestDomainOracle_NayinShenSha(t *testing.T) {
 			for name := range got {
 				for pi, entries := range pillars {
 					for _, item := range entries {
-						if item.Name == name {
+						if string(item.Name) == name {
 							got[name] = append(got[name], keys[pi])
 						}
 					}

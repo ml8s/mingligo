@@ -21,7 +21,7 @@ func makeChart(year, month, day, hour, minute int, lon, tz float64, gender ganzh
 func collectShenShaNames(p Pillar) map[string]bool {
 	m := make(map[string]bool)
 	for _, ss := range p.ShenSha {
-		m[ss.Name] = true
+		m[string(ss.Name)] = true
 	}
 	return m
 }
@@ -584,7 +584,7 @@ func TestShenSha_TianLuoDiWang(t *testing.T) {
 				found := false
 				for _, pillar := range ss {
 					for _, e := range pillar {
-						if e.Name == tt.wantName {
+						if string(e.Name) == tt.wantName {
 							found = true
 						}
 					}
@@ -1021,7 +1021,7 @@ func TestChart_XunKong(t *testing.T) {
 
 func hasShenSha(pillar []ShenShaProjection, name string) bool {
 	for _, e := range pillar {
-		if e.Name == name {
+		if string(e.Name) == name {
 			return true
 		}
 	}

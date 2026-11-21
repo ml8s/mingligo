@@ -578,13 +578,17 @@ func loadShensha() error {
 	}
 
 	// --- tian luo di wang ---
-	tianLuoDiWang = make(map[ganzhi.Zhi]string, len(data.TianLuoDiWang))
+	tianLuoDiWang = make(map[ganzhi.Zhi]ShenShaName, len(data.TianLuoDiWang))
 	for zhiStr, label := range data.TianLuoDiWang {
 		zhi, err := ganzhi.EncodeZhi(zhiStr)
 		if err != nil {
 			return fmt.Errorf("tian_luo_di_wang zhi %q: %w", zhiStr, err)
 		}
-		tianLuoDiWang[zhi] = label
+		name, ok := EncodeShenShaName(label)
+		if !ok {
+			return fmt.Errorf("tian_luo_di_wang unknown spirit %q", label)
+		}
+		tianLuoDiWang[zhi] = name
 	}
 
 	// --- shi e da bai ---

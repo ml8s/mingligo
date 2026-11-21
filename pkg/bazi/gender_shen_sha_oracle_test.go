@@ -49,7 +49,7 @@ func TestDomainOracle_GenderShenSha(t *testing.T) {
 				got[name] = []string{}
 				for pi, entries := range pillars {
 					for _, item := range entries {
-						if item.Name == name {
+						if string(item.Name) == name {
 							got[name] = append(got[name], pillarKey[pi])
 						}
 					}

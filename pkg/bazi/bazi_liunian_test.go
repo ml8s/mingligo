@@ -184,7 +184,7 @@ func TestLiuNian_ShenSha(t *testing.T) {
 	if ln.ShenSha == nil {
 		t.Error("ShenSha is nil, want empty slice")
 	}
-	names2026 := map[string]bool{}
+	names2026 := map[ShenShaName]bool{}
 	for _, s := range ln.ShenSha {
 		names2026[s.Name] = true
 	}
@@ -204,7 +204,7 @@ func TestLiuNian_ShenSha(t *testing.T) {
 	if err != nil {
 		t.Fatalf("ComputeLiuNian 2025: %v", err)
 	}
-	names := map[string]bool{}
+	names := map[ShenShaName]bool{}
 	for _, s := range ln2025.ShenSha {
 		names[s.Name] = true
 	}

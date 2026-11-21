@@ -80,7 +80,7 @@ func computeLiuRi(bz ganzhi.Bazi, t LiuRiTime, daYunZhu *ganzhi.Zhu, liuNianZhu 
 	yBranch := bazi[0].Zhi
 	triadMaps := []struct {
 		m    map[ganzhi.Zhi]ganzhi.Zhi
-		name string
+		name ShenShaName
 		cat  string
 		desc string
 	}{

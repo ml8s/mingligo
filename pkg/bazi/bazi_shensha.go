@@ -15,9 +15,9 @@ const (
 
 // ShenShaProjection describes a single shensha hit on a pillar.
 type ShenShaProjection struct {
-	Name        string `json:"name"`
-	Category    string `json:"category"`
-	Description string `json:"description"`
+	Name        ShenShaName `json:"name"`
+	Category    string      `json:"category"`
+	Description string      `json:"description"`
 }
 
 type ganZhiPair struct {
@@ -56,7 +56,7 @@ var (
 	yinChaYangCuo   map[int]struct{}
 	tongZiSeason    map[int][]ganzhi.Zhi
 	tongZiNayin     map[ganzhi.Wuxing][]ganzhi.Zhi
-	tianLuoDiWang   map[ganzhi.Zhi]string
+	tianLuoDiWang   map[ganzhi.Zhi]ShenShaName
 	shiEDaBai       map[int]struct{}
 )
 
@@ -237,7 +237,7 @@ func addLuShen(bz ganzhi.Bazi, riYuan ganzhi.Gan) [4][]ShenShaProjection {
 	return out
 }
 
-func addChangShengShenSha(bz ganzhi.Bazi, riYuan ganzhi.Gan, stageIdx int, name, cat, desc string) [4][]ShenShaProjection {
+func addChangShengShenSha(bz ganzhi.Bazi, riYuan ganzhi.Gan, stageIdx int, name ShenShaName, cat, desc string) [4][]ShenShaProjection {
 	var out [4][]ShenShaProjection
 	zhus := bz.Slice()
 	stageRow := ganzhi.ChangShengTable[riYuan]
@@ -260,7 +260,7 @@ func addCiGuan(bz ganzhi.Bazi) [4][]ShenShaProjection {
 	return out
 }
 
-func addNayinStageShenSha(bz ganzhi.Bazi, name, desc string, changSheng bool) [4][]ShenShaProjection {
+func addNayinStageShenSha(bz ganzhi.Bazi, name ShenShaName, desc string, changSheng bool) [4][]ShenShaProjection {
 	var out [4][]ShenShaProjection
 	zhus := bz.Slice()
 	yearElement := ganzhi.NayinWuxingOf(zhus[0].Gan, zhus[0].Zhi)
@@ -450,7 +450,7 @@ func addYueDe(bz ganzhi.Bazi, yueZhi ganzhi.Zhi) [4][]ShenShaProjection {
 
 // addTriadShenSha 三合类神煞（驿马/桃花/华盖/劫煞/灾煞/将星）：
 // 以年支与日支为参考（兼容两种流派），同一柱同一神煞只标注一次（去重）。
-func addTriadShenSha(bz ganzhi.Bazi, zhi [4]ganzhi.Zhi, lookup map[ganzhi.Zhi]ganzhi.Zhi, name, cat, desc string) [4][]ShenShaProjection {
+func addTriadShenSha(bz ganzhi.Bazi, zhi [4]ganzhi.Zhi, lookup map[ganzhi.Zhi]ganzhi.Zhi, name ShenShaName, cat, desc string) [4][]ShenShaProjection {
 	var out [4][]ShenShaProjection
 	zhus := bz.Slice()
 	marked := map[int]bool{}
@@ -594,8 +594,8 @@ func addTianLuoDiWang(bz ganzhi.Bazi) [4][]ShenShaProjection {
 	yearElement := ganzhi.NayinWuxingOf(zhus[0].Gan, zhus[0].Zhi)
 	for pi, p := range zhus {
 		label, ok := tianLuoDiWang[p.Zhi]
-		if ok && ((label == "天罗" && yearElement == ganzhi.WxHuo) ||
-			(label == "地网" && (yearElement == ganzhi.WxShui || yearElement == ganzhi.WxTu))) {
+		if ok && ((label == shenShaTianLuo && yearElement == ganzhi.WxHuo) ||
+			(label == shenShaDiWang && (yearElement == ganzhi.WxShui || yearElement == ganzhi.WxTu))) {
 			out[pi] = append(out[pi], ShenShaProjection{
 				Name: label, Category: catXiong, Description: "主运势阻滞，有志难伸",
 			})
@@ -692,7 +692,7 @@ func addShiEDaBai(bz ganzhi.Bazi) [4][]ShenShaProjection {
 	return out
 }
 
-func appendShenShaByGanLookup(bz ganzhi.Bazi, s ganzhi.Gan, lookup map[ganzhi.Gan][]ganzhi.Zhi, name, cat, desc string) [4][]ShenShaProjection {
+func appendShenShaByGanLookup(bz ganzhi.Bazi, s ganzhi.Gan, lookup map[ganzhi.Gan][]ganzhi.Zhi, name ShenShaName, cat, desc string) [4][]ShenShaProjection {
 	var out [4][]ShenShaProjection
 	zhus := bz.Slice()
 	targets, ok := lookup[s]
@@ -733,8 +733,8 @@ func VoidPalaces(bz ganzhi.Bazi) []int {
 // computeDynamicShenSha computes shensha triggered by an external zhi against the bazi chart.
 func computeDynamicShenSha(b ganzhi.Zhi, nianZhi, riBranch ganzhi.Zhi, riYuan ganzhi.Gan) []ShenShaProjection {
 	var result []ShenShaProjection
-	seen := map[string]bool{}
-	add := func(name, cat, desc string) {
+	seen := map[ShenShaName]bool{}
+	add := func(name ShenShaName, cat, desc string) {
 		if !seen[name] {
 			seen[name] = true
 			result = append(result, ShenShaProjection{Name: name, Category: cat, Description: desc})
@@ -788,7 +788,7 @@ func computeDynamicShenSha(b ganzhi.Zhi, nianZhi, riBranch ganzhi.Zhi, riYuan ga
 // 病符=太岁后1辰、丧门=前2辰、吊客=后2辰、大耗（岁破）=对冲。白虎查表有版本争议，不做。
 func computeAnnualShenSha(b ganzhi.Zhi, bz ganzhi.Bazi) []ShenShaProjection {
 	annual := []struct {
-		name string
+		name ShenShaName
 		zhi  ganzhi.Zhi
 		desc string
 	}{
@@ -798,7 +798,7 @@ func computeAnnualShenSha(b ganzhi.Zhi, bz ganzhi.Bazi) []ShenShaProjection {
 		{"大耗", zhiOffset(b, +6), "流运大耗临命，主破财大耗"},
 	}
 	var result []ShenShaProjection
-	seen := map[string]bool{}
+	seen := map[ShenShaName]bool{}
 	for _, a := range annual {
 		for _, p := range bz.Slice() {
 			if p.Zhi == a.zhi && !seen[a.name] {

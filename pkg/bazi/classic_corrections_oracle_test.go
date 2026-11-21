@@ -25,7 +25,7 @@ func parseOracleZhu(t *testing.T, name string) ganzhi.Zhu {
 func hasShenShaName(rows [4][]ShenShaProjection, name string) bool {
 	for _, pillar := range rows {
 		for _, item := range pillar {
-			if item.Name == name {
+			if string(item.Name) == name {
 				return true
 			}
 		}
