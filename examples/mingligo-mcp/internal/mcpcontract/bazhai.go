@@ -28,33 +28,33 @@ type BazhaiLayoutInput struct {
 	StoveGua  EightGuaName `json:"stove_gua" jsonschema:"灶卦。"`
 }
 
-func BazhaiChart(_ context.Context, input BazhaiChartInput) (bazhai.ChartView, error) {
+func BazhaiChart(_ context.Context, input BazhaiChartInput) (bazhai.BaZhaiMingGuaPanView, error) {
 	standard, _, err := parseStandardTime(input.Subject.StandardTime)
 	if err != nil {
-		return bazhai.ChartView{}, fmt.Errorf("bazhai.chart: %w", err)
+		return bazhai.BaZhaiMingGuaPanView{}, fmt.Errorf("bazhai.chart: %w", err)
 	}
 	gender, err := ganzhi.EncodeGender(string(input.Subject.Gender))
 	if err != nil {
-		return bazhai.ChartView{}, fmt.Errorf("bazhai.chart: %w", err)
+		return bazhai.BaZhaiMingGuaPanView{}, fmt.Errorf("bazhai.chart: %w", err)
 	}
 	chart, err := bazhai.ComputeChartAt(gender, standard)
 	if err != nil {
-		return bazhai.ChartView{}, fmt.Errorf("bazhai.chart: %w", err)
+		return bazhai.BaZhaiMingGuaPanView{}, fmt.Errorf("bazhai.chart: %w", err)
 	}
 	return chart.View(), nil
 }
 
-func BazhaiLayout(_ context.Context, input BazhaiLayoutInput) (bazhai.LayoutView, error) {
+func BazhaiLayout(_ context.Context, input BazhaiLayoutInput) (bazhai.MenZhuZaoView, error) {
 	mingGua, ok1 := luoshu.EncodeTrigram(string(input.MingGua))
 	doorGua, ok2 := luoshu.EncodeTrigram(string(input.DoorGua))
 	masterGua, ok3 := luoshu.EncodeTrigram(string(input.MasterGua))
 	stoveGua, ok4 := luoshu.EncodeTrigram(string(input.StoveGua))
 	if !ok1 || !ok2 || !ok3 || !ok4 {
-		return bazhai.LayoutView{}, fmt.Errorf("bazhai.layout: invalid trigram input")
+		return bazhai.MenZhuZaoView{}, fmt.Errorf("bazhai.layout: invalid trigram input")
 	}
 	layout, err := bazhai.ComputeLayout(mingGua, doorGua, masterGua, stoveGua)
 	if err != nil {
-		return bazhai.LayoutView{}, err
+		return bazhai.MenZhuZaoView{}, err
 	}
 	return layout.View(), nil
 }

@@ -487,7 +487,7 @@ func TestMingliContractCalls(t *testing.T) {
 		t.Fatalf("huangli days = %d, want 1", len(huangliOutput.Days))
 	}
 	day := huangliOutput.Days[0]
-	if day.Event.Event != "sign" || day.Event.EventLabel != "签约" || day.Event.Suitability != "recommended" {
+	if day.YiJi.Event != "sign" || day.YiJi.EventLabel != "签约" || day.YiJi.Suitability != "recommended" {
 		t.Fatalf("huangli classification = %#v", day)
 	}
 	if len(day.ShiChen) == 0 || day.Mansion.Name == "" || day.RiZhu.NaYin == "" {
@@ -505,12 +505,12 @@ func TestMingliContractCalls(t *testing.T) {
 	if err := registry.ValidateOutput("bazhai_chart", bazhaiRaw); err != nil {
 		t.Fatalf("bazhai.chart output contract: %v", err)
 	}
-	var bazhaiOutput bazhai.ChartView
+	var bazhaiOutput bazhai.BaZhaiMingGuaPanView
 	if err := json.Unmarshal(bazhaiRaw, &bazhaiOutput); err != nil {
 		t.Fatal(err)
 	}
 	if bazhaiOutput.MingGua.Gua.Name == "" || bazhaiOutput.MingGua.Group == "" ||
-		len(bazhaiOutput.BaZhaiDirs.ShengQi) == 0 || len(bazhaiOutput.YearStars.Palaces) != 9 {
+		len(bazhaiOutput.SiJiSiXiongFang.ShengQi) == 0 || len(bazhaiOutput.YearStars.Palaces) != 9 {
 		t.Fatalf("incomplete bazhai chart: %#v", bazhaiOutput)
 	}
 
@@ -526,11 +526,11 @@ func TestMingliContractCalls(t *testing.T) {
 	if err := registry.ValidateOutput("bazhai_layout", layoutRaw); err != nil {
 		t.Fatalf("bazhai.layout output contract: %v", err)
 	}
-	var layoutOutput bazhai.LayoutView
+	var layoutOutput bazhai.MenZhuZaoView
 	if err := json.Unmarshal(layoutRaw, &layoutOutput); err != nil {
 		t.Fatal(err)
 	}
-	if layoutOutput.Group != "西四命" || layoutOutput.Door.GuaName != "坤" || layoutOutput.Door.Match != "吉" {
+	if layoutOutput.DongXiSiMing != "西四命" || layoutOutput.Door.GuaName != "坤" || layoutOutput.Door.Match != "吉" {
 		t.Fatalf("unexpected bazhai layout: %#v", layoutOutput)
 	}
 
@@ -572,7 +572,7 @@ func TestMingliContractCalls(t *testing.T) {
 	}
 	if len(liunianDocument.LiuNian) != 1 ||
 		len(liunianDocument.LiuNian[0].GongWei) != 9 ||
-		len(liunianDocument.LiuNian[0].HouseOverlay) != 9 {
+		len(liunianDocument.LiuNian[0].LiuNianXingLinGong) != 9 {
 		t.Fatalf("incomplete xuankong overlay: %#v", liunianDocument)
 	}
 

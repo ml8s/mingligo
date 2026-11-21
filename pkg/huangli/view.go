@@ -45,12 +45,12 @@ type DayView struct {
 	Calendar        CalendarView        `json:"calendar" jsonschema:"日历与节气。"`
 	RiZhu           riZhuInfo           `json:"ri_zhu" jsonschema:"日柱。"`
 	Wuxing          string              `json:"wuxing" jsonschema:"日支五行。"`
-	Directions      DirectionsView      `json:"directions" jsonschema:"方位神煞。"`
-	Taboos          TaboosView          `json:"taboos" jsonschema:"彭祖百忌。"`
+	FangWeiShenSha  DirectionsView      `json:"fang_wei_shen_sha" jsonschema:"方位神煞。"`
+	PengZuBaiJi     TaboosView          `json:"peng_zu_bai_ji" jsonschema:"彭祖百忌。"`
 	JianChuHuangDao JianChuHuangDaoView `json:"jian_chu_huangdao" jsonschema:"建除黄道。"`
 	Mansion         dayMansion          `json:"xiu" jsonschema:"二十八宿。"`
 	ShiChen         []ShiChenFortune    `json:"shi_chen,omitempty" jsonschema:"十二时辰宜忌。"`
-	Event           EventView           `json:"event" jsonschema:"事项适配。"`
+	YiJi            EventView           `json:"yi_ji" jsonschema:"事项宜忌。"`
 }
 
 // View produces the domain-aggregated output from the computed day.
@@ -61,14 +61,14 @@ func (d Day) View() DayView {
 		},
 		RiZhu:  d.RiZhu,
 		Wuxing: d.Wuxing,
-		Directions: DirectionsView{
+		FangWeiShenSha: DirectionsView{
 			XiShen: d.XiShen, CaiShen: d.CaiShen, FuShen: d.FuShen,
 		},
-		Taboos:          TaboosView{StemTaboo: d.StemTaboo, BranchTaboo: d.BranchTaboo},
+		PengZuBaiJi:     TaboosView{StemTaboo: d.StemTaboo, BranchTaboo: d.BranchTaboo},
 		JianChuHuangDao: JianChuHuangDaoView{JianChu: d.JianChu, HuangDao: d.HuangDao},
 		Mansion:         d.Mansion,
 		ShiChen:         d.ShiChen,
-		Event: EventView{
+		YiJi: EventView{
 			Event: d.Event, EventLabel: d.EventLabel,
 			Suitability: d.Suitability, EventReason: d.EventReason,
 		},

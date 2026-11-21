@@ -17,7 +17,7 @@ type ChartView struct {
 	SitMountain    MountainView      `json:"zuo_shan" jsonschema:"坐山。"`
 	FaceMountain   MountainView      `json:"xiang_shan" jsonschema:"向首。"`
 	GongWei        [9]xuanKongStar   `json:"gong_wei" jsonschema:"九宫运星山星向星。"`
-	FourSituation  FourSituation     `json:"four_situation" jsonschema:"四大局。"`
+	SiDaJu         FourSituation     `json:"si_da_ju" jsonschema:"四大局。"`
 	FuYinLayers    []RecitationLayer `json:"fu_yin_layers" jsonschema:"伏吟层。"`
 	FanYinLayers   []RecitationLayer `json:"fan_yin_layers" jsonschema:"反吟层。"`
 	ShouShanChuSha shouShanChuSha    `json:"shou_shan_chu_sha" jsonschema:"收山出煞判断。"`
@@ -30,7 +30,7 @@ func (c Chart) View() ChartView {
 		SitMountain:    MountainView{Index: c.SitMountain, Name: c.ZuoShanName},
 		FaceMountain:   MountainView{Index: c.FaceMountain, Name: c.XiangShanName},
 		GongWei:        c.Palaces,
-		FourSituation:  c.FourSituation,
+		SiDaJu:         c.FourSituation,
 		FuYinLayers:    c.FuYinLayers,
 		FanYinLayers:   c.FanYinLayers,
 		ShouShanChuSha: c.ShouShanChuSha,

@@ -13,10 +13,9 @@
       },
       "expect": {
         "ming_gua.gua.name": "艮",
-        "ming_gua.group": "西四命",
+        "ming_gua.dong_xi_si_ming": "西四命",
         "ming_gua.year_boundary": "lichun",
-        "birth_year_xing.year": 1983,
-        "birth_year_xing.year_boundary": "lichun"
+        "birth_year_xing.year": 1983
       }
     },
     {

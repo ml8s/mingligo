@@ -47,7 +47,7 @@ type LiuNianResult struct {
 	Year         int                         `json:"year"`
 	RuZhong      string                      `json:"ru_zhong"`
 	GongWei      []fengshui.AnnualFlyingStar `json:"gong_wei"`
-	HouseOverlay []HouseOverlay              `json:"house_overlay,omitempty"`
+	HouseOverlay []HouseOverlay              `json:"liu_nian_xing_lin_gong,omitempty"`
 	NianJie      LiuNianJie                  `json:"nian_jie"`
 }
 

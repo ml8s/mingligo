@@ -114,7 +114,7 @@ func RegisterTools(server *mcp.Server) error {
 		},
 		toolAnnotations("bazi_chart"), BaziChart)
 
-	bazhaiChartInput, bazhaiChartOutput, err := typedSchemas[BazhaiChartInput, bazhai.ChartView](options)
+	bazhaiChartInput, bazhaiChartOutput, err := typedSchemas[BazhaiChartInput, bazhai.BaZhaiMingGuaPanView](options)
 	if err != nil {
 		return fmt.Errorf("bazhai_chart schema: %w", err)
 	}
@@ -122,7 +122,7 @@ func RegisterTools(server *mcp.Server) error {
 		mcp.Tool{Name: "bazhai_chart", Description: toolDescription("bazhai_chart"), InputSchema: bazhaiChartInput, OutputSchema: bazhaiChartOutput},
 		toolAnnotations("bazhai_chart"), BazhaiChart)
 
-	bazhaiLayoutInput, bazhaiLayoutOutput, err := typedSchemas[BazhaiLayoutInput, bazhai.LayoutView](options)
+	bazhaiLayoutInput, bazhaiLayoutOutput, err := typedSchemas[BazhaiLayoutInput, bazhai.MenZhuZaoView](options)
 	if err != nil {
 		return fmt.Errorf("bazhai_layout schema: %w", err)
 	}

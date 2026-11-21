@@ -28,11 +28,11 @@ type HouseOverlayView struct {
 }
 
 type LiuNianOutputView struct {
-	Year         int                `json:"year" jsonschema:"立春年份。"`
-	RuZhong      string             `json:"ru_zhong" jsonschema:"入中紫白星。"`
-	GongWei      [9]AnnualStarView  `json:"gong_wei" jsonschema:"九宫流年紫白星。"`
-	HouseOverlay []HouseOverlayView `json:"house_overlay,omitempty" jsonschema:"全部流年星落宫对照宅盘该宫三星；不预设星曜固有吉凶。"`
-	NianJie      LiuNianJieView     `json:"nian_jie" jsonschema:"玄空流年立春年界。"`
+	Year               int                `json:"year" jsonschema:"立春年份。"`
+	RuZhong            string             `json:"ru_zhong" jsonschema:"入中紫白星。"`
+	GongWei            [9]AnnualStarView  `json:"gong_wei" jsonschema:"九宫流年紫白星。"`
+	LiuNianXingLinGong []HouseOverlayView `json:"liu_nian_xing_lin_gong,omitempty" jsonschema:"全部流年星落宫对照宅盘该宫三星；不预设星曜固有吉凶。"`
+	NianJie            LiuNianJieView     `json:"nian_jie" jsonschema:"玄空流年立春年界。"`
 }
 
 func (v LiuNianResult) View() LiuNianOutputView {
