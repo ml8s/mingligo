@@ -58,47 +58,45 @@ type TiaoHouView struct {
 	SecondaryCondition string                  `json:"secondary_condition,omitempty" jsonschema:"辅调候条件。"`
 }
 
-// YongShenEvidenceView groups the three candidate/evidence sources for用神.
-type YongShenEvidenceView struct {
+// YongShenQuFaView groups the three取法 sources for用神 (扶抑/调候/格局).
+type YongShenQuFaView struct {
 	FuYi    FuYiView    `json:"fu_yi" jsonschema:"扶抑候选（旺衰见 states）。"`
 	TiaoHou TiaoHouView `json:"tiao_hou" jsonschema:"调候候选。"`
 	GeJu    GeJuResult  `json:"ge_ju" jsonschema:"月令结构证据。"`
 }
 
-// RelationsView groups canonical命理关系 facts (合会冲刑/禄根/拱夹/纳音).
-type RelationsView struct {
+// GuanXiView groups canonical干支关系 facts (合会冲刑/禄根/拱夹/纳音).
+type GuanXiView struct {
 	GuanXi   []NatalRelationFact `json:"guan_xi" jsonschema:"合会冲刑等命理关系。"`
 	LuRoots  []LuRoot            `json:"lu_roots" jsonschema:"十神通根禄位。"`
 	GongJia  []GongJia           `json:"gong_jia,omitempty" jsonschema:"三合三会拱局。"`
 	NayinRel []NayinRelEntry     `json:"na_yin_rel" jsonschema:"纳音生克关系。"`
 }
 
-// StatesView groups十神/五行 state facts. 旺衰 published only here.
-type StatesView struct {
+// WangShuaiView groups十神/五行旺衰 facts. 旺衰 published only here.
+type WangShuaiView struct {
 	ShiShenStates []TenGodState  `json:"shi_shen_states" jsonschema:"十神显隐通根得令旺弱。"`
 	WuxingStates  []ElementState `json:"wuxing_states" jsonschema:"五行旺衰（唯一出处）。"`
 }
 
-// StructureView groups盘面结构事实: 胎元命宫身宫、日主十二长生全表、三奇.
-// 确定性结论见 ConclusionsView；排盘口径见 CalendarView。
-type StructureView struct {
-	SanYuan    SanYuan             `json:"san_yuan" jsonschema:"胎元命宫身宫。"`
-	TaiXi      ganzhi.Zhu          `json:"tai_xi" jsonschema:"胎息。"`
+// SanYuanView groups 胎元/命宫/身宫.
+type SanYuanView struct {
+	SanYuan SanYuan `json:"san_yuan" jsonschema:"胎元命宫身宫。"`
+}
+
+// ChangShengView groups 日主十二长生全表.
+type ChangShengView struct {
 	ChangSheng [12]ChangShengStage `json:"chang_sheng" jsonschema:"日主十二长生全表。"`
-	SanQiName  string              `json:"san_qi_name,omitempty" jsonschema:"三奇名称。"`
 }
 
-// ConclusionsView groups盘面派生结论: 给定盘结果唯一可符号判定的事实。
-// 这些不是拟合分析（用神裁决/格局成败仍归 counsel），而是引擎产出的确定性结论。
-type ConclusionsView struct {
-	GuanSha           GuanSha         `json:"guan_sha" jsonschema:"官杀取清结论。"`
-	CaiKu             CaiKu           `json:"cai_ku" jsonschema:"财库结论。"`
-	SpousePalaceState PalaceState     `json:"spouse_palace_state" jsonschema:"夫妻宫受冲合刑害状态。"`
-	DayBranchType     BranchImageKind `json:"day_branch_type" jsonschema:"日支取象分类。"`
+// ShenShaView groups 胎息/三奇 (盘面神煞事实).
+type ShenShaView struct {
+	TaiXi     ganzhi.Zhu `json:"tai_xi" jsonschema:"胎息。"`
+	SanQiName string     `json:"san_qi_name,omitempty" jsonschema:"三奇名称。"`
 }
 
-// CalendarView groups历法/口径 facts only.
-type CalendarView struct {
+// LiFaKouJingView groups历法/排盘口径 facts only.
+type LiFaKouJingView struct {
 	Zodiac        string        `json:"sheng_xiao" jsonschema:"生肖。"`
 	RiXun         string        `json:"ri_xun" jsonschema:"日柱所在旬。"`
 	RiXunKong     string        `json:"ri_xun_kong" jsonschema:"日柱旬空。"`
@@ -109,14 +107,19 @@ type CalendarView struct {
 
 // ChartView is the domain-aggregated output of a Bazi chart.
 type ChartView struct {
-	Pillars          PillarsView          `json:"pillars" jsonschema:"四柱。"`
-	DaYun            *DaYun               `json:"da_yun,omitempty" jsonschema:"大运。"`
-	YongShenEvidence YongShenEvidenceView `json:"yong_shen_evidence" jsonschema:"用神三候选证据。"`
-	Relations        RelationsView        `json:"relations" jsonschema:"命理关系事实。"`
-	States           StatesView           `json:"states" jsonschema:"十神与五行状态。"`
-	Structure        StructureView        `json:"structure" jsonschema:"命理结构事实。"`
-	Conclusions      ConclusionsView      `json:"conclusions" jsonschema:"盘面派生结论。"`
-	Calendar         CalendarView         `json:"calendar" jsonschema:"历法与口径。"`
+	Pillars      PillarsView      `json:"pillars" jsonschema:"四柱。"`
+	DaYun        *DaYun           `json:"da_yun,omitempty" jsonschema:"大运。"`
+	YongShenQuFa YongShenQuFaView `json:"yong_shen_qu_fa" jsonschema:"用神三法（扶抑/调候/格局）。"`
+	GuanXi       GuanXiView       `json:"guan_xi" jsonschema:"干支关系事实。"`
+	WangShuai    WangShuaiView    `json:"wang_shuai" jsonschema:"十神与五行旺衰。"`
+	SanYuan      SanYuanView      `json:"san_yuan_view" jsonschema:"胎元命宫身宫。"`
+	ChangSheng   ChangShengView   `json:"chang_sheng_view" jsonschema:"日主十二长生。"`
+	ShenSha      ShenShaView      `json:"shen_sha" jsonschema:"胎息三奇。"`
+	GuanSha      GuanSha          `json:"guan_sha" jsonschema:"官杀取清。"`
+	CaiKu        CaiKu            `json:"cai_ku" jsonschema:"财库。"`
+	PeiOuGong    PalaceState      `json:"pei_ou_gong" jsonschema:"夫妻宫状态。"`
+	RiZhiXiang   BranchImageKind  `json:"ri_zhi_xiang" jsonschema:"日支取象。"`
+	LiFaKouJing  LiFaKouJingView  `json:"li_fa_kou_jing" jsonschema:"历法与排盘口径。"`
 }
 
 // View produces the domain-aggregated output from the computed chart. Filling
@@ -125,24 +128,23 @@ func (c Chart) View() ChartView {
 	return ChartView{
 		Pillars: PillarsView{Nian: c.Nian, Yue: c.Yue, Ri: c.Ri, Shi: c.Shi},
 		DaYun:   c.DaYun,
-		YongShenEvidence: YongShenEvidenceView{
+		YongShenQuFa: YongShenQuFaView{
 			FuYi:    fuyiView(c.FuYi),
 			TiaoHou: tiaoHouView(c.TiaoHou),
 			GeJu:    c.GeJu,
 		},
-		Relations: RelationsView{
+		GuanXi: GuanXiView{
 			GuanXi: c.GuanXi, LuRoots: c.LuRoots, GongJia: c.GongJia, NayinRel: c.NayinRel,
 		},
-		States: StatesView{ShiShenStates: c.TenGodStates, WuxingStates: c.ElementStates},
-		Structure: StructureView{
-			SanYuan: c.SanYuan, TaiXi: c.TaiXi,
-			ChangSheng: c.ChangSheng, SanQiName: c.SanQiName,
-		},
-		Conclusions: ConclusionsView{
-			GuanSha: c.GuanSha, CaiKu: c.CaiKu,
-			SpousePalaceState: c.SpousePalaceState, DayBranchType: c.DayBranchType,
-		},
-		Calendar: CalendarView{
+		WangShuai:  WangShuaiView{ShiShenStates: c.TenGodStates, WuxingStates: c.ElementStates},
+		SanYuan:    SanYuanView{SanYuan: c.SanYuan},
+		ChangSheng: ChangShengView{ChangSheng: c.ChangSheng},
+		ShenSha:    ShenShaView{TaiXi: c.TaiXi, SanQiName: c.SanQiName},
+		GuanSha:    c.GuanSha,
+		CaiKu:      c.CaiKu,
+		PeiOuGong:  c.SpousePalaceState,
+		RiZhiXiang: c.DayBranchType,
+		LiFaKouJing: LiFaKouJingView{
 			Zodiac: c.Zodiac, RiXun: c.DayXun, RiXunKong: c.DayXunKong, ZiShiRule: c.ZiShiRule,
 			ShenShaSchool: c.ShenShaSchool, BirthYear: c.BirthYear,
 		},

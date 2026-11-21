@@ -19,19 +19,19 @@ type LiuNianResolvedView struct {
 }
 
 type LiuNianOutputView struct {
-	Year              int                                 `json:"year" jsonschema:"年。"`
-	ShiShen           ganzhi.ShiShen                      `json:"shi_shen" jsonschema:"十神。"`
-	NianGan           *ganzhi.Gan                         `json:"gan,omitempty" jsonschema:"流年天干"`
-	NianZhi           *ganzhi.Zhi                         `json:"zhi,omitempty" jsonschema:"流年地支"`
-	NianGanWuxing     *string                             `json:"gan_wuxing,omitempty" jsonschema:"流年天干五行。"`
-	LiuNianNaYin      *string                             `json:"na_yin,omitempty" jsonschema:"流年干支纳音。"`
-	ShengRi           *int                                `json:"sheng_ri,omitempty" jsonschema:"流年是否生扶日主：0/1。"`
-	KeRi              *int                                `json:"ke_ri,omitempty" jsonschema:"流年是否克制日主：0/1。"`
-	ShenSha           *[]SeriesShenshaItemView            `json:"shen_sha,omitempty" jsonschema:"流年神煞名称与类别（吉/凶/中性）；取象见 chart 层 shen_sha description。年支+日支双查；值年按流年地支查命局四柱"`
-	FuYinFanYin       *[]LiuNianFuyinFanyinItemView       `json:"fu_yin_fan_yin,omitempty" jsonschema:"伏吟反吟"`
-	DaYunInteractions *[]LiuNianDayunInteractionsItemView `json:"da_yun_interactions,omitempty" jsonschema:"查询年份所在大运与流年交互（未起运或大运过完时为空数组）"`
-	NatalInteractions *[]LiuNianNatalInteractionsItemView `json:"natal_interactions,omitempty" jsonschema:"流年与命局交互"`
-	NianJie           LiuNianResolvedView                 `json:"nian_jie" jsonschema:"流年立春年界。"`
+	Year             int                                 `json:"year" jsonschema:"年。"`
+	ShiShen          ganzhi.ShiShen                      `json:"shi_shen" jsonschema:"十神。"`
+	LiuQiGan         *ganzhi.Gan                         `json:"gan,omitempty" jsonschema:"流期天干。"`
+	LiuQiZhi         *ganzhi.Zhi                         `json:"zhi,omitempty" jsonschema:"流期地支。"`
+	LiuQiGanWuxing   *string                             `json:"gan_wuxing,omitempty" jsonschema:"流期天干五行。"`
+	LiuQiNaYin       *string                             `json:"na_yin,omitempty" jsonschema:"流期干支纳音。"`
+	RiZhuSheng       *int                                `json:"sheng_ri,omitempty" jsonschema:"流期是否生扶日主：0/1。"`
+	RiZhuKe          *int                                `json:"ke_ri,omitempty" jsonschema:"流期是否克制日主：0/1。"`
+	ShenSha          *[]SeriesShenshaItemView            `json:"shen_sha,omitempty" jsonschema:"流年神煞名称与类别（吉/凶/中性）；取象见 chart 层 shen_sha description。年支+日支双查；值年按流年地支查命局四柱"`
+	FuYinFanYin      *[]LiuNianFuyinFanyinItemView       `json:"fu_yin_fan_yin,omitempty" jsonschema:"伏吟反吟"`
+	YunZhiZuoYong    *[]LiuNianDayunInteractionsItemView `json:"da_yun_interactions,omitempty" jsonschema:"查询年份所在大运与流年交互（未起运或大运过完时为空数组）"`
+	MingJuZhiZuoYong *[]LiuNianNatalInteractionsItemView `json:"natal_interactions,omitempty" jsonschema:"流年与命局交互"`
+	NianJie          LiuNianResolvedView                 `json:"nian_jie" jsonschema:"流年立春年界。"`
 }
 
 // LiuNianShenShaName is the closed 神煞 name set used by liupan series output.

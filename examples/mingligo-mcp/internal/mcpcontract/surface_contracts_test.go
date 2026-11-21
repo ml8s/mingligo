@@ -384,8 +384,8 @@ func TestMingliContractBaziTiaoHouUsesExplicitNoSecondary(t *testing.T) {
 	}
 	_ = callToolDocument(t, registry, "bazi_chart", map[string]any{"subject": subject})
 	full := callToolDocument(t, registry, "bazi_chart", map[string]any{"subject": subject})
-	// View groups用神 evidence under yong_shen_evidence.
-	evidence, _ := full["yong_shen_evidence"].(map[string]any)
+	// View groups用神取法 under yong_shen_qu_fa.
+	evidence, _ := full["yong_shen_qu_fa"].(map[string]any)
 	tiaoHou, _ := evidence["tiao_hou"].(map[string]any)
 	if tiaoHou == nil {
 		t.Fatalf("bazi.chart output has no tiao_hou: %#v", full)
@@ -402,7 +402,7 @@ func TestMingliContractBaziTiaoHouUsesExplicitNoSecondary(t *testing.T) {
 	decode(t, mustDefinition(t, registry, "bazi_chart").OutputSchema, &schema)
 	definitions, _ := schema["$defs"].(map[string]any)
 	properties := schema["properties"].(map[string]any)
-	evidenceSchema := properties["yong_shen_evidence"].(map[string]any)["properties"].(map[string]any)
+	evidenceSchema := properties["yong_shen_qu_fa"].(map[string]any)["properties"].(map[string]any)
 	fuYi := evidenceSchema["fu_yi"].(map[string]any)["properties"].(map[string]any)
 	tiaoHouSchema := evidenceSchema["tiao_hou"].(map[string]any)["properties"].(map[string]any)
 	for name, field := range map[string]map[string]any{

@@ -94,8 +94,8 @@ func TestMigratedBaziChartCompleteFacts(t *testing.T) {
 	}
 	// View fields are grouped by命理子域.
 	for _, pair := range [][2]string{
-		{"structure", "san_yuan"}, {"relations", "guan_xi"},
-		{"states", "shi_shen_states"}, {"states", "wuxing_states"}, {"da_yun", ""},
+		{"san_yuan_view", "san_yuan"}, {"guan_xi", "guan_xi"},
+		{"wang_shuai", "shi_shen_states"}, {"wang_shuai", "wuxing_states"}, {"da_yun", ""},
 	} {
 		var value any
 		if pair[1] == "" {
@@ -118,9 +118,9 @@ func TestMigratedBaziChartCompleteFacts(t *testing.T) {
 		}
 	}
 
-	relations, ok := sub("relations", "na_yin_rel").([]any)
+	relations, ok := sub("guan_xi", "na_yin_rel").([]any)
 	if !ok || len(relations) != 6 {
-		t.Fatalf("na_yin_rel = %#v, want 6 entries", sub("relations", "na_yin_rel"))
+		t.Fatalf("na_yin_rel = %#v, want 6 entries", sub("guan_xi", "na_yin_rel"))
 	}
 	sameOnly := true
 	for _, raw := range relations {
