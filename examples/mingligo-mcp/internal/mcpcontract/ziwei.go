@@ -282,14 +282,14 @@ func advanceZiweiLiuShi(input ZiweiLiupanInput) (ZiweiLiupanInput, error) {
 }
 
 // ZiweiBond returns raw cross-chart facts for two charts.
-func ZiweiBond(_ context.Context, input ZiweiBondInput) (ziwei.Bond, error) {
+func ZiweiBond(_ context.Context, input ZiweiBondInput) (ziwei.BondView, error) {
 	chartA, err := input.A.Subject.ziweiChart()
 	if err != nil {
-		return ziwei.Bond{}, fmt.Errorf("ziwei.bond: chart a: %w", err)
+		return ziwei.BondView{}, fmt.Errorf("ziwei.bond: chart a: %w", err)
 	}
 	chartB, err := input.B.Subject.ziweiChart()
 	if err != nil {
-		return ziwei.Bond{}, fmt.Errorf("ziwei.bond: chart b: %w", err)
+		return ziwei.BondView{}, fmt.Errorf("ziwei.bond: chart b: %w", err)
 	}
-	return ziwei.ComputeBond(chartA.BondSideFacts(), chartB.BondSideFacts()), nil
+	return ziwei.ComputeBond(chartA.BondSideFacts(), chartB.BondSideFacts()).View(), nil
 }

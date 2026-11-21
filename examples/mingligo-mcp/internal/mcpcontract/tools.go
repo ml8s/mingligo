@@ -193,7 +193,7 @@ func RegisterTools(server *mcp.Server) error {
 		},
 		toolAnnotations("liuyao_chart"), LiuyaoChart)
 
-	baziBondInput, baziBondOutput, err := typedSchemas[BaziBondInput, BaziBondOutput](options)
+	baziBondInput, baziBondOutput, err := typedSchemas[BaziBondInput, bazi.BondView](options)
 	if err != nil {
 		return fmt.Errorf("bazi_bond schema: %w", err)
 	}
@@ -244,7 +244,7 @@ func RegisterTools(server *mcp.Server) error {
 		},
 		toolAnnotations("ziwei_liupan"), ZiweiLiupan)
 
-	ziweiBondInput, ziweiBondOutput, err := typedSchemas[ZiweiBondInput, ZiweiBondOutput](options)
+	ziweiBondInput, ziweiBondOutput, err := typedSchemas[ZiweiBondInput, ziwei.BondView](options)
 	if err != nil {
 		return fmt.Errorf("ziwei_bond schema: %w", err)
 	}

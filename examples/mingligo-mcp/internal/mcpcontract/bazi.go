@@ -26,16 +26,16 @@ func BaziChart(_ context.Context, input BaziChartInput) (bazi.ChartView, error) 
 // ── typed handlers for the remaining bazi tools ──
 
 // BaziBond returns cross-chart facts for two bazi charts.
-func BaziBond(_ context.Context, input BaziBondInput) (bazi.Bond, error) {
+func BaziBond(_ context.Context, input BaziBondInput) (bazi.BondView, error) {
 	coreA, err := input.A.Subject.baziCore()
 	if err != nil {
-		return bazi.Bond{}, fmt.Errorf("bazi.bond: chart a: %w", err)
+		return bazi.BondView{}, fmt.Errorf("bazi.bond: chart a: %w", err)
 	}
 	coreB, err := input.B.Subject.baziCore()
 	if err != nil {
-		return bazi.Bond{}, fmt.Errorf("bazi.bond: chart b: %w", err)
+		return bazi.BondView{}, fmt.Errorf("bazi.bond: chart b: %w", err)
 	}
-	return bazi.ComputeBond(coreA, coreB), nil
+	return bazi.ComputeBond(coreA, coreB).View(), nil
 }
 
 // BaziLiupan computes one selected dynamic time layer from the calibrated natal

@@ -171,21 +171,4 @@ type ZiweiBondInput struct {
 
 // ── ziwei.bond output ──
 
-type ZiweiBondOutput struct {
-	MingGong ZiweiBondPalacePair `json:"ming_gong" jsonschema:"双方本命宫。"`
-	FuQiGong ZiweiBondPalacePair `json:"fu_qi_gong" jsonschema:"双方夫妻宫。"`
-	ZiNvGong ZiweiBondPalacePair `json:"zi_nv_gong" jsonschema:"双方子女宫。"`
-}
-
-type ZiweiBondPalaceFacts struct {
-	Palace     string   `json:"gong"`
-	MajorStars []string `json:"major_xing"`
-}
-
-type ZiweiBondPalacePair struct {
-	A      ZiweiBondPalaceFacts `json:"a"`
-	B      ZiweiBondPalaceFacts `json:"b"`
-	Status string               `json:"status"`
-}
-
 // ── ziwei.chart output ──
