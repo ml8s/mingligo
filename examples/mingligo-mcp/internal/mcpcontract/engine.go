@@ -15,6 +15,7 @@ import (
 	"github.com/ml8s/mingligo/pkg/ganzhi"
 	"github.com/ml8s/mingligo/pkg/liuyao"
 	"github.com/ml8s/mingligo/pkg/qimen"
+	"github.com/ml8s/mingligo/pkg/ziwei"
 )
 
 // buildStaticSchemaOptions builds wire-level constraints that Go struct tags
@@ -188,6 +189,21 @@ func buildStaticSchemaOptions() map[reflect.Type]*jsonschema.Schema {
 		},
 		reflect.TypeFor[qimen.YingQiMatchKind](): {
 			Type: "string", Enum: []any{"same", "opposite"},
+		},
+		reflect.TypeFor[ziwei.Brightness](): {
+			Type: "string", Enum: []any{"庙", "旺", "得", "利", "平", "陷", "不"},
+		},
+		reflect.TypeFor[ziwei.GongIndex](): {
+			Type: "string", Enum: []any{"命宫", "兄弟", "夫妻", "子女", "财帛", "疾厄", "迁移", "仆役", "官禄", "田宅", "福德", "父母"},
+		},
+		reflect.TypeFor[ziwei.JuShu](): {
+			Type: "string", Enum: []any{"water_2", "wood_3", "metal_4", "earth_5", "fire_6"},
+		},
+		reflect.TypeFor[ziwei.ShenSha](): {
+			Type: "string", Enum: []any{"华盖", "咸池", "孤辰", "寡宿", "破碎", "蜚廉", "龙池", "凤阁", "天哭", "天虚", "天空", "天德", "月德", "天姚", "天刑", "阴煞", "解神", "天月", "天巫", "台辅", "封诰", "天厨", "天官", "天福", "截路", "空亡", "红鸾", "天喜", "三台", "八座", "恩光", "天贵", "旬空", "年解", "天才", "天寿", "天伤", "天使"},
+		},
+		reflect.TypeFor[ziwei.StarIndex](): {
+			Type: "string", Enum: []any{"紫微", "天机", "太阳", "武曲", "天同", "廉贞", "天府", "太阴", "贪狼", "巨门", "天相", "天梁", "七杀", "破军", "禄存", "天魁", "天钺", "左辅", "右弼", "文昌", "文曲", "擎羊", "陀罗", "天马", "火星", "铃星", "地空", "地劫", "红鸾", "天喜"},
 		},
 		reflect.TypeFor[GanName](): {
 			Type: "string", Enum: []any{"甲", "乙", "丙", "丁", "戊", "己", "庚", "辛", "壬", "癸"},

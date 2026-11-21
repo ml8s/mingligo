@@ -2,14 +2,13 @@ package mcpcontract
 
 import (
 	"encoding/json"
-	"reflect"
 	"testing"
 )
 
-// TestZiweiChartDomainMatchesWire guards that the domain chart's own JSON
-// equals the wire DTO shape. If it holds, the handler can return the domain
-// value directly (like the other chart/flow tools) with no projection.
-func TestZiweiChartDomainMatchesWire(t *testing.T) {
+// TestZiweiChartViewMatchesOutputSchema guards that the domain-owned ChartView
+// serializes to a shape satisfying the schema reflected from that same type.
+func TestZiweiChartViewMatchesOutputSchema(t *testing.T) {
+	registry := testContractServer()
 	subject := NatalSubject{
 		StandardTime: "2024-02-09T23:30:00-05:00",
 		Longitude:    -74.0,
@@ -19,16 +18,11 @@ func TestZiweiChartDomainMatchesWire(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	wire, err := wireFromDomain[ZiweiChartOutput](chart)
+	raw, err := json.Marshal(chart.View())
 	if err != nil {
 		t.Fatal(err)
 	}
-	domainRaw, _ := json.Marshal(chart)
-	wireRaw, _ := json.Marshal(wire)
-	var a, b any
-	json.Unmarshal(domainRaw, &a)
-	json.Unmarshal(wireRaw, &b)
-	if !reflect.DeepEqual(a, b) {
-		t.Errorf("domain/wire mismatch\ndomain: %s\nwire:   %s", domainRaw, wireRaw)
+	if err := registry.ValidateOutput("ziwei_chart", raw); err != nil {
+		t.Fatalf("view output contract: %v", err)
 	}
 }

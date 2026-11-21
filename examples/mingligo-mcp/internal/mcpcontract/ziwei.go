@@ -13,13 +13,13 @@ func ziweiLunarProjector(loc *time.Location) (tianwen.LunarProjector, error) {
 	return tianwen.NewLunarProjector(tianwen.LunarBasisLocalAstronomical, loc)
 }
 
-// ZiweiChart computes the canonical complete twelve-palace chart.
-func ZiweiChart(_ context.Context, input ZiweiChartInput) (ziwei.Chart, error) {
+// ZiweiChart computes the canonical, domain-aggregated twelve-palace chart view.
+func ZiweiChart(_ context.Context, input ZiweiChartInput) (ziwei.ChartView, error) {
 	chart, err := input.Subject.ziweiChart()
 	if err != nil {
-		return ziwei.Chart{}, fmt.Errorf("ziwei.chart: %w", err)
+		return ziwei.ChartView{}, fmt.Errorf("ziwei.chart: %w", err)
 	}
-	return chart, nil
+	return chart.View(), nil
 }
 
 // ZiweiLiupan computes one selected flow layer from the calibrated natal

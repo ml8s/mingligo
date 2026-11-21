@@ -12,6 +12,7 @@ import (
 
 	"github.com/ml8s/mingligo/examples/mingligo-mcp/internal/observability"
 	"github.com/ml8s/mingligo/pkg/bazi"
+	"github.com/ml8s/mingligo/pkg/ziwei"
 )
 
 // registerTyped adapts a pure domain handler to the official SDK typed
@@ -213,7 +214,7 @@ func RegisterTools(server *mcp.Server) error {
 		},
 		toolAnnotations("bazi_liupan"), BaziLiupan)
 
-	ziweiChartInput, ziweiChartOutput, err := typedSchemas[ZiweiChartInput, ZiweiChartOutput](options)
+	ziweiChartInput, ziweiChartOutput, err := typedSchemas[ZiweiChartInput, ziwei.ChartView](options)
 	if err != nil {
 		return fmt.Errorf("ziwei_chart schema: %w", err)
 	}
