@@ -642,8 +642,8 @@ func TestMingliContractCalls(t *testing.T) {
 		t.Fatal(err)
 	}
 	liuyaoChart := liuyaoChartResult.Chart
-	if liuyaoChart.GuaName == "" || len(liuyaoChart.Lines) != 6 ||
-		liuyaoChart.Analysis.TombSchool.School == "" {
+	if liuyaoChart.GuaName == "" || len(liuyaoChart.LiuYao) != 6 ||
+		liuyaoChart.MuKuLiuPai.School == "" {
 		t.Fatalf("incomplete liuyao chart: %#v", liuyaoChart)
 	}
 

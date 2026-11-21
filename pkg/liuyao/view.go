@@ -71,36 +71,67 @@ type YongShenView struct {
 	FuShenCandidates []FuShenView `json:"fu_shen_candidates,omitempty" jsonschema:"伏神候选。"`
 }
 
-type AnalysisView struct {
-	TimingCandidates      []TimingCandidate      `json:"timing_candidates,omitempty" jsonschema:"应期候选（应期层；候选非定论）。"`
-	DongYaoRelations      []DongYaoRelation      `json:"dong_yao_relations,omitempty" jsonschema:"动爻关系。"`
-	HiddenLines           []HiddenLine           `json:"hidden_lines,omitempty" jsonschema:"本宫全量伏神表（含飞神/飞伏关系/出入条件）；所选用神的伏神见 yong_shen.fu_shen。"`
-	BranchRelationFacts   []BranchRelationFact   `json:"zhi_relation_facts,omitempty" jsonschema:"地支关系事实。"`
-	TombSchool            TombSchool             `json:"tomb_school" jsonschema:"墓库流派（方法元数据层）。"`
-	DayClashFacts         []DayClashFact         `json:"day_clash_facts,omitempty" jsonschema:"日冲事实。"`
-	MovingTransformations []MovingTransformation `json:"moving_transformations,omitempty" jsonschema:"动爻变化。"`
-	SanHeCandidates       []SanHeCandidate       `json:"san_he_candidates,omitempty" jsonschema:"三合候选（格局结构层）。"`
-	ForceChain            *ForceChain            `json:"yong_shen_force_chain,omitempty" jsonschema:"用神力量链（用神层）。"`
-	YongShenCandidates    []YongShenCandidate    `json:"yong_shen_candidates,omitempty" jsonschema:"用神候选（用神层；含 Selected 确定性取舍）。"`
-	Conflicts             []Conflict             `json:"conflicts,omitempty" jsonschema:"冲突信号。"`
+// ShiQiView groups 应期候选 (candidates, not a verdict).
+type ShiQiView struct {
+	Candidates []TimingCandidate `json:"candidates,omitempty" jsonschema:"应期候选（非定论）。"`
+}
+
+// YongShenCengView groups 用神层 facts (力量链与取舍候选).
+type YongShenCengView struct {
+	ForceChain *ForceChain         `json:"force_chain,omitempty" jsonschema:"用神力量链。"`
+	Candidates []YongShenCandidate `json:"candidates,omitempty" jsonschema:"用神候选（含确定性取舍）。"`
+}
+
+// GeJuCengView groups 格局结构层 (六爻格局与三合结构).
+type GeJuCengView struct {
+	Patterns        []PatternView    `json:"patterns,omitempty" jsonschema:"六爻格局。"`
+	SanHeCandidates []SanHeCandidate `json:"san_he_candidates,omitempty" jsonschema:"三合结构候选。"`
+}
+
+// DongYaoGuanXiView groups 动爻关系.
+type DongYaoGuanXiView struct {
+	Relations       []DongYaoRelation      `json:"relations,omitempty" jsonschema:"动爻关系。"`
+	Transformations []MovingTransformation `json:"transformations,omitempty" jsonschema:"动变。"`
+}
+
+// FuShenCengView groups 伏神层 facts.
+type FuShenCengView struct {
+	HiddenLines []HiddenLine `json:"hidden_lines,omitempty" jsonschema:"本宫全量伏神表。"`
+}
+
+// ZhiGuanXiView groups 地支关系与日冲.
+type ZhiGuanXiView struct {
+	Relations  []BranchRelationFact `json:"relations,omitempty" jsonschema:"地支关系。"`
+	DayClashes []DayClashFact       `json:"day_clashes,omitempty" jsonschema:"日冲事实。"`
+}
+
+// MaoDunXinHao groups 矛盾信号 (待解释层裁决).
+type MaoDunXinHao struct {
+	Signals []Conflict `json:"signals,omitempty" jsonschema:"矛盾信号（非吉凶裁决）。"`
 }
 
 type ChartView struct {
-	GuaName    string        `json:"gua_name" jsonschema:"卦名。"`
-	BianGua    *string       `json:"bian_gua" jsonschema:"变卦。"`
-	Gong       string        `json:"gong" jsonschema:"宫位。"`
-	GongWuxing string        `json:"gong_wuxing" jsonschema:"宫位五行。"`
-	Lines      []LineView    `json:"lines" jsonschema:"本卦六爻。"`
-	BianLines  []LineView    `json:"bian_lines" jsonschema:"变卦六爻（仅动变事实，不参与主用神定位与旺衰判断）。"`
-	RiChenGan  string        `json:"ri_chen_gan" jsonschema:"日辰天干。"`
-	RiChenZhi  string        `json:"ri_chen_zhi" jsonschema:"日辰地支。"`
-	YueJianGan string        `json:"yue_jian_gan" jsonschema:"月建天干。"`
-	YueJianZhi string        `json:"yue_jian_zhi" jsonschema:"月建地支。"`
-	XunKong    []string      `json:"xun_kong" jsonschema:"旬空地支（两字）。"`
-	Patterns   []PatternView `json:"ge_ju" jsonschema:"格局。"`
-	YongShen   YongShenView  `json:"yong_shen" jsonschema:"用神。"`
-	GuaCi      *GuaCiView    `json:"gua_ci,omitempty" jsonschema:"卦辞。"`
-	Analysis   AnalysisView  `json:"analysis" jsonschema:"领域聚合分析事实。"`
+	GuaName       string            `json:"gua_name" jsonschema:"卦名。"`
+	BianGua       *string           `json:"bian_gua" jsonschema:"变卦。"`
+	Gong          string            `json:"gong" jsonschema:"宫位。"`
+	GongWuxing    string            `json:"gong_wuxing" jsonschema:"宫位五行。"`
+	LiuYao        []LineView        `json:"liu_yao" jsonschema:"本卦六爻。"`
+	BianYao       []LineView        `json:"bian_yao" jsonschema:"变卦六爻（仅动变事实）。"`
+	RiChenGan     string            `json:"ri_chen_gan" jsonschema:"日辰天干。"`
+	RiChenZhi     string            `json:"ri_chen_zhi" jsonschema:"日辰地支。"`
+	YueJianGan    string            `json:"yue_jian_gan" jsonschema:"月建天干。"`
+	YueJianZhi    string            `json:"yue_jian_zhi" jsonschema:"月建地支。"`
+	XunKong       []string          `json:"xun_kong" jsonschema:"旬空地支（两字）。"`
+	GeJuCeng      GeJuCengView      `json:"ge_ju_ceng" jsonschema:"格局结构层。"`
+	YongShen      YongShenView      `json:"yong_shen" jsonschema:"用神。"`
+	YongShenCeng  YongShenCengView  `json:"yong_shen_ceng" jsonschema:"用神层。"`
+	ShiQi         ShiQiView         `json:"shi_qi" jsonschema:"应期。"`
+	DongYaoGuanXi DongYaoGuanXiView `json:"dong_yao_guan_xi" jsonschema:"动爻关系。"`
+	FuShenCeng    FuShenCengView    `json:"fu_shen_ceng" jsonschema:"伏神层。"`
+	ZhiGuanXi     ZhiGuanXiView     `json:"zhi_guan_xi" jsonschema:"地支关系。"`
+	MaoDunXinHao  MaoDunXinHao      `json:"mao_dun_xin_hao" jsonschema:"矛盾信号。"`
+	MuKuLiuPai    TombSchool        `json:"mu_ku_liu_pai" jsonschema:"墓库流派（方法元数据）。"`
+	GuaCi         *GuaCiView        `json:"gua_ci,omitempty" jsonschema:"卦辞。"`
 }
 
 func (c Chart) lineView(line Line, rel DayRelation, wangShuai ganzhi.WangShuai) LineView {
@@ -157,27 +188,34 @@ func (c Chart) View() ChartView {
 	view := ChartView{
 		GuaName: c.BenGua.Name(),
 		Gong:    c.Palace, GongWuxing: ganzhi.DecodeWuxing(c.PalaceWuxing),
-		Lines: make([]LineView, 0, 6), BianLines: make([]LineView, 0, 6),
+		LiuYao: make([]LineView, 0, 6), BianYao: make([]LineView, 0, 6),
 		RiChenGan: ganzhi.GanName(c.RiGan), RiChenZhi: ganzhi.ZhiName(c.RiZhi),
 		YueJianGan: ganzhi.GanName(c.YueGan), YueJianZhi: ganzhi.ZhiName(c.YueZhi),
-		XunKong:  []string{ganzhi.ZhiName(c.XunKong[0]), ganzhi.ZhiName(c.XunKong[1])},
-		Patterns: make([]PatternView, 0, len(c.Patterns)),
-		YongShen: yongShenView(c.YongShen),
+		XunKong:       []string{ganzhi.ZhiName(c.XunKong[0]), ganzhi.ZhiName(c.XunKong[1])},
+		GeJuCeng:      GeJuCengView{Patterns: make([]PatternView, 0, len(c.Patterns)), SanHeCandidates: c.SanHeCandidates},
+		YongShen:      yongShenView(c.YongShen),
+		YongShenCeng:  YongShenCengView{ForceChain: c.ForceChain, Candidates: c.YongShenCandidates},
+		ShiQi:         ShiQiView{Candidates: c.TimingCandidates},
+		DongYaoGuanXi: DongYaoGuanXiView{Relations: c.DongYaoRelations, Transformations: c.MovingTransformations},
+		FuShenCeng:    FuShenCengView{HiddenLines: c.HiddenLines},
+		ZhiGuanXi:     ZhiGuanXiView{Relations: c.BranchRelationFacts, DayClashes: c.DayClashFacts},
+		MaoDunXinHao:  MaoDunXinHao{Signals: c.Conflicts},
+		MuKuLiuPai:    c.TombSchool,
 	}
 	if int(c.BianGua) != 0 {
 		name := c.BianGua.Name()
 		view.BianGua = &name
 	}
 	for i, line := range c.Lines {
-		view.Lines = append(view.Lines, c.lineView(line, c.DayRelations[i], c.WangShuai[i]))
+		view.LiuYao = append(view.LiuYao, c.lineView(line, c.DayRelations[i], c.WangShuai[i]))
 	}
 	for _, line := range c.BianLines {
 		if line.Position != 0 {
-			view.BianLines = append(view.BianLines, c.lineView(line, DayRelation{}, ganzhi.WangShuai(-1)))
+			view.BianYao = append(view.BianYao, c.lineView(line, DayRelation{}, ganzhi.WangShuai(-1)))
 		}
 	}
 	for i, p := range c.Patterns {
-		view.Patterns = append(view.Patterns, PatternView{
+		view.GeJuCeng.Patterns = append(view.GeJuCeng.Patterns, PatternView{
 			ID: fmt.Sprintf("pattern-%d", i+1), PatternKind: string(p.Type),
 			SubType: string(p.SubType), Position: p.Position, IsTrue: p.IsTrue,
 		})
@@ -188,30 +226,5 @@ func (c Chart) View() ChartView {
 			YaoCi: append([]string(nil), c.GuaCi.YaoCi[:]...),
 		}
 	}
-	view.Analysis = c.Analysis()
 	return view
-}
-
-// Analysis returns the deterministic judgment facts. The section is kept as a
-// single object for adapter/counsel compatibility; its fields fall into five
-// layers, marked in the jsonschema below:
-//   - 方法元数据: tomb_school
-//   - 应期: timing_candidates
-//   - 用神: force_chain, yong_shen_candidates
-//   - 格局: san_he_candidates
-//   - 关系/派生/元判断: the remaining fields
-func (c Chart) Analysis() AnalysisView {
-	return AnalysisView{
-		TimingCandidates:      c.TimingCandidates,
-		DongYaoRelations:      c.DongYaoRelations,
-		HiddenLines:           c.HiddenLines,
-		BranchRelationFacts:   c.BranchRelationFacts,
-		TombSchool:            c.TombSchool,
-		DayClashFacts:         c.DayClashFacts,
-		MovingTransformations: c.MovingTransformations,
-		SanHeCandidates:       c.SanHeCandidates,
-		ForceChain:            c.ForceChain,
-		YongShenCandidates:    c.YongShenCandidates,
-		Conflicts:             c.Conflicts,
-	}
 }
