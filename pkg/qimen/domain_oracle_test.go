@@ -1,8 +1,8 @@
 package qimen
 
 import (
-	"github.com/ml8s/mingligo/pkg/tianwen"
 	"encoding/json"
+	"github.com/ml8s/mingligo/pkg/tianwen"
 	"os"
 	"testing"
 	"time"

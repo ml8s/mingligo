@@ -54,7 +54,7 @@ func TestLiuNian_Golden(t *testing.T) {
 			if gc.Gender == "female" {
 				g = ganzhi.Female
 			}
-			chart := ComputeChart(time.Time(when), st, g)
+			chart := computeChartFromTimes(time.Time(when), st, g)
 
 			liuNianTime1, err := ResolveLiuNianTime(tianwen.NewDate(gc.Year, 6, 15))
 			if err != nil {

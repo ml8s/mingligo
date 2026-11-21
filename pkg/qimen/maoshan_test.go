@@ -65,7 +65,7 @@ func TestMaoShanDingjuAnchors(t *testing.T) {
 			if err != nil {
 				t.Fatal(err)
 			}
-			chart, err := ComputeChartWithMethod(time.Time(when), time.Time(when),
+			chart, err := computeChartWithMethod(time.Time(when), time.Time(when),
 				Method{Scope: ScopeHour, School: SchoolZhuanPan, Dingju: DingjuMaoShan},
 			)
 			if err != nil {

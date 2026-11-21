@@ -42,7 +42,7 @@ func TestDongYao_BianGua_Anchors(t *testing.T) {
 			st := tianwen.ApparentSolarFromCivil(
 				time.Date(2024, 2, 2, 12, 0, 0, 0, time.FixedZone("CST", 8*3600)),
 				116.4, 8)
-			chart := ComputeChart(stgt, st, YongShiYao, c.yaos)
+			chart := computeChartFromTimes(stgt, st, YongShiYao, c.yaos)
 			if chart.Name != c.wantBen {
 				t.Errorf("ben_gua = %s, want %s", chart.Name, c.wantBen)
 			}
@@ -81,7 +81,7 @@ func TestComputeChart_InvalidYaos_EmptyChart(t *testing.T) {
 		{6, 7, 7, 7, 7, 10},
 		{7, 7, 7, 7, 7, 99},
 	} {
-		chart := ComputeChart(stgt, st, YongShiYao, yaos)
+		chart := computeChartFromTimes(stgt, st, YongShiYao, yaos)
 		if chart.Name != "" {
 			t.Errorf("非法爻数 %v → 卦名 %q, want 空盘", yaos, chart.Name)
 		}

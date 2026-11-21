@@ -30,7 +30,7 @@ func TestLiuShi_WanZiShi_UsesNextDayGan(t *testing.T) {
 		time.Date(1990, 5, 20, 12, 0, 0, 0, time.FixedZone("CST", 8*3600)),
 		116.4, 8,
 	)
-	chart := ComputeChart(stgt, st, ganzhi.Male)
+	chart := computeChartFromTimes(stgt, st, ganzhi.Male)
 	bz := chart.ToBazi()
 	if bz.Ri.Gan != ganzhi.GanYi {
 		t.Fatalf("期望 5/20 日干乙（庚午 辛巳 乙酉），got %d", bz.Ri.Gan)
@@ -70,7 +70,7 @@ func TestLiuShi_OtherHours_UseSameDayGan(t *testing.T) {
 		time.Date(1990, 5, 20, 12, 0, 0, 0, time.FixedZone("CST", 8*3600)),
 		116.4, 8,
 	)
-	chart := ComputeChart(stgt, st, ganzhi.Male)
+	chart := computeChartFromTimes(stgt, st, ganzhi.Male)
 	bz := chart.ToBazi()
 
 	// 卯时（6:00）用当天日干乙 → 乙日卯时 己卯。

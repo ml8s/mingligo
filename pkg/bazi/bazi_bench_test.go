@@ -18,7 +18,7 @@ func BenchmarkComputeChart(b *testing.B) {
 	)
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		ComputeChart(stgt, st, ganzhi.Male)
+		computeChartFromTimes(stgt, st, ganzhi.Male)
 	}
 }
 
@@ -33,8 +33,8 @@ func BenchmarkComputeBond(b *testing.B) {
 		time.Date(1986, 8, 20, 12, 0, 0, 0, cst),
 		121.5, 8,
 	)
-	chartA := ComputeChart(stAgt, stA, ganzhi.Male)
-	chartB := ComputeChart(stBgt, stB, ganzhi.Female)
+	chartA := computeChartFromTimes(stAgt, stA, ganzhi.Male)
+	chartB := computeChartFromTimes(stBgt, stB, ganzhi.Female)
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		ComputeBond(chartA.Core(), chartB.Core())
@@ -47,7 +47,7 @@ func BenchmarkComputeLiuNian(b *testing.B) {
 		time.Date(1984, 2, 15, 8, 0, 0, 0, cst),
 		116.4, 8,
 	)
-	chart := ComputeChart(stgt, st, ganzhi.Male)
+	chart := computeChartFromTimes(stgt, st, ganzhi.Male)
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		liuNianTime, err := ResolveLiuNianTime(tianwen.NewDate(2026, 6, 15))
@@ -66,7 +66,7 @@ func BenchmarkComputeXiaoYun(b *testing.B) {
 		time.Date(1984, 2, 15, 8, 0, 0, 0, cst),
 		116.4, 8,
 	)
-	chart := ComputeChart(stgt, st, ganzhi.Male)
+	chart := computeChartFromTimes(stgt, st, ganzhi.Male)
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		ComputeXiaoYun(chart.Core(), 120)

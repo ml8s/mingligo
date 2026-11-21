@@ -19,7 +19,7 @@ func ComputeChartWithMethodAt(
 	method Method,
 ) (Chart, error) {
 	gt, st := civilSolar(standard, longitude)
-	return ComputeChartWithMethod(gt, st, method)
+	return computeChartWithMethod(gt, st, method)
 }
 
 // ComputeChartWithYongShenAndMethodAt is the explicit-time entry for the
@@ -32,7 +32,7 @@ func ComputeChartWithYongShenAndMethodAt(
 	method Method,
 ) (Chart, error) {
 	gt, st := civilSolar(standard, longitude)
-	return ComputeChartWithYongShenAndMethod(gt, st, symbols, birthDate, method)
+	return computeChartWithYongShenAndMethod(gt, st, symbols, birthDate, method)
 }
 
 // ComputeJinhanChartAt is the explicit-time entry for the Golden Mirror chart.
@@ -41,5 +41,5 @@ func ComputeJinhanChartAt(
 	longitude float64,
 ) JinhanChart {
 	gt, st := civilSolar(standard, longitude)
-	return ComputeJinhanChart(gt, st)
+	return computeJinhanChart(gt, st)
 }

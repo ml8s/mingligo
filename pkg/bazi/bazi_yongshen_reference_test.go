@@ -22,7 +22,7 @@ func TestYongShen_TiaoHouVsFuYi_Conflict(t *testing.T) {
 		time.Date(1990, 6, 15, 12, 0, 0, 0, time.FixedZone("CST", 8*3600)),
 		116.4, 8,
 	)
-	chart := ComputeChart(stgt, st, ganzhi.Male)
+	chart := computeChartFromTimes(stgt, st, ganzhi.Male)
 	fuYi, tiaoHou, geJu := chart.FuYi, chart.TiaoHou, chart.GeJu
 
 	if tiaoHou.PrimaryWuxing == "" {
@@ -53,7 +53,7 @@ func TestFuYi_SanHui_HuoJu(t *testing.T) {
 		time.Date(2025, 7, 15, 12, 0, 0, 0, time.FixedZone("CST", 8*3600)),
 		116.4, 8,
 	)
-	chart := ComputeChart(stgt, st, ganzhi.Male)
+	chart := computeChartFromTimes(stgt, st, ganzhi.Male)
 	fuYi := chart.FuYi
 
 	t.Logf("三会火方: 八字=%s%s %s%s %s%s %s%s, strength=%s",
@@ -79,7 +79,7 @@ func TestReference_DiTianSui_WeakWoodWithFire(t *testing.T) {
 		time.Date(2001, 9, 19, 12, 0, 0, 0, time.FixedZone("CST", 8*3600)),
 		116.4, 8,
 	)
-	chart := ComputeChart(stgt, st, ganzhi.Male)
+	chart := computeChartFromTimes(stgt, st, ganzhi.Male)
 	fuYi, tiaoHou, geJu := chart.FuYi, chart.TiaoHou, chart.GeJu
 
 	t.Logf("滴天髓: %s%s %s%s %s%s %s%s",
@@ -110,7 +110,7 @@ func TestReference_ZiPing_ZhengGuanGe(t *testing.T) {
 		time.Date(2004, 9, 22, 10, 0, 0, 0, time.FixedZone("CST", 8*3600)),
 		116.4, 8,
 	)
-	chart := ComputeChart(stgt, st, ganzhi.Male)
+	chart := computeChartFromTimes(stgt, st, ganzhi.Male)
 	geJu := chart.GeJu
 
 	t.Logf("子平真诠: %s%s %s%s %s%s %s%s, 格局=%s %s",

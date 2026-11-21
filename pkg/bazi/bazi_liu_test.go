@@ -124,7 +124,7 @@ func TestComputeLiuRi_HasRequiredFields(t *testing.T) {
 	stgt := time.Time(time.Date(1982, 10, 13, 6, 45, 0, 0, time.FixedZone("", 8*3600)))
 	st := tianwen.ApparentSolarFromCivil(
 		time.Date(1982, 10, 13, 6, 45, 0, 0, time.FixedZone("", 8*3600)), 114.134, 8)
-	chart := ComputeChart(stgt, st, ganzhi.Male)
+	chart := computeChartFromTimes(stgt, st, ganzhi.Male)
 
 	lt, err := ResolveLiuRiTime(tianwen.NewDate(2024, 6, 15))
 	if err != nil {

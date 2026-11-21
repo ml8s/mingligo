@@ -59,11 +59,7 @@ func main() {
 	// /health 必须保持轻量，不能成为 CPU 放大器。
 	selfTestCst := time.FixedZone("CST", 8*3600)
 	selfTestWhen := time.Date(1984, 2, 4, 6, 0, 0, 0, selfTestCst)
-	selfTestChart := bazi.ComputeChart(
-		time.Time(selfTestWhen),
-		time.Time(selfTestWhen),
-		ganzhi.Male,
-	)
+	selfTestChart := bazi.ComputeChartAt(selfTestWhen, 120, ganzhi.Male)
 	selfTestOK := selfTestChart.Ri.Gan == ganzhi.GanWu
 
 	mux := http.NewServeMux()

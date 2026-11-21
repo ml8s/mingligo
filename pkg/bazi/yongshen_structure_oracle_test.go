@@ -169,6 +169,8 @@ func assertTiaoHouGod(t *testing.T, got TiaoHouAvailability, want expectedTiaoHo
 
 func decodePillars(p []PillarIndex) []string {
 	out := make([]string, 0, len(p))
-	for _, v := range p { out = append(out, DecodePillarIndex(v)) }
+	for _, v := range p {
+		out = append(out, DecodePillarIndex(v))
+	}
 	return out
 }

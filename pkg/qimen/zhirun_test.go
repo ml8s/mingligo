@@ -198,7 +198,7 @@ func TestComputeChartWithYongShenAndMethod(t *testing.T) {
 		t.Fatal(err)
 	}
 	gt, st := zhiRunTimesForTest(t, "2026-01-05 13:00")
-	chart, err := ComputeChartWithYongShenAndMethod(
+	chart, err := computeChartWithYongShenAndMethod(
 		gt, st, []YongShenSymbol{symbol},
 		BirthDate{}, Method{Scope: ScopeHour, School: SchoolZhuanPan, Dingju: DingjuZhiRun},
 	)
@@ -216,7 +216,7 @@ func zhiRunChartForTest(t *testing.T, when string, method DingjuMethod) Chart {
 	if err != nil {
 		t.Fatal(err)
 	}
-	chart, err := ComputeChartWithMethod(time.Time(civil), time.Time(civil),
+	chart, err := computeChartWithMethod(time.Time(civil), time.Time(civil),
 		Method{Scope: ScopeHour, School: SchoolZhuanPan, Dingju: method},
 	)
 	if err != nil {

@@ -18,9 +18,9 @@ import (
 	"github.com/ml8s/mingligo/pkg/tianwen"
 )
 
-// ComputeChart produces the complete domain chart from civil birth time
+// computeChartFromTimes is the internal chart primitive for already-projected times.
 // (年/月柱) and true-solar time (日/时柱).
-func ComputeChart(gt time.Time, st time.Time, gender ganzhi.Gender) Chart {
+func computeChartFromTimes(gt time.Time, st time.Time, gender ganzhi.Gender) Chart {
 	if err := Load(); err != nil {
 		panic(fmt.Errorf("bazi: data tables are not available: %w", err))
 	}
@@ -34,7 +34,7 @@ func ComputeChartAt(
 	gender ganzhi.Gender,
 ) Chart {
 	solar := tianwen.ApparentSolarFromStandard(standard, longitude)
-	return ComputeChart(standard, solar, gender)
+	return computeChartFromTimes(standard, solar, gender)
 }
 
 // ComputeCoreAt is the standard-time entry for derived-method callers.
@@ -44,11 +44,11 @@ func ComputeCoreAt(
 	gender ganzhi.Gender,
 ) Core {
 	solar := tianwen.ApparentSolarFromStandard(standard, longitude)
-	return ComputeCore(standard, solar, gender)
+	return computeCoreFromTimes(standard, solar, gender)
 }
 
-// ComputeCore produces the narrow facts consumed by derived methods.
-func ComputeCore(gt time.Time, st time.Time, gender ganzhi.Gender) Core {
+// computeCoreFromTimes is the internal core primitive for already-projected times.
+func computeCoreFromTimes(gt time.Time, st time.Time, gender ganzhi.Gender) Core {
 	return computeCore(gt, st, tianwen.ComputeBazi(gt, st), gender)
 }
 

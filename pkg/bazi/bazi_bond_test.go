@@ -106,7 +106,7 @@ func computeChartForTest(t *testing.T, year, month, day, hour int, g ganzhi.Gend
 	t.Helper()
 	stgt := time.Time(time.Date(year, time.Month(month), day, hour, 0, 0, 0, time.FixedZone("", int(8*3600))))
 	st := tianwen.ApparentSolarFromCivil(time.Date(year, time.Month(month), day, hour, 0, 0, 0, time.FixedZone("", int(8*3600))), 116.4, 8)
-	return ComputeChart(stgt, st, g)
+	return computeChartFromTimes(stgt, st, g)
 }
 
 // ── bond 实五行 / 用神互见 / 配偶星（数据驱动 / 自洽校验）──

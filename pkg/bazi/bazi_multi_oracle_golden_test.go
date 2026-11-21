@@ -111,7 +111,7 @@ func TestBaziMultiOracleGolden_AllTermBoundaries(t *testing.T) {
 			if i%2 == 1 {
 				gender = ganzhi.Female
 			}
-			chart := ComputeChart(time.Time(birth), time.Time(birth), gender)
+			chart := computeChartFromTimes(time.Time(birth), time.Time(birth), gender)
 
 			got := fmt.Sprintf(
 				"%s%s %s%s %s%s %s%s",

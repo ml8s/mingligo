@@ -16,7 +16,7 @@ func fixedChart(t *testing.T, yong YongShen, yaos [6]int) Chart {
 		time.Date(1984, 2, 15, 8, 0, 0, 0, time.FixedZone("CST", 8*3600)),
 		116.4, 8,
 	)
-	return ComputeChart(stgt, st, yong, yaos)
+	return computeChartFromTimes(stgt, st, yong, yaos)
 }
 
 func TestTimingCandidates_MovingLine(t *testing.T) {

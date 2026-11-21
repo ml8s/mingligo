@@ -35,7 +35,7 @@ func TestFuYi_Strength_Reference(t *testing.T) {
 			birth := time.Date(tt.year, time.Month(tt.month), tt.day, tt.hour, 0, 0, 0, loc)
 			stgt := time.Time(birth)
 			st := tianwen.ApparentSolarFromCivil(birth, tt.longitude, tt.timezone)
-			chart := ComputeChart(stgt, st, tt.gender)
+			chart := computeChartFromTimes(stgt, st, tt.gender)
 			fuYi := chart.FuYi
 			if fuYi.Strength != tt.expectStrength {
 				t.Errorf("Strength=%q, want=%q (%s%s %s%s %s%s %s%s)",
@@ -54,7 +54,7 @@ func TestRegress_YinBi_ExcludesSelf(t *testing.T) {
 	birth := time.Date(1981, 8, 26, 0, 15, 0, 0, loc)
 	stgt := time.Time(birth)
 	st := tianwen.ApparentSolarFromCivil(birth, 130.7, 8)
-	chart := ComputeChart(stgt, st, ganzhi.Male)
+	chart := computeChartFromTimes(stgt, st, ganzhi.Male)
 	yinBi := countYinBi(chart.ToBazi())
 	if yinBi >= 2 {
 		t.Errorf("印比=%d(含日主)! 应=1, 日主不计入帮身", yinBi)

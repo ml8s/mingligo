@@ -310,7 +310,7 @@ func TestDomainOracle_LiuyaoPatternSemantics(t *testing.T) {
 			if err != nil {
 				t.Fatal(err)
 			}
-			chart := ComputeChart(time.Time(value), time.Time(value), typ, tc.Yaos)
+			chart := computeChartFromTimes(time.Time(value), time.Time(value), typ, tc.Yaos)
 			found := false
 			for _, pattern := range chart.Patterns {
 				if string(pattern.Type) == tc.ExpectedPattern.Type &&
@@ -330,7 +330,7 @@ func TestDomainOracle_LiuyaoPatternSemantics(t *testing.T) {
 			if err != nil {
 				t.Fatal(err)
 			}
-			chart := ComputeChart(time.Time(value), time.Time(value), YongGuanGui, tc.Yaos)
+			chart := computeChartFromTimes(time.Time(value), time.Time(value), YongGuanGui, tc.Yaos)
 			if chart.Name != tc.ExpectedName {
 				t.Fatalf("name = %q, want %q", chart.Name, tc.ExpectedName)
 			}

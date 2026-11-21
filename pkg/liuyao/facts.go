@@ -35,22 +35,22 @@ type MovingTransformation struct {
 // that the group is effective; callers must consider moving lines, void/break
 // states, month/day support and the concrete target.
 type SanHeCandidate struct {
-	Positions       []int    `json:"positions"`
-	Branches        []string `json:"zhi"`
-	Element         string   `json:"wuxing"`
-	Complete        bool     `json:"complete"`
-	MovingCount     int      `json:"moving_count"`
-	Qualification   string   `json:"qualification"`
-	LineComplete    bool     `json:"line_complete"`
-	DayPresent      bool     `json:"day_present"`
-	MonthPresent    bool     `json:"month_present"`
-	Missing         []string `json:"missing,omitempty"`
-	StaticCount     int      `json:"static_count"`
-	VoidCount       int      `json:"void_count"`
-	BreakCount      int      `json:"break_count"`
-	Activated       bool     `json:"activated"`
+	Positions       []int        `json:"positions"`
+	Branches        []string     `json:"zhi"`
+	Element         string       `json:"wuxing"`
+	Complete        bool         `json:"complete"`
+	MovingCount     int          `json:"moving_count"`
+	Qualification   string       `json:"qualification"`
+	LineComplete    bool         `json:"line_complete"`
+	DayPresent      bool         `json:"day_present"`
+	MonthPresent    bool         `json:"month_present"`
+	Missing         []string     `json:"missing,omitempty"`
+	StaticCount     int          `json:"static_count"`
+	VoidCount       int          `json:"void_count"`
+	BreakCount      int          `json:"break_count"`
+	Activated       bool         `json:"activated"`
 	Targets         []TargetRole `json:"targets,omitempty"`
-	ConclusionScope string   `json:"conclusion_scope"`
+	ConclusionScope string       `json:"conclusion_scope"`
 }
 
 // HiddenLine is one palace-base relative not visible in the original hexagram.
@@ -74,11 +74,11 @@ type HiddenLine struct {
 
 // BranchRelationFact records a direct branch relation between two visible lines.
 type BranchRelationFact struct {
-	LeftPosition  int      `json:"left_position"`
-	RightPosition int      `json:"right_position"`
+	LeftPosition  int                  `json:"left_position"`
+	RightPosition int                  `json:"right_position"`
 	Relations     []BranchRelationType `json:"relations"`
-	Targets       []TargetRole `json:"targets,omitempty"`
-	Basis         []string `json:"basis,omitempty"`
+	Targets       []TargetRole         `json:"targets,omitempty"`
+	Basis         []string             `json:"basis,omitempty"`
 }
 
 // ForceEntry describes one role in the support/opposition chain.

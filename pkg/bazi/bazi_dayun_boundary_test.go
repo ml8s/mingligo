@@ -19,7 +19,7 @@ func TestDaYun_LongitudeIndependent(t *testing.T) {
 	var ref *DaYun
 	for _, lon := range []float64{75.0, 116.4, 135.0} {
 		st := tianwen.ApparentSolarFromCivil(when, lon, 8)
-		chart := ComputeChart(gt, st, ganzhi.Male)
+		chart := computeChartFromTimes(gt, st, ganzhi.Male)
 		if chart.DaYun == nil {
 			t.Fatalf("lon=%v: da_yun is nil", lon)
 		}
@@ -58,7 +58,7 @@ func TestDaYun_TermBoundaryUsesCivilInstant(t *testing.T) {
 	for _, lon := range []float64{75.0, 135.0} {
 		gt := time.Time(after)
 		st := tianwen.ApparentSolarFromCivil(after, lon, 8)
-		chart := ComputeChart(gt, st, ganzhi.Male)
+		chart := computeChartFromTimes(gt, st, ganzhi.Male)
 		if chart.Nian.Gan.String() != "甲" || chart.Nian.Zhi.String() != "辰" {
 			t.Errorf("lon=%v 年柱=%s%s, want 甲辰", lon, chart.Nian.Gan, chart.Nian.Zhi)
 		}

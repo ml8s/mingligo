@@ -96,7 +96,7 @@ func TestJinhanGolden(t *testing.T) {
 			if err != nil {
 				t.Fatal(err)
 			}
-			chart := ComputeJinhanChart(time.Time(when), time.Time(when))
+			chart := computeJinhanChart(time.Time(when), time.Time(when))
 			if chart.Method.Scope != ScopeDay || chart.Method.School != SchoolJinhanYuJing ||
 				chart.Method.DingjuMethod != DingjuNone {
 				t.Fatalf("method = %+v", chart.Method)
@@ -145,7 +145,7 @@ func TestJinhanGolden(t *testing.T) {
 
 func TestJinhanChartDoesNotExposeStandardPlate(t *testing.T) {
 	when := time.Date(2024, 6, 29, 12, 0, 0, 0, time.FixedZone("CST", 8*3600))
-	data, err := json.Marshal(ComputeJinhanChart(time.Time(when), time.Time(when)))
+	data, err := json.Marshal(computeJinhanChart(time.Time(when), time.Time(when)))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -177,7 +177,7 @@ func TestComputeChartWithYongShenRejectsJinhan(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	_, err = ComputeChartWithYongShenAndMethod(
+	_, err = computeChartWithYongShenAndMethod(
 		stgt, st, []YongShenSymbol{symbol}, BirthDate{},
 		Method{Scope: ScopeDay, School: SchoolJinhanYuJing},
 	)
@@ -192,12 +192,12 @@ func TestComputeChartWithMethodRejectsJinhanStandardChart(t *testing.T) {
 		time.Date(2026, 9, 7, 12, 0, 0, 0, time.FixedZone("CST", 8*3600)),
 		116.4, 8,
 	)
-	_, err := ComputeChartWithMethod(stgt, st, Method{Scope: ScopeDay, School: SchoolJinhanYuJing})
+	_, err := computeChartWithMethod(stgt, st, Method{Scope: ScopeDay, School: SchoolJinhanYuJing})
 	if err == nil || !strings.Contains(err.Error(), "ComputeJinhanChart") {
 		t.Fatalf("error = %v, want Jinhan standard-chart rejection", err)
 	}
 
-	_, err = ComputeChartWithYongShenAndMethod(
+	_, err = computeChartWithYongShenAndMethod(
 		stgt, st, nil, BirthDate{}, Method{Scope: ScopeDay, School: SchoolJinhanYuJing},
 	)
 	if err == nil || !strings.Contains(err.Error(), "ComputeJinhanChart") {

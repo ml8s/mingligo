@@ -48,7 +48,7 @@ func TestCoreIsNotMutatedByDerivedMethods(t *testing.T) {
 	stgt := time.Time(time.Date(1984, 2, 15, 8, 0, 0, 0, time.FixedZone("CST", 8*3600)))
 	st := tianwen.ApparentSolarFromCivil(
 		time.Date(1984, 2, 15, 8, 0, 0, 0, time.FixedZone("CST", 8*3600)), 116.4, 8)
-	core := ComputeChart(stgt, st, ganzhi.Male).Core()
+	core := computeChartFromTimes(stgt, st, ganzhi.Male).Core()
 	want := cloneCoreForBondTest(core)
 
 	liuNianTime, err := ResolveLiuNianTime(tianwen.NewDate(2026, 6, 15))

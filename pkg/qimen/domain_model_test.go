@@ -66,7 +66,7 @@ func TestComputeChartWithYongShenProjectsTiming(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	projected, err := ComputeChartWithYongShenAndMethod(
+	projected, err := computeChartWithYongShenAndMethod(
 		stgt, st, []YongShenSymbol{symbol}, BirthDate{},
 		Method{Scope: ScopeHour, School: SchoolZhuanPan, Dingju: DingjuChaiBu},
 	)

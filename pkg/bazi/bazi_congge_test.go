@@ -38,7 +38,7 @@ func TestCongGe_LookupRules(t *testing.T) {
 			}
 			stgt := time.Time(bt)
 			st := tianwen.ApparentSolarFromCivil(bt, 116.4, 8)
-			chart := ComputeChart(stgt, st, tt.gender)
+			chart := computeChartFromTimes(stgt, st, tt.gender)
 			pat, _, _, _ := lookupCongGe(chart.ToBazi())
 			if tt.wantPattern != "" && string(pat) != tt.wantPattern {
 				t.Errorf("chart: %s%s %s%s %s%s %s%s | pattern=%q, want=%q",

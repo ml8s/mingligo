@@ -91,7 +91,7 @@ func TestExternalOracle_8CharUniApp_DaYunStart(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	chart := ComputeChart(time.Time(birth), time.Time(birth), ganzhi.Male)
+	chart := computeChartFromTimes(time.Time(birth), time.Time(birth), ganzhi.Male)
 	dy := chart.DaYun
 	if dy == nil || len(dy.Steps) == 0 {
 		t.Fatal("dayun is empty")

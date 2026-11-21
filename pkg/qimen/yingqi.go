@@ -22,8 +22,8 @@ type YingQiCandidate struct {
 }
 
 type YingQiDate struct {
-	Date   string `json:"trigger_date"`
-	Branch string `json:"zhi"`
+	Date   string          `json:"trigger_date"`
+	Branch string          `json:"zhi"`
 	Match  YingQiMatchKind `json:"match"`
 }
 

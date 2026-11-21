@@ -202,7 +202,7 @@ func TestComputeChart_Smoke(t *testing.T) {
 	when := time.Date(2000, 1, 1, 12, 0, 0, 0, time.FixedZone("CST", 8*3600))
 	st := time.Time(when)
 	// All ShaoYang → 乾为天, no changing lines.
-	chart := ComputeChart(time.Time(when), st, YongShiYao, [6]int{7, 7, 7, 7, 7, 7})
+	chart := computeChartFromTimes(time.Time(when), st, YongShiYao, [6]int{7, 7, 7, 7, 7, 7})
 
 	if chart.Name != "乾为天" {
 		t.Errorf("expected 乾为天, got %s", chart.Name)
@@ -483,7 +483,7 @@ func TestFindFuShen_DifferentTarget(t *testing.T) {
 func TestTimingCandidates_MovingYongShenUsesValueCandidate(t *testing.T) {
 	when := time.Date(2000, 1, 1, 12, 0, 0, 0, time.FixedZone("CST", 8))
 	st := time.Time(when)
-	chart := ComputeChart(time.Time(when), st, YongFumu, [6]int{7, 7, 7, 7, 7, 9})
+	chart := computeChartFromTimes(time.Time(when), st, YongFumu, [6]int{7, 7, 7, 7, 7, 9})
 	found := false
 	for _, candidate := range chart.TimingCandidates {
 		if candidate.Mechanism == "动爻逢值" && candidate.Position == chart.YongShen.Position &&
@@ -499,7 +499,7 @@ func TestTimingCandidates_MovingYongShenUsesValueCandidate(t *testing.T) {
 func TestTimingCandidates_HiddenYongShenUsesFlyingClash(t *testing.T) {
 	when := time.Date(2026, 9, 9, 17, 28, 0, 0, time.FixedZone("CST", 8))
 	st := time.Time(when)
-	chart := ComputeChart(time.Time(when), st, YongQiCai, [6]int{8, 7, 9, 9, 7, 7})
+	chart := computeChartFromTimes(time.Time(when), st, YongQiCai, [6]int{8, 7, 9, 9, 7, 7})
 	found := false
 	for _, candidate := range chart.TimingCandidates {
 		if candidate.Mechanism == "冲飞出伏" && candidate.Position == chart.YongShen.FuShen.Position {
@@ -522,7 +522,7 @@ func TestComputeChart_RandomShake(t *testing.T) {
 	if err != nil {
 		t.Fatalf("SecureQigua() error = %v", err)
 	}
-	chart := ComputeChart(time.Time(when), st, YongQiCai, casting.Yaos)
+	chart := computeChartFromTimes(time.Time(when), st, YongQiCai, casting.Yaos)
 
 	if chart.Name == "" {
 		t.Error("Name is empty")
@@ -555,7 +555,7 @@ func TestComputeChart_BianLinesType(t *testing.T) {
 	// 初爻 LaoYang (9) → 变出 ShaoYin (8), 二爻 LaoYin (6) → 变出 ShaoYang (7)
 	when := time.Date(2000, 3, 1, 12, 0, 0, 0, time.FixedZone("CST", 8*3600))
 	st := time.Time(when)
-	chart := ComputeChart(time.Time(when), st, YongFumu, [6]int{9, 6, 7, 7, 7, 7})
+	chart := computeChartFromTimes(time.Time(when), st, YongFumu, [6]int{9, 6, 7, 7, 7, 7})
 
 	if len(chart.DongYao) != 2 {
 		t.Fatalf("expected 2 dongYao, got %d", len(chart.DongYao))
@@ -646,7 +646,7 @@ func TestComputeChart_ChangingLines(t *testing.T) {
 	when := time.Date(2000, 6, 15, 12, 0, 0, 0, time.FixedZone("CST", 8*3600))
 	st := time.Time(when)
 	// One changing line at position 2 (LaoYin=6).
-	chart := ComputeChart(time.Time(when), st, YongQiCai, [6]int{7, 6, 7, 7, 7, 7})
+	chart := computeChartFromTimes(time.Time(when), st, YongQiCai, [6]int{7, 6, 7, 7, 7, 7})
 
 	if len(chart.DongYao) != 1 {
 		t.Fatalf("expected 1 dongYao, got %d", len(chart.DongYao))
@@ -742,7 +742,7 @@ func TestQigua_DongYaoMatchesChangingLines(t *testing.T) {
 func TestComputeChart_AllShunYangQianWeiTian(t *testing.T) {
 	when := time.Date(2000, 1, 1, 12, 0, 0, 0, time.FixedZone("CST", 8*3600))
 	st := time.Time(when)
-	chart := ComputeChart(time.Time(when), st, YongShiYao, [6]int{7, 7, 7, 7, 7, 7})
+	chart := computeChartFromTimes(time.Time(when), st, YongShiYao, [6]int{7, 7, 7, 7, 7, 7})
 
 	if chart.Name != "乾为天" {
 		t.Errorf("Name = %q, want 乾为天 (all ShaoYang 7)", chart.Name)
@@ -763,7 +763,7 @@ func TestComputeChart_AllShunYangQianWeiTian(t *testing.T) {
 func TestComputeChart_AllLaoYinKunWeiDi(t *testing.T) {
 	when := time.Date(2000, 1, 1, 12, 0, 0, 0, time.FixedZone("CST", 8*3600))
 	st := time.Time(when)
-	chart := ComputeChart(time.Time(when), st, YongShiYao, [6]int{6, 6, 6, 6, 6, 6})
+	chart := computeChartFromTimes(time.Time(when), st, YongShiYao, [6]int{6, 6, 6, 6, 6, 6})
 
 	if chart.Name != "坤为地" {
 		t.Errorf("Name = %q, want 坤为地 (all LaoYin 6)", chart.Name)
@@ -779,7 +779,7 @@ func TestComputeChart_AllLaoYinKunWeiDi(t *testing.T) {
 func TestComputeChart_OneChangingLine(t *testing.T) {
 	when := time.Date(2000, 6, 15, 12, 0, 0, 0, time.FixedZone("CST", 8*3600))
 	st := time.Time(when)
-	chart := ComputeChart(time.Time(when), st, YongGuanGui, [6]int{7, 6, 7, 7, 7, 7})
+	chart := computeChartFromTimes(time.Time(when), st, YongGuanGui, [6]int{7, 6, 7, 7, 7, 7})
 
 	if len(chart.DongYao) != 1 || chart.DongYao[0] != 2 {
 		t.Errorf("dong_yao = %v, want [2]", chart.DongYao)
@@ -794,7 +794,7 @@ func TestComputeChart_YongShenAnalysis(t *testing.T) {
 	st := time.Time(when)
 
 	// 乾为天: 官鬼 at line 4 (世=6)
-	chart := ComputeChart(time.Time(when), st, YongGuanGui, [6]int{7, 7, 7, 7, 7, 7})
+	chart := computeChartFromTimes(time.Time(when), st, YongGuanGui, [6]int{7, 7, 7, 7, 7, 7})
 	if chart.YongShen.Position != 4 {
 		t.Errorf("yong_shen position = %d, want 4 (官鬼 on 乾为天 line 4)", chart.YongShen.Position)
 	}
@@ -809,7 +809,7 @@ func TestComputeChart_YongShenAnalysis(t *testing.T) {
 func TestComputeChart_FullAnalysis(t *testing.T) {
 	when := time.Date(2000, 6, 15, 12, 0, 0, 0, time.FixedZone("CST", 8*3600))
 	st := time.Time(when)
-	chart := ComputeChart(time.Time(when), st, YongFumu, [6]int{9, 8, 7, 6, 7, 8})
+	chart := computeChartFromTimes(time.Time(when), st, YongFumu, [6]int{9, 8, 7, 6, 7, 8})
 
 	for i := 0; i < 6; i++ {
 		l := chart.Lines[i]

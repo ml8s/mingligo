@@ -139,6 +139,8 @@ func TestNatalRelationsCoverLegacyRelationArrays(t *testing.T) {
 
 func mustEncodeNatalKind(k string) NatalRelationKind {
 	n, ok := EncodeNatalRelationKind(k)
-	if !ok { panic("bad kind: "+k) }
+	if !ok {
+		panic("bad kind: " + k)
+	}
 	return n
 }

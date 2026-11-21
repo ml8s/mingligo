@@ -223,7 +223,7 @@ func TestTwelveMinuteTenDivisionDunSourceOptions(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		chart, err := ComputeChartWithMethod(time.Time(when), time.Time(when), method)
+		chart, err := computeChartWithMethod(time.Time(when), time.Time(when), method)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -307,7 +307,7 @@ func TestTenMinuteQuarterGoldenVectors(t *testing.T) {
 			if err != nil {
 				t.Fatal(err)
 			}
-			chart, err := ComputeChartWithMethod(time.Time(when), time.Time(when), Method{
+			chart, err := computeChartWithMethod(time.Time(when), time.Time(when), Method{
 				Scope: ScopeQuarter, School: SchoolZhuanPan, QuarterRule: QuarterTenMinuteSanYuan,
 			})
 			if err != nil {
@@ -360,7 +360,7 @@ func TestTwelveMinuteTenDivisionQuarterGoldenVectors(t *testing.T) {
 			if err != nil {
 				t.Fatal(err)
 			}
-			base, err := ComputeChartWithMethod(time.Time(when), time.Time(when), Method{
+			base, err := computeChartWithMethod(time.Time(when), time.Time(when), Method{
 				Scope: ScopeHour, School: SchoolZhuanPan,
 				Dingju: mustDingjuForTest(t, want.BaseDingju),
 			})
@@ -370,7 +370,7 @@ func TestTwelveMinuteTenDivisionQuarterGoldenVectors(t *testing.T) {
 			if base.Board.Jushu != want.BaseJu {
 				t.Fatalf("base hour ju = %d, want %d", base.Board.Jushu, want.BaseJu)
 			}
-			chart, err := ComputeChartWithMethod(time.Time(when), time.Time(when), Method{
+			chart, err := computeChartWithMethod(time.Time(when), time.Time(when), Method{
 				Scope: ScopeQuarter, School: SchoolZhuanPan,
 				QuarterRule: QuarterTwelveMinuteTenDivision, BaseDingju: mustDingjuForTest(t, want.BaseDingju),
 				DunSource: mustDunSource(want.DunSource), HourBoundary: mustHourBoundary(want.HourBoundary),

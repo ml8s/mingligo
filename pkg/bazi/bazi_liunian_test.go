@@ -20,7 +20,7 @@ func TestLiuNian_DaYunInteraction(t *testing.T) {
 		time.Date(1984, 2, 15, 8, 0, 0, 0, time.FixedZone("CST", 8*3600)),
 		116.4, 8,
 	)
-	chart := ComputeChart(stgt, st, ganzhi.Male)
+	chart := computeChartFromTimes(stgt, st, ganzhi.Male)
 
 	if chart.DaYun == nil {
 		t.Fatal("DaYun is nil")
@@ -139,7 +139,7 @@ func TestLiuNian_DaYunInteraction_NegativeIndex(t *testing.T) {
 		time.Date(2023, 6, 15, 12, 0, 0, 0, time.FixedZone("CST", 8*3600)),
 		116.4, 8,
 	)
-	chart := ComputeChart(stgt, st, ganzhi.Male)
+	chart := computeChartFromTimes(stgt, st, ganzhi.Male)
 
 	if chart.DaYun == nil {
 		t.Fatal("DaYun is nil")
@@ -166,7 +166,7 @@ func TestLiuNian_ShenSha(t *testing.T) {
 		time.Date(1984, 2, 15, 8, 0, 0, 0, time.FixedZone("CST", 8*3600)),
 		116.4, 8,
 	)
-	chart := ComputeChart(stgt, st, ganzhi.Male)
+	chart := computeChartFromTimes(stgt, st, ganzhi.Male)
 
 	liuNianTime5, err := ResolveLiuNianTime(tianwen.NewDate(2026, 6, 15))
 	if err != nil {
@@ -228,7 +228,7 @@ func TestLiuNian_FuYinFanYin_Exists(t *testing.T) {
 		time.Date(1984, 2, 15, 8, 0, 0, 0, time.FixedZone("CST", 8*3600)),
 		116.4, 8,
 	)
-	chart := ComputeChart(stgt, st, ganzhi.Male)
+	chart := computeChartFromTimes(stgt, st, ganzhi.Male)
 
 	// 甲子日 → 2044 甲子年 should have 伏吟 on 日柱
 	liuNianTime7, err := ResolveLiuNianTime(tianwen.NewDate(2044, 6, 15))
@@ -253,7 +253,7 @@ func TestLiuNian_FuYinFanYin_Nil(t *testing.T) {
 		time.Date(1984, 2, 15, 8, 0, 0, 0, time.FixedZone("CST", 8*3600)),
 		116.4, 8,
 	)
-	chart := ComputeChart(stgt, st, ganzhi.Male)
+	chart := computeChartFromTimes(stgt, st, ganzhi.Male)
 
 	liuNianTime8, err := ResolveLiuNianTime(tianwen.NewDate(2026, 6, 15))
 	if err != nil {
@@ -279,7 +279,7 @@ func TestLiuNian_YearFields(t *testing.T) {
 		time.Date(1984, 2, 15, 8, 0, 0, 0, time.FixedZone("CST", 8*3600)),
 		116.4, 8,
 	)
-	chart := ComputeChart(stgt, st, ganzhi.Male)
+	chart := computeChartFromTimes(stgt, st, ganzhi.Male)
 
 	liuNianTime9, err := ResolveLiuNianTime(tianwen.NewDate(2026, 6, 15))
 	if err != nil {

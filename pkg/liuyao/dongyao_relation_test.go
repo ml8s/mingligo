@@ -16,7 +16,7 @@ func TestDongYaoRelations_Array(t *testing.T) {
 		116.4, 8,
 	)
 	// 有动爻的卦（老阳/老阴）
-	chart := ComputeChart(stgt, st, YongGuanGui, [6]int{9, 7, 7, 7, 7, 7})
+	chart := computeChartFromTimes(stgt, st, YongGuanGui, [6]int{9, 7, 7, 7, 7, 7})
 
 	if chart.DongYaoRelations == nil {
 		t.Fatal("DongYaoRelations should be an array (not nil)")
@@ -56,7 +56,7 @@ func TestDongYaoRelations_None(t *testing.T) {
 		116.4, 8,
 	)
 	// 纯少阳/少阴，无动爻
-	chart := ComputeChart(stgt, st, YongGuanGui, [6]int{7, 7, 7, 7, 7, 7})
+	chart := computeChartFromTimes(stgt, st, YongGuanGui, [6]int{7, 7, 7, 7, 7, 7})
 
 	// 无动爻时，数组应为空
 	if len(chart.DongYaoRelations) != 0 {
@@ -71,7 +71,7 @@ func TestYongShen_AggregatedFields(t *testing.T) {
 		time.Date(1984, 2, 15, 8, 0, 0, 0, time.FixedZone("CST", 8*3600)),
 		116.4, 8,
 	)
-	chart := ComputeChart(stgt, st, YongGuanGui, [6]int{7, 7, 7, 7, 7, 7})
+	chart := computeChartFromTimes(stgt, st, YongGuanGui, [6]int{7, 7, 7, 7, 7, 7})
 
 	if chart.YongShen.Position == 0 {
 		t.Fatal("用神应存在")
@@ -100,7 +100,7 @@ func TestYongShen_InvalidPosition(t *testing.T) {
 		116.4, 8,
 	)
 	// 用神不现（卦中无此六亲）
-	chart := ComputeChart(stgt, st, YongQiCai, [6]int{7, 7, 7, 7, 7, 7})
+	chart := computeChartFromTimes(stgt, st, YongQiCai, [6]int{7, 7, 7, 7, 7, 7})
 
 	if chart.YongShen.Position == 0 {
 		// 用神不现时，聚合字段应为空，动爻关系应为空
@@ -138,7 +138,7 @@ func TestYongShen_LiuShou(t *testing.T) {
 		time.Date(1984, 2, 15, 8, 0, 0, 0, time.FixedZone("CST", 8*3600)),
 		116.4, 8,
 	)
-	chart := ComputeChart(stgt, st, YongGuanGui, [6]int{7, 7, 7, 7, 7, 7})
+	chart := computeChartFromTimes(stgt, st, YongGuanGui, [6]int{7, 7, 7, 7, 7, 7})
 
 	if chart.YongShen.Position == 0 {
 		t.Fatal("用神应存在")

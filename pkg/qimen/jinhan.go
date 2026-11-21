@@ -55,10 +55,10 @@ type JinhanChart struct {
 	Board  JinhanBoard       `json:"pan"`
 }
 
-// ComputeJinhanChart computes the Golden Mirror daily chart from civil time
+// computeJinhanChart computes the Golden Mirror daily chart from civil time
 // (节气判定) and true solar time (日柱). The method dimensions are closed by
 // the catalog and do not need a dingju selection.
-func ComputeJinhanChart(gt time.Time, st time.Time) JinhanChart {
+func computeJinhanChart(gt time.Time, st time.Time) JinhanChart {
 	bz, termTime, _ := chartInputs(gt, st)
 	term := currentSolarTermInfo(termTime)
 	yinDun := term.index() >= 12

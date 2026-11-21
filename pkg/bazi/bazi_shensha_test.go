@@ -14,7 +14,7 @@ func makeChart(year, month, day, hour, minute int, lon, tz float64, gender ganzh
 	// 公历直接排盘（对齐生产链路，不做真太阳时经度校正）
 	when := time.Date(year, time.Month(month), day, hour, minute, 0, 0, time.FixedZone("", int(tz*3600)))
 	st := time.Time(when)
-	return ComputeChart(time.Time(when), st, gender)
+	return computeChartFromTimes(time.Time(when), st, gender)
 }
 
 // collectShenShaNames returns all shensha names for a pillar.

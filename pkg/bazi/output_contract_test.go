@@ -15,7 +15,7 @@ func TestZiShiRule(t *testing.T) {
 	stgt := time.Time(time.Date(1981, 8, 26, 23, 30, 0, 0, time.FixedZone("CST", 8*3600)))
 	st := tianwen.ApparentSolarFromCivil(
 		time.Date(1981, 8, 26, 23, 30, 0, 0, time.FixedZone("CST", 8*3600)), 130.7, 8)
-	chart := ComputeChart(stgt, st, ganzhi.Male)
+	chart := computeChartFromTimes(stgt, st, ganzhi.Male)
 	if !strings.Contains(chart.ZiShiRule, "晚子时") {
 		t.Errorf("zi_shi_rule = %q, want 含'晚子时'", chart.ZiShiRule)
 	}
@@ -29,7 +29,7 @@ func TestDaYun_StartDate_Anchor(t *testing.T) {
 	stgt := time.Time(time.Date(1984, 2, 15, 8, 0, 0, 0, time.FixedZone("CST", 8*3600)))
 	st := tianwen.ApparentSolarFromCivil(
 		time.Date(1984, 2, 15, 8, 0, 0, 0, time.FixedZone("CST", 8*3600)), 116.4, 8)
-	chart := ComputeChart(stgt, st, ganzhi.Male)
+	chart := computeChartFromTimes(stgt, st, ganzhi.Male)
 	if chart.DaYun.StartDate != "1990-08-04" {
 		t.Errorf("起运 start_date = %q, want 1990-08-04（lunar 6年5月20日）", chart.DaYun.StartDate)
 	}
@@ -47,7 +47,7 @@ func TestOmitEmpty_Optional(t *testing.T) {
 	stgt := time.Time(time.Date(1981, 8, 26, 12, 0, 0, 0, time.FixedZone("CST", 8*3600)))
 	st := tianwen.ApparentSolarFromCivil(
 		time.Date(1981, 8, 26, 12, 0, 0, 0, time.FixedZone("CST", 8*3600)), 130.7, 8)
-	full := ComputeChartFromCore(ComputeChart(stgt, st, ganzhi.Male).Core())
+	full := ComputeChartFromCore(computeChartFromTimes(stgt, st, ganzhi.Male).Core())
 	b, _ := json.Marshal(full)
 	// Optional output values must never be null.
 	if strings.Contains(string(b), `"gong_jia":null`) {

@@ -69,7 +69,7 @@ func verifyBaziGoldenCase(t *testing.T, gc baziGoldenCase, checks goldenChecks) 
 	if gc.Gender == "female" {
 		g = ganzhi.Female
 	}
-	c := ComputeChart(tt, tt, g)
+	c := computeChartFromTimes(tt, tt, g)
 	fc := ComputeChartFromCore(c.Core())
 
 	// 四柱

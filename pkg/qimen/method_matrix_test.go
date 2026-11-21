@@ -53,7 +53,7 @@ func TestParseMethodMatrix(t *testing.T) {
 			t.Errorf("EncodeMethod(%q,%q,%q) should reject", tc[0], tc[1], tc[2])
 		}
 	}
-	if _, err := ComputeChartWithMethod(
+	if _, err := computeChartWithMethod(
 		time.Time{}, time.Time{}, Method{Scope: ScopeYear, School: SchoolZhuanPan, Dingju: DingjuChaiBu},
 	); err == nil {
 		t.Error("ComputeChartWithMethod should reject an unsupported method combination")
@@ -749,7 +749,7 @@ func computeMethodChartForTest(t *testing.T, when string, method Method) Chart {
 	if err != nil {
 		t.Fatal(err)
 	}
-	chart, err := ComputeChartWithMethod(time.Time(civil), time.Time(civil), method)
+	chart, err := computeChartWithMethod(time.Time(civil), time.Time(civil), method)
 	if err != nil {
 		t.Fatal(err)
 	}

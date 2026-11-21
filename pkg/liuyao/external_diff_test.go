@@ -58,7 +58,7 @@ func TestExternalDiffFixtures_HardFacts(t *testing.T) {
 			if err != nil {
 				t.Fatal(err)
 			}
-			got := ComputeChart(local, st, yong, tc.Input.Yaos)
+			got := computeChartFromTimes(local, st, yong, tc.Input.Yaos)
 
 			if got.Name != tc.Expected.Name ||
 				got.Palace != tc.Expected.Palace ||

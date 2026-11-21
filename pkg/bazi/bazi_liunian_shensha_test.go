@@ -54,7 +54,7 @@ func TestLiuNian_AnnualBingFu(t *testing.T) {
 	stgt := time.Time(time.Date(1984, 2, 15, 8, 0, 0, 0, time.FixedZone("CST", 8*3600)))
 	st := tianwen.ApparentSolarFromCivil(
 		time.Date(1984, 2, 15, 8, 0, 0, 0, time.FixedZone("CST", 8*3600)), 116.4, 8)
-	chart := ComputeChart(stgt, st, ganzhi.Male)
+	chart := computeChartFromTimes(stgt, st, ganzhi.Male)
 	liuNianTime1, err := ResolveLiuNianTime(tianwen.NewDate(2021, 6, 15))
 	if err != nil {
 		t.Fatalf("resolve liunian time 2021: %v", err)
@@ -81,7 +81,7 @@ func TestLiuNian_AnnualSangMen(t *testing.T) {
 	stgt := time.Time(time.Date(1984, 2, 15, 8, 0, 0, 0, time.FixedZone("CST", 8*3600)))
 	st := tianwen.ApparentSolarFromCivil(
 		time.Date(1984, 2, 15, 8, 0, 0, 0, time.FixedZone("CST", 8*3600)), 116.4, 8)
-	chart := ComputeChart(stgt, st, ganzhi.Male)
+	chart := computeChartFromTimes(stgt, st, ganzhi.Male)
 	liuNianTime2, err := ResolveLiuNianTime(tianwen.NewDate(2022, 6, 15))
 	if err != nil {
 		t.Fatalf("resolve liunian time 2022: %v", err)
@@ -107,7 +107,7 @@ func TestLiuNian_AnnualDiaoKe(t *testing.T) {
 	stgt := time.Time(time.Date(1984, 2, 15, 8, 0, 0, 0, time.FixedZone("CST", 8*3600)))
 	st := tianwen.ApparentSolarFromCivil(
 		time.Date(1984, 2, 15, 8, 0, 0, 0, time.FixedZone("CST", 8*3600)), 116.4, 8)
-	chart := ComputeChart(stgt, st, ganzhi.Male)
+	chart := computeChartFromTimes(stgt, st, ganzhi.Male)
 	liuNianTime3, err := ResolveLiuNianTime(tianwen.NewDate(2006, 6, 15))
 	if err != nil {
 		t.Fatalf("resolve liunian time 2006: %v", err)
@@ -133,7 +133,7 @@ func TestLiuNian_AnnualDaHao(t *testing.T) {
 	stgt := time.Time(time.Date(1984, 2, 15, 8, 0, 0, 0, time.FixedZone("CST", 8*3600)))
 	st := tianwen.ApparentSolarFromCivil(
 		time.Date(1984, 2, 15, 8, 0, 0, 0, time.FixedZone("CST", 8*3600)), 116.4, 8)
-	chart := ComputeChart(stgt, st, ganzhi.Male)
+	chart := computeChartFromTimes(stgt, st, ganzhi.Male)
 	liuNianTime4, err := ResolveLiuNianTime(tianwen.NewDate(2026, 6, 15))
 	if err != nil {
 		t.Fatalf("resolve liunian time 2026: %v", err)
@@ -174,7 +174,7 @@ func TestLiuNian_AnnualAndDynamicCoexist(t *testing.T) {
 	stgt := time.Time(time.Date(1984, 2, 15, 8, 0, 0, 0, time.FixedZone("CST", 8*3600)))
 	st := tianwen.ApparentSolarFromCivil(
 		time.Date(1984, 2, 15, 8, 0, 0, 0, time.FixedZone("CST", 8*3600)), 116.4, 8)
-	chart := ComputeChart(stgt, st, ganzhi.Male)
+	chart := computeChartFromTimes(stgt, st, ganzhi.Male)
 	liuNianTime5, err := ResolveLiuNianTime(tianwen.NewDate(2022, 6, 15))
 	if err != nil {
 		t.Fatalf("resolve liunian time 2022: %v", err)
@@ -215,7 +215,7 @@ func TestLiuNian_ShenSha_DynamicEmpty(t *testing.T) {
 	stgt := time.Time(time.Date(1984, 2, 15, 8, 0, 0, 0, time.FixedZone("CST", 8*3600)))
 	st := tianwen.ApparentSolarFromCivil(
 		time.Date(1984, 2, 15, 8, 0, 0, 0, time.FixedZone("CST", 8*3600)), 116.4, 8)
-	chart := ComputeChart(stgt, st, ganzhi.Male)
+	chart := computeChartFromTimes(stgt, st, ganzhi.Male)
 	liuNianTime6, err := ResolveLiuNianTime(tianwen.NewDate(2006, 6, 15))
 	if err != nil {
 		t.Fatalf("resolve liunian time 2006: %v", err)

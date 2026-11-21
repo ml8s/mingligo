@@ -18,7 +18,7 @@
 // Functions
 //
 //	SecureQigua() → Casting          安全随机起卦收据
-//	ComputeChart(st, yongShen, yaos) → Chart  装卦 + 用神 + 旺衰 + 应期
+//	computeChartFromTimes(st, yongShen, yaos) → Chart  装卦 + 用神 + 旺衰 + 应期
 package liuyao
 
 import (
@@ -35,9 +35,9 @@ func yaosToInts(y [6]YaoType) [6]int {
 	return out
 }
 
-// ComputeChart builds a full 六爻 chart from civil time (年/月柱),
+// computeChartFromTimes builds a full 六爻 chart from projected times (年/月柱),
 // true-solar time (日/时柱), question type, and yaos.
-func ComputeChart(gt time.Time, st time.Time, yongShen YongShen, yaos [6]int) Chart {
+func computeChartFromTimes(gt time.Time, st time.Time, yongShen YongShen, yaos [6]int) Chart {
 	return computeChart(tianwen.ComputeBazi(gt, st), yongShen, yaos)
 }
 
@@ -49,5 +49,5 @@ func ComputeChartAt(
 	yaos [6]int,
 ) Chart {
 	solar := tianwen.ApparentSolarFromStandard(standard, longitude)
-	return ComputeChart(standard, solar, yongShen, yaos)
+	return computeChartFromTimes(standard, solar, yongShen, yaos)
 }

@@ -15,7 +15,7 @@ func TestComputeChart_HasAllFields(t *testing.T) {
 		time.Date(1990, 6, 15, 10, 0, 0, 0, time.FixedZone("CST", 8*3600)),
 		116.4, 8,
 	)
-	chart := ComputeChart(stgt, st, ganzhi.Male)
+	chart := computeChartFromTimes(stgt, st, ganzhi.Male)
 
 	// 每柱应有全量字段
 	for _, zhu := range []Pillar{chart.Nian, chart.Yue, chart.Ri, chart.Shi} {
@@ -48,7 +48,7 @@ func TestComputeChart_SiHuaFromChart(t *testing.T) {
 		time.Date(1990, 6, 15, 10, 0, 0, 0, time.FixedZone("CST", 8*3600)),
 		116.4, 8,
 	)
-	chart := ComputeChart(stgt, st, ganzhi.Male)
+	chart := computeChartFromTimes(stgt, st, ganzhi.Male)
 
 	// 日柱应有十神（对日主的关系）
 	for _, entry := range chart.Ri.ShiShens {
@@ -68,7 +68,7 @@ func TestComputeChart_ShenShaNotEmpty(t *testing.T) {
 		time.Date(1990, 6, 15, 10, 0, 0, 0, time.FixedZone("CST", 8*3600)),
 		116.4, 8,
 	)
-	chart := ComputeChart(stgt, st, ganzhi.Male)
+	chart := computeChartFromTimes(stgt, st, ganzhi.Male)
 
 	// 至少某一柱有神煞
 	hasShenSha := false

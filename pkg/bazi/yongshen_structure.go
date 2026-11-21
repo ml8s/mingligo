@@ -10,16 +10,16 @@ import (
 // StemOccurrence records one exact stem occurrence in a palace. For a visible
 // stem source is "gan"; for a hidden stem it is main_qi / mid_qi / minor_qi.
 type StemOccurrence struct {
-	Pillar PillarIndex `json:"zhu"`
-	Branch ganzhi.Zhi  `json:"zhi"`
-	Stem   ganzhi.Gan  `json:"gan"`
+	Pillar PillarIndex  `json:"zhu"`
+	Branch ganzhi.Zhi   `json:"zhi"`
+	Stem   ganzhi.Gan   `json:"gan"`
 	Source TenGodSource `json:"source"`
 }
 
 // ElementStructure is an atomic element projection used by the FuYi, TiaoHou, and GeJu projections. It never asserts final pattern success or failure.
 type ElementStructure struct {
 	Wuxing             ganzhi.Wuxing    `json:"wuxing"`
-	TransparentPillars []PillarIndex         `json:"transparent_pillars"`
+	TransparentPillars []PillarIndex    `json:"transparent_pillars"`
 	Roots              []StemOccurrence `json:"roots"`
 	Season             ganzhi.WangShuai `json:"season"`
 	Timely             bool             `json:"timely"`

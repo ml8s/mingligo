@@ -236,7 +236,7 @@ func TestDaYun_Direction(t *testing.T) {
 				time.Date(tt.year, time.Month(tt.month), tt.day, 12, 0, 0, 0,
 					time.FixedZone("CST", 8*3600)),
 				120, 8)
-			chart := ComputeChart(stgt, st, tt.gender)
+			chart := computeChartFromTimes(stgt, st, tt.gender)
 
 			if chart.DaYun == nil {
 				t.Fatal("DaYun is nil")
@@ -333,7 +333,7 @@ func TestPillarConsistency_YearToMonth(t *testing.T) {
 				time.Date(tt.year, time.Month(tt.month), tt.day, 12, 0, 0, 0,
 					time.FixedZone("CST", 8*3600)),
 				120, 8)
-			chart := ComputeChart(stgt, st, ganzhi.Male)
+			chart := computeChartFromTimes(stgt, st, ganzhi.Male)
 
 			// Verify year pillar gan.
 			if chart.Nian.Gan != tt.wantNianGan {
@@ -395,7 +395,7 @@ func TestPillarConsistency_DayToHour(t *testing.T) {
 			when := time.Date(tt.year, time.Month(tt.month), tt.day, 0, 0, 0, 0,
 				time.FixedZone("CST", 8*3600))
 			st := time.Time(when)
-			chart := ComputeChart(time.Time(when), st, ganzhi.Male)
+			chart := computeChartFromTimes(time.Time(when), st, ganzhi.Male)
 
 			// Verify day gan matches expected.
 			if chart.Ri.Gan != tt.wantRiGan {
@@ -516,7 +516,7 @@ func TestMonthBoundary_JieQi(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			stgt := time.Time(tt.date)
 			st := tianwen.ApparentSolarFromCivil(tt.date, 120, 8)
-			chart := ComputeChart(stgt, st, ganzhi.Male)
+			chart := computeChartFromTimes(stgt, st, ganzhi.Male)
 
 			if chart.Yue.Zhi != tt.wantYueZhi {
 				t.Errorf("Yue.Zhi = %s, want %s",
@@ -552,7 +552,7 @@ func TestYearBoundary_LiChun(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			stgt := time.Time(tt.date)
 			st := tianwen.ApparentSolarFromCivil(tt.date, 120, 8)
-			chart := ComputeChart(stgt, st, ganzhi.Male)
+			chart := computeChartFromTimes(stgt, st, ganzhi.Male)
 
 			if chart.Nian.Gan != tt.wantNianGan {
 				t.Errorf("Nian.Gan = %s, want %s",
@@ -599,7 +599,7 @@ func TestHourBoundary_ShiChen(t *testing.T) {
 			st := tianwen.ApparentSolarFromCivil(
 				time.Date(2024, 6, 15, tt.hour, tt.min, 0, 0, time.FixedZone("CST", 8*3600)),
 				120, 8)
-			chart := ComputeChart(stgt, st, ganzhi.Male)
+			chart := computeChartFromTimes(stgt, st, ganzhi.Male)
 
 			if chart.Shi.Zhi != tt.wantShiZhi {
 				t.Errorf("Shi.Zhi = %s, want %s",

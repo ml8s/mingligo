@@ -21,7 +21,7 @@ func TestComputeChart_All4096YaoCombinations(t *testing.T) {
 					for e := 6; e <= 9; e++ {
 						for f := 6; f <= 9; f++ {
 							yaos := [6]int{a, b, c, d, e, f}
-							chart := ComputeChart(stgt, st, YongShiYao, yaos)
+							chart := computeChartFromTimes(stgt, st, YongShiYao, yaos)
 							count++
 
 							if chart.Name == "" || chart.Palace == "" {

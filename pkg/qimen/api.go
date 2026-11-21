@@ -268,9 +268,9 @@ func ResolveMethodWithOptions(
 	)
 }
 
-// ComputeChartWithMethod computes a chart for a catalog method and rejects
+// computeChartWithMethod computes a chart for a catalog method and rejects
 // combinations absent from the catalog.
-func ComputeChartWithMethod(gt time.Time, st time.Time, method Method) (Chart, error) {
+func computeChartWithMethod(gt time.Time, st time.Time, method Method) (Chart, error) {
 	parsed, err := validateMethodFields(
 		method.Scope, method.School, method.Dingju, method.QuarterRule,
 		method.BaseDingju, method.DunSource, method.HourBoundary,
@@ -297,9 +297,9 @@ func chartInputs(gt time.Time, st time.Time) (ganzhi.Bazi, time.Time, time.Time)
 	return bz, gt, st
 }
 
-// ComputeChartWithYongShenAndMethod aggregates selected Yong Shen under a
+// computeChartWithYongShenAndMethod aggregates selected Yong Shen under a
 // catalog method and rejects combinations absent from the catalog.
-func ComputeChartWithYongShenAndMethod(
+func computeChartWithYongShenAndMethod(
 	gt time.Time, st time.Time, syms []YongShenSymbol, birthDate BirthDate, method Method,
 ) (Chart, error) {
 	parsed, err := validateMethodFields(

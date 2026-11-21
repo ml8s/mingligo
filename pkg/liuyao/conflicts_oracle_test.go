@@ -1,8 +1,8 @@
 package liuyao
 
 import (
-	"github.com/ml8s/mingligo/pkg/ganzhi"
 	"encoding/json"
+	"github.com/ml8s/mingligo/pkg/ganzhi"
 	"os"
 	"reflect"
 	"strings"

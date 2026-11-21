@@ -14,7 +14,7 @@ func TestComputeYongshenEvidence_PresentsCandidatesAndStructure(t *testing.T) {
 		time.Date(1984, 2, 15, 8, 0, 0, 0, time.FixedZone("CST", 8*3600)),
 		116.4, 8,
 	)
-	chart := ComputeChart(stgt, st, ganzhi.Male)
+	chart := computeChartFromTimes(stgt, st, ganzhi.Male)
 	fuYi, tiaoHou, geJu := chart.FuYi, chart.TiaoHou, chart.GeJu
 
 	validStrengths := map[string]bool{"身强": true, "身弱": true, "中和": true}

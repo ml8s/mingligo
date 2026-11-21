@@ -34,7 +34,7 @@ func TestCalendarBoundaryFixtures_MonthBranch(t *testing.T) {
 				t.Fatal(err)
 			}
 			st := tianwen.ApparentSolarFromCivil(local, 120, 8)
-			chart := ComputeChart(local, st, YongShiYao, [6]int{7, 7, 7, 7, 7, 7})
+			chart := computeChartFromTimes(local, st, YongShiYao, [6]int{7, 7, 7, 7, 7, 7})
 			if got := chart.YueZhi.String(); got != tc.ExpectedMonthBranch {
 				t.Fatalf("month branch=%s, want %s", got, tc.ExpectedMonthBranch)
 			}

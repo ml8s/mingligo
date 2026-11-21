@@ -26,6 +26,6 @@ func BenchmarkComputeChart(b *testing.B) {
 
 func ComputeChart(gt time.Time, st time.Time) Chart {
 	method, _ := ResolveMethod("", "", "", "")
-	chart, _ := ComputeChartWithMethod(gt, st, method)
+	chart, _ := computeChartWithMethod(gt, st, method)
 	return chart
 }
