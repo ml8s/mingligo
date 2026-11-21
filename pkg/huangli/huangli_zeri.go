@@ -119,9 +119,10 @@ func computeShiChen(riZhi, yueZhi ganzhi.Zhi, dayJianChu string) []ShiChenFortun
 		"青龙", "明堂", "天刑", "朱雀", "金匮", "天德",
 		"白虎", "玉堂", "天牢", "玄武", "司命", "勾陈",
 	}
-	huangDaoPath := [12]string{
-		"黄道", "黄道", "黑道", "黑道", "黄道", "黄道",
-		"黑道", "黄道", "黑道", "黑道", "黄道", "黑道",
+	// 黄道(true)/黑道(false) for the twelve hour-branch path positions.
+	huangDaoPath := [12]bool{
+		true, true, false, false, true, true,
+		false, true, false, false, true, false,
 	}
 	jianchuSeq := [12]string{"建", "除", "满", "平", "定", "执", "破", "危", "成", "收", "开", "闭"}
 
@@ -151,7 +152,7 @@ func computeShiChen(riZhi, yueZhi ganzhi.Zhi, dayJianChu string) []ShiChenFortun
 		hsIdx := (i - qlStart + 12) % 12
 		jcIdx := (jcStart + i) % 12
 		// 黄道=吉, 黑道=凶
-		isSuitable := huangDaoPath[hsIdx] == "黄道"
+		isSuitable := huangDaoPath[hsIdx]
 		result[i] = ShiChenFortune{
 			Zhi:         zhiNames[i],
 			Time:        timeRanges[i],
