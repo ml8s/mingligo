@@ -24,22 +24,37 @@ type SchoolView struct {
 	JuShuName string      `json:"ju_shu_name" jsonschema:"局数名。"`
 }
 
-// MetaView groups元辰/格局 facts (宫位引用，星曜由源宫承载).
-type MetaView struct {
+// PalaceRelationsView groups宫位级引用事实 (星曜仍由 GongWei 源宫唯一承载).
+type PalaceRelationsView struct {
 	KongGong       []KongGongInfo `json:"kong_gong,omitempty" jsonschema:"空宫借星。"`
-	Patterns       []Pattern      `json:"ge_ju,omitempty" jsonschema:"格局候选。"`
 	SanFangSiZheng SanFangSiZheng `json:"san_fang_si_zheng" jsonschema:"命宫三方四正宫位关系。"`
-	DaXian         []DaXianStep   `json:"da_xian" jsonschema:"十年大限序列。"`
-	MingZhu        string         `json:"ming_zhu,omitempty" jsonschema:"命主。"`
-	ShenZhu        string         `json:"shen_zhu,omitempty" jsonschema:"身主。"`
+}
+
+// PatternsView groups格局候选 (不裁决成败).
+type PatternsView struct {
+	Patterns []Pattern `json:"ge_ju,omitempty" jsonschema:"格局候选。"`
+}
+
+// CyclesView groups时间轴序列 (与八字顶层 DaYun 对齐).
+type CyclesView struct {
+	DaXian []DaXianStep `json:"da_xian" jsonschema:"十年大限序列。"`
+}
+
+// SoulBodyView groups命主身主定星 (命宫支/年支的固定映射).
+type SoulBodyView struct {
+	MingZhu string `json:"ming_zhu,omitempty" jsonschema:"命主。"`
+	ShenZhu string `json:"shen_zhu,omitempty" jsonschema:"身主。"`
 }
 
 // ChartView is the domain-aggregated output of a Ziwei chart.
 type ChartView struct {
-	Calendar CalendarView `json:"calendar" jsonschema:"历法事实。"`
-	School   SchoolView   `json:"school" jsonschema:"排盘口径与局数。"`
-	GongWei  [12]Gong     `json:"shi_er_gong" jsonschema:"十二宫；星曜由各宫唯一承载。"`
-	Meta     MetaView     `json:"meta" jsonschema:"格局与宫位关系事实。"`
+	Calendar        CalendarView        `json:"calendar" jsonschema:"历法事实。"`
+	School          SchoolView          `json:"school" jsonschema:"排盘口径与局数。"`
+	GongWei         [12]Gong            `json:"shi_er_gong" jsonschema:"十二宫；星曜由各宫唯一承载。"`
+	PalaceRelations PalaceRelationsView `json:"palace_relations" jsonschema:"宫位引用事实。"`
+	Patterns        PatternsView        `json:"patterns" jsonschema:"格局候选。"`
+	Cycles          CyclesView          `json:"cycles" jsonschema:"时间轴序列。"`
+	SoulBody        SoulBodyView        `json:"soul_body" jsonschema:"命主身主定星。"`
 }
 
 // View produces the domain-aggregated output from the computed chart. Filling
@@ -53,10 +68,11 @@ func (c Chart) View() ChartView {
 		},
 		School:  SchoolView{KouJing: c.KouJing, JuShu: c.JuShu, JuShuName: c.JuShuName},
 		GongWei: c.GongWei,
-		Meta: MetaView{
-			KongGong: c.KongGong, Patterns: c.Patterns,
-			SanFangSiZheng: c.SanFangSiZheng, DaXian: c.DaXian,
-			MingZhu: c.MingZhu, ShenZhu: c.ShenZhu,
+		PalaceRelations: PalaceRelationsView{
+			KongGong: c.KongGong, SanFangSiZheng: c.SanFangSiZheng,
 		},
+		Patterns: PatternsView{Patterns: c.Patterns},
+		Cycles:   CyclesView{DaXian: c.DaXian},
+		SoulBody: SoulBodyView{MingZhu: c.MingZhu, ShenZhu: c.ShenZhu},
 	}
 }
