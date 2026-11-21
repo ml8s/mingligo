@@ -157,6 +157,9 @@ func buildStaticSchemaOptions() map[reflect.Type]*jsonschema.Schema {
 		reflect.TypeFor[ganzhi.ShiShen](): {
 			Type: "string", Enum: []any{"比肩", "劫财", "食神", "伤官", "偏财", "正财", "七杀", "正官", "偏印", "正印"},
 		},
+		reflect.TypeFor[bazi.LiuNianShenShaName](): {
+			Type: "string", Enum: []any{"亡神", "元辰", "劫煞", "勾神", "十恶大败", "华盖", "四废", "国印", "地网", "天乙贵人", "天厨贵人", "天喜", "天德", "天德合", "天罗", "天赦", "太极贵人", "孤辰", "寡宿", "将星", "德秀贵人", "文昌", "月德", "月恩", "桃花", "灾煞", "禄神", "福星贵人", "童子煞", "红鸾", "绞神", "羊刃", "血刃", "金舆", "阴差阳错", "飞刃", "驿马", "病符", "丧门", "吊客", "大耗"},
+		},
 		reflect.TypeFor[bazi.NatalRelationKind](): {
 			Type: "string", Enum: []any{"zhi_liu_he", "liu_chong", "liu_hai", "liu_po", "an_he", "liu_xing", "gan_he", "gan_he_candidate", "gan_chong", "gan_chong_candidate", "san_he", "san_he_partial", "san_hui"},
 		},
@@ -190,6 +193,7 @@ func buildStaticSchemaOptions() map[reflect.Type]*jsonschema.Schema {
 		reflect.TypeFor[qimen.YingQiMatchKind](): {
 			Type: "string", Enum: []any{"same", "opposite"},
 		},
+		reflect.TypeFor[ziwei.SiHua](): {Type: "string", Enum: []any{"禄", "权", "科", "忌"}},
 		reflect.TypeFor[ziwei.Brightness](): {
 			Type: "string", Enum: []any{"庙", "旺", "得", "利", "平", "陷", "不"},
 		},

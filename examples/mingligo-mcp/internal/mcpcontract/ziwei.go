@@ -38,13 +38,13 @@ func ZiweiLiupan(_ context.Context, input ZiweiLiupanInput) (out ZiweiLiupanOutp
 
 	switch input.Scope {
 	case "liu_nian":
-		items := make([]ziwei.LiuNian, 0, count)
+		items := make([]ziwei.LiuNianOutputView, 0, count)
 		for range count {
 			item, err := computeZiweiLiuNian(current, chart)
 			if err != nil {
 				return out, err
 			}
-			items = append(items, item)
+			items = append(items, item.View())
 			current, err = advanceZiweiLiuNian(current)
 			if err != nil {
 				return out, err
@@ -53,13 +53,13 @@ func ZiweiLiupan(_ context.Context, input ZiweiLiupanInput) (out ZiweiLiupanOutp
 		out = ZiweiLiupanOutput{LiuNian: items}
 		return out, nil
 	case "liu_yue":
-		items := make([]ziwei.LiuYue, 0, count)
+		items := make([]ziwei.LiuYueOutputView, 0, count)
 		for range count {
 			item, err := computeZiweiLiuYue(current, chart)
 			if err != nil {
 				return out, err
 			}
-			items = append(items, item)
+			items = append(items, item.View())
 			current, err = advanceZiweiLiuYue(current)
 			if err != nil {
 				return out, err
@@ -68,13 +68,13 @@ func ZiweiLiupan(_ context.Context, input ZiweiLiupanInput) (out ZiweiLiupanOutp
 		out = ZiweiLiupanOutput{LiuYue: items}
 		return out, nil
 	case "liu_ri":
-		items := make([]ziwei.LiuRi, 0, count)
+		items := make([]ziwei.LiuRiOutputView, 0, count)
 		for range count {
 			item, err := computeZiweiLiuRi(current, chart)
 			if err != nil {
 				return out, err
 			}
-			items = append(items, item)
+			items = append(items, item.View())
 			current, err = advanceZiweiLiuRi(current)
 			if err != nil {
 				return out, err
@@ -83,13 +83,13 @@ func ZiweiLiupan(_ context.Context, input ZiweiLiupanInput) (out ZiweiLiupanOutp
 		out = ZiweiLiupanOutput{LiuRi: items}
 		return out, nil
 	case "liu_shi":
-		items := make([]ziwei.LiuShi, 0, count)
+		items := make([]ziwei.LiuShiOutputView, 0, count)
 		for range count {
 			item, err := computeZiweiLiuShi(current, chart)
 			if err != nil {
 				return out, err
 			}
-			items = append(items, item)
+			items = append(items, item.View())
 			current, err = advanceZiweiLiuShi(current)
 			if err != nil {
 				return out, err

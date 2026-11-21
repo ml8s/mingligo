@@ -739,4 +739,3 @@ func liuyaoCastingDomain(output LiuyaoCastingOutput) (liuyao.Casting, error) {
 	}
 	return casting, nil
 }
-

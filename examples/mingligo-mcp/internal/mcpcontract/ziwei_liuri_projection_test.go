@@ -9,9 +9,9 @@ import (
 	"github.com/ml8s/mingligo/pkg/ziwei"
 )
 
-// TestZiweiLiuRiDomainMatchesWire guards the handler's direct domain output
+// TestZiweiLiuRiDomainMatchesView guards the handler's direct domain output
 // against the legacy wire DTO shape.
-func TestZiweiLiuRiDomainMatchesWire(t *testing.T) {
+func TestZiweiLiuRiDomainMatchesView(t *testing.T) {
 	subject := NatalSubject{
 		StandardTime: "1984-02-15T00:00:00Z",
 		Longitude:    116.4,
@@ -27,16 +27,12 @@ func TestZiweiLiuRiDomainMatchesWire(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	wire, err := wireFromDomain[ZiweiLiuRiOutput](domain)
-	if err != nil {
-		t.Fatal(err)
-	}
 	dj, _ := json.Marshal(domain)
-	wj, _ := json.Marshal(wire)
+	vj, _ := json.Marshal(domain.View())
 	var a, b any
 	json.Unmarshal(dj, &a)
-	json.Unmarshal(wj, &b)
+	json.Unmarshal(vj, &b)
 	if !reflect.DeepEqual(a, b) {
-		t.Errorf("domain/wire mismatch\ndomain: %s\nwire:   %s", dj, wj)
+		t.Errorf("domain/view mismatch\ndomain: %s\nview:   %s", dj, vj)
 	}
 }

@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"strings"
 	"time"
-
 )
 
 func parseStandardTime(value StandardTime) (time.Time, *time.Location, error) {

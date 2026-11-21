@@ -116,9 +116,9 @@ func TestSeriesBatchFirstEqualsSingle(t *testing.T) {
 			"standard_time": "2026-06-15T12:00:00+08:00", "count": count,
 		}
 	}
-	var s BaziLiuNianSeries
+	var s BaziLiupanOutput
 	decode(t, callSeries(t, reg, "bazi_liupan", args(1)), &s)
-	var b BaziLiuNianSeries
+	var b BaziLiupanOutput
 	decode(t, callSeries(t, reg, "bazi_liupan", args(3)), &b)
 	if len(s.LiuNian) == 0 || len(b.LiuNian) == 0 {
 		t.Fatal("empty batch")
@@ -303,7 +303,7 @@ func TestSeriesXiaoYunDefaultOne(t *testing.T) {
 	raw := callSeries(t, reg, "bazi_liupan", map[string]any{
 		"subject": seriesChart(t), "scope": "xiao_yun",
 	})
-	var out BaziXiaoYunOutput
+	var out BaziLiupanOutput
 	decode(t, raw, &out)
 	for _, set := range out.XiaoYun {
 		if len(set.Zhus) != 1 {

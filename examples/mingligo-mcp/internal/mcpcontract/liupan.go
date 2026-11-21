@@ -5,6 +5,9 @@ import (
 	"fmt"
 
 	"github.com/google/jsonschema-go/jsonschema"
+
+	"github.com/ml8s/mingligo/pkg/bazi"
+	"github.com/ml8s/mingligo/pkg/ziwei"
 )
 
 // Liupan tools expose one domain method with one schema form per time layer.
@@ -154,21 +157,25 @@ func ziweiLiupanFormsSchema(options *jsonschema.ForOptions) (json.RawMessage, er
 
 func baziLiupanOutputSchema(options *jsonschema.ForOptions) (json.RawMessage, error) {
 	roots := []func() (json.RawMessage, error){
-		func() (json.RawMessage, error) { return seriesOutputSchema[BaziLiuNianOutput](options, "liu_nian") },
-		func() (json.RawMessage, error) { return seriesOutputSchema[BaziLiuYueOutput](options, "liu_yue") },
-		func() (json.RawMessage, error) { return seriesOutputSchema[BaziLiuRiOutput](options, "liu_ri") },
-		func() (json.RawMessage, error) { return seriesOutputSchema[BaziLiuShiOutput](options, "liu_shi") },
-		func() (json.RawMessage, error) { return seriesOutputSchema[BaziXiaoYunItem](options, "xiao_yun") },
+		func() (json.RawMessage, error) {
+			return seriesOutputSchema[bazi.LiuNianOutputView](options, "liu_nian")
+		},
+		func() (json.RawMessage, error) { return seriesOutputSchema[bazi.LiuYueOutputView](options, "liu_yue") },
+		func() (json.RawMessage, error) { return seriesOutputSchema[bazi.LiuRiOutputView](options, "liu_ri") },
+		func() (json.RawMessage, error) { return seriesOutputSchema[bazi.LiuShiOutputView](options, "liu_shi") },
+		func() (json.RawMessage, error) { return seriesOutputSchema[bazi.XiaoYunItemView](options, "xiao_yun") },
 	}
 	return flattenedDomainOutputSchema("bazi.liupan output schema", roots)
 }
 
 func ziweiLiupanOutputSchema(options *jsonschema.ForOptions) (json.RawMessage, error) {
 	roots := []func() (json.RawMessage, error){
-		func() (json.RawMessage, error) { return seriesOutputSchema[ZiweiLiuNianOutput](options, "liu_nian") },
-		func() (json.RawMessage, error) { return seriesOutputSchema[ZiweiLiuYueOutput](options, "liu_yue") },
-		func() (json.RawMessage, error) { return seriesOutputSchema[ZiweiLiuRiOutput](options, "liu_ri") },
-		func() (json.RawMessage, error) { return seriesOutputSchema[ZiweiLiuShiOutput](options, "liu_shi") },
+		func() (json.RawMessage, error) {
+			return seriesOutputSchema[ziwei.LiuNianOutputView](options, "liu_nian")
+		},
+		func() (json.RawMessage, error) { return seriesOutputSchema[ziwei.LiuYueOutputView](options, "liu_yue") },
+		func() (json.RawMessage, error) { return seriesOutputSchema[ziwei.LiuRiOutputView](options, "liu_ri") },
+		func() (json.RawMessage, error) { return seriesOutputSchema[ziwei.LiuShiOutputView](options, "liu_shi") },
 	}
 	return flattenedDomainOutputSchema("ziwei.liupan output schema", roots)
 }

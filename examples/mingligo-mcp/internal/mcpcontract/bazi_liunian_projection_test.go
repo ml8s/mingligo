@@ -9,9 +9,9 @@ import (
 	"github.com/ml8s/mingligo/pkg/bazi"
 )
 
-// TestBaziLiuNianDomainMatchesWire guards the handler's direct domain output
+// TestBaziLiuNianDomainMatchesView guards the handler's direct domain output
 // against the legacy wire DTO shape.
-func TestBaziLiuNianDomainMatchesWire(t *testing.T) {
+func TestBaziLiuNianDomainMatchesView(t *testing.T) {
 	subject := NatalSubject{StandardTime: "1984-02-15T00:00:00Z", Longitude: 116.4, Gender: "male"}
 	core, err := subject.baziCore()
 	if err != nil {
@@ -23,16 +23,12 @@ func TestBaziLiuNianDomainMatchesWire(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	wire, err := wireFromDomain[BaziLiuNianOutput](*domain)
-	if err != nil {
-		t.Fatal(err)
-	}
 	dj, _ := json.Marshal(domain)
-	wj, _ := json.Marshal(wire)
+	vj, _ := json.Marshal(domain.View())
 	var a, b any
 	json.Unmarshal(dj, &a)
-	json.Unmarshal(wj, &b)
+	json.Unmarshal(vj, &b)
 	if !reflect.DeepEqual(a, b) {
-		t.Errorf("domain/wire mismatch\ndomain: %s\nwire:   %s", dj, wj)
+		t.Errorf("domain/view mismatch\ndomain: %s\nview:   %s", dj, vj)
 	}
 }

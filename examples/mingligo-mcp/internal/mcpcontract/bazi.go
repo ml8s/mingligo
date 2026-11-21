@@ -54,13 +54,13 @@ func BaziLiupan(_ context.Context, input BaziLiupanInput) (out BaziLiupanOutput,
 
 	switch input.Scope {
 	case "liu_nian":
-		items := make([]bazi.LiuNian, 0, count)
+		items := make([]bazi.LiuNianOutputView, 0, count)
 		for range count {
 			item, err := computeBaziLiuNian(current, core)
 			if err != nil {
 				return out, err
 			}
-			items = append(items, item)
+			items = append(items, item.View())
 			current, err = advanceBaziLiuNian(current)
 			if err != nil {
 				return out, err
@@ -69,13 +69,13 @@ func BaziLiupan(_ context.Context, input BaziLiupanInput) (out BaziLiupanOutput,
 		out = BaziLiupanOutput{LiuNian: items}
 		return out, nil
 	case "liu_yue":
-		items := make([]bazi.LiuYue, 0, count)
+		items := make([]bazi.LiuYueOutputView, 0, count)
 		for range count {
 			item, err := computeBaziLiuYue(current, core)
 			if err != nil {
 				return out, err
 			}
-			items = append(items, item)
+			items = append(items, item.View())
 			current, err = advanceBaziLiuYue(current)
 			if err != nil {
 				return out, err
@@ -84,13 +84,13 @@ func BaziLiupan(_ context.Context, input BaziLiupanInput) (out BaziLiupanOutput,
 		out = BaziLiupanOutput{LiuYue: items}
 		return out, nil
 	case "liu_ri":
-		items := make([]bazi.LiuRi, 0, count)
+		items := make([]bazi.LiuRiOutputView, 0, count)
 		for range count {
 			item, err := computeBaziLiuRi(current, core)
 			if err != nil {
 				return out, err
 			}
-			items = append(items, item)
+			items = append(items, item.View())
 			current, err = advanceBaziLiuRi(current)
 			if err != nil {
 				return out, err
@@ -99,13 +99,13 @@ func BaziLiupan(_ context.Context, input BaziLiupanInput) (out BaziLiupanOutput,
 		out = BaziLiupanOutput{LiuRi: items}
 		return out, nil
 	case "liu_shi":
-		items := make([]bazi.LiuShi, 0, count)
+		items := make([]bazi.LiuShiOutputView, 0, count)
 		for range count {
 			item, err := computeBaziLiuShi(current, core)
 			if err != nil {
 				return out, err
 			}
-			items = append(items, item)
+			items = append(items, item.View())
 			current, err = advanceBaziLiuShi(current)
 			if err != nil {
 				return out, err
@@ -114,7 +114,12 @@ func BaziLiupan(_ context.Context, input BaziLiupanInput) (out BaziLiupanOutput,
 		out = BaziLiupanOutput{LiuShi: items}
 		return out, nil
 	case "xiao_yun":
-		out = BaziLiupanOutput{XiaoYun: bazi.ComputeXiaoYun(core, count)}
+		raw := bazi.ComputeXiaoYun(core, count)
+		items := make([]bazi.XiaoYunItemView, 0, len(raw))
+		for _, set := range raw {
+			items = append(items, set.View())
+		}
+		out = BaziLiupanOutput{XiaoYun: items}
 		return out, nil
 	default:
 		return BaziLiupanOutput{}, fmt.Errorf("bazi.liupan: invalid scope %q", input.Scope)
