@@ -120,6 +120,8 @@ type LiuRiJieView struct {
 type LiuRiOutputView struct {
 	Date        string                       `json:"date" jsonschema:"流日日期 YYYY-MM-DD。"`
 	ShiShen     ganzhi.ShiShen               `json:"shi_shen" jsonschema:"十神。"`
+	ShengRi     int                          `json:"sheng_ri" jsonschema:"流日天干是否生扶日主：0/1。"`
+	KeRi        int                          `json:"ke_ri" jsonschema:"流日天干是否克制/耗泄日主：0/1。"`
 	RiGan       *ganzhi.Gan                  `json:"gan,omitempty" jsonschema:"流日天干"`
 	RiZhi       *ganzhi.Zhi                  `json:"zhi,omitempty" jsonschema:"流日地支"`
 	DayNayin    *string                      `json:"na_yin,omitempty" jsonschema:"流日干支纳音。"`
@@ -147,6 +149,8 @@ type LiuShiChenView struct {
 type LiuShiOutputView struct {
 	LiuShiTime string                       `json:"hour_range" jsonschema:"流时时辰区间。"`
 	ShiShen    ganzhi.ShiShen               `json:"shi_shen" jsonschema:"十神。"`
+	ShengRi    int                          `json:"sheng_ri" jsonschema:"流时天干是否生扶日主：0/1。"`
+	KeRi       int                          `json:"ke_ri" jsonschema:"流时天干是否克制/耗泄日主：0/1。"`
 	ShiGan     *ganzhi.Gan                  `json:"gan,omitempty" jsonschema:"流时天干"`
 	ShiZhi     *ganzhi.Zhi                  `json:"zhi,omitempty" jsonschema:"流时地支"`
 	GanRels    *[]SeriesGanRelationItemView `json:"gan_rels,omitempty" jsonschema:"天干关系"`

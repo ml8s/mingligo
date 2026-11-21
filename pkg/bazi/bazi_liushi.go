@@ -20,6 +20,8 @@ type LiuShi struct {
 	ShiGan  ganzhi.Gan    `json:"gan"`
 	ShiZhi  ganzhi.Zhi    `json:"zhi"`
 	ShiShen string        `json:"shi_shen"`
+	ShengRi int           `json:"sheng_ri"`
+	KeRi    int           `json:"ke_ri"`
 	GanRels []GanRelation `json:"gan_rels"`
 	ZhiRels []ZhiRelation `json:"zhi_rels"`
 	ShiChen LiuShiChen    `json:"shi_chen"`
@@ -31,7 +33,7 @@ func computeLiuShi(bz ganzhi.Bazi, t LiuShiTime) (*LiuShi, error) {
 	shiGan := t.ShiGan
 	shiZhi := t.ShiZhi
 
-	tgName := ganzhi.ShiShenFromGan(riYuan, shiGan)
+	gen, rest, tgName := flowDayMasterFacts(shiGan, riYuan)
 	// Hour vs bazi: all 4 pillars, consistent with liunian.
 	ganRels, zhiRels := analyzeZhuWithBazi(ganzhi.Zhu{Gan: shiGan, Zhi: shiZhi}, bz)
 
@@ -39,7 +41,9 @@ func computeLiuShi(bz ganzhi.Bazi, t LiuShiTime) (*LiuShi, error) {
 		Time:    ganzhi.HourRanges[int(shiZhi)-1],
 		ShiGan:  shiGan,
 		ShiZhi:  shiZhi,
-		ShiShen: ganzhi.DecodeShiShen(tgName),
+		ShiShen: tgName,
+		ShengRi: gen,
+		KeRi:    rest,
 		GanRels: ganRels,
 		ZhiRels: zhiRels,
 	}, nil

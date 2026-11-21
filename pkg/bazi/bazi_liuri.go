@@ -19,6 +19,8 @@ type LiuRi struct {
 	RiZhi       ganzhi.Zhi          `json:"zhi"`
 	DayNaYin    string              `json:"na_yin"`
 	ShiShen     string              `json:"shi_shen"`
+	ShengRi     int                 `json:"sheng_ri"`
+	KeRi        int                 `json:"ke_ri"`
 	GanRels     []GanRelation       `json:"gan_rels"`
 	ZhiRels     []ZhiRelation       `json:"zhi_rels"`
 	DaYunRels   []ZhiRelation       `json:"da_yun_rels"`
@@ -34,7 +36,7 @@ func computeLiuRi(bz ganzhi.Bazi, t LiuRiTime, daYunZhu *ganzhi.Zhu, liuNianZhu 
 	bazi := bz.Slice()
 
 	dp := ganzhi.Zhu{Gan: t.RiGan, Zhi: t.RiZhi}
-	tgName := ganzhi.ShiShenFromGan(riYuan, dp.Gan)
+	gen, rest, tgName := flowDayMasterFacts(dp.Gan, riYuan)
 
 	// Day vs bazi (gan + zhi relations) — all 4 pillars, consistent with liunian.
 	ganRels, zhiRels := analyzeZhuWithBazi(dp, bz)
@@ -102,7 +104,9 @@ func computeLiuRi(bz ganzhi.Bazi, t LiuRiTime, daYunZhu *ganzhi.Zhu, liuNianZhu 
 		RiGan:       dp.Gan,
 		RiZhi:       dp.Zhi,
 		DayNaYin:    naYin,
-		ShiShen:     ganzhi.DecodeShiShen(tgName),
+		ShiShen:     tgName,
+		ShengRi:     gen,
+		KeRi:        rest,
 		GanRels:     ganRels,
 		ZhiRels:     zhiRels,
 		DaYunRels:   DaYunRels,
