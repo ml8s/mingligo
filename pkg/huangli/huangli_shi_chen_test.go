@@ -39,7 +39,7 @@ func TestShiChen_KnownDates_HuangDaoSequence(t *testing.T) {
 			// 验证黄道黑道至少各有几个
 			huangCount := 0
 			for _, sc := range day.ShiChen {
-				if sc.Suitable {
+				if sc.HuangDaoSuitable {
 					huangCount++
 				}
 			}
@@ -76,7 +76,7 @@ func TestShiChen_DifferentDays_DifferentPattern(t *testing.T) {
 	// 辰日→青龙在辰(第5个=index4)
 	getQingLong := func(sc []ShiChenFortune) string {
 		for _, s := range sc {
-			if s.HuangDaoStr == "青龙" {
+			if s.HuangDaoName == "青龙" {
 				return s.Zhi
 			}
 		}
@@ -131,14 +131,14 @@ func TestShiChen_GoodHoursForTravel(t *testing.T) {
 	// 列出宜出行的时辰
 	goodHours := 0
 	for _, sc := range day.ShiChen {
-		if sc.Suitable {
+		if sc.HuangDaoSuitable {
 			goodHours++
 		}
 	}
 	t.Logf("当日%d个时辰宜出行", goodHours)
 	for _, sc := range day.ShiChen {
-		if sc.Suitable {
-			t.Logf("  %s时(%s): %s(%s)", sc.Zhi, sc.Time, sc.HuangDaoStr, sc.JianChu)
+		if sc.HuangDaoSuitable {
+			t.Logf("  %s时(%s): %s(%s)", sc.Zhi, sc.Time, sc.HuangDaoName, sc.JianChu)
 		}
 	}
 }
@@ -175,7 +175,7 @@ func TestShiChen_DifferentMonths_DifferentPattern(t *testing.T) {
 
 	same := 0
 	for i := 0; i < 12 && i < len(day1.ShiChen) && i < len(day2.ShiChen); i++ {
-		if day1.ShiChen[i].Suitable == day2.ShiChen[i].Suitable {
+		if day1.ShiChen[i].HuangDaoSuitable == day2.ShiChen[i].HuangDaoSuitable {
 			same++
 		}
 	}

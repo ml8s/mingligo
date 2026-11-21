@@ -40,8 +40,8 @@ type FuShiView struct {
 
 // MarkerView groups 神煞/格局 facts.
 type MarkerView struct {
-	KongWangAffected []AffectedSymbol `json:"kong_wang_affected" jsonschema:"空亡影响符号。"`
-	MaXingAffected   []AffectedSymbol `json:"ma_xing_affected" jsonschema:"马星影响符号。"`
+	KongWangAffected []AffectedSymbol `json:"kong_wang_affected" jsonschema:"空亡影响符号（仅日干/时干/主柱三焦点扫描；用神落宫状态见 yong_shen.symbols[].kong_wang_zhi）。"`
+	MaXingAffected   []AffectedSymbol `json:"ma_xing_affected" jsonschema:"马星影响符号（仅日干/时干/主柱三焦点扫描）。"`
 	Patterns         []Pattern        `json:"ge_ju" jsonschema:"格局。"`
 }
 

@@ -154,11 +154,11 @@ func computeShiChen(riZhi, yueZhi ganzhi.Zhi, dayJianChu JianChu) []ShiChenFortu
 		// 黄道=吉, 黑道=凶
 		isSuitable := huangDaoPath[hsIdx]
 		result[i] = ShiChenFortune{
-			Zhi:         zhiNames[i],
-			Time:        timeRanges[i],
-			HuangDaoStr: huangDaoNames[hsIdx],
-			JianChu:     jianchuSeq[jcIdx],
-			Suitable:    isSuitable,
+			Zhi:              zhiNames[i],
+			Time:             timeRanges[i],
+			HuangDaoName:     huangDaoNames[hsIdx],
+			JianChu:          jianchuSeq[jcIdx],
+			HuangDaoSuitable: isSuitable,
 		}
 	}
 	return result

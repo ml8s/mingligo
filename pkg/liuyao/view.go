@@ -67,14 +67,14 @@ type YongShenView struct {
 	MuKu             bool         `json:"mu_ku,omitempty" jsonschema:"是否墓库。"`
 	LiuShou          string       `json:"liu_shou,omitempty" jsonschema:"六神。"`
 	ChangSheng       string       `json:"chang_sheng,omitempty" jsonschema:"长生。"`
-	FuShen           *FuShenView  `json:"fu_shen,omitempty" jsonschema:"伏神。"`
+	FuShen           *FuShenView  `json:"fu_shen,omitempty" jsonschema:"本宫全量伏神表（含飞神/飞伏关系/出入条件）；所选用神的伏神见 yong_shen.fu_shen。"`
 	FuShenCandidates []FuShenView `json:"fu_shen_candidates,omitempty" jsonschema:"伏神候选。"`
 }
 
 type AnalysisView struct {
 	TimingCandidates      []TimingCandidate      `json:"timing_candidates,omitempty" jsonschema:"应期候选。"`
 	DongYaoRelations      []DongYaoRelation      `json:"dong_yao_relations,omitempty" jsonschema:"动爻关系。"`
-	HiddenLines           []HiddenLine           `json:"hidden_lines,omitempty" jsonschema:"伏神。"`
+	HiddenLines           []HiddenLine           `json:"hidden_lines,omitempty" jsonschema:"本宫全量伏神表（含飞神/飞伏关系/出入条件）；所选用神的伏神见 yong_shen.fu_shen。"`
 	BranchRelationFacts   []BranchRelationFact   `json:"zhi_relation_facts,omitempty" jsonschema:"地支关系事实。"`
 	TombSchool            TombSchool             `json:"tomb_school" jsonschema:"墓库流派。"`
 	DayClashFacts         []DayClashFact         `json:"day_clash_facts,omitempty" jsonschema:"日冲事实。"`
@@ -91,7 +91,7 @@ type ChartView struct {
 	Gong       string        `json:"gong" jsonschema:"宫位。"`
 	GongWuxing string        `json:"gong_wuxing" jsonschema:"宫位五行。"`
 	Lines      []LineView    `json:"lines" jsonschema:"本卦六爻。"`
-	BianLines  []LineView    `json:"bian_lines" jsonschema:"变卦六爻。"`
+	BianLines  []LineView    `json:"bian_lines" jsonschema:"变卦六爻（仅动变事实，不参与主用神定位与旺衰判断）。"`
 	RiChenGan  string        `json:"ri_chen_gan" jsonschema:"日辰天干。"`
 	RiChenZhi  string        `json:"ri_chen_zhi" jsonschema:"日辰地支。"`
 	YueJianGan string        `json:"yue_jian_gan" jsonschema:"月建天干。"`
