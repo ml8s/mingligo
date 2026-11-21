@@ -400,6 +400,15 @@ const (
 	branchImageTomb   BranchImageKind = "墓库"
 )
 
+// ShenShaCategory is the closed 吉/凶/中性 classification of a 神煞.
+type ShenShaCategory string
+
+const (
+	ShenShaCategoryJi        ShenShaCategory = "吉"
+	ShenShaCategoryXiong     ShenShaCategory = "凶"
+	ShenShaCategoryZhongXing ShenShaCategory = "中性"
+)
+
 // ShenShaName is a closed-set symbol for a 神煞 name. Its value IS the stable display text.
 type ShenShaName string
 

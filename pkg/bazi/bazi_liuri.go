@@ -61,7 +61,7 @@ func computeLiuRi(bz ganzhi.Bazi, t LiuRiTime, daYunZhu *ganzhi.Zhu, liuNianZhu 
 		for _, tb := range targets {
 			for _, np := range bazi {
 				if np.Zhi == tb {
-					shensha = append(shensha, ShenShaProjection{Name: "天乙贵人", Category: catJi, Description: "流日天乙贵人日"})
+					shensha = append(shensha, ShenShaProjection{Name: "天乙贵人", Category: ShenShaCategoryJi, Description: "流日天乙贵人日"})
 				}
 			}
 		}
@@ -71,7 +71,7 @@ func computeLiuRi(bz ganzhi.Bazi, t LiuRiTime, daYunZhu *ganzhi.Zhu, liuNianZhu 
 		for _, tb := range targets {
 			for _, np := range bazi {
 				if np.Zhi == tb {
-					shensha = append(shensha, ShenShaProjection{Name: "文昌", Category: catJi, Description: "流日文昌日，利学业文书"})
+					shensha = append(shensha, ShenShaProjection{Name: "文昌", Category: ShenShaCategoryJi, Description: "流日文昌日，利学业文书"})
 				}
 			}
 		}
@@ -81,12 +81,12 @@ func computeLiuRi(bz ganzhi.Bazi, t LiuRiTime, daYunZhu *ganzhi.Zhu, liuNianZhu 
 	triadMaps := []struct {
 		m    map[ganzhi.Zhi]ganzhi.Zhi
 		name ShenShaName
-		cat  string
+		cat  ShenShaCategory
 		desc string
 	}{
-		{yimaZhiMap, "驿马", catZhongXing, "流日驿马，动象"},
-		{taohuaZhiMap, "桃花", catZhongXing, "流日桃花，异性缘佳"},
-		{huagaiZhiMap, "华盖", catZhongXing, "流日华盖，宜静思"},
+		{yimaZhiMap, "驿马", ShenShaCategoryZhongXing, "流日驿马，动象"},
+		{taohuaZhiMap, "桃花", ShenShaCategoryZhongXing, "流日桃花，异性缘佳"},
+		{huagaiZhiMap, "华盖", ShenShaCategoryZhongXing, "流日华盖，宜静思"},
 	}
 	for _, tm := range triadMaps {
 		if tb, ok := tm.m[yBranch]; ok && dp.Zhi == tb {

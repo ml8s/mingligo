@@ -26,13 +26,12 @@ type eventRule struct {
 }
 
 // JianChuConfig holds the parsed jianchu (建除) calendar rules: sequences,
-// suitable/forbidden activities, event-type rules, and shensha (神煞) data.
+// suitable/forbidden activities and event-type rules.
 type jianchuConfig struct {
 	Sequence   []JianChu
 	Suitable   map[JianChu][]string
 	Forbidden  map[JianChu][]string
 	EventRules map[string]eventRule
-	ShenSha    map[string]map[string][]string
 }
 
 // --- Engine Functions ---

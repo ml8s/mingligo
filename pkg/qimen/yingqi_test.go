@@ -112,10 +112,10 @@ func TestYingQiIncludesDutyStarAndDoorCandidates(t *testing.T) {
 		DutyDoorPalace: GongZhen,
 	}
 	result := computeYingQi(chart, time.Date(2026, 9, 9, 12, 0, 0, 0, time.FixedZone("CST", 8)), baseYingQiFocuses(chart))
-	types := map[string]bool{}
+	types := map[YingQiRuleType]bool{}
 	for _, candidate := range result.Candidates {
 		types[candidate.Type] = true
-		if candidate.Type != "duty_star" && candidate.Type != "duty_door" {
+		if candidate.Type != YingQiRuleDutyStar && candidate.Type != YingQiRuleDutyDoor {
 			continue
 		}
 		if candidate.Branch == "" || candidate.Gong == 0 || len(candidate.RelatedTo) == 0 {

@@ -62,7 +62,6 @@ func loadJianchu() error {
 				Suitable  []string `yaml:"suitable"`
 				Forbidden []string `yaml:"forbidden"`
 			} `yaml:"event_rules"`
-			ShenSha map[string]map[string][]string `yaml:"shensha"`
 		} `yaml:"jianchu"`
 	}
 	if err := yaml.Unmarshal(jianchuYAML, &raw); err != nil {
@@ -108,10 +107,6 @@ func loadJianchu() error {
 		c.EventRules[v.Label] = r
 	}
 
-	c.ShenSha = make(map[string]map[string][]string, len(cfg.ShenSha))
-	for k, v := range cfg.ShenSha {
-		c.ShenSha[k] = v
-	}
 	return nil
 }
 

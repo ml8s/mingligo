@@ -13,7 +13,7 @@ type RelatedSymbol struct {
 }
 
 type YingQiCandidate struct {
-	Type      string          `json:"ying_qi_kind"`
+	Type      YingQiRuleType  `json:"ying_qi_kind"`
 	Mechanism string          `json:"mechanism"`
 	Branch    string          `json:"zhi"`
 	Gong      GongIndex       `json:"gong"`
@@ -34,29 +34,29 @@ type YingQi struct {
 func computeYingQi(chart Chart, chartTime time.Time, focuses map[GongIndex][]RelatedSymbol) YingQi {
 	var result YingQi
 	window := yingQiDayWindow(chart, chartTime)
-	appendCandidate := func(ruleType string, branchPalace BranchPalace) {
+	appendCandidate := func(ruleType YingQiRuleType, branchPalace BranchPalace) {
 		rule := yingqiRuleTable[ruleType]
 		result.Candidates = append(result.Candidates, YingQiCandidate{
 			Type: ruleType, Mechanism: rule.Mechanism,
 			Branch: ganzhi.ZhiName(branchPalace.Branch), Gong: branchPalace.Gong,
 			RelatedTo: relatedSymbols(branchPalace.Gong, focuses),
-			Dates:     yingQiDates(YingQiRuleType(ruleType), branchPalace.Branch, window),
+			Dates:     yingQiDates(ruleType, branchPalace.Branch, window),
 		})
 	}
 	if chart.Board.MaXing.Branch != 0 {
-		appendCandidate("ma_xing", chart.Board.MaXing)
+		appendCandidate(YingQiRuleMaXing, chart.Board.MaXing)
 	}
 	if branch := palaceZhi(chart.DutyStarPalace); branch != 0 {
-		appendCandidate("duty_star", BranchPalace{Branch: branch, Gong: chart.DutyStarPalace})
+		appendCandidate(YingQiRuleDutyStar, BranchPalace{Branch: branch, Gong: chart.DutyStarPalace})
 	}
 	if branch := palaceZhi(chart.DutyDoorPalace); branch != 0 {
-		appendCandidate("duty_door", BranchPalace{Branch: branch, Gong: chart.DutyDoorPalace})
+		appendCandidate(YingQiRuleDutyDoor, BranchPalace{Branch: branch, Gong: chart.DutyDoorPalace})
 	}
 	for _, voidBranch := range chart.Board.KongWang {
 		if voidBranch.Branch == 0 {
 			continue
 		}
-		appendCandidate("kong_wang", voidBranch)
+		appendCandidate(YingQiRuleKongWang, voidBranch)
 	}
 	return result
 }

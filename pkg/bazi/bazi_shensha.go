@@ -6,18 +6,11 @@ import (
 	"github.com/ml8s/mingligo/pkg/ganzhi"
 )
 
-// Shensha category constants.
-const (
-	catJi        = "吉"
-	catXiong     = "凶"
-	catZhongXing = "中性"
-)
-
 // ShenShaProjection describes a single shensha hit on a pillar.
 type ShenShaProjection struct {
-	Name        ShenShaName `json:"name"`
-	Category    string      `json:"category"`
-	Description string      `json:"description"`
+	Name        ShenShaName     `json:"name"`
+	Category    ShenShaCategory `json:"category"`
+	Description string          `json:"description"`
 }
 
 type ganZhiPair struct {
@@ -149,7 +142,7 @@ func addTianYi(bz ganzhi.Bazi, riYuan, nianGan ganzhi.Gan) [4][]ShenShaProjectio
 				if p.Zhi == t && !marked[pi] {
 					marked[pi] = true
 					out[pi] = append(out[pi], ShenShaProjection{
-						Name: "天乙贵人", Category: catJi, Description: "主贵人相助，逢凶化吉",
+						Name: "天乙贵人", Category: ShenShaCategoryJi, Description: "主贵人相助，逢凶化吉",
 					})
 				}
 			}
@@ -171,7 +164,7 @@ func addTaiJi(bz ganzhi.Bazi, riYuan, nianGan ganzhi.Gan) [4][]ShenShaProjection
 				if p.Zhi == target && !marked[pi] {
 					marked[pi] = true
 					out[pi] = append(out[pi], ShenShaProjection{
-						Name: "太极贵人", Category: catJi, Description: "主聪慧好学，宜研哲理玄学",
+						Name: "太极贵人", Category: ShenShaCategoryJi, Description: "主聪慧好学，宜研哲理玄学",
 					})
 				}
 			}
@@ -191,7 +184,7 @@ func addDeXiu(bz ganzhi.Bazi, yueZhi ganzhi.Zhi) [4][]ShenShaProjection {
 	for pi, p := range bz.Slice() {
 		if slices.Contains(group.De, p.Gan) || slices.Contains(group.Xiu, p.Gan) {
 			out[pi] = append(out[pi], ShenShaProjection{
-				Name: "德秀贵人", Category: catJi, Description: "主禀气清粹，逢凶化吉",
+				Name: "德秀贵人", Category: ShenShaCategoryJi, Description: "主禀气清粹，逢凶化吉",
 			})
 		}
 	}
@@ -200,26 +193,26 @@ func addDeXiu(bz ganzhi.Bazi, yueZhi ganzhi.Zhi) [4][]ShenShaProjection {
 
 func addTianChu(bz ganzhi.Bazi, riYuan, nianGan ganzhi.Gan) [4][]ShenShaProjection {
 	var out [4][]ShenShaProjection
-	out = mergeShenSha(out, appendShenShaByGanLookup(bz, riYuan, tianChuLookup, "天厨贵人", catJi, "主食禄福泽"))
-	out = mergeShenSha(out, appendShenShaByGanLookup(bz, nianGan, tianChuLookup, "天厨贵人", catJi, "主食禄福泽"))
+	out = mergeShenSha(out, appendShenShaByGanLookup(bz, riYuan, tianChuLookup, "天厨贵人", ShenShaCategoryJi, "主食禄福泽"))
+	out = mergeShenSha(out, appendShenShaByGanLookup(bz, nianGan, tianChuLookup, "天厨贵人", ShenShaCategoryJi, "主食禄福泽"))
 	return out
 }
 
 func addFuXing(bz ganzhi.Bazi, riYuan ganzhi.Gan) [4][]ShenShaProjection {
 	var out [4][]ShenShaProjection
-	out = mergeShenSha(out, appendShenShaByGanLookup(bz, riYuan, fuXingLookup, "福星贵人", catJi, "主一生福气，平安顺遂"))
+	out = mergeShenSha(out, appendShenShaByGanLookup(bz, riYuan, fuXingLookup, "福星贵人", ShenShaCategoryJi, "主一生福气，平安顺遂"))
 	return out
 }
 
 func addGuoYin(bz ganzhi.Bazi, riYuan ganzhi.Gan) [4][]ShenShaProjection {
 	var out [4][]ShenShaProjection
-	out = mergeShenSha(out, appendShenShaByGanLookup(bz, riYuan, guoYinLookup, "国印", catJi, "主持印掌信，宜守正职守"))
+	out = mergeShenSha(out, appendShenShaByGanLookup(bz, riYuan, guoYinLookup, "国印", ShenShaCategoryJi, "主持印掌信，宜守正职守"))
 	return out
 }
 
 func addWenChang(bz ganzhi.Bazi, riYuan ganzhi.Gan) [4][]ShenShaProjection {
 	var out [4][]ShenShaProjection
-	out = mergeShenSha(out, appendShenShaByGanLookup(bz, riYuan, wenChangLookup, "文昌", catJi, "主学业、文书、才华"))
+	out = mergeShenSha(out, appendShenShaByGanLookup(bz, riYuan, wenChangLookup, "文昌", ShenShaCategoryJi, "主学业、文书、才华"))
 	return out
 }
 
@@ -233,11 +226,11 @@ func addXueTang(bz ganzhi.Bazi) [4][]ShenShaProjection {
 
 func addLuShen(bz ganzhi.Bazi, riYuan ganzhi.Gan) [4][]ShenShaProjection {
 	var out [4][]ShenShaProjection
-	out = mergeShenSha(out, addChangShengShenSha(bz, riYuan, 3, "禄神", catJi, "日主临官之位，主福禄安康"))
+	out = mergeShenSha(out, addChangShengShenSha(bz, riYuan, 3, "禄神", ShenShaCategoryJi, "日主临官之位，主福禄安康"))
 	return out
 }
 
-func addChangShengShenSha(bz ganzhi.Bazi, riYuan ganzhi.Gan, stageIdx int, name ShenShaName, cat, desc string) [4][]ShenShaProjection {
+func addChangShengShenSha(bz ganzhi.Bazi, riYuan ganzhi.Gan, stageIdx int, name ShenShaName, cat ShenShaCategory, desc string) [4][]ShenShaProjection {
 	var out [4][]ShenShaProjection
 	zhus := bz.Slice()
 	stageRow := ganzhi.ChangShengTable[riYuan]
@@ -273,7 +266,7 @@ func addNayinStageShenSha(bz ganzhi.Bazi, name ShenShaName, desc string, changSh
 			continue
 		}
 		if p.Zhi == targets[yearElement] {
-			out[pi] = append(out[pi], ShenShaProjection{Name: name, Category: catJi, Description: desc})
+			out[pi] = append(out[pi], ShenShaProjection{Name: name, Category: ShenShaCategoryJi, Description: desc})
 		}
 	}
 	return out
@@ -304,7 +297,7 @@ func addYangRen(bz ganzhi.Bazi, riYuan ganzhi.Gan) [4][]ShenShaProjection {
 	for pi, p := range zhus {
 		if yangRenLookup[riYuan] == p.Zhi {
 			out[pi] = append(out[pi], ShenShaProjection{
-				Name: "羊刃", Category: catXiong, Description: "日干帝旺/刃位，主刚强果断，但易冲动",
+				Name: "羊刃", Category: ShenShaCategoryXiong, Description: "日干帝旺/刃位，主刚强果断，但易冲动",
 			})
 		}
 	}
@@ -317,7 +310,7 @@ func addFeiRen(bz ganzhi.Bazi, riYuan ganzhi.Gan) [4][]ShenShaProjection {
 	for pi, p := range zhus {
 		if feiRenLookup[riYuan] == p.Zhi {
 			out[pi] = append(out[pi], ShenShaProjection{
-				Name: "飞刃", Category: catXiong, Description: "羊刃冲位，主动荡急变",
+				Name: "飞刃", Category: ShenShaCategoryXiong, Description: "羊刃冲位，主动荡急变",
 			})
 		}
 	}
@@ -333,7 +326,7 @@ func addWangShen(bz ganzhi.Bazi, nianZhi ganzhi.Zhi) [4][]ShenShaProjection {
 	for pi, p := range bz.Slice() {
 		if p.Zhi == target {
 			out[pi] = append(out[pi], ShenShaProjection{
-				Name: "亡神", Category: catXiong, Description: "主心机深虑，事多暗耗",
+				Name: "亡神", Category: ShenShaCategoryXiong, Description: "主心机深虑，事多暗耗",
 			})
 		}
 	}
@@ -344,7 +337,7 @@ func addYinChaYangCuo(bz ganzhi.Bazi) [4][]ShenShaProjection {
 	var out [4][]ShenShaProjection
 	if _, ok := yinChaYangCuo[ganzhi.SixtyCycleIndex(bz.Ri.Gan, bz.Ri.Zhi)]; ok {
 		out[2] = append(out[2], ShenShaProjection{
-			Name: "阴差阳错", Category: catXiong, Description: "主婚缘人事阴差阳错，多生错过",
+			Name: "阴差阳错", Category: ShenShaCategoryXiong, Description: "主婚缘人事阴差阳错，多生错过",
 		})
 	}
 	return out
@@ -368,14 +361,14 @@ func addTongZi(bz ganzhi.Bazi, seasonIdx int) [4][]ShenShaProjection {
 	}
 	if checkBranches(tongZiSeason[seasonIdx]) {
 		out[2] = append(out[2], ShenShaProjection{
-			Name: "童子煞", Category: catZhongXing, Description: "传统取象主幼年多病、姻缘迟滞",
+			Name: "童子煞", Category: ShenShaCategoryZhongXing, Description: "传统取象主幼年多病、姻缘迟滞",
 		})
 		return out
 	}
 	yearElement := ganzhi.NayinWuxingOf(zhus[0].Gan, zhus[0].Zhi)
 	if checkBranches(tongZiNayin[yearElement]) {
 		out[2] = append(out[2], ShenShaProjection{
-			Name: "童子煞", Category: catZhongXing, Description: "传统取象主幼年多病、姻缘迟滞",
+			Name: "童子煞", Category: ShenShaCategoryZhongXing, Description: "传统取象主幼年多病、姻缘迟滞",
 		})
 	}
 	return out
@@ -398,7 +391,7 @@ func addTianDeHe(bz ganzhi.Bazi, yueZhi ganzhi.Zhi) [4][]ShenShaProjection {
 			}
 			if hit {
 				out[pi] = append(out[pi], ShenShaProjection{
-					Name: "天德合", Category: catJi, Description: "天德所合，主贵人助力",
+					Name: "天德合", Category: ShenShaCategoryJi, Description: "天德所合，主贵人助力",
 				})
 			}
 		}
@@ -423,7 +416,7 @@ func addTianDe(bz ganzhi.Bazi, yueZhi ganzhi.Zhi) [4][]ShenShaProjection {
 			}
 			if hit {
 				out[pi] = append(out[pi], ShenShaProjection{
-					Name: "天德", Category: catJi, Description: "天德贵人，主福泽深厚，化险为夷",
+					Name: "天德", Category: ShenShaCategoryJi, Description: "天德贵人，主福泽深厚，化险为夷",
 				})
 			}
 		}
@@ -441,7 +434,7 @@ func addYueDe(bz ganzhi.Bazi, yueZhi ganzhi.Zhi) [4][]ShenShaProjection {
 	for pi, p := range zhus {
 		if p.Gan == targetStem {
 			out[pi] = append(out[pi], ShenShaProjection{
-				Name: "月德", Category: catJi, Description: "月德贵人，主月令之德，人缘佳",
+				Name: "月德", Category: ShenShaCategoryJi, Description: "月德贵人，主月令之德，人缘佳",
 			})
 		}
 	}
@@ -450,7 +443,7 @@ func addYueDe(bz ganzhi.Bazi, yueZhi ganzhi.Zhi) [4][]ShenShaProjection {
 
 // addTriadShenSha 三合类神煞（驿马/桃花/华盖/劫煞/灾煞/将星）：
 // 以年支与日支为参考（兼容两种流派），同一柱同一神煞只标注一次（去重）。
-func addTriadShenSha(bz ganzhi.Bazi, zhi [4]ganzhi.Zhi, lookup map[ganzhi.Zhi]ganzhi.Zhi, name ShenShaName, cat, desc string) [4][]ShenShaProjection {
+func addTriadShenSha(bz ganzhi.Bazi, zhi [4]ganzhi.Zhi, lookup map[ganzhi.Zhi]ganzhi.Zhi, name ShenShaName, cat ShenShaCategory, desc string) [4][]ShenShaProjection {
 	var out [4][]ShenShaProjection
 	zhus := bz.Slice()
 	marked := map[int]bool{}
@@ -469,37 +462,37 @@ func addTriadShenSha(bz ganzhi.Bazi, zhi [4]ganzhi.Zhi, lookup map[ganzhi.Zhi]ga
 
 func addTaoHua(bz ganzhi.Bazi, zhi [4]ganzhi.Zhi) [4][]ShenShaProjection {
 	var out [4][]ShenShaProjection
-	out = mergeShenSha(out, addTriadShenSha(bz, zhi, taohuaZhiMap, "桃花", catZhongXing, "主异性缘佳，浪漫多情"))
+	out = mergeShenSha(out, addTriadShenSha(bz, zhi, taohuaZhiMap, "桃花", ShenShaCategoryZhongXing, "主异性缘佳，浪漫多情"))
 	return out
 }
 
 func addYiMa(bz ganzhi.Bazi, zhi [4]ganzhi.Zhi) [4][]ShenShaProjection {
 	var out [4][]ShenShaProjection
-	out = mergeShenSha(out, addTriadShenSha(bz, zhi, yimaZhiMap, "驿马", catZhongXing, "主动荡、奔波、迁移"))
+	out = mergeShenSha(out, addTriadShenSha(bz, zhi, yimaZhiMap, "驿马", ShenShaCategoryZhongXing, "主动荡、奔波、迁移"))
 	return out
 }
 
 func addHuaGai(bz ganzhi.Bazi, zhi [4]ganzhi.Zhi) [4][]ShenShaProjection {
 	var out [4][]ShenShaProjection
-	out = mergeShenSha(out, addTriadShenSha(bz, zhi, huagaiZhiMap, "华盖", catZhongXing, "主孤独清高，聪明好学，有艺术天赋"))
+	out = mergeShenSha(out, addTriadShenSha(bz, zhi, huagaiZhiMap, "华盖", ShenShaCategoryZhongXing, "主孤独清高，聪明好学，有艺术天赋"))
 	return out
 }
 
 func addJiangXing(bz ganzhi.Bazi, zhi [4]ganzhi.Zhi) [4][]ShenShaProjection {
 	var out [4][]ShenShaProjection
-	out = mergeShenSha(out, addTriadShenSha(bz, zhi, jiangxingLookup, "将星", catJi, "主领导才能，有权威"))
+	out = mergeShenSha(out, addTriadShenSha(bz, zhi, jiangxingLookup, "将星", ShenShaCategoryJi, "主领导才能，有权威"))
 	return out
 }
 
 func addJieSha(bz ganzhi.Bazi, zhi [4]ganzhi.Zhi) [4][]ShenShaProjection {
 	var out [4][]ShenShaProjection
-	out = mergeShenSha(out, addTriadShenSha(bz, zhi, jieshaZhi, "劫煞", catXiong, "主破财、意外、是非"))
+	out = mergeShenSha(out, addTriadShenSha(bz, zhi, jieshaZhi, "劫煞", ShenShaCategoryXiong, "主破财、意外、是非"))
 	return out
 }
 
 func addZaiSha(bz ganzhi.Bazi, zhi [4]ganzhi.Zhi) [4][]ShenShaProjection {
 	var out [4][]ShenShaProjection
-	out = mergeShenSha(out, addTriadShenSha(bz, zhi, zaishaZhi, "灾煞", catXiong, "主灾祸、疾病、横事"))
+	out = mergeShenSha(out, addTriadShenSha(bz, zhi, zaishaZhi, "灾煞", ShenShaCategoryXiong, "主灾祸、疾病、横事"))
 	return out
 }
 
@@ -511,12 +504,12 @@ func addGuChenGuaSu(bz ganzhi.Bazi, seasonIdx int) [4][]ShenShaProjection {
 	for pi, p := range zhus {
 		if p.Zhi == guchenBranches[seasonIdx] {
 			out[pi] = append(out[pi], ShenShaProjection{
-				Name: "孤辰", Category: catXiong, Description: "主性格孤僻，晚婚或婚姻不顺",
+				Name: "孤辰", Category: ShenShaCategoryXiong, Description: "主性格孤僻，晚婚或婚姻不顺",
 			})
 		}
 		if p.Zhi == guasuBranches[seasonIdx] {
 			out[pi] = append(out[pi], ShenShaProjection{
-				Name: "寡宿", Category: catXiong, Description: "主孤独寂寞，夫妻缘薄",
+				Name: "寡宿", Category: ShenShaCategoryXiong, Description: "主孤独寂寞，夫妻缘薄",
 			})
 		}
 	}
@@ -530,7 +523,7 @@ func addHongLuanTianXi(bz ganzhi.Bazi, nianZhi ganzhi.Zhi) [4][]ShenShaProjectio
 		for pi, p := range zhus {
 			if p.Zhi == target {
 				out[pi] = append(out[pi], ShenShaProjection{
-					Name: "红鸾", Category: catJi, Description: "主婚喜、恋爱、添丁",
+					Name: "红鸾", Category: ShenShaCategoryJi, Description: "主婚喜、恋爱、添丁",
 				})
 			}
 		}
@@ -539,7 +532,7 @@ func addHongLuanTianXi(bz ganzhi.Bazi, nianZhi ganzhi.Zhi) [4][]ShenShaProjectio
 		for pi, p := range zhus {
 			if p.Zhi == target {
 				out[pi] = append(out[pi], ShenShaProjection{
-					Name: "天喜", Category: catJi, Description: "主喜庆之事，婚恋吉兆",
+					Name: "天喜", Category: ShenShaCategoryJi, Description: "主喜庆之事，婚恋吉兆",
 				})
 			}
 		}
@@ -549,7 +542,7 @@ func addHongLuanTianXi(bz ganzhi.Bazi, nianZhi ganzhi.Zhi) [4][]ShenShaProjectio
 
 func addJinYu(bz ganzhi.Bazi, riYuan ganzhi.Gan) [4][]ShenShaProjection {
 	var out [4][]ShenShaProjection
-	out = mergeShenSha(out, appendShenShaByGanLookup(bz, riYuan, jinyuLookup, "金舆", catJi, "主财运、车辆、出行顺利"))
+	out = mergeShenSha(out, appendShenShaByGanLookup(bz, riYuan, jinyuLookup, "金舆", ShenShaCategoryJi, "主财运、车辆、出行顺利"))
 	return out
 }
 
@@ -564,7 +557,7 @@ func addYueEn(bz ganzhi.Bazi, yueZhi ganzhi.Zhi) [4][]ShenShaProjection {
 		for pi, p := range zhus {
 			if p.Gan == ts {
 				out[pi] = append(out[pi], ShenShaProjection{
-					Name: "月恩", Category: catJi, Description: "月令之恩，主福佑加持",
+					Name: "月恩", Category: ShenShaCategoryJi, Description: "月令之恩，主福佑加持",
 				})
 			}
 		}
@@ -581,7 +574,7 @@ func addTianShe(bz ganzhi.Bazi, yueZhi ganzhi.Zhi) [4][]ShenShaProjection {
 		pair := tianSheChecks[season]
 		if zhus[2].Gan == pair.gan && zhus[2].Zhi == pair.zhi {
 			out[2] = append(out[2], ShenShaProjection{
-				Name: "天赦", Category: catJi, Description: "天赦日出生，主逢凶化吉，宽恕赦免",
+				Name: "天赦", Category: ShenShaCategoryJi, Description: "天赦日出生，主逢凶化吉，宽恕赦免",
 			})
 		}
 	}
@@ -597,7 +590,7 @@ func addTianLuoDiWang(bz ganzhi.Bazi) [4][]ShenShaProjection {
 		if ok && ((label == shenShaTianLuo && yearElement == ganzhi.WxHuo) ||
 			(label == shenShaDiWang && (yearElement == ganzhi.WxShui || yearElement == ganzhi.WxTu))) {
 			out[pi] = append(out[pi], ShenShaProjection{
-				Name: label, Category: catXiong, Description: "主运势阻滞，有志难伸",
+				Name: label, Category: ShenShaCategoryXiong, Description: "主运势阻滞，有志难伸",
 			})
 		}
 	}
@@ -621,12 +614,12 @@ func addGouJiao(bz ganzhi.Bazi, nianZhi ganzhi.Zhi, nianGan ganzhi.Gan, gender g
 	for pi, p := range zhus {
 		if p.Zhi == gouShen {
 			out[pi] = append(out[pi], ShenShaProjection{
-				Name: "勾神", Category: catXiong, Description: "主纠缠牵连，是非官讼",
+				Name: "勾神", Category: ShenShaCategoryXiong, Description: "主纠缠牵连，是非官讼",
 			})
 		}
 		if p.Zhi == jiaoShen {
 			out[pi] = append(out[pi], ShenShaProjection{
-				Name: "绞神", Category: catXiong, Description: "主受困被缚，身不由己",
+				Name: "绞神", Category: ShenShaCategoryXiong, Description: "主受困被缚，身不由己",
 			})
 		}
 	}
@@ -640,7 +633,7 @@ func addYuanChen(bz ganzhi.Bazi, nianZhi ganzhi.Zhi, nianGan ganzhi.Gan, gender 
 	for pi, p := range zhus {
 		if p.Zhi == ycBranch {
 			out[pi] = append(out[pi], ShenShaProjection{
-				Name: "元辰", Category: catXiong, Description: "主波折反复，好事多磨",
+				Name: "元辰", Category: ShenShaCategoryXiong, Description: "主波折反复，好事多磨",
 			})
 		}
 	}
@@ -653,7 +646,7 @@ func addXueRen(bz ganzhi.Bazi, riYuan ganzhi.Gan) [4][]ShenShaProjection {
 	for pi, p := range zhus {
 		if xueRenLookup[riYuan] == p.Zhi {
 			out[pi] = append(out[pi], ShenShaProjection{
-				Name: "血刃", Category: catXiong, Description: "主意外血光，手术外伤",
+				Name: "血刃", Category: ShenShaCategoryXiong, Description: "主意外血光，手术外伤",
 			})
 		}
 	}
@@ -673,7 +666,7 @@ func addSiFei(bz ganzhi.Bazi, seasonIdx int) [4][]ShenShaProjection {
 		for _, pair := range siFeiZhus[seasonIdx] {
 			if p.Gan == pair.gan && p.Zhi == pair.zhi {
 				out[pi] = append(out[pi], ShenShaProjection{
-					Name: "四废", Category: catXiong, Description: "四季废日，主事业阻滞，有志难伸",
+					Name: "四废", Category: ShenShaCategoryXiong, Description: "四季废日，主事业阻滞，有志难伸",
 				})
 			}
 		}
@@ -686,13 +679,13 @@ func addShiEDaBai(bz ganzhi.Bazi) [4][]ShenShaProjection {
 	zhus := bz.Slice()
 	if _, ok := shiEDaBai[ganzhi.SixtyCycleIndex(zhus[2].Gan, zhus[2].Zhi)]; ok {
 		out[2] = append(out[2], ShenShaProjection{
-			Name: "十恶大败", Category: catXiong, Description: "日柱十恶大败日，主财库不聚，须谨慎理财",
+			Name: "十恶大败", Category: ShenShaCategoryXiong, Description: "日柱十恶大败日，主财库不聚，须谨慎理财",
 		})
 	}
 	return out
 }
 
-func appendShenShaByGanLookup(bz ganzhi.Bazi, s ganzhi.Gan, lookup map[ganzhi.Gan][]ganzhi.Zhi, name ShenShaName, cat, desc string) [4][]ShenShaProjection {
+func appendShenShaByGanLookup(bz ganzhi.Bazi, s ganzhi.Gan, lookup map[ganzhi.Gan][]ganzhi.Zhi, name ShenShaName, cat ShenShaCategory, desc string) [4][]ShenShaProjection {
 	var out [4][]ShenShaProjection
 	zhus := bz.Slice()
 	targets, ok := lookup[s]
@@ -734,7 +727,7 @@ func VoidPalaces(bz ganzhi.Bazi) []int {
 func computeDynamicShenSha(b ganzhi.Zhi, nianZhi, riBranch ganzhi.Zhi, riYuan ganzhi.Gan) []ShenShaProjection {
 	var result []ShenShaProjection
 	seen := map[ShenShaName]bool{}
-	add := func(name ShenShaName, cat, desc string) {
+	add := func(name ShenShaName, cat ShenShaCategory, desc string) {
 		if !seen[name] {
 			seen[name] = true
 			result = append(result, ShenShaProjection{Name: name, Category: cat, Description: desc})
@@ -743,39 +736,39 @@ func computeDynamicShenSha(b ganzhi.Zhi, nianZhi, riBranch ganzhi.Zhi, riYuan ga
 	// 三合局系神煞（桃花/驿马/华盖/劫煞/灾煞）——年支+日支双查（《三命通会》年支/日支桃花驿马）
 	for _, rb := range []ganzhi.Zhi{nianZhi, riBranch} {
 		if tb, ok := taohuaZhiMap[rb]; ok && tb == b {
-			add("桃花", catZhongXing, "流运桃花，异性缘佳")
+			add("桃花", ShenShaCategoryZhongXing, "流运桃花，异性缘佳")
 		}
 		if tb, ok := yimaZhiMap[rb]; ok && tb == b {
-			add("驿马", catZhongXing, "流运驿马，动象奔波")
+			add("驿马", ShenShaCategoryZhongXing, "流运驿马，动象奔波")
 		}
 		if tb, ok := huagaiZhiMap[rb]; ok && tb == b {
-			add("华盖", catZhongXing, "流运华盖，宜静思")
+			add("华盖", ShenShaCategoryZhongXing, "流运华盖，宜静思")
 		}
 		if js, ok := jieshaZhi[rb]; ok && js == b {
-			add("劫煞", catXiong, "流运劫煞，防破财是非")
+			add("劫煞", ShenShaCategoryXiong, "流运劫煞，防破财是非")
 		}
 		if zs, ok := zaishaZhi[rb]; ok && zs == b {
-			add("灾煞", catXiong, "流运灾煞，防意外灾祸")
+			add("灾煞", ShenShaCategoryXiong, "流运灾煞，防意外灾祸")
 		}
 	}
 	// 红鸾/天喜——仅年支查（红鸾属年支体系，日支不取）
 	if hl, ok := hongluanLookup[nianZhi]; ok && hl == b {
-		add("红鸾", catJi, "流运红鸾，主婚喜添丁")
+		add("红鸾", ShenShaCategoryJi, "流运红鸾，主婚喜添丁")
 	}
 	if tx, ok := tianxiLookup[nianZhi]; ok && tx == b {
-		add("天喜", catJi, "流运天喜，喜庆之事")
+		add("天喜", ShenShaCategoryJi, "流运天喜，喜庆之事")
 	}
 	// 天乙贵人/羊刃——按日干
 	if targets, ok := tianYiLookup[riYuan]; ok {
 		for _, t := range targets {
 			if t == b {
-				add("天乙贵人", catJi, "流运天乙贵人，有贵人相助")
+				add("天乙贵人", ShenShaCategoryJi, "流运天乙贵人，有贵人相助")
 				break
 			}
 		}
 	}
 	if yr, ok := yangRenLookup[riYuan]; ok && yr == b {
-		add("羊刃", catXiong, "流运羊刃，防冲动冲突")
+		add("羊刃", ShenShaCategoryXiong, "流运羊刃，防冲动冲突")
 	}
 
 	if result == nil {
@@ -803,7 +796,7 @@ func computeAnnualShenSha(b ganzhi.Zhi, bz ganzhi.Bazi) []ShenShaProjection {
 		for _, p := range bz.Slice() {
 			if p.Zhi == a.zhi && !seen[a.name] {
 				seen[a.name] = true
-				result = append(result, ShenShaProjection{Name: a.name, Category: catXiong, Description: a.desc})
+				result = append(result, ShenShaProjection{Name: a.name, Category: ShenShaCategoryXiong, Description: a.desc})
 				break
 			}
 		}

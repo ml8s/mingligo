@@ -595,6 +595,13 @@ func DecodeDayBoundaryKind(d DayBoundaryKind) string   { return string(d) }
 // YingQiRuleType selects a 应期 date-match rule.
 type YingQiRuleType string
 
+const (
+	YingQiRuleMaXing   YingQiRuleType = "ma_xing"
+	YingQiRuleKongWang YingQiRuleType = "kong_wang"
+	YingQiRuleDutyStar YingQiRuleType = "duty_star"
+	YingQiRuleDutyDoor YingQiRuleType = "duty_door"
+)
+
 // YingQiMatchKind selects same/opposite branch matching.
 type YingQiMatchKind string
 

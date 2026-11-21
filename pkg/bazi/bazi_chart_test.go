@@ -158,7 +158,7 @@ func TestGoldenChart_ShenSha(t *testing.T) {
 		t.Run(g.Name, func(t *testing.T) {
 			cr := computeChart(g)
 
-			validCats := map[string]bool{"吉": true, "凶": true, "中性": true}
+			validCats := map[ShenShaCategory]bool{"吉": true, "凶": true, "中性": true}
 			pillars := []struct {
 				name string
 				ss   []ShenShaProjection

@@ -297,7 +297,7 @@ var (
 	starJiXiongTable [10]jiXiongFact
 
 	patternRules           []patternRule
-	yingqiRuleTable        map[string]yingqiRuleEntry
+	yingqiRuleTable        map[YingQiRuleType]yingqiRuleEntry
 	yingqiHorizonDays      int
 	yingqiDateMatches      map[YingQiRuleType][]yingqiDateMatch
 	zhiRunLeaderDays       int
@@ -1711,13 +1711,14 @@ func loadYingQi() error {
 		return fmt.Errorf("load yingqi: invalid table dimensions")
 	}
 	yingqiHorizonDays = table.HorizonDays
-	yingqiRuleTable = make(map[string]yingqiRuleEntry, len(table.Rules))
+	yingqiRuleTable = make(map[YingQiRuleType]yingqiRuleEntry, len(table.Rules))
 	yingqiDateMatches = make(map[YingQiRuleType][]yingqiDateMatch, len(table.DateMatches))
 	for _, entry := range table.Rules {
-		if _, exists := yingqiRuleTable[entry.Type]; exists {
+		ruleType := YingQiRuleType(entry.Type)
+		if _, exists := yingqiRuleTable[ruleType]; exists {
 			return fmt.Errorf("load yingqi: duplicate type %q", entry.Type)
 		}
-		yingqiRuleTable[entry.Type] = yingqiRuleEntry{
+		yingqiRuleTable[ruleType] = yingqiRuleEntry{
 			Mechanism: entry.Mechanism,
 		}
 		matches := make([]yingqiDateMatch, 0, len(table.DateMatches[entry.Type]))
@@ -1729,7 +1730,7 @@ func loadYingQi() error {
 		}
 		yingqiDateMatches[YingQiRuleType(entry.Type)] = matches
 	}
-	for _, ruleType := range []string{"ma_xing", "kong_wang", "duty_star", "duty_door"} {
+	for _, ruleType := range []YingQiRuleType{YingQiRuleMaXing, YingQiRuleKongWang, YingQiRuleDutyStar, YingQiRuleDutyDoor} {
 		rule, ok := yingqiRuleTable[ruleType]
 		if !ok || rule.Mechanism == "" {
 			return fmt.Errorf("load yingqi: missing rule %q", ruleType)
