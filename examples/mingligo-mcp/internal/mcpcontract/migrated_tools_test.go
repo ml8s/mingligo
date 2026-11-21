@@ -143,14 +143,14 @@ func TestMigratedQimenCanonicalMethodAndDingju(t *testing.T) {
 
 	method := callQimenChart(t, registry, map[string]any{
 		"standard_time": "1984-02-15T08:00:00+08:00", "longitude": 116.4,
-	})["method"].(map[string]any)
+	})["pai_pan_fang_fa"].(map[string]any)
 	if method["scope"] != "hour" || method["school"] != "zhuanpan" || method["dingju_method"] != "chaibu" {
 		t.Fatalf("canonical method = %v/%v/%v, want hour/zhuanpan/chaibu",
 			method["scope"], method["school"], method["dingju_method"])
 	}
 	method = callQimenChart(t, registry, map[string]any{
 		"standard_time": "2026-01-05T13:00:00+08:00", "longitude": 116.4, "dingju_method": "zhirun",
-	})["method"].(map[string]any)
+	})["pai_pan_fang_fa"].(map[string]any)
 	if method["dingju_method"] != "zhirun" {
 		t.Fatalf("dingju method = %v, want zhirun", method["dingju_method"])
 	}
@@ -170,7 +170,7 @@ func TestMigratedQimenMethodMatrix(t *testing.T) {
 	document := callQimenChart(t, registry, map[string]any{
 		"standard_time": standardInputFromInstant(t, solarTime, "Asia/Shanghai"), "longitude": 116.4, "scope": "hour", "school": "luoshu_feipan", "dingju_method": "zhirun",
 	})
-	method := document["method"].(map[string]any)
+	method := document["pai_pan_fang_fa"].(map[string]any)
 	if method["scope"] != "hour" || method["school"] != "luoshu_feipan" || method["dingju_method"] != "zhirun" {
 		t.Fatalf("method = %v/%v/%v", method["scope"], method["school"], method["dingju_method"])
 	}

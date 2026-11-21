@@ -230,7 +230,7 @@ func TestMigratedQimenMaoShanContract(t *testing.T) {
 		"standard_time": "2024-06-21T06:00:00+08:00", "longitude": 116.4, "scope": "hour",
 		"school": "zhuanpan", "dingju_method": "maoshan",
 	})
-	method := document["method"].(map[string]any)
+	method := document["pai_pan_fang_fa"].(map[string]any)
 	if method["dingju_method"] != "maoshan" ||
 		method["jie_qi"] != "夏至" || method["yong_ju_jie_qi"] != "夏至" {
 		t.Fatalf("茅山定局 method = %+v", method)
@@ -253,7 +253,7 @@ func TestMigratedQimenQuarterRuleContract(t *testing.T) {
 	document := callQimenChart(t, registry, map[string]any{
 		"standard_time": "2026-09-07T00:00:00+08:00", "longitude": 116.4, "scope": "quarter", "school": "zhuanpan",
 	})
-	method := document["method"].(map[string]any)
+	method := document["pai_pan_fang_fa"].(map[string]any)
 	if method["scope"] != "quarter" ||
 		method["school"] != "zhuanpan" || method["quarter_rule"] != "ten_minute_sanyuan" ||
 		method["method_source"] != "quarter_rule" {
@@ -382,7 +382,7 @@ func TestMigratedQimenConsumesTianwenGregorian(t *testing.T) {
 	document := callQimenChart(t, registry, map[string]any{
 		"standard_time": standardInputFromInstant(t, "2026-03-02T10:30:00Z", "Asia/Shanghai"), "longitude": 116.4,
 	})
-	if document["method"] == nil || document["pan"] == nil {
+	if document["pai_pan_fang_fa"] == nil || document["pan"] == nil {
 		t.Fatalf("qimen.chart from subject_candidates = %#v", document)
 	}
 }

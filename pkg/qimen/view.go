@@ -5,90 +5,93 @@ package qimen
 // model that every transport adapter transmits unchanged. jsonschema tags are
 // inert metadata read only when a consumer reflects the type for its schema.
 
-// InteractionsView groups 克应 facts (干/门/星 interaction + 星宫关系).
-type InteractionsView struct {
+// KeYingView groups 克应 facts (十干/八门/九星克应 + 星宫五行).
+type KeYingView struct {
 	GanInteraction  []GanInteraction  `json:"gan_interaction,omitempty" jsonschema:"十干克应。"`
 	MenInteraction  []MenInteraction  `json:"men_interaction,omitempty" jsonschema:"八门克应。"`
 	XingInteraction []XingInteraction `json:"xing_interaction,omitempty" jsonschema:"九星克应。"`
 	XingGongWuXing  []XingGongWuXing  `json:"xing_gong_wuxing,omitempty" jsonschema:"星宫五行关系。"`
 }
 
-// PalaceFactsView groups per-palace facts. It stays one object for adapter
-// compatibility; the two layers are distinguished by jsonschema:
-//   - 静态字典 (不随本盘变化): gong_profiles/gong_relations/men_ji_xiong/xing_ji_xiong
-//   - 本盘派生 (换局即变): gong_wang_shuai/men_po/men_zhi
-//
-// 注意 gong_wang_shuai 与 StemsView.DayStemPalace.WangShuai 是同一旺衰事实的
-// 宫载体与干载体两种表达，口径同源。
-type PalaceFactsView struct {
-	GongProfiles  [9]GongProfile  `json:"gong_profiles" jsonschema:"九宫固有事实-静态字典（方位/人物/范围/内外盘）。"`
-	GongWangShuai []GongWangShuai `json:"gong_wang_shuai" jsonschema:"九宫旺相休囚死-本盘派生（按当前月令）。"`
-	GongRelations []GongRelation  `json:"gong_relations" jsonschema:"九宫五行关系矩阵-静态字典。"`
-	MenJiXiong    []MenJiXiong    `json:"men_ji_xiong" jsonschema:"八门固有吉凶-静态字典。"`
-	XingJiXiong   []XingJiXiong   `json:"xing_ji_xiong" jsonschema:"九星固有吉凶-静态字典。"`
-	MenPo         []GongIndex     `json:"men_po,omitempty" jsonschema:"门迫宫位-本盘派生。"`
-	MenZhi        []GongIndex     `json:"men_zhi,omitempty" jsonschema:"门制宫位-本盘派生。"`
+// JiuGongGuYouView groups 九宫固有象义 (不随本盘变化): 宫位属性/宫际关系/门星吉凶.
+type JiuGongGuYouView struct {
+	GongProfiles  [9]GongProfile `json:"gong_profiles" jsonschema:"九宫固有象义（方位/人物/范围/内外盘）。"`
+	GongRelations []GongRelation `json:"gong_relations" jsonschema:"九宫五行关系矩阵。"`
+	MenJiXiong    []MenJiXiong   `json:"men_ji_xiong" jsonschema:"八门固有吉凶。"`
+	XingJiXiong   []XingJiXiong  `json:"xing_ji_xiong" jsonschema:"九星固有吉凶。"`
 }
 
-// StemsView groups 干落宫与日时关系 facts.
-type StemsView struct {
+// JiuGongBenPanView groups 九宫本盘状态 (换局即变): 宫旺衰/门迫/门制.
+type JiuGongBenPanView struct {
+	GongWangShuai []GongWangShuai `json:"gong_wang_shuai" jsonschema:"九宫旺相休囚死（按当前月令）。"`
+	MenPo         []GongIndex     `json:"men_po,omitempty" jsonschema:"门迫宫位。"`
+	MenZhi        []GongIndex     `json:"men_zhi,omitempty" jsonschema:"门制宫位。"`
+}
+
+// GanLuoGongView groups 干落宫与日时宫关系 facts.
+type GanLuoGongView struct {
 	DayStemPalace  StemPalace    `json:"ri_gan_gong" jsonschema:"日干落宫。"`
 	HourStemPalace StemPalace    `json:"shi_gan_gong" jsonschema:"时干落宫。"`
 	RiShiRelation  RiShiRelation `json:"ri_shi_relation" jsonschema:"日时宫关系。"`
 }
 
-// FuShiView groups 值符(星)/值使(门)落宫 facts — the pivot of the 神盘,
-// distinct from stem palaces.
+// FuShiView groups 值符(星)/值使(门)落宫 facts.
 type FuShiView struct {
 	DutyStarPalace GongIndex `json:"zhi_fu_xing_gong" jsonschema:"值符星落宫。"`
 	DutyDoorPalace GongIndex `json:"zhi_shi_men_gong" jsonschema:"值使门落宫。"`
 }
 
-// MarkerView groups 神煞/格局 facts.
-type MarkerView struct {
-	KongWangAffected []AffectedSymbol `json:"kong_wang_affected" jsonschema:"空亡影响符号（仅日干/时干/主柱三焦点扫描；用神落宫状态见 yong_shen.symbols[].kong_wang_zhi）。"`
-	MaXingAffected   []AffectedSymbol `json:"ma_xing_affected" jsonschema:"马星影响符号（仅日干/时干/主柱三焦点扫描）。"`
-	Patterns         []Pattern        `json:"ge_ju" jsonschema:"格局。"`
+// ShenShaView groups 神煞 facts (空亡/马星影响扫描).
+type ShenShaView struct {
+	KongWangAffected []AffectedSymbol `json:"kong_wang_affected" jsonschema:"空亡影响符号。"`
+	MaXingAffected   []AffectedSymbol `json:"ma_xing_affected" jsonschema:"马星影响符号。"`
 }
 
-// ChartView is the domain-aggregated output of a Qimen standard chart.
+// GeJuView groups 格局 facts.
+type GeJuView struct {
+	Patterns []Pattern `json:"patterns" jsonschema:"格局。"`
+}
+
+// ChartView is the domain-aggregated output of a Qimen chart, grouped by命理域.
 type ChartView struct {
-	Method       ChartMethod        `json:"method" jsonschema:"排盘方法元数据。"`
-	Pan          Board              `json:"pan" jsonschema:"盘面。"`
-	Interactions InteractionsView   `json:"interactions" jsonschema:"克应事实。"`
-	PalaceFacts  PalaceFactsView    `json:"palace_facts" jsonschema:"宫位属性与静态关系。"`
-	Stems        StemsView          `json:"stems" jsonschema:"干落宫事实。"`
-	FuShi        FuShiView          `json:"fu_shi" jsonschema:"值符值使落宫。"`
-	Markers      MarkerView         `json:"markers" jsonschema:"神煞格局事实。"`
-	YingQi       YingQi             `json:"ying_qi" jsonschema:"应期候选。"`
-	YongShen     *YongShenResult    `json:"yong_shen,omitempty" jsonschema:"用神落宫事实。"`
-	Specialized  SpecializedContext `json:"special_facts" jsonschema:"专占领域原子事实。"`
+	PaiPanFangFa  ChartMethod        `json:"pai_pan_fang_fa" jsonschema:"排盘方法元数据。"`
+	Pan           Board              `json:"pan" jsonschema:"盘面。"`
+	KeYing        KeYingView         `json:"ke_ying" jsonschema:"克应事实。"`
+	JiuGongGuYou  JiuGongGuYouView   `json:"jiu_gong_gu_you" jsonschema:"九宫固有象义。"`
+	JiuGongBenPan JiuGongBenPanView  `json:"jiu_gong_ben_pan" jsonschema:"九宫本盘状态。"`
+	GanLuoGong    GanLuoGongView     `json:"gan_luo_gong" jsonschema:"干落宫事实。"`
+	FuShi         FuShiView          `json:"fu_shi" jsonschema:"值符值使落宫。"`
+	ShenSha       ShenShaView        `json:"shen_sha" jsonschema:"神煞。"`
+	GeJu          GeJuView           `json:"ge_ju" jsonschema:"格局。"`
+	YingQi        YingQi             `json:"ying_qi" jsonschema:"应期候选。"`
+	YongShen      *YongShenResult    `json:"yong_shen,omitempty" jsonschema:"用神落宫事实。"`
+	ZhuanZhan     SpecializedContext `json:"zhuan_zhan" jsonschema:"专占领域原子事实。"`
 }
 
 // View produces the domain-aggregated output from the computed chart. Filling
 // order is free; each fact is placed into its owning术数子域.
 func (c Chart) View() ChartView {
 	return ChartView{
-		Method: c.Method,
-		Pan:    c.Board,
-		Interactions: InteractionsView{
+		PaiPanFangFa: c.Method,
+		Pan:          c.Board,
+		KeYing: KeYingView{
 			GanInteraction: c.GanInteractions, MenInteraction: c.MenInteractions,
 			XingInteraction: c.XingInteractions, XingGongWuXing: c.XingGongWuXing,
 		},
-		PalaceFacts: PalaceFactsView{
-			GongProfiles: c.GongProfiles, GongWangShuai: c.GongWangShuai,
-			GongRelations: c.GongRelations, MenJiXiong: c.MenJiXiong,
-			XingJiXiong: c.XingJiXiong, MenPo: c.MenPo, MenZhi: c.MenZhi,
+		JiuGongGuYou: JiuGongGuYouView{
+			GongProfiles: c.GongProfiles, GongRelations: c.GongRelations,
+			MenJiXiong: c.MenJiXiong, XingJiXiong: c.XingJiXiong,
 		},
-		Stems: StemsView{
+		JiuGongBenPan: JiuGongBenPanView{
+			GongWangShuai: c.GongWangShuai, MenPo: c.MenPo, MenZhi: c.MenZhi,
+		},
+		GanLuoGong: GanLuoGongView{
 			DayStemPalace: c.DayStemPalace, HourStemPalace: c.HourStemPalace,
 			RiShiRelation: c.RiShiRelation,
 		},
-		FuShi: FuShiView{DutyStarPalace: c.DutyStarPalace, DutyDoorPalace: c.DutyDoorPalace},
-		Markers: MarkerView{
-			KongWangAffected: c.KongWangAffected, MaXingAffected: c.MaXingAffected,
-			Patterns: c.Patterns,
-		},
-		YingQi: c.YingQi, YongShen: c.YongShen, Specialized: c.Specialized,
+		FuShi:   FuShiView{DutyStarPalace: c.DutyStarPalace, DutyDoorPalace: c.DutyDoorPalace},
+		ShenSha: ShenShaView{KongWangAffected: c.KongWangAffected, MaXingAffected: c.MaXingAffected},
+		GeJu:    GeJuView{Patterns: c.Patterns},
+		YingQi:  c.YingQi, YongShen: c.YongShen, ZhuanZhan: c.Specialized,
 	}
 }
