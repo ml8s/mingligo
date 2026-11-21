@@ -79,25 +79,32 @@ type StatesView struct {
 	WuxingStates  []ElementState `json:"wuxing_states" jsonschema:"五行旺衰（唯一出处）。"`
 }
 
-// StructureView groups structural结论: 神煞口径、胎元命宫身宫、财官库、夫妻宫、日支类型、日主十二长生全表、三奇.
+// StructureView groups盘面结构事实: 胎元命宫身宫、日主十二长生全表、三奇.
+// 确定性结论见 ConclusionsView；排盘口径见 CalendarView。
 type StructureView struct {
-	ShenShaSchool     ShenShaSchool       `json:"shen_sha_school" jsonschema:"神煞双参照口径。"`
-	SanYuan           SanYuan             `json:"san_yuan" jsonschema:"胎元命宫身宫。"`
-	TaiXi             ganzhi.Zhu          `json:"tai_xi" jsonschema:"胎息。"`
-	GuanSha           GuanSha             `json:"guan_sha" jsonschema:"官杀取清结论。"`
-	CaiKu             CaiKu               `json:"cai_ku" jsonschema:"财库结论。"`
-	SpousePalaceState PalaceState         `json:"spouse_palace_state" jsonschema:"夫妻宫受冲合刑害状态。"`
-	DayBranchType     BranchImageKind     `json:"day_branch_type" jsonschema:"日支取象分类。"`
-	ChangSheng        [12]ChangShengStage `json:"chang_sheng" jsonschema:"日主十二长生全表。"`
-	SanQiName         string              `json:"san_qi_name,omitempty" jsonschema:"三奇名称。"`
+	SanYuan    SanYuan             `json:"san_yuan" jsonschema:"胎元命宫身宫。"`
+	TaiXi      ganzhi.Zhu          `json:"tai_xi" jsonschema:"胎息。"`
+	ChangSheng [12]ChangShengStage `json:"chang_sheng" jsonschema:"日主十二长生全表。"`
+	SanQiName  string              `json:"san_qi_name,omitempty" jsonschema:"三奇名称。"`
+}
+
+// ConclusionsView groups盘面派生结论: 给定盘结果唯一可符号判定的事实。
+// 这些不是拟合分析（用神裁决/格局成败仍归 counsel），而是引擎产出的确定性结论。
+type ConclusionsView struct {
+	GuanSha           GuanSha         `json:"guan_sha" jsonschema:"官杀取清结论。"`
+	CaiKu             CaiKu           `json:"cai_ku" jsonschema:"财库结论。"`
+	SpousePalaceState PalaceState     `json:"spouse_palace_state" jsonschema:"夫妻宫受冲合刑害状态。"`
+	DayBranchType     BranchImageKind `json:"day_branch_type" jsonschema:"日支取象分类。"`
 }
 
 // CalendarView groups历法/口径 facts only.
 type CalendarView struct {
-	Zodiac    string `json:"sheng_xiao" jsonschema:"生肖。"`
-	RiXun     string `json:"ri_xun" jsonschema:"日柱所在旬。"`
-	RiXunKong string `json:"ri_xun_kong" jsonschema:"日柱旬空。"`
-	ZiShiRule string `json:"zi_shi_rule" jsonschema:"子时换日规则说明。"`
+	Zodiac        string        `json:"sheng_xiao" jsonschema:"生肖。"`
+	RiXun         string        `json:"ri_xun" jsonschema:"日柱所在旬。"`
+	RiXunKong     string        `json:"ri_xun_kong" jsonschema:"日柱旬空。"`
+	ZiShiRule     string        `json:"zi_shi_rule" jsonschema:"子时换日规则说明。"`
+	ShenShaSchool ShenShaSchool `json:"shen_sha_school" jsonschema:"神煞双参照口径。"`
+	BirthYear     int           `json:"birth_year" jsonschema:"出生公历年份。"`
 }
 
 // ChartView is the domain-aggregated output of a Bazi chart.
@@ -108,8 +115,8 @@ type ChartView struct {
 	Relations        RelationsView        `json:"relations" jsonschema:"命理关系事实。"`
 	States           StatesView           `json:"states" jsonschema:"十神与五行状态。"`
 	Structure        StructureView        `json:"structure" jsonschema:"命理结构事实。"`
+	Conclusions      ConclusionsView      `json:"conclusions" jsonschema:"盘面派生结论。"`
 	Calendar         CalendarView         `json:"calendar" jsonschema:"历法与口径。"`
-	BirthYear        int                  `json:"birth_year" jsonschema:"出生公历年份。"`
 }
 
 // View produces the domain-aggregated output from the computed chart. Filling
@@ -128,15 +135,17 @@ func (c Chart) View() ChartView {
 		},
 		States: StatesView{ShiShenStates: c.TenGodStates, WuxingStates: c.ElementStates},
 		Structure: StructureView{
-			ShenShaSchool: c.ShenShaSchool, SanYuan: c.SanYuan, TaiXi: c.TaiXi,
+			SanYuan: c.SanYuan, TaiXi: c.TaiXi,
+			ChangSheng: c.ChangSheng, SanQiName: c.SanQiName,
+		},
+		Conclusions: ConclusionsView{
 			GuanSha: c.GuanSha, CaiKu: c.CaiKu,
 			SpousePalaceState: c.SpousePalaceState, DayBranchType: c.DayBranchType,
-			ChangSheng: c.ChangSheng, SanQiName: c.SanQiName,
 		},
 		Calendar: CalendarView{
 			Zodiac: c.Zodiac, RiXun: c.DayXun, RiXunKong: c.DayXunKong, ZiShiRule: c.ZiShiRule,
+			ShenShaSchool: c.ShenShaSchool, BirthYear: c.BirthYear,
 		},
-		BirthYear: c.BirthYear,
 	}
 }
 
