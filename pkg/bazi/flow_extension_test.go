@@ -56,7 +56,7 @@ func TestFlowP1LegacyFieldsUnchanged(t *testing.T) {
 	}
 	allowedNew := map[string]bool{
 		"sheng_ri": true, "ke_ri": true,
-		"da_yun_interaction": true, "liu_nian_interaction": true,
+		"da_yun_interaction": true, "liu_nian_interaction": true, "liu_ri_interaction": true,
 	}
 	removed := map[string]bool{"da_yun_rels": true, "liu_nian_rels": true}
 	for layer, baseFields := range base {
@@ -161,5 +161,73 @@ func TestFlowP2InteractionOracle(t *testing.T) {
 	}
 	if ri.DaYunInteraction.ZhuLabel == "" || ri.LiuNianInteraction.ZhuLabel == "" {
 		t.Error("interaction zhu_label empty")
+	}
+}
+
+// TestFlowP3LegacyVsNew verifies flow-month/flow-hour upper interactions were
+// added without changing any pre-existing field.
+func TestFlowP3LegacyVsNew(t *testing.T) {
+	rawBase, err := os.ReadFile("testdata/flow_p3_baseline.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	var base map[string]map[string]any
+	if err := json.Unmarshal(rawBase, &base); err != nil {
+		t.Fatal(err)
+	}
+	core := flowP1Core(t)
+	standard, _ := time.Parse(time.RFC3339, "2024-06-15T12:00:00+08:00")
+	loc, _ := time.LoadLocation("Asia/Shanghai")
+	yue, err := ComputeLiuYueAt(core, standard, loc)
+	if err != nil {
+		t.Fatal(err)
+	}
+	shi, err := ComputeLiuShiAt(core, standard, loc, 116.4)
+	if err != nil {
+		t.Fatal(err)
+	}
+	gotRaw, _ := json.Marshal(map[string]any{"yue": yue, "shi": shi})
+	var got map[string]map[string]any
+	if err := json.Unmarshal(gotRaw, &got); err != nil {
+		t.Fatal(err)
+	}
+	allowed := map[string]bool{
+		"da_yun_interaction": true, "liu_nian_interaction": true, "liu_ri_interaction": true,
+	}
+	for layer, fields := range base {
+		for key, old := range fields {
+			nv, ok := got[layer][key]
+			if !ok {
+				t.Errorf("%s.%s disappeared", layer, key)
+				continue
+			}
+			if !reflect.DeepEqual(old, nv) {
+				t.Errorf("%s.%s changed: %v -> %v", layer, key, old, nv)
+			}
+		}
+		for key := range got[layer] {
+			if _, existed := fields[key]; !existed && !allowed[key] {
+				t.Errorf("unexpected new field %s.%s", layer, key)
+			}
+		}
+	}
+}
+
+// TestFlowP3InteractionOracle verifies all upper-layer interactions carry both
+// gan and zhi layers and never panic when a reference is absent.
+func TestFlowP3InteractionOracle(t *testing.T) {
+	core := flowP1Core(t)
+	standard, _ := time.Parse(time.RFC3339, "2024-06-15T12:00:00+08:00")
+	loc, _ := time.LoadLocation("Asia/Shanghai")
+	yue, _ := ComputeLiuYueAt(core, standard, loc)
+	shi, _ := ComputeLiuShiAt(core, standard, loc, 116.4)
+	for name, inter := range map[string]zhuInteraction{
+		"yue.da_yun": yue.DaYunInteraction, "yue.liu_nian": yue.LiuNianInteraction,
+		"shi.da_yun": shi.DaYunInteraction, "shi.liu_nian": shi.LiuNianInteraction,
+		"shi.liu_ri": shi.LiuRiInteraction,
+	} {
+		if len(inter.GanRels) != 1 || len(inter.ZhiRels) != 1 || inter.ZhuLabel == "" {
+			t.Errorf("%s incomplete: %+v", name, inter)
+		}
 	}
 }

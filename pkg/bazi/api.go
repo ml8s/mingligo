@@ -162,7 +162,11 @@ func ComputeLiuYueAt(core Core, standard time.Time, loc *time.Location) (*LiuYue
 	if err != nil {
 		return nil, fmt.Errorf("computeLiuYue: resolve: %w", err)
 	}
-	result, err := computeLiuYue(core.ToBazi(), t)
+	refs, err := resolveFlowRefs(core, t.Date)
+	if err != nil {
+		return nil, fmt.Errorf("computeLiuYue: refs: %w", err)
+	}
+	result, err := computeLiuYue(core.ToBazi(), t, refs)
 	if err != nil {
 		return nil, err
 	}
@@ -181,7 +185,11 @@ func ComputeLiuYueAt(core Core, standard time.Time, loc *time.Location) (*LiuYue
 
 // ComputeLiuYueAtTime computes the month pillar from a resolved solar-term month.
 func ComputeLiuYueAtTime(core Core, t LiuYueTime) (*LiuYue, error) {
-	return computeLiuYue(core.ToBazi(), t)
+	refs, err := resolveFlowRefs(core, t.Date)
+	if err != nil {
+		return nil, err
+	}
+	return computeLiuYue(core.ToBazi(), t, refs)
 }
 
 // ComputeLiuRiAt computes the flow day directly from a standard time. It
@@ -247,7 +255,11 @@ func ComputeLiuRi(core Core, t LiuRiTime) (*LiuRi, error) {
 
 // ComputeLiuShi computes the hour pillar and its interactions with the bazi chart.
 func ComputeLiuShi(core Core, t LiuShiTime) (*LiuShi, error) {
-	return computeLiuShi(core.ToBazi(), t)
+	refs, err := resolveFlowRefs(core, t.StandardDate)
+	if err != nil {
+		return nil, err
+	}
+	return computeLiuShi(core.ToBazi(), t, refs)
 }
 
 // ComputeLiuShiAt computes the flow hour directly from a standard time. It
@@ -259,7 +271,11 @@ func ComputeLiuShiAt(core Core, standard time.Time, loc *time.Location, longitud
 	if err != nil {
 		return nil, fmt.Errorf("computeLiuShi: resolve: %w", err)
 	}
-	result, err := computeLiuShi(core.ToBazi(), t)
+	refs, err := resolveFlowRefs(core, t.StandardDate)
+	if err != nil {
+		return nil, fmt.Errorf("computeLiuShi: refs: %w", err)
+	}
+	result, err := computeLiuShi(core.ToBazi(), t, refs)
 	if err != nil {
 		return nil, err
 	}

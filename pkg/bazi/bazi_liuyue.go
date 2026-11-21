@@ -16,23 +16,25 @@ type LiuYueJieQi struct {
 
 // LiuYue holds the monthly (流月) analysis output.
 type LiuYue struct {
-	Year         int                 `json:"year"`
-	Month        int                 `json:"month"`
-	YueGan       ganzhi.Gan          `json:"gan"`
-	YueZhi       ganzhi.Zhi          `json:"zhi"`
-	YueGanWuxing string              `json:"gan_wuxing"`
-	ShiShen      string              `json:"shi_shen"`
-	ShengRi      int                 `json:"sheng_ri"`
-	KeRi         int                 `json:"ke_ri"`
-	GanRels      []GanRelation       `json:"gan_rels"`
-	ZhiRels      []ZhiRelation       `json:"zhi_rels"`
-	ShenSha      []ShenShaProjection `json:"shen_sha"`
-	JieQi        LiuYueJieQi         `json:"jie_qi"`
+	Year               int                 `json:"year"`
+	Month              int                 `json:"month"`
+	YueGan             ganzhi.Gan          `json:"gan"`
+	YueZhi             ganzhi.Zhi          `json:"zhi"`
+	YueGanWuxing       string              `json:"gan_wuxing"`
+	ShiShen            string              `json:"shi_shen"`
+	ShengRi            int                 `json:"sheng_ri"`
+	KeRi               int                 `json:"ke_ri"`
+	GanRels            []GanRelation       `json:"gan_rels"`
+	ZhiRels            []ZhiRelation       `json:"zhi_rels"`
+	DaYunInteraction   zhuInteraction      `json:"da_yun_interaction"`
+	LiuNianInteraction zhuInteraction      `json:"liu_nian_interaction"`
+	ShenSha            []ShenShaProjection `json:"shen_sha"`
+	JieQi              LiuYueJieQi         `json:"jie_qi"`
 }
 
 // ComputeLiuYue computes the month pillar for a resolved solar-term month and
 // analyzes its interactions with the bazi chart.
-func computeLiuYue(bz ganzhi.Bazi, t LiuYueTime) (*LiuYue, error) {
+func computeLiuYue(bz ganzhi.Bazi, t LiuYueTime, refs flowRefs) (*LiuYue, error) {
 	riYuan := bz.Ri.Gan
 	bazi := bz.Slice()
 
@@ -47,22 +49,31 @@ func computeLiuYue(bz ganzhi.Bazi, t LiuYueTime) (*LiuYue, error) {
 
 	// Month vs bazi: all 4 pillars, consistent with liunian.
 	ganRels, zhiRels := analyzeZhuWithBazi(mp, bz)
+	var daYunRel, liuNianRel zhuInteraction
+	if refs.dayun != nil {
+		daYunRel = analyzeFlowAgainstRef(mp, *refs.dayun)
+	}
+	if refs.liunian != nil {
+		liuNianRel = analyzeFlowAgainstRef(mp, *refs.liunian)
+	}
 
 	shensha := computeDynamicShenSha(mp.Zhi, bazi[0].Zhi, bazi[2].Zhi, riYuan)
 
 	monthElemStr := ganzhi.DecodeWuxing(monthElem)
 
 	return &LiuYue{
-		Year:         t.Date.Year,
-		Month:        t.Date.Month,
-		YueGan:       mp.Gan,
-		YueZhi:       mp.Zhi,
-		YueGanWuxing: monthElemStr,
-		ShiShen:      ganzhi.DecodeShiShen(tgName),
-		ShengRi:      gen,
-		KeRi:         rest,
-		GanRels:      ganRels,
-		ZhiRels:      zhiRels,
-		ShenSha:      shensha,
+		Year:               t.Date.Year,
+		Month:              t.Date.Month,
+		YueGan:             mp.Gan,
+		YueZhi:             mp.Zhi,
+		YueGanWuxing:       monthElemStr,
+		ShiShen:            ganzhi.DecodeShiShen(tgName),
+		ShengRi:            gen,
+		KeRi:               rest,
+		GanRels:            ganRels,
+		ZhiRels:            zhiRels,
+		DaYunInteraction:   daYunRel,
+		LiuNianInteraction: liuNianRel,
+		ShenSha:            shensha,
 	}, nil
 }

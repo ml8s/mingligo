@@ -16,35 +16,52 @@ type LiuShiChen struct {
 // LiuShi holds the hourly flow (流时) analysis: the current two-hour period's
 // pillar and its interactions with the bazi chart.
 type LiuShi struct {
-	Time    string        `json:"hour_range"`
-	ShiGan  ganzhi.Gan    `json:"gan"`
-	ShiZhi  ganzhi.Zhi    `json:"zhi"`
-	ShiShen string        `json:"shi_shen"`
-	ShengRi int           `json:"sheng_ri"`
-	KeRi    int           `json:"ke_ri"`
-	GanRels []GanRelation `json:"gan_rels"`
-	ZhiRels []ZhiRelation `json:"zhi_rels"`
-	ShiChen LiuShiChen    `json:"shi_chen"`
+	Time               string         `json:"hour_range"`
+	ShiGan             ganzhi.Gan     `json:"gan"`
+	ShiZhi             ganzhi.Zhi     `json:"zhi"`
+	ShiShen            string         `json:"shi_shen"`
+	ShengRi            int            `json:"sheng_ri"`
+	KeRi               int            `json:"ke_ri"`
+	GanRels            []GanRelation  `json:"gan_rels"`
+	ZhiRels            []ZhiRelation  `json:"zhi_rels"`
+	DaYunInteraction   zhuInteraction `json:"da_yun_interaction"`
+	LiuNianInteraction zhuInteraction `json:"liu_nian_interaction"`
+	LiuRiInteraction   zhuInteraction `json:"liu_ri_interaction"`
+	ShiChen            LiuShiChen     `json:"shi_chen"`
 }
 
 // computeLiuShi analyzes a resolved LAST hour pillar against the bazi chart.
-func computeLiuShi(bz ganzhi.Bazi, t LiuShiTime) (*LiuShi, error) {
+func computeLiuShi(bz ganzhi.Bazi, t LiuShiTime, refs flowRefs) (*LiuShi, error) {
 	riYuan := bz.Ri.Gan
 	shiGan := t.ShiGan
 	shiZhi := t.ShiZhi
 
 	gen, rest, tgName := flowDayMasterFacts(shiGan, riYuan)
 	// Hour vs bazi: all 4 pillars, consistent with liunian.
-	ganRels, zhiRels := analyzeZhuWithBazi(ganzhi.Zhu{Gan: shiGan, Zhi: shiZhi}, bz)
+	hourZhu := ganzhi.Zhu{Gan: shiGan, Zhi: shiZhi}
+	ganRels, zhiRels := analyzeZhuWithBazi(hourZhu, bz)
+	var daYunRel, liuNianRel, liuRiRel zhuInteraction
+	if refs.dayun != nil {
+		daYunRel = analyzeFlowAgainstRef(hourZhu, *refs.dayun)
+	}
+	if refs.liunian != nil {
+		liuNianRel = analyzeFlowAgainstRef(hourZhu, *refs.liunian)
+	}
+	if refs.liuri != nil {
+		liuRiRel = analyzeFlowAgainstRef(hourZhu, *refs.liuri)
+	}
 
 	return &LiuShi{
-		Time:    ganzhi.HourRanges[int(shiZhi)-1],
-		ShiGan:  shiGan,
-		ShiZhi:  shiZhi,
-		ShiShen: tgName,
-		ShengRi: gen,
-		KeRi:    rest,
-		GanRels: ganRels,
-		ZhiRels: zhiRels,
+		Time:               ganzhi.HourRanges[int(shiZhi)-1],
+		ShiGan:             shiGan,
+		ShiZhi:             shiZhi,
+		ShiShen:            tgName,
+		ShengRi:            gen,
+		KeRi:               rest,
+		GanRels:            ganRels,
+		ZhiRels:            zhiRels,
+		DaYunInteraction:   daYunRel,
+		LiuNianInteraction: liuNianRel,
+		LiuRiInteraction:   liuRiRel,
 	}, nil
 }

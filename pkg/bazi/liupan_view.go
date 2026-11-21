@@ -98,18 +98,20 @@ type LiuYueJieQiView struct {
 }
 
 type LiuYueOutputView struct {
-	Year         int                          `json:"year" jsonschema:"流月公历年。"`
-	Month        int                          `json:"month" jsonschema:"流月公历月。"`
-	ShiShen      ganzhi.ShiShen               `json:"shi_shen" jsonschema:"十神。"`
-	YueGan       *ganzhi.Gan                  `json:"gan,omitempty" jsonschema:"流月天干"`
-	YueZhi       *ganzhi.Zhi                  `json:"zhi,omitempty" jsonschema:"流月地支"`
-	YueGanWuxing *string                      `json:"gan_wuxing,omitempty" jsonschema:"流月天干五行。"`
-	ShengRi      *int                         `json:"sheng_ri,omitempty" jsonschema:"流月是否生扶日主：0/1。"`
-	KeRi         *int                         `json:"ke_ri,omitempty" jsonschema:"流月是否克制日主：0/1。"`
-	ShenSha      *[]SeriesShenshaItemView     `json:"shen_sha,omitempty" jsonschema:"流月神煞名称与类别；取象见 chart 层 shen_sha description"`
-	GanRels      *[]SeriesGanRelationItemView `json:"gan_rels,omitempty" jsonschema:"天干关系"`
-	ZhiRels      *[]SeriesZhiRelationItemView `json:"zhi_rels,omitempty" jsonschema:"地支关系"`
-	JieQi        LiuYueJieQiView              `json:"jie_qi" jsonschema:"流月节气月界。"`
+	Year               int                          `json:"year" jsonschema:"流月公历年。"`
+	Month              int                          `json:"month" jsonschema:"流月公历月。"`
+	ShiShen            ganzhi.ShiShen               `json:"shi_shen" jsonschema:"十神。"`
+	YueGan             *ganzhi.Gan                  `json:"gan,omitempty" jsonschema:"流月天干"`
+	YueZhi             *ganzhi.Zhi                  `json:"zhi,omitempty" jsonschema:"流月地支"`
+	YueGanWuxing       *string                      `json:"gan_wuxing,omitempty" jsonschema:"流月天干五行。"`
+	ShengRi            *int                         `json:"sheng_ri,omitempty" jsonschema:"流月是否生扶日主：0/1。"`
+	KeRi               *int                         `json:"ke_ri,omitempty" jsonschema:"流月是否克制日主：0/1。"`
+	ShenSha            *[]SeriesShenshaItemView     `json:"shen_sha,omitempty" jsonschema:"流月神煞名称与类别；取象见 chart 层 shen_sha description"`
+	GanRels            *[]SeriesGanRelationItemView `json:"gan_rels,omitempty" jsonschema:"天干关系"`
+	ZhiRels            *[]SeriesZhiRelationItemView `json:"zhi_rels,omitempty" jsonschema:"地支关系"`
+	DaYunInteraction   zhuInteractionView           `json:"da_yun_interaction" jsonschema:"与大运的干支两层交互。"`
+	LiuNianInteraction zhuInteractionView           `json:"liu_nian_interaction" jsonschema:"与流年的干支两层交互。"`
+	JieQi              LiuYueJieQiView              `json:"jie_qi" jsonschema:"流月节气月界。"`
 }
 
 type LiuRiJieView struct {
@@ -148,15 +150,18 @@ type LiuShiChenView struct {
 }
 
 type LiuShiOutputView struct {
-	LiuShiTime string                       `json:"hour_range" jsonschema:"流时时辰区间。"`
-	ShiShen    ganzhi.ShiShen               `json:"shi_shen" jsonschema:"十神。"`
-	ShengRi    int                          `json:"sheng_ri" jsonschema:"流时天干是否生扶日主：0/1。"`
-	KeRi       int                          `json:"ke_ri" jsonschema:"流时天干是否克制/耗泄日主：0/1。"`
-	ShiGan     *ganzhi.Gan                  `json:"gan,omitempty" jsonschema:"流时天干"`
-	ShiZhi     *ganzhi.Zhi                  `json:"zhi,omitempty" jsonschema:"流时地支"`
-	GanRels    *[]SeriesGanRelationItemView `json:"gan_rels,omitempty" jsonschema:"天干关系"`
-	ZhiRels    *[]SeriesZhiRelationItemView `json:"zhi_rels,omitempty" jsonschema:"地支关系"`
-	ShiChen    LiuShiChenView               `json:"shi_chen" jsonschema:"流时时辰定位。"`
+	LiuShiTime         string                       `json:"hour_range" jsonschema:"流时时辰区间。"`
+	ShiShen            ganzhi.ShiShen               `json:"shi_shen" jsonschema:"十神。"`
+	ShengRi            int                          `json:"sheng_ri" jsonschema:"流时天干是否生扶日主：0/1。"`
+	KeRi               int                          `json:"ke_ri" jsonschema:"流时天干是否克制/耗泄日主：0/1。"`
+	ShiGan             *ganzhi.Gan                  `json:"gan,omitempty" jsonschema:"流时天干"`
+	ShiZhi             *ganzhi.Zhi                  `json:"zhi,omitempty" jsonschema:"流时地支"`
+	GanRels            *[]SeriesGanRelationItemView `json:"gan_rels,omitempty" jsonschema:"天干关系"`
+	ZhiRels            *[]SeriesZhiRelationItemView `json:"zhi_rels,omitempty" jsonschema:"地支关系"`
+	DaYunInteraction   zhuInteractionView           `json:"da_yun_interaction" jsonschema:"与大运的干支两层交互。"`
+	LiuNianInteraction zhuInteractionView           `json:"liu_nian_interaction" jsonschema:"与流年的干支两层交互。"`
+	LiuRiInteraction   zhuInteractionView           `json:"liu_ri_interaction" jsonschema:"与流日的干支两层交互。"`
+	ShiChen            LiuShiChenView               `json:"shi_chen" jsonschema:"流时时辰定位。"`
 }
 
 type XiaoYunItemView struct {
