@@ -8,7 +8,7 @@ import "encoding/json"
 
 type BondView struct {
 	DayMaster    DayMasterView    `json:"ri_zhu" jsonschema:"双方日主及日主生克关系。"`
-	SpousePalace SpousePalaceView `json:"pei_ou_gong" jsonschema:"双方配偶宫（日支）及其关系。"`
+	SpousePalace SpousePalaceView `json:"pei_ou_gong" jsonschema:"双方配偶宫（日支）及其关系；此为日支专用视图，与 zhu_cross 的 4×4 全交叉分工不同（非重复）。"`
 	ZhuCross     ZhuCrossView     `json:"zhu_cross" jsonschema:"双方四柱逐柱干支交叉。"`
 	ShiShenCross ShiShenCrossView `json:"shi_shen_cross" jsonschema:"双方日主互视的十神柱位。"`
 	WuxingCross  WuxingCrossView  `json:"wuxing_cross" jsonschema:"双方实盘五行数量与扶抑对照。"`
