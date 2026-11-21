@@ -11,6 +11,7 @@ import (
 	"sync"
 
 	"github.com/google/jsonschema-go/jsonschema"
+	"github.com/ml8s/mingligo/pkg/bazi"
 	"github.com/ml8s/mingligo/pkg/ganzhi"
 	"github.com/ml8s/mingligo/pkg/liuyao"
 	"github.com/ml8s/mingligo/pkg/qimen"
@@ -141,10 +142,25 @@ func buildStaticSchemaOptions() map[reflect.Type]*jsonschema.Schema {
 			Type: "string", Enum: []any{"老阴", "少阳", "少阴", "老阳"},
 		},
 		reflect.TypeFor[ganzhi.Gan](): {
-			Type: "string", Enum: []any{"甲", "乙", "丙", "丁", "戊", "己", "庚", "辛", "壬", "癸"},
+			Types: []string{"null", "string"}, Enum: []any{nil, "甲", "乙", "丙", "丁", "戊", "己", "庚", "辛", "壬", "癸"},
 		},
 		reflect.TypeFor[ganzhi.Zhi](): {
 			Type: "string", Enum: []any{"子", "丑", "寅", "卯", "辰", "巳", "午", "未", "申", "酉", "戌", "亥"},
+		},
+		reflect.TypeFor[ganzhi.Wuxing](): {
+			Type: "string", Enum: []any{"木", "火", "土", "金", "水"},
+		},
+		reflect.TypeFor[ganzhi.WangShuai](): {
+			Type: "string", Enum: []any{"旺", "相", "休", "囚", "死"},
+		},
+		reflect.TypeFor[ganzhi.ShiShen](): {
+			Type: "string", Enum: []any{"比肩", "劫财", "食神", "伤官", "偏财", "正财", "七杀", "正官", "偏印", "正印"},
+		},
+		reflect.TypeFor[bazi.NatalRelationKind](): {
+			Type: "string", Enum: []any{"zhi_liu_he", "liu_chong", "liu_hai", "liu_po", "an_he", "liu_xing", "gan_he", "gan_he_candidate", "gan_chong", "gan_chong_candidate", "san_he", "san_he_partial", "san_hui"},
+		},
+		reflect.TypeFor[bazi.PillarIndex](): {
+			Type: "string", Enum: []any{"nian", "yue", "ri", "shi"},
 		},
 		reflect.TypeFor[qimen.JinhanSpirit](): {
 			Type: "string", Enum: []any{"diyao", "liuze", "wufu", "tiancao", "difu", "fengbo", "leigong", "yushi", "fengyun", "tangfu", "guoyin", "tianguan"},

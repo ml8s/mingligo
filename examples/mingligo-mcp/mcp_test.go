@@ -183,8 +183,12 @@ func TestCallTool_BaziChart(t *testing.T) {
 	if _, hasProduct := doc["_product"]; hasProduct {
 		t.Errorf("result leaked RPC _product envelope")
 	}
-	if _, ok := doc["ri"]; !ok {
-		t.Errorf("result missing 日柱 (ri): %v", doc)
+	pillars, ok := doc["pillars"].(map[string]any)
+	if !ok {
+		t.Fatalf("result missing pillars: %v", doc)
+	}
+	if _, ok := pillars["ri"]; !ok {
+		t.Errorf("result missing 日柱 (pillars.ri): %v", doc)
 	}
 }
 

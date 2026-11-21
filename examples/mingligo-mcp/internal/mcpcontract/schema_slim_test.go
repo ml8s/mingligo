@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"github.com/google/jsonschema-go/jsonschema"
+	"github.com/ml8s/mingligo/pkg/bazi"
 )
 
 func TestSlimSchemaRawCompactsNullableEnums(t *testing.T) {
@@ -245,7 +246,7 @@ func TestSlimBaziChartKeepsNullInHiddenStemEnums(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	derived, err := jsonschema.For[BaziChartOutput](options)
+	derived, err := jsonschema.For[bazi.ChartView](options)
 	if err != nil {
 		t.Fatal(err)
 	}

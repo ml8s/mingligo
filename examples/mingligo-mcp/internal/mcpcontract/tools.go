@@ -11,6 +11,7 @@ import (
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 
 	"github.com/ml8s/mingligo/examples/mingligo-mcp/internal/observability"
+	"github.com/ml8s/mingligo/pkg/bazi"
 )
 
 // registerTyped adapts a pure domain handler to the official SDK typed
@@ -97,7 +98,7 @@ func RegisterTools(server *mcp.Server) error {
 		mcp.Tool{Name: "city_info", Description: toolDescription("city_info"), InputSchema: cityInput, OutputSchema: cityOutput},
 		toolAnnotations("city_info"), CityInfo)
 
-	baziChartInput, baziChartOutput, err := typedSchemas[BaziChartInput, BaziChartOutput](options)
+	baziChartInput, baziChartOutput, err := typedSchemas[BaziChartInput, bazi.ChartView](options)
 	if err != nil {
 		return fmt.Errorf("bazi_chart schema: %w", err)
 	}

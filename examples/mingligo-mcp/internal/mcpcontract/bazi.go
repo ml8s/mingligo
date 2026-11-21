@@ -2,7 +2,6 @@ package mcpcontract
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"time"
 
@@ -15,26 +14,16 @@ type BaziChartInput struct {
 	Subject NatalSubject `json:"subject" jsonschema:"schema 合法的出生主体；可来自用户明确事实或用户确认后的 subject_candidates 候选。"`
 }
 
-// BaziChartCompute returns the canonical complete natal chart.
-func BaziChart(_ context.Context, input BaziChartInput) (bazi.Chart, error) {
+// BaziChartCompute returns the canonical, domain-aggregated natal chart view.
+func BaziChart(_ context.Context, input BaziChartInput) (bazi.ChartView, error) {
 	chart, err := input.Subject.baziChart()
 	if err != nil {
-		return bazi.Chart{}, fmt.Errorf("bazi.chart: %w", err)
+		return bazi.ChartView{}, fmt.Errorf("bazi.chart: %w", err)
 	}
-	return chart, nil
+	return chart.View(), nil
 }
 
 // ── typed handlers for the remaining bazi tools ──
-
-// marshalRawBaziChart serialises the domain chart as-is; the domain owns its
-// output shape, and the handler returns the same value to MCP.
-func marshalRawBaziChart(chart bazi.Chart) (json.RawMessage, error) {
-	raw, err := json.Marshal(chart)
-	if err != nil {
-		return nil, fmt.Errorf("bazi.chart: marshal output: %w", err)
-	}
-	return raw, nil
-}
 
 // BaziBond returns cross-chart facts for two bazi charts.
 func BaziBond(_ context.Context, input BaziBondInput) (bazi.Bond, error) {
@@ -302,5 +291,3 @@ func advanceBaziLiuShi(input BaziLiupanInput) (BaziLiupanInput, error) {
 	input.StandardTime = standardTimeValue(next.Standard.In(loc))
 	return input, nil
 }
-
-

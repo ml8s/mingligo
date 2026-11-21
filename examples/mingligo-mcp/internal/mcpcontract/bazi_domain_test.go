@@ -20,14 +20,17 @@ func TestBaziChartSubjectProducesStableChart(t *testing.T) {
 		if err != nil {
 			t.Fatalf("bazi.chart %s: %v", subject.StandardTime, err)
 		}
-		var first BaziChartOutput
-		decode(t, raw, &first)
+		var first, second any
+		if err := json.Unmarshal(raw, &first); err != nil {
+			t.Fatal(err)
+		}
 		raw, err = registry.Call(context.Background(), "bazi_chart", mustJSON(t, BaziChartInput{Subject: subject}))
 		if err != nil {
 			t.Fatal(err)
 		}
-		var second BaziChartOutput
-		decode(t, raw, &second)
+		if err := json.Unmarshal(raw, &second); err != nil {
+			t.Fatal(err)
+		}
 		if !reflect.DeepEqual(first, second) {
 			t.Fatalf("subject %s produced unstable chart", subject.StandardTime)
 		}
@@ -42,46 +45,28 @@ func TestBaziChartSubjectRejectsInvalidLongitude(t *testing.T) {
 	}
 }
 
-func TestBaziChartRawProjectionMatchesWireDTO(t *testing.T) {
+func TestBaziChartViewMatchesOutputSchema(t *testing.T) {
 	registry := testContractServer()
 	subject := NatalSubject{StandardTime: "1990-05-20T12:49:00+08:00", Longitude: 116.4, Gender: "male"}
 	chart, err := subject.baziChart()
 	if err != nil {
 		t.Fatal(err)
 	}
-	full := chart
 	for name, secondary := range map[string]*bazi.TiaoHouAvailability{
-		"present": full.TiaoHou.Secondary,
+		"present": chart.TiaoHou.Secondary,
 		"absent":  nil,
 	} {
 		t.Run(name, func(t *testing.T) {
-			value := full
+			value := chart
 			value.TiaoHou.Secondary = secondary
-			raw, err := marshalRawBaziChart(value)
+			// The handler transmits the domain-owned ChartView; validate that
+			// its serialized form satisfies the schema reflected from that type.
+			raw, err := json.Marshal(value.View())
 			if err != nil {
 				t.Fatal(err)
 			}
 			if err := registry.ValidateOutput("bazi_chart", raw); err != nil {
-				t.Fatalf("raw output contract: %v", err)
-			}
-			want, err := wireFromDomain[BaziChartOutput](value)
-			if err != nil {
-				t.Fatal(err)
-			}
-			want.ZiShiRule = chart.ZiShiRule
-			wantRaw, err := json.Marshal(want)
-			if err != nil {
-				t.Fatal(err)
-			}
-			var gotDocument, wantDocument any
-			if err := json.Unmarshal(raw, &gotDocument); err != nil {
-				t.Fatal(err)
-			}
-			if err := json.Unmarshal(wantRaw, &wantDocument); err != nil {
-				t.Fatal(err)
-			}
-			if !reflect.DeepEqual(gotDocument, wantDocument) {
-				t.Fatalf("raw chart projection differs from typed wire DTO: %v", diffJSON("", gotDocument, wantDocument))
+				t.Fatalf("view output contract: %v", err)
 			}
 		})
 	}

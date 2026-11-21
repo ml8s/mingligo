@@ -449,8 +449,12 @@ func TestChartsNormalizeEquivalentOffsetForms(t *testing.T) {
 	// select different local dates.
 	want := []string{"辛酉", "丙申", "丙子", "己丑"}
 	for name, document := range map[string]map[string]any{"Z": utc, "+08:00": plus8} {
+		pillars, ok := document["pillars"].(map[string]any)
+		if !ok {
+			t.Fatalf("%s chart has no pillars: %#v", name, document)
+		}
 		for index, pillar := range []string{"nian", "yue", "ri", "shi"} {
-			entry := document[pillar].(map[string]any)
+			entry := pillars[pillar].(map[string]any)
 			if got := fmt.Sprintf("%v%v", entry["gan"], entry["zhi"]); got != want[index] {
 				t.Fatalf("%s %s = %s, want %s", name, pillar, got, want[index])
 			}
@@ -476,8 +480,12 @@ func TestMigratedBaziChartTrueSolarChain(t *testing.T) {
 		"subject": map[string]any{"standard_time": standardInputFromInstant(t, "1981-08-25T16:20:00Z", "Asia/Shanghai"), "longitude": 132.044137, "gender": "male"},
 	})
 	want := []string{"辛酉", "丙申", "丙子", "己丑"}
+	pillars, ok := chart["pillars"].(map[string]any)
+	if !ok {
+		t.Fatalf("chart has no pillars: %#v", chart)
+	}
 	for index, pillar := range []string{"nian", "yue", "ri", "shi"} {
-		entry := chart[pillar].(map[string]any)
+		entry := pillars[pillar].(map[string]any)
 		if got := fmt.Sprintf("%v%v", entry["gan"], entry["zhi"]); got != want[index] {
 			t.Fatalf("%s = %s, want %s", pillar, got, want[index])
 		}

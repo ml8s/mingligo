@@ -36,3 +36,6 @@ testdata/fuzz/
 
 __pycache__/
 *.py[cod]
+
+# Local plans
+.opencode/

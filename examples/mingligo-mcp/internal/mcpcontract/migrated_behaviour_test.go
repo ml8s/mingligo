@@ -85,26 +85,42 @@ func TestMigratedBaziChartCompleteFacts(t *testing.T) {
 	subject := testBaziChart(t, "1984-02-15T00:00:00Z", "Asia/Shanghai", 116.4, "male")
 	chart := callToolDocument(t, registry, "bazi_chart", map[string]any{"subject": subject})
 
-	for _, field := range []string{
-		"san_yuan", "guan_xi", "shi_shen_states", "wuxing_states", "da_yun",
+	sub := func(section, field string) any {
+		obj, ok := chart[section].(map[string]any)
+		if !ok {
+			t.Fatalf("bazi.chart %s = %#v", section, chart[section])
+		}
+		return obj[field]
+	}
+	// View fields are grouped by命理子域.
+	for _, pair := range [][2]string{
+		{"structure", "san_yuan"}, {"relations", "guan_xi"},
+		{"states", "shi_shen_states"}, {"states", "wuxing_states"}, {"da_yun", ""},
 	} {
-		if value, ok := chart[field]; !ok || value == nil {
-			t.Errorf("bazi.chart missing %s", field)
+		var value any
+		if pair[1] == "" {
+			value = chart[pair[0]]
+		} else {
+			value = sub(pair[0], pair[1])
+		}
+		if value == nil {
+			t.Errorf("bazi.chart missing %s.%s", pair[0], pair[1])
 		}
 	}
-	for _, pillar := range []string{"nian", "yue", "ri", "shi"} {
-		item, ok := chart[pillar].(map[string]any)
+	pillars, _ := chart["pillars"].(map[string]any)
+	for _, name := range []string{"nian", "yue", "ri", "shi"} {
+		item, ok := pillars[name].(map[string]any)
 		if !ok {
-			t.Fatalf("bazi.chart %s = %#v", pillar, chart[pillar])
+			t.Fatalf("bazi.chart pillars.%s = %#v", name, pillars[name])
 		}
 		if item["na_yin"] == nil || item["na_yin"] == "" {
-			t.Errorf("bazi.chart %s.na_yin is empty", pillar)
+			t.Errorf("bazi.chart pillars.%s.na_yin is empty", name)
 		}
 	}
 
-	relations, ok := chart["na_yin_rel"].([]any)
+	relations, ok := sub("relations", "na_yin_rel").([]any)
 	if !ok || len(relations) != 6 {
-		t.Fatalf("na_yin_rel = %#v, want 6 entries", chart["na_yin_rel"])
+		t.Fatalf("na_yin_rel = %#v, want 6 entries", sub("relations", "na_yin_rel"))
 	}
 	sameOnly := true
 	for _, raw := range relations {
