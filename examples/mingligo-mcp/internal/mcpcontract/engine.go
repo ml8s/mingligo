@@ -74,31 +74,6 @@ func buildStaticSchemaOptions() map[reflect.Type]*jsonschema.Schema {
 				"午", "丁", "未", "坤", "申", "庚", "酉", "辛", "戌", "乾", "亥", "壬",
 			},
 		},
-		reflect.TypeFor[XuankongYuanName](): {Type: "string", Enum: []any{"上元", "中元", "下元"}},
-		reflect.TypeFor[YunName](): {
-			Type: "string", Enum: []any{
-				"一运", "二运", "三运", "四运", "五运", "六运", "七运", "八运", "九运",
-			},
-		},
-		reflect.TypeFor[XuankongSituationName](): {
-			Type: "string", Enum: []any{
-				"旺山旺向", "双星会坐", "双星会向", "上山下水", "未入四大局",
-			},
-		},
-		reflect.TypeFor[XuankongFuYinLayer](): {
-			Type: "string", Enum: []any{"运盘伏吟", "山星伏吟", "向星伏吟", "全盘伏吟"},
-		},
-		reflect.TypeFor[XuankongFanYinLayer](): {
-			Type: "string", Enum: []any{"运盘反吟", "山星反吟", "向星反吟"},
-		},
-		reflect.TypeFor[XuankongAssessment](): {
-			Type: "string", Enum: []any{
-				"收山得宜、拨水入零堂，理气合局（完整收山出煞须验实际砂水）",
-				"收山得宜（坐宫山星当令）；拨水入零堂未得，向首零神不见水",
-				"拨水入零堂得宜（向宫向星零神）；收山未得，坐宫山星不当令",
-				"收山、拨水入零堂俱未得，宜择时改向并验实际砂水",
-			},
-		},
 		reflect.TypeFor[YinYangName](): {Type: "string", Enum: []any{"阳", "阴"}},
 		reflect.TypeFor[DirectionName](): {
 			Type: "string", Enum: []any{"北", "东北", "东", "东南", "南", "西南", "西", "西北"},

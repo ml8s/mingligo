@@ -12,30 +12,24 @@ type (
 	HuangliCount     int
 	SeriesCount      int
 
-	GuaNumber             int
-	MountainIndex         int
-	XuankongYear          int
-	EightGuaName          string
-	MountainName          string
-	StarColorName         string
-	XuankongYuanName      string
-	YunName               string
-	XuankongSituationName string
-	XuankongFuYinLayer    string
-	XuankongFanYinLayer   string
-	XuankongAssessment    string
-	ElementName           string
-	YinYangName           string
-	DirectionName         string
-	LifeGroupName         string
-	YearBoundaryName      string
-	FlyingStarNumber      int
-	FlyingStarName        string
-	YouxingName           string
-	BazhaiRatingName      string
-	TrigramGroupName      string
-	BazhaiMatchName       string
-	BazhaiBirthYear       int
+	GuaNumber        int
+	MountainIndex    int
+	XuankongYear     int
+	EightGuaName     string
+	MountainName     string
+	StarColorName    string
+	ElementName      string
+	YinYangName      string
+	DirectionName    string
+	LifeGroupName    string
+	YearBoundaryName string
+	FlyingStarNumber int
+	FlyingStarName   string
+	YouxingName      string
+	BazhaiRatingName string
+	TrigramGroupName string
+	BazhaiMatchName  string
+	BazhaiBirthYear  int
 
 	LiuyaoQiguaMode        string
 	LiuyaoCastMode         string
