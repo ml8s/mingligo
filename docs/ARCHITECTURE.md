@@ -92,13 +92,18 @@ decode: 符号 → 文本   （系统解码出人类语言；输出边界）
 
 **同名字段分属不同子域**：流期干支用 `period_gan`/`zhi`（周期层），流宫干支用 `gong_wei[].gan`/`zhi`（宫位层）——两者同名不同义，以字段名和子域区分，避免消费者混淆。
 
-**View 子域划分原则（评审后定稿）**：
+**View 子域划分（命理域重构定稿）**：
 
-- 子域按"事实源 + 命理层次"切分：事实 / 派生结论 / 口径元数据 / 时间轴分列
-- 八字 ChartView 的 `structure`（结构事实）与 `conclusions`（确定性结论）分离；`birth_year`/`shen_sha_school` 归 `calendar`
-- 紫微 ChartView 把原 `meta` 抽屉拆为 `palace_relations`/`patterns`/`cycles`/`soul_body` 四域
-- 保留聚合对象的例外：六爻 `analysis`、奇门 `palace_facts` 因消费端（counsel）深度依赖其路径，采用 jsonschema 分层标注而非物理拆分——"尊重业务"优先于形式内聚
-- 同名字段以字段名或子域区分：`period_gan`(流期) vs `gan`(流宫)、`gua_group`(卦组) vs `group`(命组)、`huang_dao_suitable`(时辰黄道) vs `suitability`(建除事项)`si_hua[].gong` 是本命宫序坐标，`gong_wei[].name` 是流盘宫名（以流命为命宫），二者同型不同坐标系，在 jsonschema 中明确标注。`ming_gong` 四层统一由 `flowMingGongIndex`（流命落本命宫序）计算，消除月/日/时恒 0 的零信息。
+所有 View 子域必须是命理领域概念（四柱/大运/十神/神煞/格局/应期/十二宫等），以命理拼音术语命名（json key snake_case、Go 字段 PascalCase）。工程泛化容器（`analysis`/`facts`/`meta`/`structure`/`conclusions`/`markers`/`special_facts`/`palace_facts`/`event`/`directions`/`taboos` 等）全部拆除或改名，不保留"标注代替拆分"的例外。
+
+- 八字 ChartView：`yong_shen_qu_fa`/`guan_xi`/`wang_shuai`/`san_yuan_view`/`chang_sheng_view`/`shen_sha`/`guan_sha`/`cai_ku`/`pei_ou_gong`/`ri_zhi_xiang`/`li_fa_kou_jing`
+- 六爻 ChartView：`analysis` 容器拆除，拆为 `shi_qi`/`yong_shen_ceng`/`ge_ju_ceng`/`dong_yao_guan_xi`/`fu_shen_ceng`/`zhi_guan_xi`/`mao_dun_xin_hao`/`mu_ku_liu_pai`
+- 奇门 ChartView：`ke_ying`/`jiu_gong_gu_you`/`jiu_gong_ben_pan`/`gan_luo_gong`/`fu_shi`/`shen_sha`/`ge_ju`/`ying_qi`/`yong_shen`/`zhuan_zhan`/`pai_pan_fang_fa`
+- 紫微 ChartView：`li_fa_kou_jing`/`pai_pan_kou_jing`/`shi_er_gong`/`kong_gong_san_fang`/`ge_ju`/`da_xian`/`ming_zhu_shen_zhu`
+- 黄历：`fang_wei_shen_sha`/`peng_zu_bai_ji`/`yi_ji`；玄空：`si_da_ju`/`liu_nian_xing_lin_gong`；八宅：View 类型名全改为命理域（`BaZhaiMingGuaPanView`/`MenZhuZaoView` 等）
+- 同型不同坐标系字段用命理名与子域区分：`si_hua[].gong`=本命宫序、`gong_wei[].name`=流盘宫名；`ming_gong` 四层统一由 `flowMingGongIndex` 计算
+
+消费方（counsel）的 Python 路径、Pydantic 契约（extra=forbid）、JSON path contract 全部同步到新命理域，golden/fixture 随领域结构更新。
 
 正确性由分层验证保证：纯函数穷举/oracle → 逐阶段差分不变性基线（原字段逐字节相同，只放行白名单变更）→ 接线 oracle → golden 人工审查 → make gate。
 
