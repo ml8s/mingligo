@@ -1,9 +1,6 @@
 package bazi
 
-import (
-	"github.com/ml8s/mingligo/pkg/ganzhi"
-	"github.com/ml8s/mingligo/pkg/tianwen"
-)
+import "github.com/ml8s/mingligo/pkg/ganzhi"
 
 // flowDayMasterFacts is the single pure entry point for a flow pillar's stem
 // relative to the day master. All four flow layers (year/month/day/hour) use
@@ -32,30 +29,22 @@ func analyzeFlowAgainstRef(flow, ref ganzhi.Zhu) zhuInteraction {
 // flowRefs holds the upper-layer reference pillars available when computing a
 // flow month or flow hour. All fields are symbols/pointers; no time strings.
 type flowRefs struct {
-	natal   ganzhi.Bazi
 	dayun   *ganzhi.Zhu
 	liunian *ganzhi.Zhu
 	liuri   *ganzhi.Zhu
 }
 
-// resolveFlowRefs resolves all upper-layer reference pillars from a core and a
-// civil date. It reuses the existing 立春-year resolution so 大运/流年 are
-// determined exactly as in 流日 (single authority). The day pillar is derived
-// from the civil date via tianwen.RiZhu.
-func resolveFlowRefs(core Core, date tianwen.Date) (flowRefs, error) {
-	nianTime, err := ResolveLiuNianTime(date)
-	if err != nil {
-		return flowRefs{}, err
-	}
+// resolveFlowRefs builds upper-layer references from an already-resolved 立春
+// year and day pillar. The caller supplies the SAME nianTime/day that produced
+// its own flow pillar, so a layer never mixes civil-date and true-solar bases:
+//   - 流月 passes the instant-based nianTime from ResolveLiuNianTimeAt
+//   - 流时 passes the true-solar-day-based nianTime (as 流日 does)
+//
+// keeping each layer's 大运/流年/流日 references on one consistent authority.
+func resolveFlowRefs(core Core, nianTime LiuNianTime, day ganzhi.Zhu) (flowRefs, error) {
 	dy, ln, err := liuRiDayunLiunian(core, nianTime)
 	if err != nil {
 		return flowRefs{}, err
 	}
-	day := tianwen.RiZhu(date.Time())
-	return flowRefs{
-		natal:   core.ToBazi(),
-		dayun:   dy,
-		liunian: ln,
-		liuri:   &ganzhi.Zhu{Gan: day.Gan, Zhi: day.Zhi},
-	}, nil
+	return flowRefs{dayun: dy, liunian: ln, liuri: &day}, nil
 }

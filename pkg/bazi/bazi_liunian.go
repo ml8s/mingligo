@@ -38,12 +38,7 @@ func computeLiuNian(bz ganzhi.Bazi, t LiuNianTime, currentDaYun *DaYunStep) (*Li
 	riYuan := bz.Ri.Gan
 	nianGan, nianZhi := t.NianGan, t.NianZhi
 
-	dmElem := ganzhi.GanWuxing(riYuan)
-	yearElem := ganzhi.GanWuxing(nianGan)
-
-	tgName := ganzhi.ShiShenFromGan(riYuan, nianGan)
-
-	gen, rest := countGenRest(yearElem, dmElem)
+	gen, rest, tgName := flowDayMasterFacts(nianGan, riYuan)
 
 	naYin := ganzhi.NayinLabel(nianGan, nianZhi)
 
@@ -51,9 +46,9 @@ func computeLiuNian(bz ganzhi.Bazi, t LiuNianTime, currentDaYun *DaYunStep) (*Li
 		Year:          t.LichunYear,
 		NianGan:       nianGan,
 		NianZhi:       nianZhi,
-		NianGanWuxing: ganzhi.DecodeWuxing(yearElem),
+		NianGanWuxing: ganzhi.DecodeWuxing(ganzhi.GanWuxing(nianGan)),
 		LiuNianNaYin:  naYin,
-		ShiShen:       ganzhi.DecodeShiShen(tgName),
+		ShiShen:       tgName,
 		ShengRi:       gen,
 		KeRi:          rest,
 	}

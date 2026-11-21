@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/ml8s/mingligo/pkg/ganzhi"
+	"github.com/ml8s/mingligo/pkg/tianwen"
 )
 
 func flowP1Core(t *testing.T) Core {
@@ -230,4 +231,56 @@ func TestFlowP3InteractionOracle(t *testing.T) {
 			t.Errorf("%s incomplete: %+v", name, inter)
 		}
 	}
+}
+
+// TestFlowRefsBoundaryBases verifies the corrected time bases: each layer's
+// upper-layer references must share the same civil/true-solar authority as
+// its own pillar, including late-zi cross-day and 立春 boundary.
+func TestFlowRefsBoundaryBases(t *testing.T) {
+	core := flowP1Core(t)
+	loc, _ := time.LoadLocation("Asia/Shanghai")
+
+	t.Run("liushi late-zi uses next day day-pillar", func(t *testing.T) {
+		// Directly construct the resolved time with LateZi=true to test liuShiRefs
+		// without depending on longitude/timezone resolution details.
+		st := LiuShiTime{
+			LastDate: tianwen.NewDate(2024, 6, 15),
+			LateZi:   true,
+			ShiZhi:   ganzhi.ZhiZi,
+		}
+		refs, err := liuShiRefs(core, st)
+		if err != nil {
+			t.Fatal(err)
+		}
+		wantDay := tianwen.RiZhu(st.LastDate.AddDays(1).Time())
+		if refs.liuri == nil || refs.liuri.Gan != wantDay.Gan || refs.liuri.Zhi != wantDay.Zhi {
+			t.Errorf("liushi liuri = %+v, want %+v (next day)", refs.liuri, wantDay)
+		}
+		// 大运/流年 also keyed to the true-solar day (not civil next day)
+		wantNian, _ := ResolveLiuNianTime(st.LastDate)
+		if refs.liunian == nil || refs.liunian.Gan != wantNian.NianGan || refs.liunian.Zhi != wantNian.NianZhi {
+			t.Errorf("liushi liunian ref = %+v, want %+v", refs.liunian, wantNian)
+		}
+	})
+
+	t.Run("liuyue refs nian matches pillar nian", func(t *testing.T) {
+		standard, _ := time.Parse(time.RFC3339, "2024-02-04T02:00:00Z") // 立春 boundary 10:00 CST
+		nianInstant, _ := ResolveLiuNianTimeAt(standard, loc)
+		nianDate, _ := ResolveLiuNianTime(tianwen.StandardDateAt(standard, loc))
+		// Document the two authorities may differ at the boundary; the fix makes
+		// liu-yue refs use the instant-based one (same as its month pillar).
+		_ = nianDate
+		day := tianwen.RiZhu(tianwen.StandardDateAt(standard, loc).Time())
+		refs, err := resolveFlowRefs(core, nianInstant, ganzhi.Zhu{Gan: day.Gan, Zhi: day.Zhi})
+		if err != nil {
+			t.Fatal(err)
+		}
+		if refs.liunian == nil {
+			t.Fatal("liunian ref nil")
+		}
+		wantZhu := nianInstant
+		if refs.liunian.Gan != wantZhu.NianGan || refs.liunian.Zhi != wantZhu.NianZhi {
+			t.Errorf("liuyue liunian ref = %+v, want nian-year pillar %+v", refs.liunian, wantZhu)
+		}
+	})
 }

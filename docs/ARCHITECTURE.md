@@ -78,6 +78,18 @@ decode: 符号 → 文本   （系统解码出人类语言；输出边界）
 - **适配器不约束 domain**：schema 推断所需的符号枚举在适配器侧注册，绝不回退 domain 的符号化。
 - 注：bond（合婚）、liupan（流盘序列）、liuyao_qigua（起卦）工具均已 View 化——合婚用 `bazi.BondView`/`ziwei.BondView`，流盘用 `bazi.LiuNianOutputView` 等系列 View，起卦用 `liuyao.QiguaView`（domain 系列/事件对象以 JSON roundtrip 映射到带 `jsonschema` tag 的输出契约，schema 从 View 反射；enum 约束在适配器侧 patch）。time_now/city_info 是纯 MCP 适配层的信息工具（当前时间、地点候选），无领域对象映射，其输出 DTO 属于适配器产物，不属于领域 View。
 
+### 流盘骨架（四层一致性）
+
+八字与紫微的流年/月/日/时四层输出遵循统一骨架，每一层都发布：
+
+- **本层柱事实**：流期干支、十神、神煞/流曜、层界（立春年界/节气月界/干支日界/真太阳时界）
+- **日主关系**（八字）：`sheng_ri`/`ke_ri` 与十神，经纯函数 `flowDayMasterFacts` 统一计算，四层口径一致
+- **上层交互**：与本命/大运/更高流层的**干支两层**关系（`zhuInteraction` / 紫微四化落宫），经纯函数 `analyzeFlowAgainstRef` / `flowPalaceGan` 统一计算
+
+参照柱由 `resolveFlowRefs` 单一解析（大运/流年复用 `liuRiDayunLiunian` 的立春年权威），避免在每层重复实现时间投影。紫微流宫宫干由五虎遁 `flowPalaceGan` 推出；`liu_ming_zhi` 与 `is_liu_ming` 宫互证。`si_hua` 保留本命宫序坐标（消费端依赖），由 `liu_ming_zhi` 提供地支坐标对照。
+
+正确性由分层验证保证：纯函数穷举/oracle → 逐阶段差分不变性基线（原字段逐字节相同，只放行白名单变更）→ 接线 oracle → golden 人工审查 → make gate。
+
 ## 7. 事实层与分析层的边界
 
 MingliGo 只做**确定性排盘计算**：领域输出是符号空间上的**命理领域事实**。上层内容服务（counsel）负责**拟合分析**——多因素加权、规则冲突消解、概率性倾向，其规则表用经典依据做拟合包装。二者判据：

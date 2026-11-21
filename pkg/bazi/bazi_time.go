@@ -200,6 +200,7 @@ type LiuShiTime struct {
 	Shichen      ganzhi.Zhi     `json:"shichen"`
 	ShiGan       ganzhi.Gan     `json:"shi_gan"`
 	ShiZhi       ganzhi.Zhi     `json:"shi_zhi"`
+	LateZi       bool           `json:"-"` // 真太阳 23:00-24:00，日柱按次日
 }
 
 // ResolveLiuShiTime derives the LAST hour pillar for a standard time. The hour
@@ -218,8 +219,9 @@ func ResolveLiuShiTime(standard time.Time, loc *time.Location, longitude float64
 	lastDate := tianwen.DateOf(last)
 	shichen := tianwen.ShichenOf(last)
 
+	lateZi := last.Hour() >= 23
 	dayGanDate := lastDate
-	if last.Hour() >= 23 {
+	if lateZi {
 		dayGanDate = lastDate.AddDays(1)
 	}
 	dayPillar := tianwen.RiZhu(dayGanDate.Time())

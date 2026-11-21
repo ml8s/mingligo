@@ -32,7 +32,6 @@ type FlowContext struct {
 	BirthIsLeap     bool
 	ShiZhi          Zhi
 	MingGongZhi     Zhi
-	MingGongName    string
 	SiHuaPalaces    map[StarIndex]GongIndex
 }
 
@@ -53,7 +52,6 @@ func (c Chart) FlowContext() FlowContext {
 		BirthIsLeap:     c.BirthIsLeap,
 		ShiZhi:          c.ShiZhi,
 		MingGongZhi:     c.GongWei[c.MingGong].Zhi,
-		MingGongName:    c.GongWei[c.MingGong].Name,
 		SiHuaPalaces:    siHuaPalaces,
 	}
 }

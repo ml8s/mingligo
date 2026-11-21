@@ -162,7 +162,12 @@ func ComputeLiuYueAt(core Core, standard time.Time, loc *time.Location) (*LiuYue
 	if err != nil {
 		return nil, fmt.Errorf("computeLiuYue: resolve: %w", err)
 	}
-	refs, err := resolveFlowRefs(core, t.Date)
+	nianForRefs, err := ResolveLiuNianTimeAt(standard, loc)
+	if err != nil {
+		return nil, fmt.Errorf("computeLiuYue: refs nian: %w", err)
+	}
+	dayForRefs := tianwen.RiZhu(t.Date.Time())
+	refs, err := resolveFlowRefs(core, nianForRefs, ganzhi.Zhu{Gan: dayForRefs.Gan, Zhi: dayForRefs.Zhi})
 	if err != nil {
 		return nil, fmt.Errorf("computeLiuYue: refs: %w", err)
 	}
@@ -185,7 +190,12 @@ func ComputeLiuYueAt(core Core, standard time.Time, loc *time.Location) (*LiuYue
 
 // ComputeLiuYueAtTime computes the month pillar from a resolved solar-term month.
 func ComputeLiuYueAtTime(core Core, t LiuYueTime) (*LiuYue, error) {
-	refs, err := resolveFlowRefs(core, t.Date)
+	nianForRefs, err := ResolveLiuNianTime(tianwen.NewDate(t.LichunYear, 6, 15))
+	if err != nil {
+		return nil, err
+	}
+	dayForRefs := tianwen.RiZhu(t.Date.Time())
+	refs, err := resolveFlowRefs(core, nianForRefs, ganzhi.Zhu{Gan: dayForRefs.Gan, Zhi: dayForRefs.Zhi})
 	if err != nil {
 		return nil, err
 	}
@@ -255,7 +265,7 @@ func ComputeLiuRi(core Core, t LiuRiTime) (*LiuRi, error) {
 
 // ComputeLiuShi computes the hour pillar and its interactions with the bazi chart.
 func ComputeLiuShi(core Core, t LiuShiTime) (*LiuShi, error) {
-	refs, err := resolveFlowRefs(core, t.StandardDate)
+	refs, err := liuShiRefs(core, t)
 	if err != nil {
 		return nil, err
 	}
@@ -271,7 +281,7 @@ func ComputeLiuShiAt(core Core, standard time.Time, loc *time.Location, longitud
 	if err != nil {
 		return nil, fmt.Errorf("computeLiuShi: resolve: %w", err)
 	}
-	refs, err := resolveFlowRefs(core, t.StandardDate)
+	refs, err := liuShiRefs(core, t)
 	if err != nil {
 		return nil, fmt.Errorf("computeLiuShi: refs: %w", err)
 	}
@@ -310,4 +320,18 @@ func dayunStepForYear(dy *DaYun, birthYear, year int) *DaYunStep {
 // ComputeXiaoYun computes the minor fortune (小运) by multiple schools.
 func ComputeXiaoYun(core Core, maxAge int) []XiaoYunSet {
 	return computeXiaoYun(core.ToBazi(), core.Gender, maxAge)
+}
+
+func liuShiRefs(core Core, t LiuShiTime) (flowRefs, error) {
+	dayDate := t.LastDate
+	if t.LateZi {
+		dayDate = dayDate.AddDays(1)
+	}
+	dayPillar := tianwen.RiZhu(dayDate.Time())
+	// 大运/流年按真太阳日所属立春年（与流日同权威）。
+	nianForRefs, err := ResolveLiuNianTime(dayDate)
+	if err != nil {
+		return flowRefs{}, err
+	}
+	return resolveFlowRefs(core, nianForRefs, ganzhi.Zhu{Gan: dayPillar.Gan, Zhi: dayPillar.Zhi})
 }

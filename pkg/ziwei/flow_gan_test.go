@@ -113,18 +113,36 @@ func gongWeiSubsetEqual(t *testing.T, old, got any) bool {
 	t.Helper()
 	oldArr, oa := old.([]any)
 	gotArr, ga := got.([]any)
-	if !oa || !ga || len(oldArr) != len(gotArr) {
+	if !oa || !ga {
+		t.Error("gong_wei type changed")
+		return false
+	}
+	if len(oldArr) != len(gotArr) {
 		return false
 	}
 	for i := range oldArr {
-		om, gm := oldArr[i].(map[string]any), gotArr[i].(map[string]any)
+		om, oOK := oldArr[i].(map[string]any)
+		gm, gOK := gotArr[i].(map[string]any)
+		if !oOK || !gOK {
+			t.Errorf("gong_wei[%d] element type changed", i)
+			return false
+		}
+		// every old field must be preserved byte-identically
 		for k, ov := range om {
-			if k == "gan" {
-				continue
-			}
 			if !reflect.DeepEqual(ov, gm[k]) {
 				return false
 			}
+		}
+		// only "gan" may be newly present; it must exist on every palace
+		for k := range gm {
+			if _, existed := om[k]; !existed && k != "gan" {
+				t.Errorf("gong_wei[%d]: unexpected new field %s", i, k)
+				return false
+			}
+		}
+		if _, hasGan := gm["gan"]; !hasGan {
+			t.Errorf("gong_wei[%d]: missing new gan field", i)
+			return false
 		}
 	}
 	return true

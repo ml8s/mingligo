@@ -40,12 +40,7 @@ func computeLiuYue(bz ganzhi.Bazi, t LiuYueTime, refs flowRefs) (*LiuYue, error)
 
 	mp := ganzhi.Zhu{Gan: t.YueGan, Zhi: t.YueZhi}
 
-	dmElem := ganzhi.GanWuxing(riYuan)
-	monthElem := ganzhi.GanWuxing(mp.Gan)
-
-	tgName := ganzhi.ShiShenFromGan(riYuan, mp.Gan)
-
-	gen, rest := countGenRest(monthElem, dmElem)
+	gen, rest, tgName := flowDayMasterFacts(mp.Gan, riYuan)
 
 	// Month vs bazi: all 4 pillars, consistent with liunian.
 	ganRels, zhiRels := analyzeZhuWithBazi(mp, bz)
@@ -59,7 +54,7 @@ func computeLiuYue(bz ganzhi.Bazi, t LiuYueTime, refs flowRefs) (*LiuYue, error)
 
 	shensha := computeDynamicShenSha(mp.Zhi, bazi[0].Zhi, bazi[2].Zhi, riYuan)
 
-	monthElemStr := ganzhi.DecodeWuxing(monthElem)
+	monthElemStr := ganzhi.DecodeWuxing(ganzhi.GanWuxing(mp.Gan))
 
 	return &LiuYue{
 		Year:               t.Date.Year,
@@ -67,7 +62,7 @@ func computeLiuYue(bz ganzhi.Bazi, t LiuYueTime, refs flowRefs) (*LiuYue, error)
 		YueGan:             mp.Gan,
 		YueZhi:             mp.Zhi,
 		YueGanWuxing:       monthElemStr,
-		ShiShen:            ganzhi.DecodeShiShen(tgName),
+		ShiShen:            tgName,
 		ShengRi:            gen,
 		KeRi:               rest,
 		GanRels:            ganRels,
