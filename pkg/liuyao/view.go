@@ -72,16 +72,16 @@ type YongShenView struct {
 }
 
 type AnalysisView struct {
-	TimingCandidates      []TimingCandidate      `json:"timing_candidates,omitempty" jsonschema:"应期候选。"`
+	TimingCandidates      []TimingCandidate      `json:"timing_candidates,omitempty" jsonschema:"应期候选（应期层；候选非定论）。"`
 	DongYaoRelations      []DongYaoRelation      `json:"dong_yao_relations,omitempty" jsonschema:"动爻关系。"`
 	HiddenLines           []HiddenLine           `json:"hidden_lines,omitempty" jsonschema:"本宫全量伏神表（含飞神/飞伏关系/出入条件）；所选用神的伏神见 yong_shen.fu_shen。"`
 	BranchRelationFacts   []BranchRelationFact   `json:"zhi_relation_facts,omitempty" jsonschema:"地支关系事实。"`
-	TombSchool            TombSchool             `json:"tomb_school" jsonschema:"墓库流派。"`
+	TombSchool            TombSchool             `json:"tomb_school" jsonschema:"墓库流派（方法元数据层）。"`
 	DayClashFacts         []DayClashFact         `json:"day_clash_facts,omitempty" jsonschema:"日冲事实。"`
 	MovingTransformations []MovingTransformation `json:"moving_transformations,omitempty" jsonschema:"动爻变化。"`
-	SanHeCandidates       []SanHeCandidate       `json:"san_he_candidates,omitempty" jsonschema:"三合候选。"`
-	ForceChain            *ForceChain            `json:"yong_shen_force_chain,omitempty" jsonschema:"用神力量链。"`
-	YongShenCandidates    []YongShenCandidate    `json:"yong_shen_candidates,omitempty" jsonschema:"用神候选。"`
+	SanHeCandidates       []SanHeCandidate       `json:"san_he_candidates,omitempty" jsonschema:"三合候选（格局结构层）。"`
+	ForceChain            *ForceChain            `json:"yong_shen_force_chain,omitempty" jsonschema:"用神力量链（用神层）。"`
+	YongShenCandidates    []YongShenCandidate    `json:"yong_shen_candidates,omitempty" jsonschema:"用神候选（用神层；含 Selected 确定性取舍）。"`
 	Conflicts             []Conflict             `json:"conflicts,omitempty" jsonschema:"冲突信号。"`
 }
 
@@ -192,8 +192,14 @@ func (c Chart) View() ChartView {
 	return view
 }
 
-// Analysis returns the domain-aggregated analysis view: the deterministic
-// judgment facts grouped into one section.
+// Analysis returns the deterministic judgment facts. The section is kept as a
+// single object for adapter/counsel compatibility; its fields fall into five
+// layers, marked in the jsonschema below:
+//   - 方法元数据: tomb_school
+//   - 应期: timing_candidates
+//   - 用神: force_chain, yong_shen_candidates
+//   - 格局: san_he_candidates
+//   - 关系/派生/元判断: the remaining fields
 func (c Chart) Analysis() AnalysisView {
 	return AnalysisView{
 		TimingCandidates:      c.TimingCandidates,
