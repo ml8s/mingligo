@@ -21,15 +21,21 @@
 
 ## 2. 符号空间
 
-符号按领域归属定义，底层只定义一次、上层复用：
+符号按领域归属定义，底层只定义一次、上层复用。**每个域包都有 `symbols.go`**，集中定义该域所有封闭命理概念（类型 + 常量 + `Encode`/`Decode`）：
 
 | 域包 | 负责的符号 |
 |---|---|
 | `ganzhi` | 干、支、五行、阴阳、十神、旺衰、性别、刑类型 |
 | `tianwen` | 节气、历法日期、时间边界 |
-| `bazi` `qimen` `liuyao` `ziwei` | 各域专属符号（格局、宫位、门星神、六亲、杂曜等） |
+| `luoshu` | 九宫、八卦 `Trigram`（跨派风水/奇门共用） |
+| `fengshui` | 三元龙 `YuanLong`（24山体系） |
+| `bazi` | 格局、从格、日支取象 `BranchImageKind`、宫位状态 `PalaceState`、神煞名 `ShenShaName`、关系种类 |
+| `qimen` | 宫位 `GongIndex`、门 `DoorIndex`、星 `StarIndex`、神 `SpiritIndex`、金函十二神 `JinhanSpirit`、五行关系 `ElementRelation` |
+| `liuyao` | 六亲、六神、爻标、格局子类 |
+| `ziwei` | 星曜、亮度 `Brightness`/分组 `BrightnessGroup`、主星态 `MajorStarState`、四化、宫位 |
+| `bazhai` | 命卦组 `LifeGroup`、卦组 `TrigramGroup`、游星 `YouXing`、吉凶 `Rating`、匹配 `Match` |
 
-需要符号化的域包以 `symbols.go` 集中定义该域所有符号：**类型 + 常量 + 名字表 + `Encode`/`Decode`**（目前 ganzhi/tianwen/bazi/qimen/liuyao/ziwei 六包有；其它包无封闭命理符号集）。同名概念跨包共用（如 `GongIndex`/`StarIndex`），不重复造。
+符号在归属域定义、跨包复用（如 `GongIndex`/`Trigram`/`ganzhi.YinYang`），不重复造。**所有命运算子都在符号空间内计算**——全局扫描确认零中文字符串参与运算；文本只在输出边界 decode 出来（string 底层符号直接输出文本，bool 符号经 MarshalJSON）。
 
 ## 3. 双向映射（唯一边界）
 
