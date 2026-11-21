@@ -74,10 +74,8 @@ func ComputeLiuNian(ctx FlowContext, liuNian int) LiuNian {
 	liuYearGan, liuYearZhi := yearGanZhi(liuNian)
 	minorStars := liuNianMinors(ganzhi.Zhu{Gan: liuYearGan, Zhi: liuYearZhi}, ctx.ShiZhi)
 
-	// 流年命宫 = 流年支所在本命宫（地支坐标）
-	mingZhi := ctx.MingGongZhi
-	flowMingZhiIdx := zhiToZhiIdx(liuYearZhi)
-	flowMing := zhiIdxToPalaceIndex(zhiToZhiIdx(mingZhi), flowMingZhiIdx)
+	// 流年命宫 = 流年支所在本命宫（四层统一纯函数）
+	flowMing := flowMingGongIndex(ctx.MingGongZhi, liuYearZhi)
 
 	// 流年盘：流耀地支 → 安星索引（iztro 简称：流魁/流钺/流昌/流曲/流禄/流羊/流陀/流马/流鸾/流喜）
 	flowShort := map[StarIndex]string{
@@ -103,6 +101,7 @@ func ComputeLiuNian(ctx FlowContext, liuNian int) LiuNian {
 	return LiuNian{
 		MingGong:   flowMing,
 		LiuMingZhi: flowMingZhi(yearlyIndex),
+		Gan:        liuYearGan,
 		Zhi:        liuYearZhi,
 		SiHua:      transformations,
 		GongWei:    FlowPalaces,

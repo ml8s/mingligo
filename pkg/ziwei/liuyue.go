@@ -32,6 +32,7 @@ type LiuYueJie struct {
 type LiuYue struct {
 	MingGong   GongIndex            `json:"ming_gong"`
 	LiuMingZhi Zhi                  `json:"liu_ming_zhi"`
+	Gan        Gan                  `json:"period_gan"`
 	Zhi        Zhi                  `json:"zhi"`
 	SiHua      []FlowTransformation `json:"si_hua"`
 	GongWei    [12]FlowPalace       `json:"gong_wei"`
@@ -97,8 +98,9 @@ func computeLiuYueWithPeriod(ctx FlowContext, target tianwen.LunarDate, period F
 		starByAnXingIdx[anXingIdx] = append(starByAnXingIdx[anXingIdx], flowStarOf(sid, name))
 	}
 	return LiuYue{
-		MingGong:   0,
+		MingGong:   flowMingGongIndex(ctx.MingGongZhi, flowMingZhi(mi)),
 		LiuMingZhi: flowMingZhi(mi),
+		Gan:        monthGan,
 		Zhi:        yueZhi,
 		SiHua:      newFlowTransformations(computeSiHua(monthGan), ctx.SiHuaPalaces),
 		GongWei:    buildFlowPalaces(mi, monthGan, starByAnXingIdx),
@@ -216,6 +218,7 @@ type LiuRiJie struct {
 type LiuRi struct {
 	MingGong   GongIndex            `json:"ming_gong"`
 	LiuMingZhi Zhi                  `json:"liu_ming_zhi"`
+	Gan        Gan                  `json:"period_gan"`
 	Zhi        Zhi                  `json:"zhi"`
 	SiHua      []FlowTransformation `json:"si_hua"`
 	GongWei    [12]FlowPalace       `json:"gong_wei"`
@@ -280,8 +283,9 @@ func ComputeLiuRiWith(ctx FlowContext, target tianwen.LunarDate, p tianwen.Lunar
 		starByAnXingIdx[anXingIdx] = append(starByAnXingIdx[anXingIdx], flowStarOf(sid, name))
 	}
 	return LiuRi{
-		MingGong:   0,
+		MingGong:   flowMingGongIndex(ctx.MingGongZhi, flowMingZhi(di)),
 		LiuMingZhi: flowMingZhi(di),
+		Gan:        riGan,
 		Zhi:        riZhi,
 		SiHua:      newFlowTransformations(computeSiHua(riGan), ctx.SiHuaPalaces),
 		GongWei:    buildFlowPalaces(di, riGan, starByAnXingIdx),
@@ -302,6 +306,7 @@ type LiuShiChen struct {
 type LiuShi struct {
 	MingGong   GongIndex            `json:"ming_gong"`
 	LiuMingZhi Zhi                  `json:"liu_ming_zhi"`
+	Gan        Gan                  `json:"period_gan"`
 	Zhi        Zhi                  `json:"zhi"`
 	SiHua      []FlowTransformation `json:"si_hua"`
 	GongWei    [12]FlowPalace       `json:"gong_wei"`
@@ -371,8 +376,9 @@ func ComputeLiuShiWith(ctx FlowContext, target tianwen.LunarDate, shiZhi Zhi, p 
 		starByAnXingIdx[anXingIdx] = append(starByAnXingIdx[anXingIdx], flowStarOf(sid, name))
 	}
 	return LiuShi{
-		MingGong:   0,
+		MingGong:   flowMingGongIndex(ctx.MingGongZhi, flowMingZhi(hi)),
 		LiuMingZhi: flowMingZhi(hi),
+		Gan:        shiGan,
 		Zhi:        shiZhi,
 		SiHua:      newFlowTransformations(computeSiHua(shiGan), ctx.SiHuaPalaces),
 		GongWei:    buildFlowPalaces(hi, shiGan, starByAnXingIdx),

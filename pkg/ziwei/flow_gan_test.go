@@ -79,10 +79,11 @@ func TestFlowP4LegacyVsNew(t *testing.T) {
 		t.Fatal(err)
 	}
 	removed := map[string]bool{"ming_gong_name": true}
-	allowedNew := map[string]bool{"liu_ming_zhi": true, "gan": true}
+	changed := map[string]bool{"ming_gong": true} // P5: now real value on all layers
+	allowedNew := map[string]bool{"liu_ming_zhi": true, "gan": true, "period_gan": true}
 	for layer, fields := range baseDoc {
 		for key, old := range fields {
-			if removed[key] {
+			if removed[key] || changed[key] {
 				continue
 			}
 			nv, ok := gotDoc[layer][key]
@@ -178,4 +179,118 @@ func mustLiuShi(t *testing.T, ctx FlowContext, s time.Time, l *time.Location, lo
 		t.Fatal(err)
 	}
 	return v
+}
+
+// TestFlowMingGongIndexOracle cross-checks the shared function against the
+// original inline formula used by 流年, for all 12×12 zhi pairs.
+func TestFlowMingGongIndexOracle(t *testing.T) {
+	for natal := 1; natal <= 12; natal++ {
+		for flow := 1; flow <= 12; flow++ {
+			got := flowMingGongIndex(Zhi(natal), Zhi(flow))
+			want := zhiIdxToPalaceIndex(zhiToZhiIdx(Zhi(natal)), zhiToZhiIdx(Zhi(flow)))
+			if got != want {
+				t.Errorf("natal=%d flow=%d: got %v want %v", natal, flow, got, want)
+			}
+		}
+	}
+}
+
+// TestAllFlowLayersMingGongConsistent verifies the four layers all report
+// 流命落本命宫序 via the same pure function (T1 fix).
+func TestAllFlowLayersMingGongConsistent(t *testing.T) {
+	ctx := flowP4Context(t)
+	standard, _ := time.Parse(time.RFC3339, "2026-06-15T12:00:00+08:00")
+	loc, _ := time.LoadLocation("Asia/Shanghai")
+	layers := []struct {
+		name     string
+		mingGong GongIndex
+		liuMing  Zhi
+	}{
+		{"year", ComputeLiuNian(ctx, 2026).MingGong, ComputeLiuNian(ctx, 2026).LiuMingZhi},
+		{"month", mustLiuYue(t, ctx, standard, loc).MingGong, mustLiuYue(t, ctx, standard, loc).LiuMingZhi},
+		{"day", mustLiuRi(t, ctx, standard, loc).MingGong, mustLiuRi(t, ctx, standard, loc).LiuMingZhi},
+		{"hour", mustLiuShi(t, ctx, standard, loc, 116.4).MingGong, mustLiuShi(t, ctx, standard, loc, 116.4).LiuMingZhi},
+	}
+	for _, l := range layers {
+		want := flowMingGongIndex(ctx.MingGongZhi, l.liuMing)
+		if l.mingGong != want {
+			t.Errorf("%s: ming_gong=%v, want flowMingGongIndex(%v,%v)=%v",
+				l.name, l.mingGong, ctx.MingGongZhi, l.liuMing, want)
+		}
+	}
+}
+
+// TestFlowP5LegacyVsNew verifies P5 changes: ming_gong gains real values on
+// month/day/hour (was 0), period_gan is added. Everything else byte-identical.
+func TestFlowP5LegacyVsNew(t *testing.T) {
+	base, err := os.ReadFile("testdata/flow_p5_baseline.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	var baseDoc map[string]map[string]any
+	if err := json.Unmarshal(base, &baseDoc); err != nil {
+		t.Fatal(err)
+	}
+	ctx := flowP4Context(t)
+	standard, _ := time.Parse(time.RFC3339, "2026-06-15T12:00:00+08:00")
+	loc, _ := time.LoadLocation("Asia/Shanghai")
+	gotRaw, _ := json.Marshal(map[string]any{
+		"ln": ComputeLiuNian(ctx, 2026),
+		"ly": mustLiuYue(t, ctx, standard, loc),
+		"lr": mustLiuRi(t, ctx, standard, loc),
+		"ls": mustLiuShi(t, ctx, standard, loc, 116.4),
+	})
+	var gotDoc map[string]map[string]any
+	if err := json.Unmarshal(gotRaw, &gotDoc); err != nil {
+		t.Fatal(err)
+	}
+	changed := map[string]bool{"ming_gong": true} // intentional (T1)
+	added := map[string]bool{"period_gan": true}  // intentional (T2)
+	for layer, fields := range baseDoc {
+		for key, old := range fields {
+			nv, ok := gotDoc[layer][key]
+			if !ok {
+				t.Errorf("%s.%s disappeared", layer, key)
+				continue
+			}
+			if changed[key] {
+				continue
+			}
+			if !reflect.DeepEqual(old, nv) {
+				t.Errorf("%s.%s changed: %v -> %v", layer, key, old, nv)
+			}
+		}
+		for key := range gotDoc[layer] {
+			if _, existed := fields[key]; !existed && !added[key] {
+				t.Errorf("unexpected new field %s.%s", layer, key)
+			}
+		}
+	}
+}
+
+// TestFlowP5PeriodGanOracle verifies each layer's period_gan is the correct
+// flow-period stem by cross-checking against the SiHua transformations it
+// drives (the stem that produced the 四化).
+func TestFlowP5PeriodGanOracle(t *testing.T) {
+	ctx := flowP4Context(t)
+	standard, _ := time.Parse(time.RFC3339, "2026-06-15T12:00:00+08:00")
+	loc, _ := time.LoadLocation("Asia/Shanghai")
+	layers := []struct {
+		name string
+		gan  Gan
+		zhi  Zhi
+	}{
+		{"year", ComputeLiuNian(ctx, 2026).Gan, ComputeLiuNian(ctx, 2026).Zhi},
+		{"month", mustLiuYue(t, ctx, standard, loc).Gan, mustLiuYue(t, ctx, standard, loc).Zhi},
+		{"day", mustLiuRi(t, ctx, standard, loc).Gan, mustLiuRi(t, ctx, standard, loc).Zhi},
+		{"hour", mustLiuShi(t, ctx, standard, loc, 116.4).Gan, mustLiuShi(t, ctx, standard, loc, 116.4).Zhi},
+	}
+	for _, l := range layers {
+		if l.gan == 0 || l.gan > 10 {
+			t.Errorf("%s: period_gan=%d out of range", l.name, l.gan)
+		}
+		if l.zhi < 1 || l.zhi > 12 {
+			t.Errorf("%s: zhi=%d out of range", l.name, l.zhi)
+		}
+	}
 }

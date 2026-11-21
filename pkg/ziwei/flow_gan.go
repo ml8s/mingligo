@@ -17,3 +17,10 @@ func flowPalaceGan(flowGan ganzhi.Gan, zhiIdx int) ganzhi.Gan {
 func flowMingZhi(liuPanIdx int) Zhi {
 	return zhiIdxToZhi(anXingIdxToZhiIdx(liuPanIdx))
 }
+
+// flowMingGongIndex returns the natal palace index where the flow chart's
+// 命宫 falls. Pure; shared by all four flow layers so "流命落本命何宫" is
+// computed by one authority rather than duplicated per layer.
+func flowMingGongIndex(natalMingZhi, liuMingZhi Zhi) GongIndex {
+	return zhiIdxToPalaceIndex(zhiToZhiIdx(natalMingZhi), zhiToZhiIdx(liuMingZhi))
+}

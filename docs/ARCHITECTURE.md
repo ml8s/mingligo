@@ -86,7 +86,9 @@ decode: 符号 → 文本   （系统解码出人类语言；输出边界）
 - **日主关系**（八字）：`sheng_ri`/`ke_ri` 与十神，经纯函数 `flowDayMasterFacts` 统一计算，四层口径一致
 - **上层交互**：与本命/大运/更高流层的**干支两层**关系（`zhuInteraction` / 紫微四化落宫），经纯函数 `analyzeFlowAgainstRef` / `flowPalaceGan` 统一计算
 
-参照柱由 `resolveFlowRefs` 单一解析（大运/流年复用 `liuRiDayunLiunian` 的立春年权威），避免在每层重复实现时间投影。紫微流宫宫干由五虎遁 `flowPalaceGan` 推出；`liu_ming_zhi` 与 `is_liu_ming` 宫互证。`si_hua` 保留本命宫序坐标（消费端依赖），由 `liu_ming_zhi` 提供地支坐标对照。
+参照柱由 `resolveFlowRefs` 单一解析（大运/流年复用 `liuRiDayunLiunian` 的立春年权威），避免在每层重复实现时间投影。紫微流宫宫干由五虎遁 `flowPalaceGan` 推出；`liu_ming_zhi` 与 `is_liu_ming` 宫互证。
+
+**同名字段分属不同子域**：流期干支用 `period_gan`/`zhi`（周期层），流宫干支用 `gong_wei[].gan`/`zhi`（宫位层）——两者同名不同义，以字段名和子域区分，避免消费者混淆。`si_hua[].gong` 是本命宫序坐标，`gong_wei[].name` 是流盘宫名（以流命为命宫），二者同型不同坐标系，在 jsonschema 中明确标注。`ming_gong` 四层统一由 `flowMingGongIndex`（流命落本命宫序）计算，消除月/日/时恒 0 的零信息。
 
 正确性由分层验证保证：纯函数穷举/oracle → 逐阶段差分不变性基线（原字段逐字节相同，只放行白名单变更）→ 接线 oracle → golden 人工审查 → make gate。
 
