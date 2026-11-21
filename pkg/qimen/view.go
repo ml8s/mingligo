@@ -13,15 +13,21 @@ type InteractionsView struct {
 	XingGongWuXing  []XingGongWuXing  `json:"xing_gong_wuxing,omitempty" jsonschema:"星宫五行关系。"`
 }
 
-// PalaceFactsView groups per-palace属性与静态关系事实.
+// PalaceFactsView groups per-palace facts. It stays one object for adapter
+// compatibility; the two layers are distinguished by jsonschema:
+//   - 静态字典 (不随本盘变化): gong_profiles/gong_relations/men_ji_xiong/xing_ji_xiong
+//   - 本盘派生 (换局即变): gong_wang_shuai/men_po/men_zhi
+//
+// 注意 gong_wang_shuai 与 StemsView.DayStemPalace.WangShuai 是同一旺衰事实的
+// 宫载体与干载体两种表达，口径同源。
 type PalaceFactsView struct {
-	GongProfiles  [9]GongProfile  `json:"gong_profiles" jsonschema:"九宫固有事实（方位/人物/范围/内外盘）。"`
-	GongWangShuai []GongWangShuai `json:"gong_wang_shuai" jsonschema:"九宫旺相休囚死。"`
-	GongRelations []GongRelation  `json:"gong_relations" jsonschema:"九宫五行关系矩阵。"`
-	MenJiXiong    []MenJiXiong    `json:"men_ji_xiong" jsonschema:"八门固有吉凶。"`
-	XingJiXiong   []XingJiXiong   `json:"xing_ji_xiong" jsonschema:"九星固有吉凶。"`
-	MenPo         []GongIndex     `json:"men_po,omitempty" jsonschema:"门迫宫位。"`
-	MenZhi        []GongIndex     `json:"men_zhi,omitempty" jsonschema:"门制宫位。"`
+	GongProfiles  [9]GongProfile  `json:"gong_profiles" jsonschema:"九宫固有事实-静态字典（方位/人物/范围/内外盘）。"`
+	GongWangShuai []GongWangShuai `json:"gong_wang_shuai" jsonschema:"九宫旺相休囚死-本盘派生（按当前月令）。"`
+	GongRelations []GongRelation  `json:"gong_relations" jsonschema:"九宫五行关系矩阵-静态字典。"`
+	MenJiXiong    []MenJiXiong    `json:"men_ji_xiong" jsonschema:"八门固有吉凶-静态字典。"`
+	XingJiXiong   []XingJiXiong   `json:"xing_ji_xiong" jsonschema:"九星固有吉凶-静态字典。"`
+	MenPo         []GongIndex     `json:"men_po,omitempty" jsonschema:"门迫宫位-本盘派生。"`
+	MenZhi        []GongIndex     `json:"men_zhi,omitempty" jsonschema:"门制宫位-本盘派生。"`
 }
 
 // StemsView groups 干落宫与日时关系 facts.
