@@ -1,0 +1,1111 @@
+{
+  "nian": {
+    "gan": "庚",
+    "zhi": "午",
+    "ri_zhu_trend": "长生",
+    "xun": "甲子旬",
+    "xun_kong": "戌亥",
+    "na_yin": "路旁土",
+    "cang_gan": {
+      "main": "丁",
+      "mid": "己",
+      "minor": null
+    },
+    "shi_shens": [
+      {
+        "shi_shen": "正官",
+        "name": "庚",
+        "source": "gan",
+        "gan": "庚"
+      },
+      {
+        "shi_shen": "食神",
+        "name": "丁",
+        "source": "main_qi",
+        "gan": "丁"
+      },
+      {
+        "shi_shen": "偏财",
+        "name": "己",
+        "source": "mid_qi",
+        "gan": "己"
+      }
+    ],
+    "self_sitting": "沐浴",
+    "shen_sha": [
+      {
+        "name": "太极贵人",
+        "category": "吉",
+        "description": "主聪慧好学，宜研哲理玄学"
+      },
+      {
+        "name": "德秀贵人",
+        "category": "吉",
+        "description": "主禀气清粹，逢凶化吉"
+      },
+      {
+        "name": "天厨贵人",
+        "category": "吉",
+        "description": "主食禄福泽"
+      },
+      {
+        "name": "文昌",
+        "category": "吉",
+        "description": "主学业、文书、才华"
+      },
+      {
+        "name": "月德",
+        "category": "吉",
+        "description": "月德贵人，主月令之德，人缘佳"
+      },
+      {
+        "name": "桃花",
+        "category": "中性",
+        "description": "主异性缘佳，浪漫多情"
+      },
+      {
+        "name": "将星",
+        "category": "吉",
+        "description": "主领导才能，有权威"
+      }
+    ],
+    "is_void": true,
+    "is_self_he": false,
+    "is_kui_gang": false,
+    "self_he_name": "无自合"
+  },
+  "yue": {
+    "gan": "辛",
+    "zhi": "巳",
+    "ri_zhu_trend": "沐浴",
+    "xun": "甲戌旬",
+    "xun_kong": "申酉",
+    "na_yin": "白蜡金",
+    "cang_gan": {
+      "main": "丙",
+      "mid": "庚",
+      "minor": "戊"
+    },
+    "shi_shens": [
+      {
+        "shi_shen": "七杀",
+        "name": "辛",
+        "source": "gan",
+        "gan": "辛"
+      },
+      {
+        "shi_shen": "伤官",
+        "name": "丙",
+        "source": "main_qi",
+        "gan": "丙"
+      },
+      {
+        "shi_shen": "正官",
+        "name": "庚",
+        "source": "mid_qi",
+        "gan": "庚"
+      },
+      {
+        "shi_shen": "正财",
+        "name": "戊",
+        "source": "minor_qi",
+        "gan": "戊"
+      }
+    ],
+    "self_sitting": "死",
+    "shen_sha": [
+      {
+        "name": "德秀贵人",
+        "category": "吉",
+        "description": "主禀气清粹，逢凶化吉"
+      },
+      {
+        "name": "亡神",
+        "category": "凶",
+        "description": "主心机深虑，事多暗耗"
+      },
+      {
+        "name": "天德",
+        "category": "吉",
+        "description": "天德贵人，主福泽深厚，化险为夷"
+      },
+      {
+        "name": "金舆",
+        "category": "吉",
+        "description": "主财运、车辆、出行顺利"
+      },
+      {
+        "name": "地网",
+        "category": "凶",
+        "description": "主运势阻滞，有志难伸"
+      }
+    ],
+    "is_void": false,
+    "is_self_he": true,
+    "is_kui_gang": false,
+    "self_he_name": "辛丙合"
+  },
+  "ri": {
+    "gan": "乙",
+    "zhi": "酉",
+    "ri_zhu_trend": "绝",
+    "xun": "甲申旬",
+    "xun_kong": "午未",
+    "na_yin": "泉中水",
+    "cang_gan": {
+      "main": "辛",
+      "mid": null,
+      "minor": null
+    },
+    "shi_shens": [
+      {
+        "shi_shen": "比肩",
+        "name": "乙",
+        "source": "gan",
+        "gan": "乙"
+      },
+      {
+        "shi_shen": "七杀",
+        "name": "辛",
+        "source": "main_qi",
+        "gan": "辛"
+      }
+    ],
+    "self_sitting": "绝",
+    "shen_sha": [
+      {
+        "name": "德秀贵人",
+        "category": "吉",
+        "description": "主禀气清粹，逢凶化吉"
+      },
+      {
+        "name": "将星",
+        "category": "吉",
+        "description": "主领导才能，有权威"
+      },
+      {
+        "name": "红鸾",
+        "category": "吉",
+        "description": "主婚喜、恋爱、添丁"
+      },
+      {
+        "name": "绞神",
+        "category": "凶",
+        "description": "主受困被缚，身不由己"
+      }
+    ],
+    "is_void": false,
+    "is_self_he": false,
+    "is_kui_gang": false,
+    "self_he_name": "无自合"
+  },
+  "shi": {
+    "gan": "甲",
+    "zhi": "申",
+    "ri_zhu_trend": "胎",
+    "xun": "甲申旬",
+    "xun_kong": "午未",
+    "na_yin": "泉中水",
+    "cang_gan": {
+      "main": "庚",
+      "mid": "壬",
+      "minor": "戊"
+    },
+    "shi_shens": [
+      {
+        "shi_shen": "劫财",
+        "name": "甲",
+        "source": "gan",
+        "gan": "甲"
+      },
+      {
+        "shi_shen": "正官",
+        "name": "庚",
+        "source": "main_qi",
+        "gan": "庚"
+      },
+      {
+        "shi_shen": "正印",
+        "name": "壬",
+        "source": "mid_qi",
+        "gan": "壬"
+      },
+      {
+        "shi_shen": "正财",
+        "name": "戊",
+        "source": "minor_qi",
+        "gan": "戊"
+      }
+    ],
+    "self_sitting": "绝",
+    "shen_sha": [
+      {
+        "name": "天乙贵人",
+        "category": "吉",
+        "description": "主贵人相助，逢凶化吉"
+      },
+      {
+        "name": "飞刃",
+        "category": "凶",
+        "description": "羊刃冲位，主动荡急变"
+      },
+      {
+        "name": "驿马",
+        "category": "中性",
+        "description": "主动荡、奔波、迁移"
+      },
+      {
+        "name": "孤辰",
+        "category": "凶",
+        "description": "主性格孤僻，晚婚或婚姻不顺"
+      }
+    ],
+    "is_void": false,
+    "is_self_he": false,
+    "is_kui_gang": false,
+    "self_he_name": "无自合"
+  },
+  "da_yun": {
+    "start_date": "1995-03-30",
+    "start_year_after": 4,
+    "start_month_after": 10,
+    "start_day_after": 10,
+    "direction": "逆排",
+    "steps": [
+      {
+        "gan": "庚",
+        "zhi": "辰",
+        "start_date": "1995-03-30",
+        "end_date": "2005-03-29",
+        "start_year": 1995,
+        "end_year": 2005,
+        "name": "庚辰",
+        "wuxing": "金",
+        "shi_shen": "正官运",
+        "rooted": true,
+        "root_refs": [
+          {
+            "source": "natal_hidden_stem",
+            "zhu": "yue",
+            "gan": "庚",
+            "zhi": "巳"
+          },
+          {
+            "source": "natal_hidden_stem",
+            "zhu": "ri",
+            "gan": "辛",
+            "zhi": "酉"
+          },
+          {
+            "source": "natal_hidden_stem",
+            "zhu": "shi",
+            "gan": "庚",
+            "zhi": "申"
+          }
+        ]
+      },
+      {
+        "gan": "己",
+        "zhi": "卯",
+        "start_date": "2005-03-30",
+        "end_date": "2015-03-29",
+        "start_year": 2005,
+        "end_year": 2015,
+        "name": "己卯",
+        "wuxing": "土",
+        "shi_shen": "偏财运",
+        "rooted": true,
+        "root_refs": [
+          {
+            "source": "natal_hidden_stem",
+            "zhu": "nian",
+            "gan": "己",
+            "zhi": "午"
+          },
+          {
+            "source": "natal_hidden_stem",
+            "zhu": "yue",
+            "gan": "戊",
+            "zhi": "巳"
+          },
+          {
+            "source": "natal_hidden_stem",
+            "zhu": "shi",
+            "gan": "戊",
+            "zhi": "申"
+          }
+        ]
+      },
+      {
+        "gan": "戊",
+        "zhi": "寅",
+        "start_date": "2015-03-30",
+        "end_date": "2025-03-29",
+        "start_year": 2015,
+        "end_year": 2025,
+        "name": "戊寅",
+        "wuxing": "土",
+        "shi_shen": "正财运",
+        "rooted": true,
+        "root_refs": [
+          {
+            "source": "natal_hidden_stem",
+            "zhu": "nian",
+            "gan": "己",
+            "zhi": "午"
+          },
+          {
+            "source": "natal_hidden_stem",
+            "zhu": "yue",
+            "gan": "戊",
+            "zhi": "巳"
+          },
+          {
+            "source": "natal_hidden_stem",
+            "zhu": "shi",
+            "gan": "戊",
+            "zhi": "申"
+          }
+        ]
+      },
+      {
+        "gan": "丁",
+        "zhi": "丑",
+        "start_date": "2025-03-30",
+        "end_date": "2035-03-29",
+        "start_year": 2025,
+        "end_year": 2035,
+        "name": "丁丑",
+        "wuxing": "火",
+        "shi_shen": "食神运",
+        "rooted": true,
+        "root_refs": [
+          {
+            "source": "natal_hidden_stem",
+            "zhu": "nian",
+            "gan": "丁",
+            "zhi": "午"
+          },
+          {
+            "source": "natal_hidden_stem",
+            "zhu": "yue",
+            "gan": "丙",
+            "zhi": "巳"
+          }
+        ]
+      },
+      {
+        "gan": "丙",
+        "zhi": "子",
+        "start_date": "2035-03-30",
+        "end_date": "2045-03-29",
+        "start_year": 2035,
+        "end_year": 2045,
+        "name": "丙子",
+        "wuxing": "火",
+        "shi_shen": "伤官运",
+        "rooted": true,
+        "root_refs": [
+          {
+            "source": "natal_hidden_stem",
+            "zhu": "nian",
+            "gan": "丁",
+            "zhi": "午"
+          },
+          {
+            "source": "natal_hidden_stem",
+            "zhu": "yue",
+            "gan": "丙",
+            "zhi": "巳"
+          }
+        ]
+      },
+      {
+        "gan": "乙",
+        "zhi": "亥",
+        "start_date": "2045-03-30",
+        "end_date": "2055-03-29",
+        "start_year": 2045,
+        "end_year": 2055,
+        "name": "乙亥",
+        "wuxing": "木",
+        "shi_shen": "比肩运",
+        "rooted": false
+      },
+      {
+        "gan": "甲",
+        "zhi": "戌",
+        "start_date": "2055-03-30",
+        "end_date": "2065-03-29",
+        "start_year": 2055,
+        "end_year": 2065,
+        "name": "甲戌",
+        "wuxing": "木",
+        "shi_shen": "劫财运",
+        "rooted": false
+      },
+      {
+        "gan": "癸",
+        "zhi": "酉",
+        "start_date": "2065-03-30",
+        "end_date": "2075-03-29",
+        "start_year": 2065,
+        "end_year": 2075,
+        "name": "癸酉",
+        "wuxing": "水",
+        "shi_shen": "偏印运",
+        "rooted": true,
+        "root_refs": [
+          {
+            "source": "natal_hidden_stem",
+            "zhu": "shi",
+            "gan": "壬",
+            "zhi": "申"
+          }
+        ]
+      },
+      {
+        "gan": "壬",
+        "zhi": "申",
+        "start_date": "2075-03-30",
+        "end_date": "2085-03-29",
+        "start_year": 2075,
+        "end_year": 2085,
+        "name": "壬申",
+        "wuxing": "水",
+        "shi_shen": "正印运",
+        "rooted": true,
+        "root_refs": [
+          {
+            "source": "natal_hidden_stem",
+            "zhu": "shi",
+            "gan": "壬",
+            "zhi": "申"
+          }
+        ]
+      }
+    ]
+  },
+  "birth_year": 1990,
+  "fu_yi": {
+    "wuxing_count": {
+      "土": 3,
+      "木": 2,
+      "水": 1,
+      "火": 2,
+      "金": 5
+    },
+    "wang_shuai": {
+      "土": "相",
+      "木": "休",
+      "水": "囚",
+      "火": "旺",
+      "金": "死"
+    },
+    "yong": "水",
+    "xi": "木",
+    "ji": "金",
+    "qiang_ruo": "身弱",
+    "fu_yi_model_id": "support_control_with_day_master_strength",
+    "basis": {
+      "ri_gan_gen": "none",
+      "yin_bi_shu_liang": 1,
+      "ri_gan_tong_gen": [],
+      "guan_xi_links": [
+        {
+          "id": "gan_chong:乙辛@yue:辛|ri:乙",
+          "targets": [
+            "day_master"
+          ]
+        },
+        {
+          "id": "gan_chong_candidate:甲庚@nian:庚|shi:甲",
+          "targets": [
+            "yin_bi"
+          ]
+        },
+        {
+          "id": "gan_he_candidate:乙庚@nian:庚|ri:乙",
+          "targets": [
+            "day_master"
+          ]
+        },
+        {
+          "id": "san_he_partial:巳酉@yue:巳|ri:酉",
+          "targets": [
+            "day_branch"
+          ]
+        }
+      ]
+    }
+  },
+  "tiao_hou": {
+    "primary_wuxing": "水",
+    "secondary_wuxing": "无辅调候",
+    "season": "夏",
+    "tiao_hou_model_id": "qiongtong_primary_secondary_table",
+    "primary": {
+      "gan": "癸",
+      "transparent": false,
+      "hidden": false,
+      "occurrences": [],
+      "guan_xi_links": []
+    },
+    "secondary": {
+      "guan_xi_links": null,
+      "hidden": null,
+      "occurrences": null,
+      "gan": null,
+      "transparent": null
+    }
+  },
+  "ge_ju": {
+    "ge_ju": "正官格",
+    "ge_shen_tou": true,
+    "usage": "顺用",
+    "ge_ju_shen": "庚",
+    "ge_ju_shen_shi_shen": "正官",
+    "ge_ju_shen_source": "mid_qi",
+    "structure": {
+      "ge_ju_shen": {
+        "wuxing": "金",
+        "transparent_pillars": [
+          "nian"
+        ],
+        "roots": [
+          {
+            "zhu": "yue",
+            "zhi": "巳",
+            "gan": "庚",
+            "source": "mid_qi"
+          },
+          {
+            "zhu": "ri",
+            "zhi": "酉",
+            "gan": "辛",
+            "source": "main_qi"
+          },
+          {
+            "zhu": "shi",
+            "zhi": "申",
+            "gan": "庚",
+            "source": "main_qi"
+          }
+        ],
+        "season": "死",
+        "timely": false,
+        "strength": "strong"
+      },
+      "controller": {
+        "wuxing": "火",
+        "transparent_pillars": [],
+        "roots": [
+          {
+            "zhu": "nian",
+            "zhi": "午",
+            "gan": "丁",
+            "source": "main_qi"
+          },
+          {
+            "zhu": "yue",
+            "zhi": "巳",
+            "gan": "丙",
+            "source": "main_qi"
+          }
+        ],
+        "season": "旺",
+        "timely": true,
+        "strength": "strong"
+      },
+      "generator": {
+        "wuxing": "土",
+        "transparent_pillars": [],
+        "roots": [
+          {
+            "zhu": "nian",
+            "zhi": "午",
+            "gan": "己",
+            "source": "mid_qi"
+          },
+          {
+            "zhu": "yue",
+            "zhi": "巳",
+            "gan": "戊",
+            "source": "minor_qi"
+          },
+          {
+            "zhu": "shi",
+            "zhi": "申",
+            "gan": "戊",
+            "source": "minor_qi"
+          }
+        ],
+        "season": "相",
+        "timely": true,
+        "strength": "strong"
+      },
+      "guan_xi_links": [
+        {
+          "id": "gan_chong:乙辛@yue:辛|ri:乙",
+          "targets": [
+            "pattern"
+          ]
+        },
+        {
+          "id": "gan_chong_candidate:甲庚@nian:庚|shi:甲",
+          "targets": [
+            "pattern"
+          ]
+        },
+        {
+          "id": "gan_he_candidate:乙庚@nian:庚|ri:乙",
+          "targets": [
+            "pattern"
+          ]
+        },
+        {
+          "id": "liu_po:申巳@yue:巳|shi:申",
+          "targets": [
+            "controller",
+            "generator",
+            "pattern"
+          ]
+        },
+        {
+          "id": "liu_xing:巳申@yue:巳|shi:申",
+          "targets": [
+            "controller",
+            "generator",
+            "pattern"
+          ]
+        },
+        {
+          "id": "san_he_partial:巳酉@yue:巳|ri:酉",
+          "targets": [
+            "controller",
+            "generator",
+            "pattern"
+          ]
+        },
+        {
+          "id": "zhi_liu_he:巳申@yue:巳|shi:申",
+          "targets": [
+            "controller",
+            "generator",
+            "pattern"
+          ]
+        }
+      ]
+    }
+  },
+  "shen_sha_school": {
+    "dual_reference": [
+      "天乙贵人",
+      "桃花",
+      "驿马",
+      "华盖",
+      "将星",
+      "劫煞",
+      "灾煞"
+    ],
+    "policy": "union_of_year_and_day_references"
+  },
+  "lu_roots": [
+    {
+      "shi_shen": "正官",
+      "gan": "庚",
+      "zhi": "申"
+    },
+    {
+      "shi_shen": "七杀",
+      "gan": "辛",
+      "zhi": "酉"
+    }
+  ],
+  "guan_xi": [
+    {
+      "id": "gan_chong:乙辛@yue:辛|ri:乙",
+      "relation_kind": "gan_chong",
+      "group": "乙辛",
+      "members": [
+        {
+          "zhu": "yue",
+          "gan": "辛"
+        },
+        {
+          "zhu": "ri",
+          "gan": "乙"
+        }
+      ],
+      "position": "adjacent"
+    },
+    {
+      "id": "gan_chong_candidate:甲庚@nian:庚|shi:甲",
+      "relation_kind": "gan_chong_candidate",
+      "group": "甲庚",
+      "members": [
+        {
+          "zhu": "nian",
+          "gan": "庚"
+        },
+        {
+          "zhu": "shi",
+          "gan": "甲"
+        }
+      ],
+      "position": "remote"
+    },
+    {
+      "id": "gan_he_candidate:乙庚@nian:庚|ri:乙",
+      "relation_kind": "gan_he_candidate",
+      "group": "乙庚",
+      "members": [
+        {
+          "zhu": "nian",
+          "gan": "庚"
+        },
+        {
+          "zhu": "ri",
+          "gan": "乙"
+        }
+      ],
+      "wuxing": "金",
+      "position": "separated"
+    },
+    {
+      "id": "liu_po:申巳@yue:巳|shi:申",
+      "relation_kind": "liu_po",
+      "group": "申巳",
+      "members": [
+        {
+          "zhu": "yue",
+          "zhi": "巳"
+        },
+        {
+          "zhu": "shi",
+          "zhi": "申"
+        }
+      ]
+    },
+    {
+      "id": "liu_xing:巳申@yue:巳|shi:申",
+      "relation_kind": "liu_xing",
+      "group": "巳申",
+      "members": [
+        {
+          "zhu": "yue",
+          "zhi": "巳"
+        },
+        {
+          "zhu": "shi",
+          "zhi": "申"
+        }
+      ]
+    },
+    {
+      "id": "san_he_partial:巳酉@yue:巳|ri:酉",
+      "relation_kind": "san_he_partial",
+      "group": "巳酉",
+      "members": [
+        {
+          "zhu": "yue",
+          "zhi": "巳"
+        },
+        {
+          "zhu": "ri",
+          "zhi": "酉"
+        }
+      ],
+      "wuxing": "金"
+    },
+    {
+      "id": "zhi_liu_he:巳申@yue:巳|shi:申",
+      "relation_kind": "zhi_liu_he",
+      "group": "巳申",
+      "members": [
+        {
+          "zhu": "yue",
+          "zhi": "巳"
+        },
+        {
+          "zhu": "shi",
+          "zhi": "申"
+        }
+      ],
+      "wuxing": "水"
+    }
+  ],
+  "shi_shen_states": [
+    {
+      "shi_shen": "比肩",
+      "wuxing": "木",
+      "transparent": true,
+      "hidden": false,
+      "rooted": false,
+      "timely": false,
+      "count": 1,
+      "strength": "neutral"
+    },
+    {
+      "shi_shen": "劫财",
+      "wuxing": "木",
+      "transparent": true,
+      "hidden": false,
+      "rooted": false,
+      "timely": false,
+      "count": 1,
+      "strength": "neutral"
+    },
+    {
+      "shi_shen": "食神",
+      "wuxing": "火",
+      "transparent": false,
+      "hidden": true,
+      "rooted": true,
+      "timely": true,
+      "count": 1,
+      "strength": "strong"
+    },
+    {
+      "shi_shen": "伤官",
+      "wuxing": "火",
+      "transparent": false,
+      "hidden": true,
+      "rooted": true,
+      "timely": true,
+      "count": 1,
+      "strength": "strong"
+    },
+    {
+      "shi_shen": "偏财",
+      "wuxing": "土",
+      "transparent": false,
+      "hidden": true,
+      "rooted": true,
+      "timely": true,
+      "count": 1,
+      "strength": "strong"
+    },
+    {
+      "shi_shen": "正财",
+      "wuxing": "土",
+      "transparent": false,
+      "hidden": true,
+      "rooted": true,
+      "timely": true,
+      "count": 2,
+      "strength": "strong"
+    },
+    {
+      "shi_shen": "七杀",
+      "wuxing": "金",
+      "transparent": true,
+      "hidden": true,
+      "rooted": true,
+      "timely": false,
+      "count": 2,
+      "strength": "strong"
+    },
+    {
+      "shi_shen": "正官",
+      "wuxing": "金",
+      "transparent": true,
+      "hidden": true,
+      "rooted": true,
+      "timely": false,
+      "count": 3,
+      "strength": "strong"
+    },
+    {
+      "shi_shen": "正印",
+      "wuxing": "水",
+      "transparent": false,
+      "hidden": true,
+      "rooted": true,
+      "timely": false,
+      "count": 1,
+      "strength": "neutral"
+    }
+  ],
+  "wuxing_states": [
+    {
+      "wuxing": "木",
+      "season": "休",
+      "season_strength": "weak",
+      "strength": "neutral",
+      "transparent": true,
+      "rooted": false,
+      "controls": "土",
+      "controlled_by": "金",
+      "controller_strength": "weak",
+      "reasons": []
+    },
+    {
+      "wuxing": "火",
+      "season": "旺",
+      "season_strength": "strong",
+      "strength": "strong",
+      "transparent": false,
+      "rooted": true,
+      "controls": "金",
+      "controlled_by": "水",
+      "controller_strength": "weak",
+      "reasons": [
+        "timely"
+      ]
+    },
+    {
+      "wuxing": "土",
+      "season": "相",
+      "season_strength": "strong",
+      "strength": "strong",
+      "transparent": false,
+      "rooted": true,
+      "controls": "水",
+      "controlled_by": "木",
+      "controller_strength": "weak",
+      "reasons": [
+        "timely"
+      ]
+    },
+    {
+      "wuxing": "金",
+      "season": "死",
+      "season_strength": "weak",
+      "strength": "strong",
+      "transparent": true,
+      "rooted": true,
+      "controls": "木",
+      "controlled_by": "火",
+      "controller_strength": "strong",
+      "reasons": [
+        "transparent_rooted"
+      ]
+    },
+    {
+      "wuxing": "水",
+      "season": "囚",
+      "season_strength": "weak",
+      "strength": "neutral",
+      "transparent": false,
+      "rooted": true,
+      "controls": "火",
+      "controlled_by": "土",
+      "controller_strength": "strong",
+      "reasons": []
+    }
+  ],
+  "guan_sha": {
+    "qu_qing": true
+  },
+  "cai_ku": {
+    "xian": false,
+    "xing_ru_ku": false
+  },
+  "spouse_palace_state": "静",
+  "day_branch_type": "无",
+  "san_yuan": {
+    "tai_yuan": {
+      "gan": "壬",
+      "zhi": "申"
+    },
+    "ming_gong": {
+      "gan": "庚",
+      "zhi": "辰"
+    },
+    "shen_gong": {
+      "gan": "戊",
+      "zhi": "寅"
+    }
+  },
+  "tai_xi": {
+    "gan": "庚",
+    "zhi": "辰"
+  },
+  "na_yin_rel": [
+    {
+      "a": "nian",
+      "b": "yue",
+      "relation": "相生"
+    },
+    {
+      "a": "nian",
+      "b": "ri",
+      "relation": "相克"
+    },
+    {
+      "a": "nian",
+      "b": "shi",
+      "relation": "相克"
+    },
+    {
+      "a": "yue",
+      "b": "ri",
+      "relation": "相生"
+    },
+    {
+      "a": "yue",
+      "b": "shi",
+      "relation": "相生"
+    },
+    {
+      "a": "ri",
+      "b": "shi",
+      "relation": "相同"
+    }
+  ],
+  "chang_sheng": [
+    {
+      "name": "长生",
+      "index": "午"
+    },
+    {
+      "name": "沐浴",
+      "index": "巳"
+    },
+    {
+      "name": "冠带",
+      "index": "辰"
+    },
+    {
+      "name": "临官",
+      "index": "卯"
+    },
+    {
+      "name": "帝旺",
+      "index": "寅"
+    },
+    {
+      "name": "衰",
+      "index": "丑"
+    },
+    {
+      "name": "病",
+      "index": "子"
+    },
+    {
+      "name": "死",
+      "index": "亥"
+    },
+    {
+      "name": "墓",
+      "index": "戌"
+    },
+    {
+      "name": "绝",
+      "index": "酉"
+    },
+    {
+      "name": "胎",
+      "index": "申"
+    },
+    {
+      "name": "养",
+      "index": "未"
+    }
+  ],
+  "sheng_xiao": "马",
+  "ri_xun": "甲申旬",
+  "ri_xun_kong": "午未",
+  "zi_shi_rule": "晚子时(23:00-24:00)日柱不变、时柱按次日日干起（lunar 约定）"
+}
