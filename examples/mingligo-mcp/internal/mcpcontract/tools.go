@@ -67,7 +67,7 @@ func RegisterTools(server *mcp.Server) error {
 		mcp.Tool{Name: "time_now", Description: toolDescription("time_now"), InputSchema: timeNowInput, OutputSchema: timeNowOutput},
 		toolAnnotations("time_now"), TimeNow)
 
-	huangliInput, huangliOutput, err := typedSchemas[HuangliDaysInput, HuangliDaysOutput](options)
+	huangliInput, huangliOutput, err := typedSchemas[HuangliDaysInput, huangliDaysResult](options)
 	if err != nil {
 		return fmt.Errorf("huangli_days schema: %w", err)
 	}

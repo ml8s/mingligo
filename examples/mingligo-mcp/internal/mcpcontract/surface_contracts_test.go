@@ -476,7 +476,7 @@ func TestMingliContractCalls(t *testing.T) {
 	if err := registry.ValidateOutput("huangli_days", huangliRaw); err != nil {
 		t.Fatalf("huangli.days output contract: %v", err)
 	}
-	var huangliOutput HuangliDaysOutput
+	var huangliOutput huangliDaysResult
 	if err := json.Unmarshal(huangliRaw, &huangliOutput); err != nil {
 		t.Fatal(err)
 	}
@@ -484,11 +484,11 @@ func TestMingliContractCalls(t *testing.T) {
 		t.Fatalf("huangli days = %d, want 1", len(huangliOutput.Days))
 	}
 	day := huangliOutput.Days[0]
-	if day.Event != "sign" || day.EventLabel != "签约" || day.Suitability != "recommended" {
+	if day.Event.Event != "sign" || day.Event.EventLabel != "签约" || day.Event.Suitability != "recommended" {
 		t.Fatalf("huangli classification = %#v", day)
 	}
-	if len(day.ShiChen) == 0 || day.Mansion.Name == "" || day.RiZhu.Gan == "" {
-		t.Fatalf("huangli wire DTO lost nested facts: %#v", day)
+	if len(day.ShiChen) == 0 || day.Mansion.Name == "" || day.RiZhu.NaYin == "" {
+		t.Fatalf("huangli view lost nested facts: %#v", day)
 	}
 
 	bazhaiRaw, err := registry.Call(context.Background(), "bazhai_chart", mustJSON(t, BazhaiChartInput{
