@@ -36,7 +36,7 @@ func QimenChart(_ context.Context, input QimenChartInput) (QimenChartOutput, err
 		if len(input.YongShen) > 0 || input.Subject != nil {
 			return QimenChartOutput{}, fmt.Errorf("qimen.chart: jinhan_yujing does not support yong_shen or subject")
 		}
-		jinhan := qimen.ComputeJinhanChartAt(at, float64(input.Longitude))
+		jinhan := qimen.ComputeJinhanChartAt(at, float64(input.Longitude)).View()
 		return QimenChartOutput{Jinhan: &jinhan}, nil
 	}
 	var birthDate qimen.BirthDate

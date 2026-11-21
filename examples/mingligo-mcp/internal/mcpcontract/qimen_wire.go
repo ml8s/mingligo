@@ -200,7 +200,7 @@ func qimenChartOutputSchema(options *jsonschema.ForOptions) (json.RawMessage, er
 	if err != nil {
 		return nil, fmt.Errorf("standard qimen output schema: %w", err)
 	}
-	jinhan, err := outputSchemaFor[QimenJinhanChartOutput](options)
+	jinhan, err := outputSchemaFor[qimen.JinhanChartView](options)
 	if err != nil {
 		return nil, fmt.Errorf("jinhan qimen output schema: %w", err)
 	}
@@ -253,15 +253,11 @@ func qimenChartFormsSchema(options *jsonschema.ForOptions) (json.RawMessage, err
 
 // ── qimen.chart output ──
 
-// QimenJinhanChartOutput is the public wire projection of the Golden Mirror
-// chart. It intentionally keeps the current direct qimen domain JSON shape.
-type QimenJinhanChartOutput = qimen.JinhanChart
-
 // QimenChartOutput is the typed union for the two qimen schools. MarshalJSON
 // preserves the current direct standard/Jinhan wire faces.
 type QimenChartOutput struct {
-	Standard *qimen.ChartView        `json:"-"`
-	Jinhan   *QimenJinhanChartOutput `json:"-"`
+	Standard *qimen.ChartView       `json:"-"`
+	Jinhan   *qimen.JinhanChartView `json:"-"`
 }
 
 func (output QimenChartOutput) MarshalJSON() ([]byte, error) {

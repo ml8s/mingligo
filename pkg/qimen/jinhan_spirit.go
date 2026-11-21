@@ -62,3 +62,17 @@ func EncodeJinhanSpirit(name string) (JinhanSpirit, error) {
 func (s JinhanSpirit) MarshalJSON() ([]byte, error) {
 	return json.Marshal(DecodeJinhanSpiritKey(s))
 }
+
+func (s *JinhanSpirit) UnmarshalJSON(data []byte) error {
+	var key string
+	if err := json.Unmarshal(data, &key); err != nil {
+		return err
+	}
+	for candidate := JinhanSpirit(1); candidate <= 12; candidate++ {
+		if jinhanSpiritKeys[candidate] == key {
+			*s = candidate
+			return nil
+		}
+	}
+	return fmt.Errorf("unknown jinhan spirit key: %q", key)
+}

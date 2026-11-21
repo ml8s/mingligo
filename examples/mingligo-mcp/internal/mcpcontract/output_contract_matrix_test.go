@@ -1,6 +1,7 @@
 package mcpcontract
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"os"
@@ -23,6 +24,15 @@ func TestEveryMingliGoToolActualOutputMatchesSchema(t *testing.T) {
 		}
 		if err := registry.ValidateOutput(name, raw); err != nil {
 			t.Fatalf("%s output contract: %v", name, err)
+		}
+		if name != "time_now" {
+			again, err := registry.Call(context.Background(), name, mustJSON(t, input))
+			if err != nil {
+				t.Fatalf("%s determinism re-call: %v", name, err)
+			}
+			if !bytes.Equal(raw, again) {
+				t.Errorf("%s: non-deterministic output\nfirst:  %s\nsecond: %s", name, raw, again)
+			}
 		}
 		validated[name] = true
 		return raw
