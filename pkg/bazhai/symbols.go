@@ -30,12 +30,13 @@ const (
 	YouXingJueMing YouXing = "绝命"
 )
 
-// Rating is the 吉凶等级 of a 游星 (大吉/吉/平/凶/大凶). Its value IS the text.
+// Rating is the 吉凶等级 of a 游星 (大吉/吉/小吉/平/凶/大凶). Its value IS the text.
 type Rating string
 
 const (
 	RatingGreatLucky Rating = "大吉"
 	RatingLucky      Rating = "吉"
+	RatingSmallLucky Rating = "小吉"
 	RatingPlain      Rating = "平"
 	RatingBad        Rating = "凶"
 	RatingGreatBad   Rating = "大凶"
