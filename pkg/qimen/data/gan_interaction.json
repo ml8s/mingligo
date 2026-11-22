@@ -222,7 +222,7 @@
       "di_pan_gan": "癸",
       "tian_pan_gan": "庚",
       "ge_ju": "大格",
-      "meaning": "行人不至，官事不止",
+      "meaning": "行人至，官司止，生产母子俱伤，大凶",
       "auspicious": false
     },
     {
@@ -480,29 +480,29 @@
     {
       "di_pan_gan": "己",
       "tian_pan_gan": "辛",
-      "ge_ju": "游魂入墓",
-      "meaning": "易遇阴邪鬼怪作祟",
-      "auspicious": false
-    },
-    {
-      "di_pan_gan": "辛",
-      "tian_pan_gan": "己",
       "ge_ju": "入狱自刑",
       "meaning": "奴仆背主，有冤诉讼难伸",
       "auspicious": false
     },
     {
       "di_pan_gan": "辛",
+      "tian_pan_gan": "己",
+      "ge_ju": "游魂入墓",
+      "meaning": "易遇阴邪鬼怪作祟",
+      "auspicious": false
+    },
+    {
+      "di_pan_gan": "辛",
       "tian_pan_gan": "壬",
-      "ge_ju": "凶蛇入狱",
-      "meaning": "两男争女，诉讼不息，先动者失理",
+      "ge_ju": "螣蛇相缠",
+      "meaning": "纵得吉门亦不能安宁，被人欺瞒",
       "auspicious": false
     },
     {
       "di_pan_gan": "壬",
       "tian_pan_gan": "辛",
-      "ge_ju": "腾蛇相缠",
-      "meaning": "纵得吉门亦不能安宁，被人欺瞒",
+      "ge_ju": "凶蛇入狱",
+      "meaning": "两男争女，诉讼不息，先动者失理",
       "auspicious": false
     }
   ]
