@@ -100,7 +100,7 @@ func TestTableDrivenSpiritNamesAndRelations(t *testing.T) {
 	if got := xingGongRelation(StarTianRui, GongGen); got != wrSame {
 		t.Fatalf("TianRui/Gen relation = %s, want same", DecodeWuxingRelation(got))
 	}
-	if wuxingRelations[wrSame].TraditionalLabel != "旺" {
+	if wuxingRelations[wrSame].TraditionalLabel != "相" {
 		t.Fatal("same-element traditional label is missing")
 	}
 	if riShiRelations[wrRiControlsShi] == "" {

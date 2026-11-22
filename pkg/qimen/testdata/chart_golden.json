@@ -386,63 +386,63 @@
       "gong": "坎",
       "relation": "gong_controls_xing",
       "relation_name": "宫克星",
-      "traditional_label": "废"
+      "traditional_label": "囚"
     },
     {
       "xing": "天任",
       "gong": "坤",
       "relation": "same",
       "relation_name": "比和",
-      "traditional_label": "旺"
+      "traditional_label": "相"
     },
     {
       "xing": "天柱",
       "gong": "震",
       "relation": "xing_controls_gong",
       "relation_name": "星克宫",
-      "traditional_label": "囚"
+      "traditional_label": "休"
     },
     {
       "xing": "天心",
       "gong": "巽",
       "relation": "xing_controls_gong",
       "relation_name": "星克宫",
-      "traditional_label": "囚"
+      "traditional_label": "休"
     },
     {
       "xing": "天辅",
       "gong": "乾",
       "relation": "gong_controls_xing",
       "relation_name": "宫克星",
-      "traditional_label": "废"
+      "traditional_label": "囚"
     },
     {
       "xing": "天冲",
       "gong": "兑",
       "relation": "gong_controls_xing",
       "relation_name": "宫克星",
-      "traditional_label": "废"
+      "traditional_label": "囚"
     },
     {
       "xing": "天芮",
       "gong": "艮",
       "relation": "same",
       "relation_name": "比和",
-      "traditional_label": "旺"
+      "traditional_label": "相"
     },
     {
       "xing": "天禽",
       "gong": "艮",
       "relation": "same",
       "relation_name": "比和",
-      "traditional_label": "旺"
+      "traditional_label": "相"
     },
     {
       "xing": "天蓬",
       "gong": "离",
       "relation": "xing_controls_gong",
       "relation_name": "星克宫",
-      "traditional_label": "囚"
+      "traditional_label": "休"
     }
   ],
   "men_po": [
@@ -1456,7 +1456,7 @@
         "role": "大贼",
         "symbol": "天蓬",
         "gong": "离",
-        "wang_shuai": "囚",
+        "wang_shuai": "休",
         "lucky_ge_ju_names": []
       }
     ],

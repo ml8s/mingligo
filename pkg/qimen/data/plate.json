@@ -181,27 +181,27 @@
     {
       "relation": "same",
       "name": "比和",
-      "traditional_label": "旺"
+      "traditional_label": "相"
     },
     {
       "relation": "gong_generates_xing",
       "name": "宫生星",
-      "traditional_label": "相"
+      "traditional_label": "废"
     },
     {
       "relation": "xing_generates_gong",
       "name": "星生宫",
-      "traditional_label": "休"
+      "traditional_label": "旺"
     },
     {
       "relation": "xing_controls_gong",
       "name": "星克宫",
-      "traditional_label": "囚"
+      "traditional_label": "休"
     },
     {
       "relation": "gong_controls_xing",
       "name": "宫克星",
-      "traditional_label": "废"
+      "traditional_label": "囚"
     }
   ],
   "ri_shi_relations": [
