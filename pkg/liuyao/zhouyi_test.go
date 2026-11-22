@@ -48,7 +48,7 @@ func TestZhouYi_WellKnownEntries(t *testing.T) {
 		wantYao5 string
 	}{
 		{idx: 0, name: "乾", wantGua: "元亨利贞", wantYao0: "潜龙勿用", wantYao5: "亢龙有悔"},
-		{idx: 56, name: "坤", wantGua: "元亨，利牝马之贞。君子有攸往，先迷后得主，利",
+		{idx: 56, name: "坤", wantGua: "元亨，利牝马之贞。君子有攸往，先迷后得主，利西南得朋，东北丧朋。安贞吉",
 			wantYao0: "履霜，坚冰至", wantYao5: "龙战于野，其血玄黄"},
 		{idx: 47, name: "师", wantGua: "贞丈人吉，无咎", wantYao0: "师出以律，否臧凶"},
 		{idx: 63, name: "比", wantGua: "吉。原筮元永贞，无咎。不宁方来，后夫凶"},
