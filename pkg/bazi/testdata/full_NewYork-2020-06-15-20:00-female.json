@@ -542,43 +542,10 @@
   },
   "tiao_hou": {
     "primary_wuxing": "水",
-    "secondary_wuxing": "水",
+    "secondary_wuxing": "火",
     "season": "夏",
     "tiao_hou_model_id": "qiongtong_primary_secondary_table",
     "primary": {
-      "gan": "壬",
-      "transparent": true,
-      "hidden": false,
-      "occurrences": [
-        {
-          "zhu": "yue",
-          "zhi": "午",
-          "gan": "壬",
-          "source": "gan"
-        }
-      ],
-      "guan_xi_links": [
-        {
-          "id": "liu_chong:子午@nian:子|yue:午",
-          "targets": [
-            "primary"
-          ]
-        },
-        {
-          "id": "liu_hai:丑午@yue:午|ri:丑",
-          "targets": [
-            "primary"
-          ]
-        },
-        {
-          "id": "san_he_partial:午戌@yue:午|shi:戌",
-          "targets": [
-            "primary"
-          ]
-        }
-      ]
-    },
-    "secondary": {
       "gan": "癸",
       "transparent": false,
       "hidden": true,
@@ -600,34 +567,41 @@
         {
           "id": "an_he:子戌@nian:子|shi:戌",
           "targets": [
-            "secondary"
+            "primary"
           ]
         },
         {
           "id": "liu_chong:子午@nian:子|yue:午",
           "targets": [
-            "secondary"
+            "primary"
           ]
         },
         {
           "id": "liu_hai:丑午@yue:午|ri:丑",
           "targets": [
-            "secondary"
+            "primary"
           ]
         },
         {
           "id": "liu_xing:丑戌@ri:丑|shi:戌",
           "targets": [
-            "secondary"
+            "primary"
           ]
         },
         {
           "id": "zhi_liu_he:子丑@nian:子|ri:丑",
           "targets": [
-            "secondary"
+            "primary"
           ]
         }
       ]
+    },
+    "secondary": {
+      "gan": "丙",
+      "transparent": false,
+      "hidden": false,
+      "occurrences": [],
+      "guan_xi_links": []
     }
   },
   "ge_ju": {
