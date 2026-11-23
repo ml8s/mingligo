@@ -6,9 +6,9 @@
     "《增删卜易·反伏章》：内卦反伏内不安，外卦反伏外不宁，内外反伏内外不宁；反吟有冲有克，伏吟主忧郁呻吟"
   ],
   "tomb_cases": [
-    {"id": "wood-enters-day-tomb", "target_wuxing": "木", "day_zhi": "未", "expected_types": ["day"]},
-    {"id": "wood-enters-moving-tomb", "target_wuxing": "木", "moving_tomb_position": 2, "moving_tomb_zhi": "未", "expected_types": ["moving"]},
-    {"id": "moving-wood-transforms-to-tomb", "target_wuxing": "木", "target_is_moving": true, "changed_zhi": "未", "expected_types": ["transformed"]},
+    {"id": "wood-enters-day-tomb", "target_wuxing": "木", "day_zhi": "未", "expected_types": ["日墓"]},
+    {"id": "wood-enters-moving-tomb", "target_wuxing": "木", "moving_tomb_position": 2, "moving_tomb_zhi": "未", "expected_types": ["动墓"]},
+    {"id": "moving-wood-transforms-to-tomb", "target_wuxing": "木", "target_is_moving": true, "changed_zhi": "未", "expected_types": ["化墓"]},
     {"id": "wood-branch-itself-is-not-universal-tomb", "target_wuxing": "木", "target_zhi": "未", "expected_types": []}
   ],
   "selection_cases": [

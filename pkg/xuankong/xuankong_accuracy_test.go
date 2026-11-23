@@ -51,7 +51,7 @@ func TestComputeSanYuanYun(t *testing.T) {
 			if got.StartYear > tt.year || got.EndYear < tt.year {
 				t.Errorf("year %d not in range [%d, %d]", tt.year, got.StartYear, got.EndYear)
 			}
-			if got.YearBoundary != "lichun" {
+			if got.YearBoundary != "立春" {
 				t.Errorf("YearBoundary = %s, want explicit lichun", got.YearBoundary)
 			}
 		})

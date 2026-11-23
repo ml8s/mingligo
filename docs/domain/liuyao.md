@@ -70,7 +70,7 @@ A `liuyao.Chart` computes and keeps:
 - 月建 strength;
 - 旬空, 月破, and 墓库;
 - hidden lines and 伏神;
-- 用神 position and aggregate state;
+- 用神 `yao_wei` and aggregate state;
 - 原神/忌神 movement relations;
 - patterns such as 旬空, 月破, 飞伏, 进退神, 六冲/六合, 反吟/伏吟, 随鬼入墓,
   独发/独静, and 用神两现;

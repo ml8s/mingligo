@@ -59,7 +59,7 @@ func appendBranchTrigger(
 		Mechanism:     mechanism,
 		Position:      position,
 		TriggerBranch: ganzhi.ZhiName(branch),
-		Window:        "day_or_month",
+		Window:        "日或月",
 		Basis:         basis,
 	})
 }

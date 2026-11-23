@@ -12,10 +12,10 @@
         }
       },
       "expect": {
-        "ming_gua.gua.name": "艮",
+        "ming_gua.gua.gua_ming": "艮",
         "ming_gua.dong_xi_si_ming": "西四命",
-        "ming_gua.year_boundary": "lichun",
-        "birth_year_xing.year": 1983
+        "ming_gua.nian_jie": "立春",
+        "chu_sheng_nian_xing.nian": 1983
       }
     },
     {
@@ -29,7 +29,7 @@
       "expect": {
         "yun.year": 2023,
         "yun.yun_number": 8,
-        "yun.year_boundary": "lichun"
+        "yun.year_boundary": "立春"
       }
     },
     {
@@ -43,7 +43,7 @@
       "expect": {
         "yun.year": 2024,
         "yun.yun_number": 9,
-        "yun.year_boundary": "lichun"
+        "yun.year_boundary": "立春"
       }
     },
     {
@@ -58,10 +58,10 @@
         "count": 1
       },
       "expect": {
-        "liu_ri.0.li_fa_jie.date": "2026-06-01",
         "liu_ri.0.liu_qi.gan": "丙",
         "liu_ri.0.liu_qi.zhi": "午",
-        "liu_ri.0.li_fa_jie.ri_jie.standard_date": "2026-06-01"
+        "liu_ri.0.gong_li.ri": "2026-06-01",
+        "liu_ri.0.jie_xian.ri_jie.standard_date": "2026-06-01"
       }
     },
     {
@@ -94,12 +94,12 @@
         "count": 1
       },
       "expect": {
-        "liu_shi.0.liu_qi_zhi": "亥",
         "liu_shi.0.shi_chen.shichen": "亥",
         "liu_shi.0.shi_chen.standard_date": "2026-06-01",
         "liu_shi.0.shi_chen.lunar.year": 2026,
         "liu_shi.0.shi_chen.lunar.month": 4,
-        "liu_shi.0.shi_chen.lunar.day": 17
+        "liu_shi.0.shi_chen.lunar.day": 17,
+        "liu_shi.0.liu_qi.zhi": "亥"
       }
     },
     {
@@ -113,9 +113,9 @@
         "count": 3
       },
       "expect": {
-        "liu_nian.0.li_fa_jie.nian_jie.lichun_year": 2023,
-        "liu_nian.1.li_fa_jie.nian_jie.lichun_year": 2024,
-        "liu_nian.2.li_fa_jie.nian_jie.lichun_year": 2025
+        "liu_nian.0.jie_xian.nian_jie.lichun_year": 2023,
+        "liu_nian.1.jie_xian.nian_jie.lichun_year": 2024,
+        "liu_nian.2.jie_xian.nian_jie.lichun_year": 2025
       }
     },
     {
@@ -129,9 +129,9 @@
         "count": 3
       },
       "expect": {
-        "liu_yue.0.li_fa_jie.jie_qi.jieqi_start": "2024-01-05",
-        "liu_yue.1.li_fa_jie.jie_qi.jieqi_start": "2024-02-04",
-        "liu_yue.2.li_fa_jie.jie_qi.jieqi_start": "2024-03-04"
+        "liu_yue.0.jie_xian.jie_qi.jieqi_start": "2024-01-05",
+        "liu_yue.1.jie_xian.jie_qi.jieqi_start": "2024-02-04",
+        "liu_yue.2.jie_xian.jie_qi.jieqi_start": "2024-03-04"
       }
     },
     {
@@ -264,8 +264,8 @@
         "count": 1
       },
       "expect": {
-        "liu_nian.0.li_fa_jie.nian_jie.lichun_year": 2023,
-        "liu_nian.0.li_fa_jie.nian_jie.start_date": "2024-02-04"
+        "liu_nian.0.jie_xian.nian_jie.lichun_year": 2023,
+        "liu_nian.0.jie_xian.nian_jie.start_date": "2024-02-04"
       }
     },
     {
@@ -279,8 +279,8 @@
         "count": 1
       },
       "expect": {
-        "liu_nian.0.li_fa_jie.nian_jie.lichun_year": 2024,
-        "liu_nian.0.li_fa_jie.nian_jie.start_date": "2024-02-04"
+        "liu_nian.0.jie_xian.nian_jie.lichun_year": 2024,
+        "liu_nian.0.jie_xian.nian_jie.start_date": "2024-02-04"
       }
     },
     {
@@ -294,7 +294,7 @@
         "count": 1
       },
       "expect": {
-        "liu_yue.0.li_fa_jie.jie_qi.jieqi_start": "2024-02-04"
+        "liu_yue.0.jie_xian.jie_qi.jieqi_start": "2024-02-04"
       }
     },
     {
@@ -308,7 +308,7 @@
         "count": 1
       },
       "expect": {
-        "liu_yue.0.li_fa_jie.jie_qi.jieqi_start": "2024-03-04"
+        "liu_yue.0.jie_xian.jie_qi.jieqi_start": "2024-03-04"
       }
     },
     {

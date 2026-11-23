@@ -565,7 +565,7 @@
         "year": 2026,
         "month": 5,
         "leap": false,
-        "half": "whole",
+        "half": "整月",
         "day_start": 1,
         "day_end": 29
       },

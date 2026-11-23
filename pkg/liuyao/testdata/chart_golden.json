@@ -217,7 +217,7 @@
         "六冲"
       ],
       "targets": [
-        "yong_shen"
+        "用神"
       ],
       "basis": [
         "left=子",
@@ -243,8 +243,8 @@
         "刑（成组候选）"
       ],
       "targets": [
-        "yong_shen",
-        "other"
+        "用神",
+        "应爻"
       ],
       "basis": [
         "left=辰",
@@ -258,8 +258,8 @@
         "六冲"
       ],
       "targets": [
-        "other",
-        "world"
+        "应爻",
+        "世爻"
       ],
       "basis": [
         "left=辰",
@@ -295,7 +295,7 @@
       "break_count": 1,
       "activated": false,
       "targets": [
-        "other"
+        "应爻"
       ],
       "conclusion_scope": "structure_candidate_only_not_outcome"
     },
@@ -322,8 +322,8 @@
       "break_count": 0,
       "activated": false,
       "targets": [
-        "yong_shen",
-        "world"
+        "用神",
+        "世爻"
       ],
       "conclusion_scope": "structure_candidate_only_not_outcome"
     }

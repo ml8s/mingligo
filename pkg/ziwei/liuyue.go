@@ -156,17 +156,17 @@ func resolveLiuYuePeriodWith(p tianwen.LunarProjector, target tianwen.LunarDate)
 		Year:     target.Year,
 		Month:    target.Month,
 		Leap:     target.Leap,
-		Half:     "whole",
+		Half:     "整月",
 		DayStart: 1,
 		DayEnd:   meta.DayCount,
 	}
 	flowMonth := LunarMonth{Year: target.Year, Month: target.Month, Leap: target.Leap}
 	if target.Leap {
 		if target.Day <= 15 {
-			calendar.Half = "first"
+			calendar.Half = "上半月"
 			calendar.DayEnd = 15
 		} else {
-			calendar.Half = "second"
+			calendar.Half = "下半月"
 			calendar.DayStart = 16
 			next, err := p.NextLunarMonth(target.Year, target.Month, true)
 			if err != nil {

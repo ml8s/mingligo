@@ -26,7 +26,10 @@ func TestXuankongLiuNianDomainMatchesView(t *testing.T) {
 	if err := json.Unmarshal(vj, &view); err != nil {
 		t.Fatal(err)
 	}
-	if !reflect.DeepEqual(domain, view) {
-		t.Errorf("domain/view mismatch\ndomain: %s\nview:   %s", dj, vj)
+	normalized := normalizeProjectionKeys(domain, map[string]string{
+		"year": "nian", "gong_num": "gong_shu", "xing_name": "xing_ming",
+	})
+	if !reflect.DeepEqual(normalized, view) {
+		t.Fatalf("domain/view mismatch\ndomain: %s\nview:   %s", dj, vj)
 	}
 }

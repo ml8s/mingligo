@@ -40,7 +40,7 @@ func TestResolveLiuYuePeriod(t *testing.T) {
 		{
 			name:      "ordinary month is whole",
 			target:    lunarDate(2025, 6, 20, false),
-			wantHalf:  "whole",
+			wantHalf:  "整月",
 			wantStart: 1,
 			wantEnd:   mustLunarMonthDayCount(t, 2025, 6, false),
 			wantFlow:  LunarMonth{Year: 2025, Month: 6, Leap: false},
@@ -48,7 +48,7 @@ func TestResolveLiuYuePeriod(t *testing.T) {
 		{
 			name:      "leap month first half boundary",
 			target:    lunarDate(2025, 6, 15, true),
-			wantHalf:  "first",
+			wantHalf:  "上半月",
 			wantStart: 1,
 			wantEnd:   15,
 			wantFlow:  LunarMonth{Year: 2025, Month: 6, Leap: true},
@@ -56,7 +56,7 @@ func TestResolveLiuYuePeriod(t *testing.T) {
 		{
 			name:      "leap month second half boundary",
 			target:    lunarDate(2025, 6, 16, true),
-			wantHalf:  "second",
+			wantHalf:  "下半月",
 			wantStart: 16,
 			wantEnd:   meta.DayCount,
 			wantFlow:  LunarMonth{Year: 2025, Month: 7, Leap: false},
@@ -64,7 +64,7 @@ func TestResolveLiuYuePeriod(t *testing.T) {
 		{
 			name:      "leap month last day",
 			target:    lunarDate(2025, 6, meta.DayCount, true),
-			wantHalf:  "second",
+			wantHalf:  "下半月",
 			wantStart: 16,
 			wantEnd:   meta.DayCount,
 			wantFlow:  LunarMonth{Year: 2025, Month: 7, Leap: false},

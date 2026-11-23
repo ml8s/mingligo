@@ -7,7 +7,7 @@
       "yin_yang": "阴"
     },
     "group": "西四命",
-    "year_boundary": "lichun"
+    "year_boundary": "立春"
   },
   "ba_zhai_dirs": {
     "sheng_qi": [
@@ -38,7 +38,7 @@
   "birth_year_xing": {
     "year": 1984,
     "ru_zhong": "七赤破军",
-    "year_boundary": "lichun",
+    "year_boundary": "立春",
     "gong_wei": [
       {
         "gong_num": 5,

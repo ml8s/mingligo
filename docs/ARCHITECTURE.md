@@ -73,10 +73,10 @@ decode: 符号 → 文本   （系统解码出人类语言；输出边界）
 - MCP 是**官方 Go SDK 的 typed 示例适配器**，不是内核：内核是领域事实层，传输层只是它的一个消费者。换 REST 等其他适配器不需要改领域层。
 - domain 输出**结构化 object**，字段该 string 就 string、该 int 就 int，**不产出 JSON**。
 - 每个领域提供 `XxxView`（Go struct，按命理子域聚合 + `json` 字段名 + `jsonschema` 描述惰性元数据）和 `Chart.View()` 方法：把计算形态（Chart）的碎片按领域语义归位到输出契约。View 是唯一的领域输出模型。
-- MCP 等适配器**只透传 View 对象**，输出 schema 由消费者从 View 类型反射生成（`jsonschema.For[XxxView]()`）——不再有手写 wire DTO 第二套模型。符号类型通过 `TypeSchemas` 注册为 string enum，符号的 `MarshalJSON` 负责边界 decode。
+- MCP 等适配器**只透传领域 View**，输出 schema 从 View 类型反射生成（`jsonschema.For[XxxView]()`）；序列/oneOf 等协议包装用少量传输 DTO（`liuyao_chart`/`bazi_liupan`/`ziwei_liupan`/`qimen_chart`），**不新增命理事实、不改名领域键**。符号类型通过 `TypeSchemas` 注册 enum，`MarshalJSON` 负责边界 decode。
 - **View 与 Chart 解耦**：Chart 保持最适计算的形态（可平行数组/内部符号），View 定义稳定的输出契约（可读字段、领域聚合）。填充分次序自由，但同一实体的碎片必须归位到同一对象。
 - **适配器不约束 domain**：schema 推断所需的符号枚举在适配器侧注册，绝不回退 domain 的符号化。
-- 注：bond（合婚）、liupan（流盘序列）、liuyao_qigua（起卦）工具均已 View 化——合婚用 `bazi.BondView`/`ziwei.BondView`，流盘用 `bazi.LiuNianOutputView` 等系列 View，起卦用 `liuyao.QiguaView`（domain 系列/事件对象以 JSON roundtrip 映射到带 `jsonschema` tag 的输出契约，schema 从 View 反射；enum 约束在适配器侧 patch）。time_now/city_info 是纯 MCP 适配层的信息工具（当前时间、地点候选），无领域对象映射，其输出 DTO 属于适配器产物，不属于领域 View。
+- 注：bond（合婚）、liupan（流盘序列）、liuyao_qigua（起卦）工具均已 View 化——合婚用 `bazi.BondView`/`ziwei.BondView`，流盘用 `bazi.LiuNianOutputView` 等系列 View，起卦用 `liuyao.QiguaView`（领域系列/事件对象以**显式映射为主**（关键命理事实不经 roundtrip）；少数结构同构的辅助对象（如 `bond` 的交叉表、`liupan` 的时间界）仍用 JSON roundtrip 映射到 View，但输出键由 View tag 决定；schema 从 View 反射，enum 约束在适配器侧 patch）。time_now/city_info 是纯 MCP 适配层的信息工具（当前时间、地点候选），无领域对象映射，其输出 DTO 属于适配器产物，不属于领域 View。
 
 ### 流盘骨架（四层一致性）
 
@@ -98,17 +98,17 @@ decode: 符号 → 文本   （系统解码出人类语言；输出边界）
 - 八宅伏位：四吉星之末，等级"小吉"（第四吉星），不是"平"。
 - 其他流派选择：十二长生用《三命通会》阳顺阴逆（《滴天髓阐微》主张阴阳同生同死）；无恩/恃势刑用《三命通会》命名（《渊海子平》互换）；纳音"泉中水/井泉水""金箔/金泊"取前者；文昌口诀用坊间版（《三命通会》另有版本）。
 
-**同名字段分属不同子域**：流期干支用 `period_gan`/`zhi`（周期层），流宫干支用 `gong_wei[].gan`/`zhi`（宫位层）——两者同名不同义，以字段名和子域区分，避免消费者混淆。
+**同名字段分属不同子域**：流期干支统一用 `liu_qi.gan`/`liu_qi.zhi`（周期层），流宫干支用 `gong_wei[].gan`/`zhi`（宫位层）——两者同名不同义，以字段名和子域区分，避免消费者混淆。
 
 **View 子域划分（命理域重构定稿）**：
 
 所有 View 子域必须是命理领域概念（四柱/大运/十神/神煞/格局/应期/十二宫等），以命理拼音术语命名（json key snake_case、Go 字段 PascalCase）。工程泛化容器（`analysis`/`facts`/`meta`/`structure`/`conclusions`/`markers`/`special_facts`/`palace_facts`/`event`/`directions`/`taboos` 等）全部拆除或改名，不保留"标注代替拆分"的例外。
 
-- 八字 ChartView：`yong_shen_qu_fa`/`guan_xi`/`wang_shuai`/`san_yuan_view`/`chang_sheng_view`/`shen_sha`/`guan_sha`/`cai_ku`/`pei_ou_gong`/`ri_zhi_xiang`/`li_fa_kou_jing`
-- 六爻 ChartView：`analysis` 容器拆除，拆为 `shi_qi`/`yong_shen_ceng`/`ge_ju_ceng`/`dong_yao_guan_xi`/`fu_shen_ceng`/`zhi_guan_xi`/`mao_dun_xin_hao`/`mu_ku_liu_pai`
-- 奇门 ChartView：`ke_ying`/`jiu_gong_gu_you`/`jiu_gong_ben_pan`/`gan_luo_gong`/`fu_shi`/`shen_sha`/`ge_ju`/`ying_qi`/`yong_shen`/`zhuan_zhan`/`pai_pan_fang_fa`
-- 紫微 ChartView：`li_fa_kou_jing`/`pai_pan_kou_jing`/`shi_er_gong`/`kong_gong_san_fang`/`ge_ju`/`da_xian`/`ming_zhu_shen_zhu`
-- 黄历：`fang_wei_shen_sha`/`peng_zu_bai_ji`/`yi_ji`；玄空：`si_da_ju`/`liu_nian_xing_lin_gong`；八宅：View 类型名全改为命理域（`BaZhaiMingGuaPanView`/`MenZhuZaoView` 等）
+- 八字 ChartView：`pillars`/`da_yun`/`yong_shen_qu_fa`（含 `guan_sha_qu_qing`/`cai_ku`）/`guan_xi`（含 `pei_ou_gong`）/`wang_shuai`/`san_yuan`/`chang_sheng`/`shen_sha`；`li_fa`/`fang_fa_kou_jing`（原 `li_fa_kou_jing` 拆分）
+- 六爻 ChartView：`analysis` 容器拆除，现为 `ben_gua`/`liu_yao`/`bian_yao`/`ri_chen_yue_jian`/`yong_shen`（唯一用神事实源）/`ge_ju`/`fu_shen`/`shi_qi`/`dong_yao_guan_xi`/`zhi_guan_xi`/`mao_dun_xin_hao`/`gua_ci`/`fang_fa_kou_jing`
+- 奇门 ChartView：`pai_pan_fang_fa`/`jiu_gong_pan`/`ke_ying`/`jiu_gong_gu_you`/`jiu_gong_ben_pan`/`gan_luo_gong`/`fu_shi`/`shen_sha`/`ge_ju`/`ying_qi`/`yong_shen`/`zhuan_zhan`（金函玉镜分支同为 `pai_pan_fang_fa`/`jiu_gong_pan`）
+- 紫微 ChartView：`li_fa_kou_jing`/`pai_pan_kou_jing`（局数 `ju_shu_ma`/`ju_shu`）/`shi_er_gong`/`kong_gong_san_fang`/`ge_ju`（裸数组）/`da_xian`（裸数组）/`ming_zhu_shen_zhu`
+- 黄历：`li_fa`/`ren_yuan`/`ri_zhu`（含 `wuxing`）/`fang_wei_shen_sha`/`peng_zu_bai_ji`/`jian_chu_huang_dao`/`xiu`/`shi_chen`/`yi_ji`；玄空：`yun`/`zuo_shan`/`xiang_shan`/`gong_wei`/`si_da_ju`/`fu_yin_ceng`/`fan_yin_ceng`/`shou_shan_chu_sha`（显式 View 类型）；八宅：`ming_gua`/`si_ji_si_xiong_fang`/`chu_sheng_nian_xing`/`men`/`zhu`/`zao`
 - 同型不同坐标系字段用命理名与子域区分：`si_hua[].gong`=本命宫序、`gong_wei[].name`=流盘宫名；`ming_gong` 四层统一由 `flowMingGongIndex` 计算
 
 消费方（counsel）的 Python 路径、Pydantic 契约（extra=forbid）、JSON path contract 全部同步到新命理域，golden/fixture 随领域结构更新。
@@ -133,7 +133,7 @@ MingliGo 只做**确定性排盘计算**：领域输出是符号空间上的**�
 
 **神盘建模：跨派共用符号 + 门派命名 decode + 独立符号集**。转盘/飞盘/鸣法的神是**同一批传统神**（槽位 1-9），仅命名约定不同（阴阳遁异名、飞盘/鸣法固定名）；因此共用一个 `SpiritIndex`，输出**稳定槽位 key**（`shen_symbol`，如 `gouchen`，恒不随门派/阴阳遁变）与**门派显示名**（`shen`，如白虎/勾陈）两个字段，由消费端取用。金函十二神（地钥/六贼/…）是真正不同的神，用独立符号集 `JinhanSpirit`。按门派归属落在数据/命名层（`plate.json` 三张表 + `jinhan.json`），符号层不按门派拆分——否则会把"转盘白虎"和"飞盘白虎"（同一神）误建成不同符号，违反领域事实。
 
-**盘面派生结论由引擎产出**：给定盘结果唯一的派生事实，作为 chart 字段输出，消费端只读不重算。这些字段先符号化（封闭集符号 / string 底层值即文本），算子在符号空间内计算，输出边界 decode 为文本——符合六边形架构。已落地：八字 `spouse_palace_state`/`day_branch_type`（从 guan_xi/shen_sha 派生）、紫微 `liang_du_group`/`zhu_xing_state`（从亮度/主星派生）、奇门 `gong_relations`（九宫五行关系矩阵，由 ganzhi Sheng/Ke 计算）。消费端删除对应的本地命理表与推算（constants 合化表、qimen 生克表等）。**边界**：依赖"盘中未出现的实体"（如未出现的十神的五行）的推算、以及静态知识表本身，仍留消费端——它们不是盘面结论。
+**盘面派生结论由引擎产出**：给定盘结果唯一的派生事实，作为 chart 字段输出，消费端只读不重算。这些字段先符号化（封闭集符号 / string 底层值即文本），算子在符号空间内计算，输出边界 decode 为文本——符合六边形架构。已落地：八字 `guan_xi.pei_ou_gong`（从 guan_xi 关系派生）与 `shen_sha.ri_zhi_xiang`（从日支神煞/墓库派生）；紫微 `liang_du_group`/`zhu_xing_state`（从亮度/主星派生）；奇门 `gong_relations`（九宫五行关系矩阵，由 ganzhi Sheng/Ke 计算）。消费端删除对应的本地命理表与推算（constants 合化表、qimen 生克表等）。**边界**：依赖"盘中未出现的实体"（如未出现的十神的五行）的推算、以及静态知识表本身，仍留消费端——它们不是盘面结论。
 
 ## 8. 验证
 
@@ -162,7 +162,7 @@ MingliGo 只做**确定性排盘计算**：领域输出是符号空间上的**�
 | `rel*` 干支关系、`cat*` 神煞吉凶 | 已符号化 | 封闭命理概念具名化 |
 | `CandidateWuxing`/`TenGodSource`/`TripleRelationKind`/`GanZhiRelationKind`/`PatternSubType`/`StarLei` | 已符号化 | 封闭集具名（string 底层，值即文本），即使只喂输出 |
 | `FuYiResult.WangShuai`/`WuxingCount` 的 string key | 真边界 | wire 契约强制 string-keyed map；符号 key 会输出数字破坏契约。消费端用 `fuYiWangShuaiAt` 单一边界 helper 转符号 |
-| `TombSchool.EarthBranch` | 真边界 | 固定"辰"的流派标注，不参与卦理；在 `ChartView` 中 MCP 直接引用，符号化需拆整个 View |
+| `TombSchool.EarthBranch` | 真边界 | 固定"辰"的流派标注，不参与卦理；在 `fang_fa_kou_jing.mu_ku_liu_pai` 中透传，符号化需拆整个 View |
 | `TiaoHouResult.MarshalJSON` | 特例 | all-null secondary 是 domain 的输出形状定义（ADR 0004: domain owns output shape），非符号映射；wire 侧同形状对象 schema 依赖它 |
 | `main_qi_not_transparent` 等复合值 | 真边界 | 非封闭集，string 合理 |
 | 数据加载 `Encode*`、输入校验 | 边界 | string→符号在入口、符号→文案在出口 |

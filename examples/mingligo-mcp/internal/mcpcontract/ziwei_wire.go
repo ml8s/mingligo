@@ -14,16 +14,6 @@ type ZiweiChartInput struct {
 	Subject NatalSubject `json:"subject" jsonschema:"已归一化的出生主体。"`
 }
 
-type ZiweiDaXianItems []ZiweiDaXianItem
-
-type ZiweiDaXianItem struct {
-	StartYear int             `json:"start_year" jsonschema:"本限起始公历年"`
-	EndYear   int             `json:"end_year" jsonschema:"本限结束公历年"`
-	QiSui     int             `json:"qi_sui" jsonschema:"起运虚岁。"`
-	ZhiSui    int             `json:"zhi_sui" jsonschema:"止运虚岁。"`
-	MingGong  ZiweiPalaceName `json:"ming_gong" jsonschema:"大限命宫。"`
-}
-
 // ── ziwei.liupan input ──
 
 type ZiweiLiupanInput struct {

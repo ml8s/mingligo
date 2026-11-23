@@ -151,3 +151,27 @@ func TestXiaoYun_ShiZhuVariation(t *testing.T) {
 		t.Errorf("星平会海流派首岁应随时柱变化（12 时辰各不同），实际 %d 种: %v", len(firstXingPing), firstXingPing)
 	}
 }
+
+// TestXiaoYun_ViewCarriesSchool locks the fact that the View publishes the
+// 流派/起法依据 values; a future switch back to a JSON roundtrip (with keys
+// method/basis) would silently emit empty strings here.
+func TestXiaoYun_ViewCarriesSchool(t *testing.T) {
+	bz := ganzhi.Bazi{
+		Ri:   ganzhi.Zhu{Gan: ganzhi.GanJia, Zhi: ganzhi.ZhiZi},
+		Shi:  ganzhi.Zhu{Gan: ganzhi.GanJia, Zhi: ganzhi.ZhiZi},
+		Nian: ganzhi.Zhu{Gan: ganzhi.GanJia, Zhi: ganzhi.ZhiZi},
+	}
+	sets := computeXiaoYun(bz, ganzhi.Male, 2)
+	if len(sets) != 2 {
+		t.Fatalf("xiao_yun schools = %d, want 2", len(sets))
+	}
+	for i, set := range sets {
+		view := set.View()
+		if view.LiuPai == "" || view.QiFa == "" {
+			t.Errorf("school[%d] liu_pai/qi_fa empty: %+v", i, view)
+		}
+		if len(view.Zhus) != len(set.Zhus) {
+			t.Errorf("school[%d] zhus = %d, want %d", i, len(view.Zhus), len(set.Zhus))
+		}
+	}
+}

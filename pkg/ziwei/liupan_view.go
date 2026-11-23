@@ -5,11 +5,16 @@ import "encoding/json"
 // Domain-owned output views of the ziwei.liupan series. jsonschema tags are
 // inert metadata read only when a consumer reflects the type for its schema.
 
+// LiuQiView groups流期干支 into one命理域, isomorphic with bazi.liupan.liu_qi.
+type LiuQiView struct {
+	Gan Gan `json:"gan" jsonschema:"流期天干。"`
+	Zhi Zhi `json:"zhi" jsonschema:"流期地支。"`
+}
+
 type LiuNianOutputView struct {
 	MingGong   GongIndex                `json:"ming_gong" jsonschema:"命宫。"`
 	LiuMingZhi Zhi                      `json:"liu_ming_zhi" jsonschema:"流命所在地支（与 is_liu_ming 宫一致）。"`
-	Gan        Gan                      `json:"liu_qi_gan" jsonschema:"流期天干（与 zhi 构成流期干支；非流宫宫干）。"`
-	Zhi        Zhi                      `json:"liu_qi_zhi" jsonschema:"流年地支"`
+	LiuQi      LiuQiView                `json:"liu_qi" jsonschema:"流期干支。"`
 	SiHua      []FlowTransformationView `json:"si_hua" jsonschema:"四化事实：星、化、落宫（落宫为本命宫序坐标）。"`
 	GongWei    []FlowPalaceView         `json:"gong_wei" jsonschema:"流年十二宫盘。"`
 	NianJie    LiuNianResolvedView      `json:"nian_jie" jsonschema:"流年农历年界。"`
@@ -60,8 +65,7 @@ type LiuYueOutputView struct {
 	YueJie     YueJieView               `json:"yue_jie" jsonschema:"流月农历月界与月令。"`
 	MingGong   GongIndex                `json:"ming_gong" jsonschema:"命宫。"`
 	LiuMingZhi Zhi                      `json:"liu_ming_zhi" jsonschema:"流命所在地支（与 is_liu_ming 宫一致）。"`
-	Gan        Gan                      `json:"liu_qi_gan" jsonschema:"流期天干（与 zhi 构成流期干支；非流宫宫干）。"`
-	Zhi        Zhi                      `json:"liu_qi_zhi" jsonschema:"流月地支"`
+	LiuQi      LiuQiView                `json:"liu_qi" jsonschema:"流期干支。"`
 	SiHua      []FlowTransformationView `json:"si_hua" jsonschema:"四化事实：星、化、落宫（落宫为本命宫序坐标）。"`
 	GongWei    []FlowPalaceView         `json:"gong_wei" jsonschema:"流月十二宫盘。"`
 }
@@ -91,8 +95,7 @@ type LiuRiOutputView struct {
 	RiJie      LiuRiJieView             `json:"ri_jie" jsonschema:"流日日界。"`
 	MingGong   GongIndex                `json:"ming_gong" jsonschema:"命宫。"`
 	LiuMingZhi Zhi                      `json:"liu_ming_zhi" jsonschema:"流命所在地支（与 is_liu_ming 宫一致）。"`
-	Gan        Gan                      `json:"liu_qi_gan" jsonschema:"流期天干（与 zhi 构成流期干支；非流宫宫干）。"`
-	Zhi        Zhi                      `json:"liu_qi_zhi" jsonschema:"流日地支"`
+	LiuQi      LiuQiView                `json:"liu_qi" jsonschema:"流期干支。"`
 	SiHua      []FlowTransformationView `json:"si_hua" jsonschema:"四化事实：星、化、落宫（落宫为本命宫序坐标）。"`
 	GongWei    []FlowPalaceView         `json:"gong_wei" jsonschema:"流日十二宫盘。"`
 }
@@ -107,8 +110,7 @@ type LiuShiChenView struct {
 type LiuShiOutputView struct {
 	MingGong   GongIndex                `json:"ming_gong" jsonschema:"命宫。"`
 	LiuMingZhi Zhi                      `json:"liu_ming_zhi" jsonschema:"流命所在地支（与 is_liu_ming 宫一致）。"`
-	Gan        Gan                      `json:"liu_qi_gan" jsonschema:"流期天干（与 zhi 构成流期干支；非流宫宫干）。"`
-	Zhi        Zhi                      `json:"liu_qi_zhi" jsonschema:"流时地支"`
+	LiuQi      LiuQiView                `json:"liu_qi" jsonschema:"流期干支。"`
 	SiHua      []FlowTransformationView `json:"si_hua" jsonschema:"四化事实：星、化、落宫（落宫为本命宫序坐标）。"`
 	GongWei    []FlowPalaceView         `json:"gong_wei" jsonschema:"流时十二宫盘。"`
 	ShiChen    LiuShiChenView           `json:"shi_chen" jsonschema:"流时时辰定位。"`
@@ -125,7 +127,57 @@ func liupanView[T any](src any, dst *T) T {
 	return *dst
 }
 
-func (v LiuNian) View() LiuNianOutputView { return liupanView(v, &LiuNianOutputView{}) }
-func (v LiuYue) View() LiuYueOutputView   { return liupanView(v, &LiuYueOutputView{}) }
-func (v LiuRi) View() LiuRiOutputView     { return liupanView(v, &LiuRiOutputView{}) }
-func (v LiuShi) View() LiuShiOutputView   { return liupanView(v, &LiuShiOutputView{}) }
+func flowTransformations(src []FlowTransformation) []FlowTransformationView {
+	if src == nil {
+		return nil
+	}
+	out := make([]FlowTransformationView, 0, len(src))
+	for _, item := range src {
+		out = append(out, liupanView(item, &FlowTransformationView{}))
+	}
+	return out
+}
+
+func flowPalaces(src [12]FlowPalace) []FlowPalaceView {
+	out := make([]FlowPalaceView, 0, len(src))
+	for _, item := range src {
+		out = append(out, liupanView(item, &FlowPalaceView{}))
+	}
+	return out
+}
+
+func (v LiuNian) View() LiuNianOutputView {
+	return LiuNianOutputView{
+		MingGong: v.MingGong, LiuMingZhi: v.LiuMingZhi,
+		LiuQi: LiuQiView{Gan: v.Gan, Zhi: v.Zhi},
+		SiHua: flowTransformations(v.SiHua), GongWei: flowPalaces(v.GongWei),
+		NianJie: liupanView(v.NianJie, &LiuNianResolvedView{}),
+	}
+}
+
+func (v LiuYue) View() LiuYueOutputView {
+	return LiuYueOutputView{
+		MingGong: v.MingGong, LiuMingZhi: v.LiuMingZhi,
+		LiuQi: LiuQiView{Gan: v.Gan, Zhi: v.Zhi},
+		SiHua: flowTransformations(v.SiHua), GongWei: flowPalaces(v.GongWei),
+		YueJie: liupanView(v.YueJie, &YueJieView{}),
+	}
+}
+
+func (v LiuRi) View() LiuRiOutputView {
+	return LiuRiOutputView{
+		MingGong: v.MingGong, LiuMingZhi: v.LiuMingZhi,
+		LiuQi: LiuQiView{Gan: v.Gan, Zhi: v.Zhi},
+		SiHua: flowTransformations(v.SiHua), GongWei: flowPalaces(v.GongWei),
+		RiJie: liupanView(v.RiJie, &LiuRiJieView{}),
+	}
+}
+
+func (v LiuShi) View() LiuShiOutputView {
+	return LiuShiOutputView{
+		MingGong: v.MingGong, LiuMingZhi: v.LiuMingZhi,
+		LiuQi: LiuQiView{Gan: v.Gan, Zhi: v.Zhi},
+		SiHua: flowTransformations(v.SiHua), GongWei: flowPalaces(v.GongWei),
+		ShiChen: liupanView(v.ShiChen, &LiuShiChenView{}),
+	}
+}

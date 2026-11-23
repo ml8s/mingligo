@@ -79,7 +79,7 @@ func buildStaticSchemaOptions() map[reflect.Type]*jsonschema.Schema {
 			Type: "string", Enum: []any{"北", "东北", "东", "东南", "南", "西南", "西", "西北"},
 		},
 		reflect.TypeFor[LifeGroupName]():    {Type: "string", Enum: []any{"东四命", "西四命"}},
-		reflect.TypeFor[YearBoundaryName](): {Type: "string", Enum: []any{"lichun"}},
+		reflect.TypeFor[YearBoundaryName](): {Type: "string", Enum: []any{"立春"}},
 		reflect.TypeFor[FlyingStarName](): {
 			Type: "string", Enum: []any{
 				"一白贪狼", "二黑巨门", "三碧禄存", "四绿文曲", "五黄廉贞",
@@ -241,16 +241,6 @@ func buildSchemaOptions(liuyaoHexagrams []string) *jsonschema.ForOptions {
 	registerSixItemArray[LiuyaoYaoValue, LiuyaoYaoValuesInput](options)
 	registerSixItemArray[LiuyaoCoinRoundOutput, LiuyaoCoinRoundsOutput](options)
 	registerSixItemArray[LiuyaoYaoValue, LiuyaoYaoValuesOutput](options)
-	daXianItem, err := jsonschema.For[ZiweiDaXianItem](options)
-	if err != nil {
-		panic(fmt.Sprintf("derive ZiweiDaXianItem schema: %v", err))
-	}
-	options.TypeSchemas[reflect.TypeFor[ZiweiDaXianItems]()] = &jsonschema.Schema{
-		Type:     "array",
-		Items:    daXianItem,
-		MinItems: jsonschema.Ptr(12),
-		MaxItems: jsonschema.Ptr(12),
-	}
 	hexagramEnum := make([]any, 0, len(liuyaoHexagrams))
 	for _, name := range liuyaoHexagrams {
 		hexagramEnum = append(hexagramEnum, name)

@@ -87,9 +87,9 @@ type LiuRiJieView struct {
 	LiuRiStandardDate string `json:"standard_date" jsonschema:"流日选择器的时区标准日（无 DST）。"`
 }
 
-// zhuInteractionView is the two-layer (gan+zhi) interaction with one reference
+// ZhuInteractionView is the two-layer (gan+zhi) interaction with one reference
 // pillar; shared by flow-day/flow-hour upper-layer facts.
-type zhuInteractionView struct {
+type ZhuInteractionView struct {
 	ZhuLabel string                      `json:"zhu_label" jsonschema:"参照柱标签。"`
 	GanRels  []SeriesGanRelationItemView `json:"gan_rels" jsonschema:"天干关系。"`
 	ZhiRels  []SeriesZhiRelationItemView `json:"zhi_rels" jsonschema:"地支关系。"`
@@ -102,8 +102,8 @@ type LiuShiChenView struct {
 }
 
 type XiaoYunItemView struct {
-	Method string                    `json:"method" jsonschema:"流派标识"`
-	Basis  string                    `json:"basis" jsonschema:"起法依据"`
+	LiuPai string                    `json:"liu_pai" jsonschema:"小运流派。"`
+	QiFa   string                    `json:"qi_fa" jsonschema:"起法依据。"`
 	Zhus   []XiaoYunItemZhusItemView `json:"zhus" jsonschema:"该学派小运柱列表。"`
 }
 
@@ -130,26 +130,29 @@ type RiZhuZuoYongView struct {
 	Ke    int `json:"ke" jsonschema:"流期是否克制/耗泄日主：0/1。"`
 }
 
-// GuanXiView groups 流期与命局/大运/流年的干支关系.
+// LiuPanGuanXiView groups 流期与命局/大运/流年/流日的干支关系. All four flow
+// layers publish the same four keys, so one consumer path works across them.
 type LiuPanGuanXiView struct {
-	GanRels             *[]SeriesGanRelationItemView `json:"gan_rels,omitempty" jsonschema:"流期与命局天干关系。"`
-	ZhiRels             *[]SeriesZhiRelationItemView `json:"zhi_rels,omitempty" jsonschema:"流期与命局地支关系。"`
-	DaYunInteractions   *[]zhuInteractionView        `json:"da_yun_interactions,omitempty" jsonschema:"与大运的干支交互。"`
-	LiuNianInteractions *[]zhuInteractionView        `json:"liu_nian_interactions,omitempty" jsonschema:"与流年的干支交互。"`
-	NatalInteractions   *[]zhuInteractionView        `json:"natal_interactions,omitempty" jsonschema:"与命局的干支交互。"`
-	LiuRiInteraction    *[]zhuInteractionView        `json:"liu_ri_interaction,omitempty" jsonschema:"与流日的干支交互。"`
+	MingJuGuanXi  *[]ZhuInteractionView `json:"ming_ju_guan_xi,omitempty" jsonschema:"与命局的干支关系。"`
+	DaYunGuanXi   *[]ZhuInteractionView `json:"da_yun_guan_xi,omitempty" jsonschema:"与大运的干支关系。"`
+	LiuNianGuanXi *[]ZhuInteractionView `json:"liu_nian_guan_xi,omitempty" jsonschema:"与流年的干支关系。"`
+	LiuRiGuanXi   *[]ZhuInteractionView `json:"liu_ri_guan_xi,omitempty" jsonschema:"与流日的干支关系。"`
 }
 
-// LiFaJieView groups 历法边界 (年/年界/节气界/日界/时辰定位).
-type LiFaJieView struct {
-	Year      int                  `json:"year,omitempty" jsonschema:"流期公历年。"`
-	Month     int                  `json:"month,omitempty" jsonschema:"流期公历月。"`
-	Date      string               `json:"date,omitempty" jsonschema:"流期公历日。"`
-	HourRange string               `json:"hour_range,omitempty" jsonschema:"流时时辰区间。"`
-	NianJie   *LiuNianResolvedView `json:"nian_jie,omitempty" jsonschema:"立春年界。"`
-	JieQi     *LiuYueJieQiView     `json:"jie_qi,omitempty" jsonschema:"节气月界。"`
-	RiJie     *LiuRiJieView        `json:"ri_jie,omitempty" jsonschema:"流日日界。"`
-	ShiChen   *LiuShiChenView      `json:"shi_chen,omitempty" jsonschema:"真太阳时辰。"`
+// GongLiView groups 公历定位 (日历坐标), not命理边界.
+type GongLiView struct {
+	Year      int    `json:"nian,omitempty" jsonschema:"流期公历年。"`
+	Month     int    `json:"yue,omitempty" jsonschema:"流期公历月。"`
+	Date      string `json:"ri,omitempty" jsonschema:"流期公历日。"`
+	HourRange string `json:"shi_chen_fan_wei,omitempty" jsonschema:"流时时辰区间。"`
+}
+
+// JieXianView groups 命理边界 (立春年界/节气月界/干支日界/真太阳时辰).
+type JieXianView struct {
+	NianJie *LiuNianResolvedView `json:"nian_jie,omitempty" jsonschema:"立春年界。"`
+	JieQi   *LiuYueJieQiView     `json:"jie_qi,omitempty" jsonschema:"节气月界。"`
+	RiJie   *LiuRiJieView        `json:"ri_jie,omitempty" jsonschema:"流日日界。"`
+	ShiChen *LiuShiChenView      `json:"shi_chen,omitempty" jsonschema:"真太阳时辰。"`
 }
 
 // LiuNianOutputView aggregates 流年 by命理子域.
@@ -159,7 +162,8 @@ type LiuNianOutputView struct {
 	ShenSha      *[]SeriesShenshaItemView      `json:"shen_sha,omitempty" jsonschema:"流年神煞。"`
 	FuYinFanYin  *[]LiuNianFuyinFanyinItemView `json:"fu_yin_fan_yin,omitempty" jsonschema:"伏吟反吟。"`
 	GuanXi       LiuPanGuanXiView              `json:"guan_xi" jsonschema:"干支关系。"`
-	LiFaJie      LiFaJieView                   `json:"li_fa_jie" jsonschema:"立春年界。"`
+	GongLi       GongLiView                    `json:"gong_li" jsonschema:"公历定位。"`
+	JieXian      JieXianView                   `json:"jie_xian" jsonschema:"命理边界。"`
 }
 
 // LiuYueOutputView aggregates 流月 by命理子域.
@@ -168,7 +172,8 @@ type LiuYueOutputView struct {
 	RiZhuZuoYong RiZhuZuoYongView         `json:"ri_zhu_zuo_yong" jsonschema:"生扶克制日主。"`
 	ShenSha      *[]SeriesShenshaItemView `json:"shen_sha,omitempty" jsonschema:"流月神煞。"`
 	GuanXi       LiuPanGuanXiView         `json:"guan_xi" jsonschema:"干支关系。"`
-	LiFaJie      LiFaJieView              `json:"li_fa_jie" jsonschema:"节气月界。"`
+	GongLi       GongLiView               `json:"gong_li" jsonschema:"公历定位。"`
+	JieXian      JieXianView              `json:"jie_xian" jsonschema:"命理边界。"`
 }
 
 // LiuRiOutputView aggregates 流日 by命理子域.
@@ -177,7 +182,8 @@ type LiuRiOutputView struct {
 	RiZhuZuoYong RiZhuZuoYongView         `json:"ri_zhu_zuo_yong" jsonschema:"生扶克制日主。"`
 	ShenSha      *[]SeriesShenshaItemView `json:"shen_sha,omitempty" jsonschema:"流日神煞。"`
 	GuanXi       LiuPanGuanXiView         `json:"guan_xi" jsonschema:"干支关系。"`
-	LiFaJie      LiFaJieView              `json:"li_fa_jie" jsonschema:"流日日界。"`
+	GongLi       GongLiView               `json:"gong_li" jsonschema:"公历定位。"`
+	JieXian      JieXianView              `json:"jie_xian" jsonschema:"命理边界。"`
 }
 
 // LiuShiOutputView aggregates 流时 by命理子域.
@@ -185,7 +191,8 @@ type LiuShiOutputView struct {
 	LiuQi        LiuQiView        `json:"liu_qi" jsonschema:"流时干支。"`
 	RiZhuZuoYong RiZhuZuoYongView `json:"ri_zhu_zuo_yong" jsonschema:"生扶克制日主。"`
 	GuanXi       LiuPanGuanXiView `json:"guan_xi" jsonschema:"干支关系。"`
-	LiFaJie      LiFaJieView      `json:"li_fa_jie" jsonschema:"真太阳时辰。"`
+	GongLi       GongLiView       `json:"gong_li" jsonschema:"公历定位。"`
+	JieXian      JieXianView      `json:"jie_xian" jsonschema:"命理边界。"`
 }
 
 func encodeShiShenName(name string) ganzhi.ShiShen {
@@ -218,23 +225,37 @@ func liupanView[T any](src any, dst *T) T {
 	return *dst
 }
 
-func zhiInteractions(v []zhuInteraction) *[]zhuInteractionView {
+func zhiInteractions(v []zhuInteraction) *[]ZhuInteractionView {
 	if v == nil {
 		return nil
 	}
-	out := make([]zhuInteractionView, 0, len(v))
+	out := make([]ZhuInteractionView, 0, len(v))
 	for _, item := range v {
-		out = append(out, liupanView(item, &zhuInteractionView{}))
+		out = append(out, liupanView(item, &ZhuInteractionView{}))
 	}
 	return &out
 }
 
-func oneZhiInteraction(v zhuInteraction) *[]zhuInteractionView {
+func oneZhiInteraction(v zhuInteraction) *[]ZhuInteractionView {
 	if v.ZhuLabel == "" && len(v.GanRels) == 0 && len(v.ZhiRels) == 0 {
 		return nil
 	}
-	r := liupanView(v, &zhuInteractionView{})
-	return &[]zhuInteractionView{r}
+	r := liupanView(v, &ZhuInteractionView{})
+	return &[]ZhuInteractionView{r}
+}
+
+func natalGuanXi(ganRels *[]SeriesGanRelationItemView, zhiRels *[]SeriesZhiRelationItemView) *[]ZhuInteractionView {
+	if ganRels == nil && zhiRels == nil {
+		return nil
+	}
+	item := ZhuInteractionView{ZhuLabel: "命局"}
+	if ganRels != nil {
+		item.GanRels = *ganRels
+	}
+	if zhiRels != nil {
+		item.ZhiRels = *zhiRels
+	}
+	return &[]ZhuInteractionView{item}
 }
 
 func shenShaView(v []ShenShaProjection) *[]SeriesShenshaItemView {
@@ -287,8 +308,9 @@ func (v LiuNian) View() LiuNianOutputView {
 		RiZhuZuoYong: zuoYongView(v.ShengRi, v.KeRi),
 		ShenSha:      shenShaView(v.ShenSha),
 		FuYinFanYin:  fuYinFanYinView(v.FuYinFanYin),
-		GuanXi:       LiuPanGuanXiView{NatalInteractions: zhiInteractions(v.NatalInteractions), DaYunInteractions: zhiInteractions(v.DaYunInteractions)},
-		LiFaJie:      LiFaJieView{Year: v.Year, NianJie: nianJieView(v.NianJie)},
+		GuanXi:       LiuPanGuanXiView{MingJuGuanXi: zhiInteractions(v.NatalInteractions), DaYunGuanXi: zhiInteractions(v.DaYunInteractions)},
+		GongLi:       GongLiView{Year: v.Year},
+		JieXian:      JieXianView{NianJie: nianJieView(v.NianJie)},
 	}
 }
 
@@ -315,11 +337,12 @@ func (v LiuYue) View() LiuYueOutputView {
 		RiZhuZuoYong: zuoYongView(v.ShengRi, v.KeRi),
 		ShenSha:      shenShaView(v.ShenSha),
 		GuanXi: LiuPanGuanXiView{
-			GanRels: ganRels, ZhiRels: zhiRels,
-			DaYunInteractions:   oneZhiInteraction(v.DaYunInteraction),
-			LiuNianInteractions: oneZhiInteraction(v.LiuNianInteraction),
+			MingJuGuanXi:  natalGuanXi(ganRels, zhiRels),
+			DaYunGuanXi:   oneZhiInteraction(v.DaYunInteraction),
+			LiuNianGuanXi: oneZhiInteraction(v.LiuNianInteraction),
 		},
-		LiFaJie: LiFaJieView{Year: v.Year, Month: v.Month, JieQi: yueJieView(v.JieQi)},
+		GongLi:  GongLiView{Year: v.Year, Month: v.Month},
+		JieXian: JieXianView{JieQi: yueJieView(v.JieQi)},
 	}
 }
 
@@ -346,11 +369,12 @@ func (v LiuRi) View() LiuRiOutputView {
 		RiZhuZuoYong: zuoYongView(v.ShengRi, v.KeRi),
 		ShenSha:      shenShaView(v.ShenSha),
 		GuanXi: LiuPanGuanXiView{
-			GanRels: ganRels, ZhiRels: zhiRels,
-			DaYunInteractions:   oneZhiInteraction(v.DaYunInteraction),
-			LiuNianInteractions: oneZhiInteraction(v.LiuNianInteraction),
+			MingJuGuanXi:  natalGuanXi(ganRels, zhiRels),
+			DaYunGuanXi:   oneZhiInteraction(v.DaYunInteraction),
+			LiuNianGuanXi: oneZhiInteraction(v.LiuNianInteraction),
 		},
-		LiFaJie: LiFaJieView{Date: v.Date, RiJie: riJieView(v.RiJie)},
+		GongLi:  GongLiView{Date: v.Date},
+		JieXian: JieXianView{RiJie: riJieView(v.RiJie)},
 	}
 }
 
@@ -376,13 +400,27 @@ func (v LiuShi) View() LiuShiOutputView {
 		LiuQi:        liuQiView(v.ShiGan, v.ShiZhi, "", "", encodeShiShenName(v.ShiShen)),
 		RiZhuZuoYong: zuoYongView(v.ShengRi, v.KeRi),
 		GuanXi: LiuPanGuanXiView{
-			GanRels: ganRels, ZhiRels: zhiRels,
-			DaYunInteractions:   oneZhiInteraction(v.DaYunInteraction),
-			LiuNianInteractions: oneZhiInteraction(v.LiuNianInteraction),
-			LiuRiInteraction:    oneZhiInteraction(v.LiuRiInteraction),
+			MingJuGuanXi:  natalGuanXi(ganRels, zhiRels),
+			DaYunGuanXi:   oneZhiInteraction(v.DaYunInteraction),
+			LiuNianGuanXi: oneZhiInteraction(v.LiuNianInteraction),
+			LiuRiGuanXi:   oneZhiInteraction(v.LiuRiInteraction),
 		},
-		LiFaJie: LiFaJieView{HourRange: v.Time, ShiChen: shiChenView(v.ShiChen)},
+		GongLi:  GongLiView{HourRange: v.Time},
+		JieXian: JieXianView{ShiChen: shiChenView(v.ShiChen)},
 	}
 }
 
-func (v XiaoYunSet) View() XiaoYunItemView { return liupanView(v, &XiaoYunItemView{}) }
+func (v XiaoYunSet) View() XiaoYunItemView {
+	view := XiaoYunItemView{
+		LiuPai: displayFromBazi(xiaoYunLiuPaiDisplay, v.Method), QiFa: v.Basis,
+		Zhus: make([]XiaoYunItemZhusItemView, 0, len(v.Zhus)),
+	}
+	for _, zhu := range v.Zhus {
+		shiShen := encodeShiShenName(zhu.ShiShen)
+		view.Zhus = append(view.Zhus, XiaoYunItemZhusItemView{
+			Age: zhu.Age, Gan: zhu.Gan, Zhi: zhu.Zhi, Name: zhu.Name,
+			ShiShen: &shiShen,
+		})
+	}
+	return view
+}

@@ -54,7 +54,7 @@ func ComputeSanYuanYun(year int) SanYuanYun {
 		YunName:      yunNames[yunNum],
 		StartYear:    startYear,
 		EndYear:      endYear,
-		YearBoundary: "lichun",
+		YearBoundary: "立春",
 		ZhengShen:    zheng,
 		LingShen:     ling,
 	}

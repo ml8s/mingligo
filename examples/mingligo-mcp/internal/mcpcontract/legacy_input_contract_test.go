@@ -14,7 +14,6 @@ func TestPublishedInputSchemasRejectLegacyFields(t *testing.T) {
 	forbidden := map[string]string{
 		"birth_time":       "use subject.standard_time",
 		"birth_longitude":  "use subject.longitude",
-		"qi_gua":           "use flat standard_time/longitude/casting",
 		"qi_gua_time":      "use standard_time",
 		"qi_gua_longitude": "use longitude",
 		"qi_ju":            "use flat standard_time/longitude",

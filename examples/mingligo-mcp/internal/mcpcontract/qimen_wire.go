@@ -273,12 +273,14 @@ func (output QimenChartOutput) MarshalJSON() ([]byte, error) {
 
 func (output *QimenChartOutput) UnmarshalJSON(data []byte) error {
 	var method struct {
-		School MethodSchoolName `json:"school"`
+		PaiPanFangFa struct {
+			School MethodSchoolName `json:"school"`
+		} `json:"pai_pan_fang_fa"`
 	}
 	if err := json.Unmarshal(data, &method); err != nil {
 		return err
 	}
-	if method.School == "jinhan_yujing" {
+	if method.PaiPanFangFa.School == "jinhan_yujing" {
 		return json.Unmarshal(data, &output.Jinhan)
 	}
 	return json.Unmarshal(data, &output.Standard)

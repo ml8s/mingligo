@@ -37,7 +37,7 @@ jobs:
       - run: make gate
 
   image:
-    name: Build, smoke, and publish MCP image
+    name: Build, smoke, publish, and manifest API image
     needs: gate
     runs-on: ubuntu-latest
     timeout-minutes: 30
@@ -66,23 +66,50 @@ jobs:
           set -euo pipefail
           printf '%s' "$TOKEN" | docker login ghcr.io -u "$GITHUB_ACTOR" --password-stdin
 
-      - name: Build image
+      - name: Build API image
         env:
           GIT_COMMIT: ${{ github.sha }}
           BUILD_TIME: ${{ github.event.head_commit.timestamp || '1970-01-01T00:00:00Z' }}
+          REGISTRY_PREFIX: ${{ inputs.registry || 'ghcr.io/ml8s' }}
         run: |
           set -euo pipefail
           short="${GITHUB_SHA::12}"
-          printf 'MINGLIGO_MCP_IMAGE=%s/mingligo-mcp:sha-%s\n' "$IMAGE_PREFIX" "$short" >> "$GITHUB_ENV"
+          lowered="${REGISTRY_PREFIX,,}"
+          if [[ "$lowered" == ghcr.io/* ]]; then
+            owner="${GITHUB_REPOSITORY_OWNER,,}"
+            lowered="ghcr.io/$owner"
+          fi
+          MINGLIGO_API_IMAGE="$lowered/mingligo-api:sha-$short"
+          printf 'MINGLIGO_API_IMAGE=%s\n' "$MINGLIGO_API_IMAGE" >> "$GITHUB_ENV"
           docker build \
             --build-arg GIT_SHA="$short" \
             --build-arg COMMIT="$GIT_COMMIT" \
             --build-arg BUILD_TIME="$BUILD_TIME" \
-            -f examples/mingligo-mcp/deploy/Dockerfile \
-            -t "$MINGLIGO_MCP_IMAGE" .
+            -f examples/mingligo-api/deploy/Dockerfile \
+            -t "$MINGLIGO_API_IMAGE" .
 
-      - name: Smoke image
-        run: MINGLIGO_MCP_IMAGE="$MINGLIGO_MCP_IMAGE" examples/mingligo-mcp/deploy/smoke-mcp.sh
+      - name: Smoke API image
+        run: MINGLIGO_API_IMAGE="$MINGLIGO_API_IMAGE" examples/mingligo-api/deploy/smoke-api.sh
 
-      - name: Push image
-        run: docker push "$MINGLIGO_MCP_IMAGE"
+      - name: Push API image
+        run: docker push "$MINGLIGO_API_IMAGE"
+
+      - name: Capture approved artifact manifest
+        run: |
+          set -euo pipefail
+          api_repo="${MINGLIGO_API_IMAGE%:*}"
+          api_digest="$(docker image inspect --format '{{range .RepoDigests}}{{println .}}{{end}}' "$MINGLIGO_API_IMAGE" \
+            | while IFS= read -r ref; do [[ "$ref" == "$api_repo@"* ]] && { printf '%s\n' "$ref"; exit 0; }; done)"
+          [[ -n "$api_digest" ]]
+          python scripts/release/generate_artifact_manifest.py \
+            --repo "$GITHUB_WORKSPACE" \
+            --api-image "$api_digest" \
+            > mingligo-artifact.json
+          cat mingligo-artifact.json
+
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: mingligo-artifact-${{ github.sha }}
+          path: mingligo-artifact.json
+          if-no-files-found: error
+          retention-days: 30

@@ -85,7 +85,7 @@ func TestSeriesSingleIsDefault(t *testing.T) {
 	if len(items) != 1 {
 		t.Fatalf("got %d items, want 1", len(items))
 	}
-	if _, ok := items[0]["li_fa_jie"].(map[string]any)["year"]; !ok {
+	if _, ok := items[0]["gong_li"].(map[string]any)["nian"]; !ok {
 		t.Fatal("missing year field")
 	}
 }
@@ -101,7 +101,7 @@ func TestSeriesBatchN(t *testing.T) {
 		t.Fatalf("want 3 items, got %d", len(items))
 	}
 	for i, item := range items {
-		y, _ := item["li_fa_jie"].(map[string]any)["year"].(float64)
+		y, _ := item["gong_li"].(map[string]any)["nian"].(float64)
 		if int(y) != 2026+i {
 			t.Errorf("items[%d].year=%v, want %d", i, y, 2026+i)
 		}
@@ -123,9 +123,9 @@ func TestSeriesBatchFirstEqualsSingle(t *testing.T) {
 	if len(s.LiuNian) == 0 || len(b.LiuNian) == 0 {
 		t.Fatal("empty batch")
 	}
-	if b.LiuNian[0].LiFaJie.Year != s.LiuNian[0].LiFaJie.Year || b.LiuNian[0].LiuQi.ShiShen != s.LiuNian[0].LiuQi.ShiShen {
+	if b.LiuNian[0].GongLi.Year != s.LiuNian[0].GongLi.Year || b.LiuNian[0].LiuQi.ShiShen != s.LiuNian[0].LiuQi.ShiShen {
 		t.Errorf("batch[0] != single: year %d/%d shishen %s/%s",
-			b.LiuNian[0].LiFaJie.Year, s.LiuNian[0].LiFaJie.Year, b.LiuNian[0].LiuQi.ShiShen, s.LiuNian[0].LiuQi.ShiShen)
+			b.LiuNian[0].GongLi.Year, s.LiuNian[0].GongLi.Year, b.LiuNian[0].LiuQi.ShiShen, s.LiuNian[0].LiuQi.ShiShen)
 	}
 }
 
@@ -202,7 +202,7 @@ func TestSeriesRollovers(t *testing.T) {
 	}))
 	prevEnd := ""
 	for i, item := range months {
-		resolved, ok := item["li_fa_jie"].(map[string]any)["jie_qi"].(map[string]any)
+		resolved, ok := item["jie_xian"].(map[string]any)["jie_qi"].(map[string]any)
 		if !ok {
 			t.Fatalf("months[%d]: missing resolved", i)
 		}
@@ -224,11 +224,11 @@ func TestSeriesRollovers(t *testing.T) {
 	if len(hours) != 2 {
 		t.Fatalf("want 2 hours, got %d", len(hours))
 	}
-	if hourRange, ok := hours[0]["li_fa_jie"].(map[string]any)["hour_range"].(string); !ok || hourRange == "" {
-		t.Fatalf("bazi liu shi hour_range = %#v, want a non-empty time range", hours[0]["li_fa_jie"].(map[string]any)["hour_range"])
+	if hourRange, ok := hours[0]["gong_li"].(map[string]any)["shi_chen_fan_wei"].(string); !ok || hourRange == "" {
+		t.Fatalf("bazi liu shi hour_range = %#v, want a non-empty time range", hours[0]["gong_li"].(map[string]any)["shi_chen_fan_wei"])
 	}
-	first, _ := hours[0]["li_fa_jie"].(map[string]any)["shi_chen"].(map[string]any)["shichen"].(string)
-	second, _ := hours[1]["li_fa_jie"].(map[string]any)["shi_chen"].(map[string]any)["shichen"].(string)
+	first, _ := hours[0]["jie_xian"].(map[string]any)["shi_chen"].(map[string]any)["shichen"].(string)
+	second, _ := hours[1]["jie_xian"].(map[string]any)["shi_chen"].(map[string]any)["shichen"].(string)
 	firstZhi, err := ganzhi.EncodeZhi(first)
 	if err != nil {
 		t.Fatal(err)
@@ -253,13 +253,13 @@ func TestSeriesApparentSolarCellsDoNotRepeat(t *testing.T) {
 	if len(days) != 2 {
 		t.Fatalf("bazi liu_ri returned %d items, want 2", len(days))
 	}
-	firstDay := days[0]["li_fa_jie"].(map[string]any)["date"].(string)
-	secondDay := days[1]["li_fa_jie"].(map[string]any)["date"].(string)
+	firstDay := days[0]["gong_li"].(map[string]any)["ri"].(string)
+	secondDay := days[1]["gong_li"].(map[string]any)["ri"].(string)
 	if firstDay == secondDay {
 		t.Fatalf("bazi liu_ri repeated LAST date %s", firstDay)
 	}
 
-	if got := days[0]["li_fa_jie"].(map[string]any)["ri_jie"].(map[string]any)["standard_time"].(string); got != "2024-01-01T22:52:00Z" {
+	if got := days[0]["jie_xian"].(map[string]any)["ri_jie"].(map[string]any)["standard_time"].(string); got != "2024-01-01T22:52:00Z" {
 		t.Fatalf("bazi liu_ri first selector = %s, want the input selector", got)
 	}
 
@@ -270,13 +270,13 @@ func TestSeriesApparentSolarCellsDoNotRepeat(t *testing.T) {
 	if len(hours) != 2 {
 		t.Fatalf("bazi liu_shi returned %d items, want 2", len(hours))
 	}
-	if got := hours[0]["li_fa_jie"].(map[string]any)["shi_chen"].(map[string]any)["standard_time"].(string); got != "2024-01-02T20:28:00Z" {
+	if got := hours[0]["jie_xian"].(map[string]any)["shi_chen"].(map[string]any)["standard_time"].(string); got != "2024-01-02T20:28:00Z" {
 		t.Fatalf("bazi liu_shi first selector = %s, want the input selector", got)
 	}
-	if first := hours[0]["li_fa_jie"].(map[string]any)["shi_chen"].(map[string]any)["shichen"].(string); first != "巳" {
+	if first := hours[0]["jie_xian"].(map[string]any)["shi_chen"].(map[string]any)["shichen"].(string); first != "巳" {
 		t.Fatalf("first shichen = %s, want 巳", first)
 	}
-	if second := hours[1]["li_fa_jie"].(map[string]any)["shi_chen"].(map[string]any)["shichen"].(string); second != "午" {
+	if second := hours[1]["jie_xian"].(map[string]any)["shi_chen"].(map[string]any)["shichen"].(string); second != "午" {
 		t.Fatalf("second shichen = %s, want 午", second)
 	}
 

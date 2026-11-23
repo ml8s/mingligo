@@ -13,8 +13,10 @@ GIT_SHA ?= $(shell git rev-parse --short=12 HEAD 2>/dev/null || echo unknown)
 BUILD_TIME ?= $(shell date -u +%Y-%m-%dT%H:%M:%SZ)
 # A stale host GOROOT must never override the toolchain selected from go.mod.
 unexport GOROOT
+GOROOT := $(shell env -u GOROOT go env GOROOT)
+export GOROOT
 
-.PHONY: help build example-build run test vet fmt fmt-check lint security-go check gate docs-lint image-mcp runimage smoke-mcp boundary
+.PHONY: help build example-build run test vet fmt fmt-check lint security-go check gate docs-lint image-mcp image-api runimage smoke-mcp smoke-api boundary
 
 help:
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(firstword $(MAKEFILE_LIST)) | awk 'BEGIN {FS = ":.*?## "}; {printf "  %-20s %s\n", $$1, $$2}'
@@ -82,3 +84,14 @@ runimage: image-mcp ## Run the mingligo-mcp image for quick validation
 smoke-mcp: image-mcp ## Smoke the mingligo-mcp image
 	IMAGE_TAG=$(IMAGE_TAG) IMAGE_REGISTRY=$(IMAGE_REGISTRY) \
 		examples/mingligo-mcp/deploy/smoke-mcp.sh
+
+image-api: ## Build the mingligo-api image
+	docker build -f examples/mingligo-api/deploy/Dockerfile \
+		--build-arg GIT_SHA=$(GIT_SHA) \
+		--build-arg COMMIT=$(GIT_COMMIT) \
+		--build-arg BUILD_TIME=$(BUILD_TIME) \
+		-t $(IMAGE_REGISTRY)/mingligo-api:$(IMAGE_TAG) .
+
+smoke-api: image-api ## Smoke the mingligo-api image
+	IMAGE_TAG=$(IMAGE_TAG) IMAGE_REGISTRY=$(IMAGE_REGISTRY) \
+		examples/mingligo-api/deploy/smoke-api.sh

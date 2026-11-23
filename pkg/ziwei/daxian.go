@@ -6,21 +6,21 @@ func daXianQiSui(ju JuShu) int {
 	return int(ju)
 }
 
-func ComputeDaXian(core Core) []DaXianStep {
+func ComputeDaXian(core Core) [12]DaXianStep {
 	forward := isDaXianForward(core.Gender, core.NianGan)
 	qiSui := daXianQiSui(core.JuShu)
-	steps := make([]DaXianStep, 0, 12)
+	var steps [12]DaXianStep
 	pos := GongIndex(0)
 	// 大限起于出生年：虚岁 QiSui → 公历年 = birthYear + QiSui − 1（虚岁 1 岁 = 出生年）。
 	startY := core.BirthYear + qiSui - 1
 	for i := 0; i < 12; i++ {
-		steps = append(steps, DaXianStep{
+		steps[i] = DaXianStep{
 			QiSui:     qiSui + i*10,
 			ZhiSui:    qiSui + i*10 + 9,
 			StartYear: startY + i*10,
 			EndYear:   startY + i*10 + 9,
 			MingGong:  pos,
-		})
+		}
 		if forward {
 			pos = (pos + 11) % 12 // 经典顺行→逆Mingli序往后走
 		} else {

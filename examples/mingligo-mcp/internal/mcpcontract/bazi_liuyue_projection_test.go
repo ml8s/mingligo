@@ -28,7 +28,7 @@ func TestBaziLiuYueDomainMatchesView(t *testing.T) {
 	if err := json.Unmarshal(vj, &doc); err != nil {
 		t.Fatal(err)
 	}
-	for _, key := range []string{"liu_qi", "ri_zhu_zuo_yong", "guan_xi", "li_fa_jie"} {
+	for _, key := range []string{"liu_qi", "ri_zhu_zuo_yong", "guan_xi", "gong_li", "jie_xian"} {
 		if _, ok := doc[key]; !ok {
 			t.Errorf("view missing命理子域 %s: %s", key, vj)
 		}

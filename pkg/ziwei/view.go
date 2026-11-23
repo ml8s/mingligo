@@ -20,24 +20,14 @@ type LiFaKouJingView struct {
 // PaiPanKouJingView groups排盘口径 facts.
 type PaiPanKouJingView struct {
 	KouJing   ChartSchool `json:"kou_jing" jsonschema:"排盘口径。"`
-	JuShu     JuShu       `json:"ju_shu" jsonschema:"局数机器码。"`
-	JuShuName string      `json:"ju_shu_name" jsonschema:"局数名。"`
+	JuShu     JuShu       `json:"ju_shu_ma" jsonschema:"局数机器码。"`
+	JuShuName string      `json:"ju_shu" jsonschema:"局数名。"`
 }
 
 // KongGongSanFangView groups宫位级引用事实 (星曜仍由 GongWei 源宫唯一承载).
 type KongGongSanFangView struct {
 	KongGong       []KongGongInfo `json:"kong_gong,omitempty" jsonschema:"空宫借星。"`
 	SanFangSiZheng SanFangSiZheng `json:"san_fang_si_zheng" jsonschema:"命宫三方四正宫位关系。"`
-}
-
-// GeJuView groups格局候选 (不裁决成败).
-type GeJuView struct {
-	Candidates []Pattern `json:"candidates,omitempty" jsonschema:"格局候选。"`
-}
-
-// DaXianView groups时间轴序列 (与八字顶层 DaYun 对齐).
-type DaXianView struct {
-	DaXian []DaXianStep `json:"da_xian" jsonschema:"十年大限序列。"`
 }
 
 // MingZhuShenZhuView groups命主身主定星 (命宫支/年支的固定映射).
@@ -52,8 +42,8 @@ type ChartView struct {
 	PaiPanKouJing   PaiPanKouJingView   `json:"pai_pan_kou_jing" jsonschema:"排盘口径与局数。"`
 	GongWei         [12]Gong            `json:"shi_er_gong" jsonschema:"十二宫；星曜由各宫唯一承载。"`
 	KongGongSanFang KongGongSanFangView `json:"kong_gong_san_fang" jsonschema:"宫位引用事实。"`
-	GeJu            GeJuView            `json:"ge_ju" jsonschema:"格局候选。"`
-	DaXian          DaXianView          `json:"da_xian" jsonschema:"时间轴序列。"`
+	GeJu            []Pattern           `json:"ge_ju" jsonschema:"格局候选。"`
+	DaXian          [12]DaXianStep      `json:"da_xian" jsonschema:"时间轴序列。"`
 	MingZhuShenZhu  MingZhuShenZhuView  `json:"ming_zhu_shen_zhu" jsonschema:"命主身主定星。"`
 }
 
@@ -71,8 +61,8 @@ func (c Chart) View() ChartView {
 		KongGongSanFang: KongGongSanFangView{
 			KongGong: c.KongGong, SanFangSiZheng: c.SanFangSiZheng,
 		},
-		GeJu:           GeJuView{Candidates: c.Patterns},
-		DaXian:         DaXianView{DaXian: c.DaXian},
+		GeJu:           c.Patterns,
+		DaXian:         c.DaXian,
 		MingZhuShenZhu: MingZhuShenZhuView{MingZhu: c.MingZhu, ShenZhu: c.ShenZhu},
 	}
 }

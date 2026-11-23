@@ -144,15 +144,15 @@ func TestMigratedQimenCanonicalMethodAndDingju(t *testing.T) {
 	method := callQimenChart(t, registry, map[string]any{
 		"standard_time": "1984-02-15T08:00:00+08:00", "longitude": 116.4,
 	})["pai_pan_fang_fa"].(map[string]any)
-	if method["scope"] != "hour" || method["school"] != "zhuanpan" || method["dingju_method"] != "chaibu" {
+	if method["fan_chou"] != "hour" || method["liu_pai"] != "zhuanpan" || method["ding_ju_fang_fa"] != "chaibu" {
 		t.Fatalf("canonical method = %v/%v/%v, want hour/zhuanpan/chaibu",
-			method["scope"], method["school"], method["dingju_method"])
+			method["fan_chou"], method["liu_pai"], method["ding_ju_fang_fa"])
 	}
 	method = callQimenChart(t, registry, map[string]any{
 		"standard_time": "2026-01-05T13:00:00+08:00", "longitude": 116.4, "dingju_method": "zhirun",
 	})["pai_pan_fang_fa"].(map[string]any)
-	if method["dingju_method"] != "zhirun" {
-		t.Fatalf("dingju method = %v, want zhirun", method["dingju_method"])
+	if method["ding_ju_fang_fa"] != "zhirun" {
+		t.Fatalf("dingju method = %v, want zhirun", method["ding_ju_fang_fa"])
 	}
 	if method["jie_qi"] != "冬至" || method["yong_ju_jie_qi"] != "小寒" {
 		t.Fatalf("terms = %v/%v, want 冬至/小寒", method["jie_qi"], method["yong_ju_jie_qi"])
@@ -171,10 +171,10 @@ func TestMigratedQimenMethodMatrix(t *testing.T) {
 		"standard_time": standardInputFromInstant(t, solarTime, "Asia/Shanghai"), "longitude": 116.4, "scope": "hour", "school": "luoshu_feipan", "dingju_method": "zhirun",
 	})
 	method := document["pai_pan_fang_fa"].(map[string]any)
-	if method["scope"] != "hour" || method["school"] != "luoshu_feipan" || method["dingju_method"] != "zhirun" {
-		t.Fatalf("method = %v/%v/%v", method["scope"], method["school"], method["dingju_method"])
+	if method["fan_chou"] != "hour" || method["liu_pai"] != "luoshu_feipan" || method["ding_ju_fang_fa"] != "zhirun" {
+		t.Fatalf("method = %v/%v/%v", method["fan_chou"], method["liu_pai"], method["ding_ju_fang_fa"])
 	}
-	if _, exists := document["pan"].(map[string]any)["school"]; exists {
+	if _, exists := document["jiu_gong_pan"].(map[string]any)["school"]; exists {
 		t.Fatal("board school duplicates method.school")
 	}
 
@@ -220,9 +220,12 @@ func TestMigratedQimenBirthDateAndYongShenPaths(t *testing.T) {
 // 天盘/地盘/暗干 symbol, it only appears through its 值符 role.
 func assertJiaStaysHidden(t *testing.T, data map[string]any) {
 	t.Helper()
-	board, ok := data["pan"].(map[string]any)
+	board, ok := data["jiu_gong_pan"].(map[string]any)
 	if !ok {
-		t.Fatalf("board = %#v", data["pan"])
+		board, ok = data["pan"].(map[string]any)
+	}
+	if !ok {
+		t.Fatalf("board = %#v", data)
 	}
 	for _, raw := range board["gong_wei"].([]any) {
 		palace := raw.(map[string]any)
@@ -239,7 +242,7 @@ func assertJiaStaysHidden(t *testing.T, data map[string]any) {
 			}
 		}
 	}
-	if interactions, ok := data["gan_interaction"].([]any); ok {
+	if interactions, ok := data["gan_ke_ying"].([]any); ok {
 		for _, raw := range interactions {
 			interaction := raw.(map[string]any)
 			if interaction["di_pan_gan"] == "甲" || interaction["tian_pan_gan"] == "甲" {

@@ -33,7 +33,7 @@ func TestSymbolJSONRoundtrip(t *testing.T) {
 	t.Run("ziwei.ShenSha", func(t *testing.T) { symbolRoundtrip[ziwei.ShenSha](t, "华盖") })
 	t.Run("ziwei.Brightness", func(t *testing.T) { symbolRoundtrip[ziwei.Brightness](t, "庙") })
 	t.Run("ziwei.FlowStar", func(t *testing.T) { symbolRoundtrip[ziwei.FlowStar](t, "月禄") })
-	t.Run("liuyao.MuKuSource", func(t *testing.T) { symbolRoundtrip[liuyao.MuKuSource](t, "day") })
+	t.Run("liuyao.MuKuSource", func(t *testing.T) { symbolRoundtrip[liuyao.MuKuSource](t, "日墓") })
 	t.Run("liuyao.ShiYing", func(t *testing.T) { symbolRoundtrip[liuyao.ShiYing](t, "世") })
 	t.Run("liuyao.DayRelationType", func(t *testing.T) { symbolRoundtrip[liuyao.DayRelationType](t, "冲") })
 	t.Run("liuyao.FeiFuRelation", func(t *testing.T) { symbolRoundtrip[liuyao.FeiFuRelation](t, "飞来生伏") })

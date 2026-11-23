@@ -37,11 +37,22 @@ func TestMetaSplitRelocation(t *testing.T) {
 	}
 	moves := []struct{ key, to, nestedKey string }{
 		{"kong_gong", "kong_gong_san_fang", "kong_gong"}, {"san_fang_si_zheng", "kong_gong_san_fang", "san_fang_si_zheng"},
-		{"ge_ju", "ge_ju", "candidates"}, {"da_xian", "da_xian", "da_xian"},
+		{"ge_ju", "ge_ju", ""}, {"da_xian", "da_xian", ""},
 		{"ming_zhu", "ming_zhu_shen_zhu", "ming_zhu"}, {"shen_zhu", "ming_zhu_shen_zhu", "shen_zhu"},
 	}
 	for _, m := range moves {
 		ov, had := bm[m.key]
+		if m.nestedKey == "" {
+			nv, has := got[m.to]
+			if had != has {
+				t.Errorf("meta.%s presence changed", m.key)
+				continue
+			}
+			if had && !reflect.DeepEqual(ov, nv) {
+				t.Errorf("meta.%s -> %s: %v -> %v", m.key, m.to, ov, nv)
+			}
+			continue
+		}
 		target, ok := got[m.to].(map[string]any)
 		if !ok {
 			if had {

@@ -173,9 +173,9 @@ func TestLiuyaoQiguaSchemaUsesMutuallyExclusiveForms(t *testing.T) {
 	}
 
 	wantRequired := map[string][]string{
-		"auto":  {"mode"},
-		"coins": {"mode", "rounds"},
-		"yaos":  {"mode", "yaos"},
+		"auto":  {"fang_shi"},
+		"coins": {"fang_shi", "tong_qian_ji_lu"},
+		"yaos":  {"fang_shi", "yao_zhi"},
 	}
 	seen := make(map[string]bool, len(input.OneOf))
 	for _, form := range input.OneOf {
@@ -191,9 +191,9 @@ func TestLiuyaoQiguaSchemaUsesMutuallyExclusiveForms(t *testing.T) {
 			} `json:"properties"`
 		}
 		decode(t, rawCasting, &casting)
-		mode := casting.Properties["mode"].Const
-		if mode == "" || casting.Properties["mode"].Enum != nil {
-			t.Fatalf("liuyao_qigua casting.mode must be a branch constant: %#v", casting.Properties["mode"])
+		mode := casting.Properties["fang_shi"].Const
+		if mode == "" || casting.Properties["fang_shi"].Enum != nil {
+			t.Fatalf("liuyao_qigua casting.mode must be a branch constant: %#v", casting.Properties["fang_shi"])
 		}
 		if seen[mode] {
 			t.Fatalf("duplicate liuyao_qigua form: %s", mode)
@@ -390,12 +390,12 @@ func TestMingliContractBaziTiaoHouUsesExplicitNoSecondary(t *testing.T) {
 	if tiaoHou == nil {
 		t.Fatalf("bazi.chart output has no tiao_hou: %#v", full)
 	}
-	secondary, ok := tiaoHou["secondary_wuxing"]
+	secondary, ok := tiaoHou["fu_yong"]
 	if !ok {
-		t.Fatalf("bazi.chart output omitted secondary_wuxing: %#v", tiaoHou)
+		t.Fatalf("bazi.chart output omitted fu_yong: %#v", tiaoHou)
 	}
 	if secondary != "无辅调候" {
-		t.Fatalf("expected explicit 无辅调候 secondary_wuxing, got %#v", secondary)
+		t.Fatalf("expected explicit 无辅调候 fu_yong, got %#v", secondary)
 	}
 
 	var schema map[string]any
@@ -406,10 +406,10 @@ func TestMingliContractBaziTiaoHouUsesExplicitNoSecondary(t *testing.T) {
 	fuYi := evidenceSchema["fu_yi"].(map[string]any)["properties"].(map[string]any)
 	tiaoHouSchema := evidenceSchema["tiao_hou"].(map[string]any)["properties"].(map[string]any)
 	for name, field := range map[string]map[string]any{
-		"fu_yi.yong":                fuYi["yong"].(map[string]any),
-		"fu_yi.xi":                  fuYi["xi"].(map[string]any),
-		"fu_yi.ji":                  fuYi["ji"].(map[string]any),
-		"tiao_hou.secondary_wuxing": tiaoHouSchema["secondary_wuxing"].(map[string]any),
+		"fu_yi.yong":       fuYi["yong"].(map[string]any),
+		"fu_yi.xi":         fuYi["xi"].(map[string]any),
+		"fu_yi.ji":         fuYi["ji"].(map[string]any),
+		"tiao_hou.fu_yong": tiaoHouSchema["fu_yong"].(map[string]any),
 	} {
 		field = resolveTestSchemaRef(t, field, definitions)
 		if field["type"] != "string" {
@@ -487,10 +487,10 @@ func TestMingliContractCalls(t *testing.T) {
 		t.Fatalf("huangli days = %d, want 1", len(huangliOutput.Days))
 	}
 	day := huangliOutput.Days[0]
-	if day.YiJi.Event != "sign" || day.YiJi.EventLabel != "签约" || day.YiJi.Suitability != "recommended" {
+	if day.YiJi.ShiXiang != "sign" || day.YiJi.ShiXiangMing != "签约" || day.YiJi.ShiYi != "宜" {
 		t.Fatalf("huangli classification = %#v", day)
 	}
-	if len(day.ShiChen) == 0 || day.Mansion.Name == "" || day.RiZhu.NaYin == "" {
+	if len(day.ShiChen) == 0 || day.Xiu.Ming == "" || day.RiZhu.NaYin == "" {
 		t.Fatalf("huangli view lost nested facts: %#v", day)
 	}
 
@@ -597,8 +597,8 @@ func TestMingliContractCalls(t *testing.T) {
 	if err := json.Unmarshal(qiguaRaw, &qiguaDocument); err != nil {
 		t.Fatal(err)
 	}
-	eventDocument, _ := qiguaDocument["event"].(map[string]any)
-	castingDocument, _ := eventDocument["casting"].(map[string]any)
+	eventDocument, _ := qiguaDocument["qi_gua"].(map[string]any)
+	castingDocument, _ := eventDocument["qi_gua_ji_lu"].(map[string]any)
 	if _, exists := castingDocument["casting_digest"]; exists {
 		t.Fatal("liuyao casting must not publish casting_digest")
 	}
@@ -642,8 +642,8 @@ func TestMingliContractCalls(t *testing.T) {
 		t.Fatal(err)
 	}
 	liuyaoChart := liuyaoChartResult.Chart
-	if liuyaoChart.GuaName == "" || len(liuyaoChart.LiuYao) != 6 ||
-		liuyaoChart.MuKuLiuPai.School == "" {
+	if liuyaoChart.BenGua.GuaMing == "" || len(liuyaoChart.LiuYao) != 6 ||
+		liuyaoChart.FangFaKouJing.MuKuLiuPai.School == "" {
 		t.Fatalf("incomplete liuyao chart: %#v", liuyaoChart)
 	}
 

@@ -79,7 +79,7 @@ func TestDomainOracle_AnnualFlyingStars(t *testing.T) {
 		}
 	}
 	board := ComputeAnnualFlyingStars(1984)
-	if board.YearBoundary != "lichun" {
+	if board.YearBoundary != "立春" {
 		t.Fatalf("year_boundary = %s, want explicit lichun", board.YearBoundary)
 	}
 	if board.RuZhong != "七赤破军" {

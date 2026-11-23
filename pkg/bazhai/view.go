@@ -7,8 +7,8 @@ package bazhai
 
 // GuaXiangView is a bagua trigram.
 type GuaXiangView struct {
-	Index   int    `json:"index" jsonschema:"洛书宫数。"`
-	Name    string `json:"name" jsonschema:"卦名。"`
+	Index   int    `json:"gong_shu" jsonschema:"洛书宫数。"`
+	Name    string `json:"gua_ming" jsonschema:"卦名。"`
 	Wuxing  string `json:"wuxing" jsonschema:"卦五行。"`
 	YinYang string `json:"yin_yang" jsonschema:"卦阴阳。"`
 }
@@ -17,7 +17,7 @@ type GuaXiangView struct {
 type MingGuaXiangView struct {
 	Gua          GuaXiangView `json:"gua" jsonschema:"命卦。"`
 	Group        LifeGroup    `json:"dong_xi_si_ming" jsonschema:"东四命或西四命。"`
-	YearBoundary string       `json:"year_boundary" jsonschema:"年界：立春。"`
+	YearBoundary string       `json:"nian_jie" jsonschema:"年界：立春。"`
 }
 
 // SiJiSiXiongFangView groups四吉四凶方向.
@@ -34,16 +34,16 @@ type SiJiSiXiongFangView struct {
 
 // NianXingView is one palace's purple-white flying star.
 type NianXingView struct {
-	GongNum  int    `json:"gong_num" jsonschema:"洛书宫数。"`
+	GongNum  int    `json:"gong_shu" jsonschema:"洛书宫数。"`
 	Xing     int    `json:"xing" jsonschema:"紫白星数。"`
-	XingName string `json:"xing_name" jsonschema:"紫白星名。"`
+	XingName string `json:"xing_ming" jsonschema:"紫白星名。"`
 	Wuxing   string `json:"wuxing" jsonschema:"星五行。"`
 	RuZhong  bool   `json:"ru_zhong" jsonschema:"是否入中。"`
 }
 
 // ChuShengNianBaiXingView groups出生年紫白飞星.
 type ChuShengNianBaiXingView struct {
-	Year    int            `json:"year" jsonschema:"立春年份。"`
+	Year    int            `json:"nian" jsonschema:"立春年份。"`
 	RuZhong string         `json:"ru_zhong" jsonschema:"入中紫白星。"`
 	Palaces []NianXingView `json:"gong_wei" jsonschema:"九宫紫白星。"`
 }
@@ -52,7 +52,7 @@ type ChuShengNianBaiXingView struct {
 type BaZhaiMingGuaPanView struct {
 	MingGua         MingGuaXiangView        `json:"ming_gua" jsonschema:"命卦。"`
 	SiJiSiXiongFang SiJiSiXiongFangView     `json:"si_ji_si_xiong_fang" jsonschema:"四吉四凶方向。"`
-	YearStars       ChuShengNianBaiXingView `json:"birth_year_xing" jsonschema:"出生年紫白飞星。"`
+	YearStars       ChuShengNianBaiXingView `json:"chu_sheng_nian_xing" jsonschema:"出生年紫白飞星。"`
 }
 
 // MenZhuZaoView groups the门主灶 assessment (bazhai_layout tool output).

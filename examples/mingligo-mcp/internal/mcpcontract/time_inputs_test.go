@@ -145,7 +145,7 @@ func TestTimeInputsCanonical(t *testing.T) {
 				var fields []string
 				switch name {
 				case "liuyao_chart":
-					for _, field := range []string{"event"} {
+					for _, field := range []string{"qi_gua"} {
 						if _, ok := schema.Properties[field]; !ok {
 							t.Fatalf("schema[%d]: missing %s", schemaIndex, field)
 						}

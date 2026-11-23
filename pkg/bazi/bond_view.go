@@ -186,5 +186,13 @@ func (b Bond) View() BondView {
 	if err := json.Unmarshal(raw, &view); err != nil {
 		return BondView{}
 	}
+	// View boundary: map machine-code source values to 命理 display terms.
+	for _, side := range []*SpouseStarSideView{&view.SpouseStar.A, &view.SpouseStar.B} {
+		for _, cand := range []*SpouseStarCandidateView{&side.Primary, &side.Secondary} {
+			for i := range cand.Occurrences {
+				cand.Occurrences[i].Source = displayFromBazi(tenGodSourceDisplay, cand.Occurrences[i].Source)
+			}
+		}
+	}
 	return view
 }

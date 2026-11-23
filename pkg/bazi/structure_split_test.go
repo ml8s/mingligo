@@ -38,11 +38,10 @@ func TestStructureSplitFieldRelocation(t *testing.T) {
 
 	// 迁移字段值不变（最终命理域路径）
 	checks := []struct{ from, key, to, toKey string }{
-		{"structure", "guan_sha", "", "guan_sha"}, {"structure", "cai_ku", "", "cai_ku"},
-		{"structure", "spouse_palace_state", "", "pei_ou_gong"}, {"structure", "day_branch_type", "", "ri_zhi_xiang"},
-		{"structure", "shen_sha_school", "li_fa_kou_jing", "shen_sha_school"}, {"", "birth_year", "li_fa_kou_jing", "birth_year"},
-		{"structure", "san_yuan", "san_yuan_view", "san_yuan"}, {"structure", "tai_xi", "shen_sha", "tai_xi"},
-		{"structure", "chang_sheng", "chang_sheng_view", "chang_sheng"}, {"structure", "san_qi_name", "shen_sha", "san_qi_name"},
+		{"structure", "guan_sha", "yong_shen_qu_fa", "guan_sha_qu_qing"}, {"structure", "cai_ku", "yong_shen_qu_fa", "cai_ku"},
+		{"structure", "spouse_palace_state", "guan_xi", "pei_ou_gong"}, {"structure", "shen_sha_school", "fang_fa_kou_jing", "shen_sha_school"}, {"", "birth_year", "li_fa", "birth_year"},
+		{"structure", "san_yuan", "", "san_yuan"}, {"structure", "tai_xi", "shen_sha", "tai_xi"},
+		{"structure", "chang_sheng", "", "chang_sheng"}, {"structure", "san_qi_name", "shen_sha", "san_qi_name"},
 	}
 	for _, ck := range checks {
 		var ov, nv any
@@ -55,6 +54,15 @@ func TestStructureSplitFieldRelocation(t *testing.T) {
 			nv = got[ck.toKey]
 		} else {
 			nv = got[ck.to].(map[string]any)[ck.toKey]
+		}
+		if ck.key == "chang_sheng" {
+			old := ov.([]any)
+			normalized := make([]any, 0, len(old))
+			for _, item := range old {
+				m := item.(map[string]any)
+				normalized = append(normalized, map[string]any{"ming": m["name"], "zhi": m["index"]})
+			}
+			ov = normalized
 		}
 		if !reflect.DeepEqual(ov, nv) {
 			t.Errorf("%s.%s -> %s.%s: %v -> %v", ck.from, ck.key, ck.to, ck.toKey, ov, nv)

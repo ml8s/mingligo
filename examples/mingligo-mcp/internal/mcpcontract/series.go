@@ -67,7 +67,7 @@ func seriesOutputSchema[Out any](options *jsonschema.ForOptions, root string) (j
 		"properties": map[string]any{
 			root: map[string]any{
 				"type":        "array",
-				"description": "领域事实序列；长度与请求 count 一致。",
+				"description": "领域事实序列；xiao_yun 恒为两个学派，其余 scope 长度与请求 count 一致。",
 				"items":       mustJSONSchemaRaw(schema),
 				"minItems":    1,
 				"maxItems":    MaxSeriesCount,

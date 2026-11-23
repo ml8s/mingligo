@@ -37,5 +37,5 @@ type BaziLiupanOutput struct {
 	LiuYue  []bazi.LiuYueOutputView  `json:"liu_yue,omitempty" jsonschema:"流月数组，长度 = count。"`
 	LiuRi   []bazi.LiuRiOutputView   `json:"liu_ri,omitempty" jsonschema:"流日数组，长度 = count。"`
 	LiuShi  []bazi.LiuShiOutputView  `json:"liu_shi,omitempty" jsonschema:"流时数组，长度 = count。"`
-	XiaoYun []bazi.XiaoYunItemView   `json:"xiao_yun,omitempty" jsonschema:"各学派小运列表；长度 = count。"`
+	XiaoYun []bazi.XiaoYunItemView   `json:"xiao_yun,omitempty" jsonschema:"各学派小运列表；恒为两个学派，count 控制各学派柱数。"`
 }

@@ -90,7 +90,7 @@ func QueryDate(date tianwen.Date, event ...string) (Day, error) {
 
 func withEventRule(entry Day, event string) (Day, error) {
 	if event == "" {
-		entry.Suitability = "unspecified"
+		entry.Suitability = "未指定"
 		entry.EventReason = "未指定事项，仅列黄历事实。"
 		return entry, nil
 	}
@@ -102,13 +102,13 @@ func withEventRule(entry Day, event string) (Day, error) {
 	entry.EventLabel = rule.Label
 	switch {
 	case containsJianChu(rule.Suitable, entry.JianChu):
-		entry.Suitability = "recommended"
+		entry.Suitability = "宜"
 		entry.EventReason = "建除「" + DecodeJianChu(entry.JianChu) + "」适合" + rule.Label + "。"
 	case containsJianChu(rule.Forbidden, entry.JianChu):
-		entry.Suitability = "unsuitable"
+		entry.Suitability = "忌"
 		entry.EventReason = "建除「" + DecodeJianChu(entry.JianChu) + "」忌" + rule.Label + "。"
 	default:
-		entry.Suitability = "possible"
+		entry.Suitability = "两可"
 		entry.EventReason = "建除「" + DecodeJianChu(entry.JianChu) + "」无明确适配或冲突。"
 	}
 	return entry, nil

@@ -36,7 +36,8 @@ func TestZiweiLiuNianDomainMatchesView(t *testing.T) {
 	if err := json.Unmarshal(vj, &b); err != nil {
 		t.Fatal(err)
 	}
-	if !reflect.DeepEqual(a, b) {
-		t.Errorf("domain/view mismatch\ndomain: %s\nview:   %s", dj, vj)
+	normalized := normalizeProjectionKeys(foldLiuQi(a), nil)
+	if !reflect.DeepEqual(normalized, b) {
+		t.Fatalf("domain/view mismatch\ndomain: %s\nview:   %s", dj, vj)
 	}
 }

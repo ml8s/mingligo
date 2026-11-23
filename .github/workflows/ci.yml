@@ -38,7 +38,7 @@ jobs:
       - run: make gate
 
   container:
-    name: MCP container
+    name: Example containers
     needs: gate
     runs-on: ubuntu-latest
     timeout-minutes: 20
@@ -48,3 +48,5 @@ jobs:
           persist-credentials: false
       - run: make image-mcp IMAGE_REGISTRY=mingligo-review IMAGE_TAG=ci
       - run: IMAGE_REGISTRY=mingligo-review IMAGE_TAG=ci make smoke-mcp
+      - run: make image-api IMAGE_REGISTRY=mingligo-review IMAGE_TAG=ci
+      - run: IMAGE_REGISTRY=mingligo-review IMAGE_TAG=ci make smoke-api

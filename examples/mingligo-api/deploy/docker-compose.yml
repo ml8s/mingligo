@@ -1,0 +1,24 @@
+# MingliGo API local/development stack.
+#
+# This file is only for building and running the example API image from this
+# source tree.
+
+services:
+  mingligo-api:
+    image: mingligo-api:local
+    build:
+      context: ../../..
+      dockerfile: examples/mingligo-api/deploy/Dockerfile
+    ports:
+      - "${MINGLIGO_API_HOST_PORT:-18083}:18082"
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+          cpus: "1"
+    healthcheck:
+      test: ["CMD", "/usr/local/bin/mingligo-api", "-healthcheck"]
+      interval: 30s
+      timeout: 3s
+      retries: 3

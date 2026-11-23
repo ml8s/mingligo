@@ -26,12 +26,12 @@ func TestLiuyaoCoinScoresUseConstSchema(t *testing.T) {
 										Heads map[string]any `json:"正"`
 										Tails map[string]any `json:"反"`
 									} `json:"properties"`
-								} `json:"coin_convention"`
+								} `json:"tong_qian_yue_ding"`
 							} `json:"properties"`
 						} `json:"oneOf"`
-					} `json:"casting"`
+					} `json:"qi_gua_ji_lu"`
 				} `json:"properties"`
-			} `json:"event"`
+			} `json:"qi_gua"`
 		} `json:"properties"`
 	}
 	if err := json.Unmarshal(definition.OutputSchema, &schema); err != nil {
@@ -44,7 +44,7 @@ func TestLiuyaoCoinScoresUseConstSchema(t *testing.T) {
 					Heads map[string]any `json:"正"`
 					Tails map[string]any `json:"反"`
 				} `json:"properties"`
-			} `json:"coin_convention"`
+			} `json:"tong_qian_yue_ding"`
 		} `json:"properties"`
 	}
 	for _, branch := range schema.Properties.Event.Properties.Casting.OneOf {
@@ -82,8 +82,8 @@ func TestLiuyaoQiguaCoinsInputUsesRawThreeCoinArrays(t *testing.T) {
 			Properties struct {
 				Origin struct {
 					Properties struct {
-						Mode   map[string]any `json:"mode"`
-						Rounds map[string]any `json:"rounds"`
+						Mode   map[string]any `json:"fang_shi"`
+						Rounds map[string]any `json:"tong_qian_ji_lu"`
 					} `json:"properties"`
 				} `json:"origin"`
 			} `json:"properties"`
@@ -154,7 +154,7 @@ func TestLiuyaoFocusSchemaUsesClosedDiscriminatedBranches(t *testing.T) {
 		}
 		return resolved
 	}
-	context := resolveSchemaRef(form["properties"].(map[string]any)["casting_context"].(map[string]any))
+	context := resolveSchemaRef(form["properties"].(map[string]any)["qi_gua_qing_jing"].(map[string]any))
 	focusSchema := resolveSchemaRef(context["properties"].(map[string]any)["focus"].(map[string]any))
 	if branches, ok := focusSchema["oneOf"].([]any); ok {
 		for _, branchAny := range branches {
@@ -196,7 +196,7 @@ func TestLiuyaoFocusSchemaUsesClosedDiscriminatedBranches(t *testing.T) {
 	matter, relationship, yongShen := focus.OneOf[0], focus.OneOf[1], focus.OneOf[2]
 	if matter.Properties["kind"].Const != "matter" ||
 		relationship.Properties["matter"].Const != "relationship" ||
-		yongShen.Properties["kind"].Const != "yong_shen" {
+		yongShen.Properties["kind"].Const != "qu_yong" {
 		t.Fatalf("focus discriminators = %#v", focus.OneOf)
 	}
 	if !containsString(relationship.Required, "perspective") {
@@ -210,7 +210,7 @@ func assertLiuyaoCanonicalEventSchema(t *testing.T, raw json.RawMessage) {
 	if err := json.Unmarshal(raw, &schema); err != nil {
 		t.Fatal(err)
 	}
-	event, ok := schema["properties"].(map[string]any)["event"].(map[string]any)
+	event, ok := schema["properties"].(map[string]any)["qi_gua"].(map[string]any)
 	if !ok {
 		t.Fatalf("schema has no event properties: %#v", schema)
 	}
@@ -221,21 +221,21 @@ func assertLiuyaoCanonicalEventSchema(t *testing.T, raw json.RawMessage) {
 	if _, exists := eventProperties["question"]; exists {
 		t.Fatalf("canonical event must not publish question: %#v", eventProperties)
 	}
-	branches, ok := eventProperties["casting"].(map[string]any)["oneOf"].([]any)
+	branches, ok := eventProperties["qi_gua_ji_lu"].(map[string]any)["oneOf"].([]any)
 	if !ok || len(branches) != 2 {
-		t.Fatalf("casting branches = %#v, want 2", eventProperties["casting"])
+		t.Fatalf("casting branches = %#v, want 2", eventProperties["qi_gua_ji_lu"])
 	}
-	context := eventProperties["casting_context"].(map[string]any)
+	context := eventProperties["qi_gua_qing_jing"].(map[string]any)
 	contextProperties := context["properties"].(map[string]any)
 	if _, exists := contextProperties["focus"]; exists {
 		t.Fatalf("canonical casting_context must not publish focus: %#v", contextProperties)
 	}
-	yongShen, ok := contextProperties["yong_shen"].(map[string]any)
+	yongShen, ok := contextProperties["qu_yong"].(map[string]any)
 	if !ok || (yongShen["type"] != "string" && yongShen["$ref"] == nil) {
-		t.Fatalf("canonical casting_context.yong_shen = %#v", contextProperties["yong_shen"])
+		t.Fatalf("canonical casting_context.qu_yong = %#v", contextProperties["qu_yong"])
 	}
 	required, _ := context["required"].([]any)
-	if !containsAnyString(required, "yong_shen") {
+	if !containsAnyString(required, "qu_yong") {
 		t.Fatalf("canonical casting_context must require yong_shen: %#v", context)
 	}
 }
@@ -360,7 +360,7 @@ func TestLiuyaoChartUsesEventYongShen(t *testing.T) {
 		CastingContext: LiuyaoCastingContextEventInput{
 			StandardTime: standardInputFromInstant(t, "2026-07-31T02:00:00Z", "Asia/Shanghai"),
 			Longitude:    116.4,
-			YongShen:     "子孙",
+			QuYong:       "子孙",
 		},
 	}
 	raw, err := registry.Call(context.Background(), "liuyao_chart", mustJSON(t, LiuyaoChartInput{Event: &event}))
@@ -371,7 +371,7 @@ func TestLiuyaoChartUsesEventYongShen(t *testing.T) {
 	if err := json.Unmarshal(raw, &result); err != nil {
 		t.Fatal(err)
 	}
-	if result.Chart.YongShen.Name != "子孙" || result.Event.CastingContext.YongShen != "子孙" {
+	if result.Chart.YongShen.GuaMing != "子孙" || result.Event.CastingContext.QuYong != "子孙" {
 		t.Fatalf("event yong_shen was not used: %#v", result)
 	}
 }
@@ -428,7 +428,7 @@ func liuyaoCastingEventInput(event LiuyaoCastingEvent) *LiuyaoCastingEventInput 
 		CastingContext: LiuyaoCastingContextEventInput{
 			StandardTime: event.CastingContext.StandardTime,
 			Longitude:    event.CastingContext.Longitude,
-			YongShen:     event.CastingContext.YongShen,
+			QuYong:       event.CastingContext.QuYong,
 		},
 	}
 }

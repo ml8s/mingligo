@@ -112,7 +112,7 @@ const (
 	MuKuTransformed                   // transformed: 随鬼化墓
 )
 
-var muKuSourceNames = [...]string{"day", "moving", "transformed"}
+var muKuSourceNames = [...]string{"日墓", "动墓", "化墓"}
 
 // DecodeMuKuSource decodes a MuKuSource symbol into its display text (authoritative mapping).
 func DecodeMuKuSource(v MuKuSource) string {
@@ -327,10 +327,10 @@ func DecodeYongShen(v YongShen) string { return yongShenNames[v] }
 type TargetRole string
 
 const (
-	targetYongShen TargetRole = "yong_shen"
-	targetWorld    TargetRole = "world"
-	targetOther    TargetRole = "other"
-	targetMoving   TargetRole = "moving"
+	targetYongShen TargetRole = "用神"
+	targetWorld    TargetRole = "世爻"
+	targetOther    TargetRole = "应爻"
+	targetMoving   TargetRole = "动爻"
 )
 
 // LifeStage is one of the twelve life-cycle stages (长生十二宫).

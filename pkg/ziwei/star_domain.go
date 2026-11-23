@@ -6,11 +6,11 @@ package ziwei
 type StarLei string
 
 const (
-	StarLeiZhuXing StarLei = "zhu_xing"
-	StarLeiFuXing          = "fu_xing"
-	StarLeiLiuJi           = "liu_ji"
-	StarLeiWenXing StarLei = "wen_xing"
-	StarLeiShaXing StarLei = "sha_xing"
+	StarLeiZhuXing StarLei = "主星"
+	StarLeiFuXing          = "辅星"
+	StarLeiLiuJi           = "流吉"
+	StarLeiWenXing StarLei = "文星"
+	StarLeiShaXing StarLei = "煞星"
 )
 
 var (

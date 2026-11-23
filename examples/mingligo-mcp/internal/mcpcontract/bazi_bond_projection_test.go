@@ -42,7 +42,49 @@ func TestBaziBondDomainMatchesWire(t *testing.T) {
 	if err := json.Unmarshal(domainRaw, &b); err != nil {
 		t.Fatal(err)
 	}
+	// View maps TenGodSource codes to 命理 display terms at the boundary;
+	// normalize the domain side the same way before comparing.
+	normalizeBondSource(b)
 	if !reflect.DeepEqual(a, b) {
 		t.Errorf("domain/wire mismatch\ndomain: %s\nwire:   %s", domainRaw, raw)
+	}
+}
+
+func normalizeBondSource(v any) {
+	obj, ok := v.(map[string]any)
+	if !ok {
+		return
+	}
+	star, ok := obj["pei_ou_xing"].(map[string]any)
+	if !ok {
+		return
+	}
+	srcMap := map[string]string{
+		"gan": "透干", "main_qi": "本气", "mid_qi": "中气", "minor_qi": "余气",
+	}
+	for _, side := range []string{"a", "b"} {
+		s, ok := star[side].(map[string]any)
+		if !ok {
+			continue
+		}
+		for _, cand := range []string{"primary", "secondary"} {
+			c, ok := s[cand].(map[string]any)
+			if !ok {
+				continue
+			}
+			occs, ok := c["occurrences"].([]any)
+			if !ok {
+				continue
+			}
+			for _, occ := range occs {
+				o, ok := occ.(map[string]any)
+				if !ok {
+					continue
+				}
+				if mapped, ok := srcMap[o["source"].(string)]; ok {
+					o["source"] = mapped
+				}
+			}
+		}
 	}
 }

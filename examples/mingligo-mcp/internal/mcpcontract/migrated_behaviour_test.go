@@ -94,8 +94,8 @@ func TestMigratedBaziChartCompleteFacts(t *testing.T) {
 	}
 	// View fields are grouped by命理子域.
 	for _, pair := range [][2]string{
-		{"san_yuan_view", "san_yuan"}, {"guan_xi", "guan_xi"},
-		{"wang_shuai", "shi_shen_states"}, {"wang_shuai", "wuxing_states"}, {"da_yun", ""},
+		{"san_yuan", "tai_yuan"}, {"guan_xi", "he_hui_chong_xing"},
+		{"wang_shuai", "shi_shen"}, {"wang_shuai", "wuxing"}, {"da_yun", ""},
 	} {
 		var value any
 		if pair[1] == "" {
@@ -118,9 +118,9 @@ func TestMigratedBaziChartCompleteFacts(t *testing.T) {
 		}
 	}
 
-	relations, ok := sub("guan_xi", "na_yin_rel").([]any)
+	relations, ok := sub("guan_xi", "na_yin_guan_xi").([]any)
 	if !ok || len(relations) != 6 {
-		t.Fatalf("na_yin_rel = %#v, want 6 entries", sub("guan_xi", "na_yin_rel"))
+		t.Fatalf("na_yin_rel = %#v, want 6 entries", sub("guan_xi", "na_yin_guan_xi"))
 	}
 	sameOnly := true
 	for _, raw := range relations {
@@ -231,7 +231,7 @@ func TestMigratedQimenMaoShanContract(t *testing.T) {
 		"school": "zhuanpan", "dingju_method": "maoshan",
 	})
 	method := document["pai_pan_fang_fa"].(map[string]any)
-	if method["dingju_method"] != "maoshan" ||
+	if method["ding_ju_fang_fa"] != "maoshan" ||
 		method["jie_qi"] != "夏至" || method["yong_ju_jie_qi"] != "夏至" {
 		t.Fatalf("茅山定局 method = %+v", method)
 	}
@@ -254,16 +254,16 @@ func TestMigratedQimenQuarterRuleContract(t *testing.T) {
 		"standard_time": "2026-09-07T00:00:00+08:00", "longitude": 116.4, "scope": "quarter", "school": "zhuanpan",
 	})
 	method := document["pai_pan_fang_fa"].(map[string]any)
-	if method["scope"] != "quarter" ||
-		method["school"] != "zhuanpan" || method["quarter_rule"] != "ten_minute_sanyuan" ||
-		method["method_source"] != "quarter_rule" {
+	if method["fan_chou"] != "quarter" ||
+		method["liu_pai"] != "zhuanpan" || method["jie_qi_gui_ze"] != "ten_minute_sanyuan" ||
+		method["fang_fa_lai_yuan"] != "刻家规则" {
 		t.Fatalf("ten-minute quarter method = %+v", method)
 	}
-	quarter := method["quarter"].(map[string]any)
+	quarter := method["jie"].(map[string]any)
 	if quarter["index"] != float64(5) || quarter["minutes_per_quarter"] != float64(10) {
 		t.Fatalf("quarter metadata = %+v", quarter)
 	}
-	if lead := method["lead_pillar"].(map[string]any)["name"]; lead != "戊辰" {
+	if lead := method["ling_zhu"].(map[string]any)["name"]; lead != "戊辰" {
 		t.Fatalf("quarter lead = %v, want 戊辰", lead)
 	}
 	if mode := quarter["lead_pillar_mode"]; mode != "quarter" {
@@ -285,13 +285,13 @@ func TestMigratedQimenJinhanContract(t *testing.T) {
 	document := callQimenChart(t, registry, map[string]any{
 		"standard_time": "2024-06-29T12:00:00+08:00", "longitude": 116.4, "scope": "day", "school": "jinhan_yujing",
 	})
-	method := document["method"].(map[string]any)
+	method := document["pai_pan_fang_fa"].(map[string]any)
 	if method["scope"] != "day" || method["school"] != "jinhan_yujing" ||
 		method["dingju_method"] != "none" ||
-		method["dun_source"] != "winter_solstice_yang_summer_solstice_yin" {
+		method["dun_source"] != "冬至后阳遁·夏至后阴遁" {
 		t.Fatalf("金函玉镜 method = %+v", method)
 	}
-	board := document["pan"].(map[string]any)
+	board := document["jiu_gong_pan"].(map[string]any)
 	if board["yin_dun"] != true || board["ri_gan"] != "甲" || board["ri_zhi"] != "子" {
 		t.Fatalf("金函玉镜 board header = %+v", board)
 	}
@@ -306,9 +306,9 @@ func TestMigratedQimenJinhanContract(t *testing.T) {
 		t.Error("金函玉镜 board lacks ri_shen")
 	}
 	for _, field := range []string{
-		"gan_interaction", "men_interaction", "xing_interaction", "xing_gong_wu_xing",
+		"gan_ke_ying", "men_ke_ying", "xing_ke_ying", "xing_gong_guan_xi",
 		"men_po", "men_zhi", "ge_ju", "ying_qi", "day_stem_palace", "hour_stem_palace",
-		"kong_wang_affected", "ma_xing_affected", "zhi_fu_xing_gong", "zhi_shi_men_gong",
+		"kong_wang_ying_xiang", "ma_xing_ying_xiang", "zhi_fu_xing_gong", "zhi_shi_men_gong",
 		"yong_shen",
 	} {
 		if _, exists := document[field]; exists {
@@ -382,7 +382,7 @@ func TestMigratedQimenConsumesTianwenGregorian(t *testing.T) {
 	document := callQimenChart(t, registry, map[string]any{
 		"standard_time": standardInputFromInstant(t, "2026-03-02T10:30:00Z", "Asia/Shanghai"), "longitude": 116.4,
 	})
-	if document["pai_pan_fang_fa"] == nil || document["pan"] == nil {
+	if document["pai_pan_fang_fa"] == nil || document["jiu_gong_pan"] == nil {
 		t.Fatalf("qimen.chart from subject_candidates = %#v", document)
 	}
 }

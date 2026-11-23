@@ -78,11 +78,11 @@ final reading.
 
 ### Domain output: aggregated facts, not a display model
 
-A domain result is the complete, readable set of 命理 facts for one calculation. The domain owns the *shape* of those facts because grouping is itself domain knowledge: one 六爻 line is a single fact with its 干支, 六亲, 旺衰, and flags together, not three parallel arrays that a consumer must zip by index. Likewise an analysis section is one grouped layer of judgment facts, not loose top-level fields.
+A domain result is the complete, readable set of 命理 facts for one calculation. The domain owns the *shape* of those facts because grouping is itself domain knowledge: one 六爻 line is a single fact with its 干支, 六亲, 旺衰, and flags together, not three parallel arrays that a consumer must zip by index. Likewise a 命理域 (e.g. 用神/格局/应期) is one grouped layer of facts, not loose top-level fields; generic containers such as `analysis`/`facts` are intentionally absent.
 
 The domain does **not** decide how results are displayed. Presentation concerns — generated IDs, display labels, enum dropdowns, and rendering — belong to the adapter (MCP) or the frontend. A protocol layer should transmit the domain's aggregated result unchanged and declare a schema for it; it should not rebuild the domain's data.
 
-This is why MCP handlers return domain values directly and wire DTOs serve only as schema carriers. It also means a future REST adapter can publish the same domain output without a second projection. Field naming follows the domain vocabulary (pinyin terms such as `gong`, `ri_chen_gan`, `dong_yao`); renaming to a protocol's English vocabulary is a separate, explicitly-reviewed migration.
+This is why MCP handlers transmit the domain View unchanged; only small transport DTOs for sequence/oneOf wrapping exist, and they add no 命理 facts. Field naming follows the domain vocabulary (pinyin terms such as `gong`, `ri_chen_yue_jian.ri_chen.gan`, `yao_wei`); renaming to a protocol's English vocabulary is a separate, explicitly-reviewed migration.
 
 ### Determinism
 

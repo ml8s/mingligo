@@ -25,15 +25,15 @@ def source_commit(repo: pathlib.Path) -> str:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--repo", type=pathlib.Path, default=pathlib.Path.cwd())
-    parser.add_argument("--image", required=True, help="pinned mingligo-mcp OCI image")
+    parser.add_argument("--api-image", required=True, help="pinned mingligo-api OCI image")
     args = parser.parse_args()
     repo = args.repo.resolve()
-    if not DIGEST_RE.fullmatch(args.image):
-        raise SystemExit("image must be digest pinned")
+    if not DIGEST_RE.fullmatch(args.api_image):
+        raise SystemExit("api image must be digest pinned")
     document = {
         "kind": "mingligo-artifact",
         "source_commit": source_commit(repo),
-        "image": args.image,
+        "api_image": args.api_image,
     }
     print(json.dumps(document, ensure_ascii=False, indent=2, sort_keys=True))
     return 0
